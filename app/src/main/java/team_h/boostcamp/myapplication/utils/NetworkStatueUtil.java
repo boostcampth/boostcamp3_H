@@ -3,14 +3,14 @@ package team_h.boostcamp.myapplication.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import androidx.annotation.IntDef;
+import android.support.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /*
  * Created By JongSeong */
-public class NetworkStateUtil {
+public class NetworkStatueUtil {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NETWORK_CONNECTED, NETWORK_NOT_CONNECTED})
