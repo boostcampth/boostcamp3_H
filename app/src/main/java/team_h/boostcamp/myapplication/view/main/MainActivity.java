@@ -1,6 +1,5 @@
 package team_h.boostcamp.myapplication.view.main;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 

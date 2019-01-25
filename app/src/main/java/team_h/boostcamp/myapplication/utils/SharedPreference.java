@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.util;
+package team_h.boostcamp.myapplication.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;

@@ -3,14 +3,12 @@ package team_h.boostcamp.myapplication.view.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.widget.AdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> implements AdapterContract.View, AdapterContract.Model<T> {
-
 
     protected List<T> itemList;
     protected OnItemClickListener onItemClickListener;
@@ -202,6 +200,4 @@ public abstract class BaseRecyclerViewAdapter<T, H extends RecyclerView.ViewHold
 
     // 각 ViewHolder 에 맞게 Item 을 설정해주는 역할
     protected abstract void onBindView(H holder, int position);
-
-
 }
