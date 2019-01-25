@@ -12,5 +12,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toast.makeText(MainActivity.this, "젠킨스 빌드 테스트", Toast.LENGTH_SHORT).show();
+
+        System.out.println("젠킨스 빌드 테스트 by woo");
+
     }
 }
