@@ -10,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
 
 /*
  * Created By JongSeong */
-public class NetworkStatueUtil {
+public class NetworkStateUtil {
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NETWORK_CONNECTED, NETWORK_NOT_CONNECTED})

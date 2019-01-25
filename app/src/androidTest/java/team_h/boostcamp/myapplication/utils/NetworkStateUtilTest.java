@@ -6,11 +6,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-public class NetworkStatueUtilTest {
+public class NetworkStateUtilTest {
 
     @Test
     public void isNetworkConnected() {
-        int result = NetworkStatueUtil.isNetworkConnected(InstrumentationRegistry.getContext());
+        int result = NetworkStateUtil.isNetworkConnected(InstrumentationRegistry.getContext());
         Assert.assertEquals(1, result);
     }
 }
