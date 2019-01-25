@@ -3,6 +3,8 @@
 buildscript {
     
     repositories {
+        // for Glide
+        mavenCentral()
         google()
         jcenter()
     }
