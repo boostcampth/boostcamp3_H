@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class SharedPreference {
-    // Constants
     private static final String TEAM_H = "TEAM_H";
-
     private static final String PREF_PASSWORD = "PREF_PASSWORD";
     private static final String PREF_PUSH_TIME = "PREF_PUSH_TIME";
 
@@ -71,7 +69,4 @@ public class SharedPreference {
     private static class LazyHolder{
         public static final SharedPreference INSTANCE = new SharedPreference();
     }
-
-
-
 }
