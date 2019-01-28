@@ -12,14 +12,29 @@
         android:layout_height="match_parent"
         tools:context=".view.main.MainActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tb_main_top"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hello World!"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="#000000"
+            app:contentInsetLeft="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </android.support.v7.widget.Toolbar>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/vp_main"
+            android:background="#689954"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_main_top"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+        </android.support.v4.view.ViewPager>
 
     </android.support.constraint.ConstraintLayout>
 
