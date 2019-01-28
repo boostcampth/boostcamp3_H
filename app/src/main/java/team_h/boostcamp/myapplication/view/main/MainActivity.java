@@ -1,23 +1,27 @@
 package team_h.boostcamp.myapplication.view.main;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
+import team_h.boostcamp.myapplication.view.list.DairyFragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainPresenter> implements MainContractor.View {
+
+    private static final String TAG = MainActivity.class.getSimpleName();
+
+    private DairyFragment dairyFragment;
+    private MainTabAdapter tabAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        Toast.makeText(MainActivity.this, "젠킨스 빌드 테스트", Toast.LENGTH_SHORT).show();
-
-        System.out.println("젠킨스 빌드 테스트 by woo");
-
+        initView();
     }
 
     @Override
@@ -28,5 +32,17 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainPresente
     @Override
     protected MainPresenter getPresenter() {
         return new MainPresenter(MainActivity.this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private void initView() {
+        Log.e(TAG, "initView");
+        tabAdapter = new MainTabAdapter(getSupportFragmentManager());
+        binding.vpMain.setAdapter(tabAdapter);
+        binding.vpMain.setOffscreenPageLimit(3);
     }
 }
