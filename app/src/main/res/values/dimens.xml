@@ -1,5 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="space_graph_title_margin">24dp</dimen>
-    
+    <!--margin-->
+    <dimen name="title_margin_left">16dp</dimen>
+    <dimen name="title_margin_right">16dp</dimen>
+    <dimen name="layout_margin">16dp</dimen>
+    <dimen name="layout_gutter">8dp</dimen>
+
+    <!--elevation-->
+    <dimen name="card_view_radius">10dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="app_bar_elevation">4dp</dimen>
+    <dimen name="dialog_elevation">24dp</dimen>
+
+    <!--textSize-->
+    <dimen name="toolbar_title_20sp">20sp</dimen>
+    <dimen name="all_title_34sp">34sp</dimen>
+    <dimen name="sub_title_24sp">24sp</dimen>
+    <dimen name="all_body_16sp">16sp</dimen>
+    <dimen name="all_button_14sp">14sp</dimen>
+    <dimen name="setting_body_14sp">14sp</dimen>
 </resources>

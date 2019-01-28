@@ -1,6 +1,6 @@
 package team_h.boostcamp.myapplication.utils;
 
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 
 import org.junit.Assert;
 import org.junit.Test;
