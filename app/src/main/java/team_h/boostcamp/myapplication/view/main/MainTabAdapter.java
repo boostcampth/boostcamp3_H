@@ -1,19 +1,22 @@
 package team_h.boostcamp.myapplication.view.main;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import team_h.boostcamp.myapplication.view.memories.MemoriesFragment;
 
 public class MainTabAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> mFragments;
+    private MemoriesFragment memoriesFragment = new MemoriesFragment();
 
     public MainTabAdapter(FragmentManager fm) {
         super(fm);
         this.mFragments = new ArrayList<>();
+        this.mFragments.add(memoriesFragment);
     }
 
     @Override
