@@ -11,12 +11,12 @@ public class GraphAxisValueFormatter implements IAxisValueFormatter {
     private String[] mValues;
 
     // 생성자
-    public GraphAxisValueFormatter(String[] values) {
+    GraphAxisValueFormatter(String[] values) {
         this.mValues = values;
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return mValues[(int) value - 1];
+        return mValues[(int) value];
     }
 }

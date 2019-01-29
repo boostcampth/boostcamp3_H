@@ -1,6 +1,7 @@
 package team_h.boostcamp.myapplication.view.graph;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -20,7 +21,7 @@ public class GraphPresenter implements GraphContractor.Presenter {
     public static final ObservableField<String> observer = new ObservableField<>("Statics");
     private List<Entry> entries = new ArrayList<>();
     private String[] mDays = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
-    private String[] mEmojis = {"&#1F60D;", "&#128525;", "&#128525;", "&#128525;", "&#128525;"};
+    private String[] mEmojis = new String[5];
     private GraphContractor.View view;
     private Context mContext;
     private LineDataSet lineDataSet;
@@ -36,18 +37,25 @@ public class GraphPresenter implements GraphContractor.Presenter {
 
     @Override
     public void onViewAttached() {
-        entries.add(new Entry(1, 1,R.drawable.ic_launcher_foreground));
-        entries.add(new Entry(2, 2));
-        entries.add(new Entry(3, 0));
+        Log.v("202 Woo",String.valueOf(mEmojis.length));
+        mEmojis[0] = "\uD83D\uDE0D";
+        mEmojis[1] = "\uD83D\uDE0E";
+        mEmojis[2] = "\uD83D\uDE21";
+        mEmojis[3] = "\uD83D\uDE0D";
+        mEmojis[4] = "\uD83D\uDE10";
+        entries.add(new Entry(0,0, mEmojis[0]));
+        entries.add(new Entry(1, 1, mEmojis[1]));
+        entries.add(new Entry(2, 2, mEmojis[2]));
+      /*  entries.add(new Entry(3, 3));
         entries.add(new Entry(4, 4));
-        entries.add(new Entry(5, 3));
-        entries.add(new Entry(6, 4));
-        entries.add(new Entry(7, 3));
+        entries.add(new Entry(5, 2));
+        entries.add(new Entry(6, 1));*/
+        Log.v("203 Woo",String.valueOf(mEmojis.length));
         lineDataSet = new LineDataSet(entries, "Emotion");
 
         lineDataSet.setLineWidth(2);
         // 곡률
-        lineDataSet.setCircleRadius(6);
+        lineDataSet.setCircleRadius(5);
         // 원 색상 지정
         lineDataSet.setCircleColor(ContextCompat.getColor(mContext, R.color.graphColor));
         lineDataSet.setCircleHoleColor(ContextCompat.getColor(mContext, R.color.graphColor));
@@ -74,6 +82,9 @@ public class GraphPresenter implements GraphContractor.Presenter {
         yRAxis.setDrawAxisLine(false);
         yRAxis.setDrawGridLines(false);
 
+        // y축 텍스트 사이즈 지정.
+        yLAxis.setTextSize(20f);
+        Log.v("204 Woo",String.valueOf(mEmojis.length));
         yLAxis.setValueFormatter(new GraphYAxisValueFormatter(mEmojis));
 
         description = new Description();
@@ -86,10 +97,6 @@ public class GraphPresenter implements GraphContractor.Presenter {
     public void onViewDetached() {
         // 리소스 해제
         mContext = null;
-    }
-
-    @Override
-    public void graphCreate() {
-
+        mEmojis = null;
     }
 }

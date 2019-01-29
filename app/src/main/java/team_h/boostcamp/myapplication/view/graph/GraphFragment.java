@@ -88,4 +88,10 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding, GraphPrese
     protected GraphPresenter getPresenter() {
         return new GraphPresenter(GraphFragment.this, getContext());
     }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mPresenter.onViewDetached();
+    }
 }
