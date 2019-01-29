@@ -29,8 +29,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainPresente
         return R.layout.activity_main;
     }
 
-    // getPresenter를 싱글톤으로 구현 필요.
-    // 아니면 멤버 변수 presenter 만들어서 null일 때만 할당해도 됨.
     @Override
     protected MainPresenter getPresenter() {
         return new MainPresenter(MainActivity.this);

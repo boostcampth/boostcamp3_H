@@ -10,10 +10,6 @@ import android.widget.Toast;
 
 public abstract class BaseActivity<B extends ViewDataBinding, P extends BasePresenter> extends AppCompatActivity {
 
-    /**
-     * 제네릭 / 템플릿 키워드 검색
-     *
-     * */
     protected B binding;
     protected P presenter;
 
@@ -23,7 +19,6 @@ public abstract class BaseActivity<B extends ViewDataBinding, P extends BasePres
 
         // 세로 화면 고정
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        // 굳이 안해도 되고 할 만한 액티비티에서 매니페스트 지정하는게 나음.
 
         // bindingUtil 설정
         binding = DataBindingUtil.setContentView(this, getLayoutId());
@@ -32,8 +27,6 @@ public abstract class BaseActivity<B extends ViewDataBinding, P extends BasePres
         presenter = getPresenter();
     }
 
-    // 공통으로 빼는 것 주의해야 한다.
-    // 삭제해야 함.
     public void showToastMessage(String message, int exposedTime) {
         Toast.makeText(this, message, exposedTime).show();
     }

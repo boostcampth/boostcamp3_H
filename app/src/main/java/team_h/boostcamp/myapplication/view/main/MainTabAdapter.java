@@ -24,7 +24,6 @@ public class MainTabAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        Log.v("144 count",String.valueOf(mFragments.size()));
         return mFragments.size();
     }
 

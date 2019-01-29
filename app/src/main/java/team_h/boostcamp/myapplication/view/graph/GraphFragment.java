@@ -46,7 +46,6 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding, GraphPrese
         mBinding.lcEmotionGraph.setDrawGridBackground(false);
         mBinding.lcEmotionGraph.animateY(2000, Easing.EaseInCubic);
         mBinding.lcEmotionGraph.invalidate();
-
     }
 
     @Override

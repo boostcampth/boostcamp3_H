@@ -37,7 +37,6 @@ public class GraphPresenter implements GraphContractor.Presenter {
 
     @Override
     public void onViewAttached() {
-        Log.v("202 Woo",String.valueOf(mEmojis.length));
         mEmojis[0] = "\uD83D\uDE0D";
         mEmojis[1] = "\uD83D\uDE0E";
         mEmojis[2] = "\uD83D\uDE21";
@@ -50,7 +49,6 @@ public class GraphPresenter implements GraphContractor.Presenter {
         entries.add(new Entry(4, 4));
         entries.add(new Entry(5, 2));
         entries.add(new Entry(6, 1));*/
-        Log.v("203 Woo",String.valueOf(mEmojis.length));
         lineDataSet = new LineDataSet(entries, "Emotion");
 
         lineDataSet.setLineWidth(2);
@@ -84,7 +82,6 @@ public class GraphPresenter implements GraphContractor.Presenter {
 
         // y축 텍스트 사이즈 지정.
         yLAxis.setTextSize(20f);
-        Log.v("204 Woo",String.valueOf(mEmojis.length));
         yLAxis.setValueFormatter(new GraphYAxisValueFormatter(mEmojis));
 
         description = new Description();
