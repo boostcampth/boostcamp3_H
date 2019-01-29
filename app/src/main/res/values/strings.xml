@@ -12,6 +12,7 @@
         일기 녹음 : 마이크
         일기 저장 : 내부저장소 쓰기 권한
     </string>
+    <string name="item_record_permission_denied">권한 허용이 필요합니다 !</string>
     <string name="item_record_hash_tag_hint">Tag 를 입력해주세요</string>
 
     <string name="emojitest">&#128522;</string>
