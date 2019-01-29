@@ -1,7 +1,6 @@
 package team_h.boostcamp.myapplication.view.graph;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -21,7 +20,7 @@ public class GraphPresenter implements GraphContractor.Presenter {
     public static final ObservableField<String> observer = new ObservableField<>("Statics");
     private List<Entry> entries = new ArrayList<>();
     private String[] mDays = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
-    private String[] mEmojis = new String[5];
+    private String[] mEmojis = {"\uD83D\uDE21", "😞", "\uD83D\uDE10", "\uD83D\uDE0A", "\uD83D\uDE0D"};
     private GraphContractor.View view;
     private Context mContext;
     private LineDataSet lineDataSet;
@@ -37,18 +36,46 @@ public class GraphPresenter implements GraphContractor.Presenter {
 
     @Override
     public void onViewAttached() {
-        mEmojis[0] = "\uD83D\uDE0D";
-        mEmojis[1] = "\uD83D\uDE0E";
-        mEmojis[2] = "\uD83D\uDE21";
-        mEmojis[3] = "\uD83D\uDE0D";
-        mEmojis[4] = "\uD83D\uDE10";
-        entries.add(new Entry(0,0, mEmojis[0]));
-        entries.add(new Entry(1, 1, mEmojis[1]));
-        entries.add(new Entry(2, 2, mEmojis[2]));
-      /*  entries.add(new Entry(3, 3));
-        entries.add(new Entry(4, 4));
-        entries.add(new Entry(5, 2));
-        entries.add(new Entry(6, 1));*/
+        initEntry();
+
+        setLineDataset();
+
+        view.setLineData(lineData);
+        xAxis = view.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(R.color.black);
+        xAxis.setValueFormatter(new GraphAxisValueFormatter(mDays));
+        xAxis.enableGridDashedLine(8, 24, 0);
+
+        yLAxis = view.getYLeftAxis();
+        yLAxis.setTextColor(R.color.black);
+        // y축 텍스트 사이즈 지정.
+        yLAxis.setTextSize(20f);
+        yLAxis.setValueFormatter(new GraphYAxisValueFormatter(mEmojis));
+        // max 값
+        yLAxis.setAxisMaximum(4.0f);
+        // min 값
+        yLAxis.setAxisMinimum(0.0f);
+        yLAxis.setGranularityEnabled(true);
+        // 증가 간격
+        yLAxis.setGranularity(1.0f);
+        yLAxis.setSpaceMax(500f);
+
+        // 비활성화
+        setDisableYRightAxis();
+    }
+
+    void initEntry() {
+        entries.add(new Entry(0, 1.0f));
+        entries.add(new Entry(1, 2.0f));
+        entries.add(new Entry(2, 3.0f));
+        entries.add(new Entry(3, 4.0f));
+        entries.add(new Entry(4, 2.0f));
+        entries.add(new Entry(5, 4.0f));
+        entries.add(new Entry(6, 0.0f));
+    }
+
+    void setLineDataset(){
         lineDataSet = new LineDataSet(entries, "Emotion");
 
         lineDataSet.setLineWidth(2);
@@ -64,30 +91,13 @@ public class GraphPresenter implements GraphContractor.Presenter {
         lineDataSet.setDrawHighlightIndicators(false);
         lineDataSet.setDrawValues(false);
         lineData = new LineData(lineDataSet);
+    }
 
-        view.setLineData(lineData);
-        xAxis = view.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(R.color.black);
-        xAxis.setValueFormatter(new GraphAxisValueFormatter(mDays));
-        xAxis.enableGridDashedLine(8, 24, 0);
-
-        yLAxis = view.getYLeftAxis();
-        yLAxis.setTextColor(R.color.black);
-        // 비활성화
+    void setDisableYRightAxis() {
         yRAxis = view.getYRightAxis();
         yRAxis.setDrawLabels(false);
         yRAxis.setDrawAxisLine(false);
         yRAxis.setDrawGridLines(false);
-
-        // y축 텍스트 사이즈 지정.
-        yLAxis.setTextSize(20f);
-        yLAxis.setValueFormatter(new GraphYAxisValueFormatter(mEmojis));
-
-        description = new Description();
-        description.setText("");
-
-        view.setDescription(description);
     }
 
     @Override
