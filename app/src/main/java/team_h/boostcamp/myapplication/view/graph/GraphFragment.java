@@ -17,13 +17,15 @@ import androidx.annotation.Nullable;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentGraphBinding;
 import team_h.boostcamp.myapplication.view.BaseFragment;
+import team_h.boostcamp.myapplication.view.BasePresenter;
 
 /**
  * 추상 클래스인 BaseFragment를 상속받음.
  * 추상 클래스의 추상 메소드를 구현해야 한다.
  */
-public class GraphFragment extends BaseFragment<FragmentGraphBinding, GraphPresenter>
-        implements GraphContractor.View {
+public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements GraphContractor.View {
+
+    private GraphContractor.Presenter mPresenter;
 
     @Nullable
     @Override
@@ -38,9 +40,10 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding, GraphPrese
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mPresenter.onViewAttached();
         // Presenter 설정
-        mBinding.setPresenter(mPresenter);
+        mPresenter = generatePresenter();
+        mPresenter.onViewAttached();
+
         mBinding.lcEmotionGraph.setBackgroundColor(Color.TRANSPARENT);
         mBinding.lcEmotionGraph.setDoubleTapToZoomEnabled(false);
         mBinding.lcEmotionGraph.setDrawGridBackground(false);
@@ -49,8 +52,10 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding, GraphPrese
     }
 
     @Override
-    public void showToastMessage(String message, int exposedTime) {
-
+    public GraphContractor.Presenter generatePresenter() {
+        if(mPresenter == null)
+            mPresenter = new GraphPresenter(GraphFragment.this, getContext());
+        return mPresenter;
     }
 
     @Override
@@ -81,11 +86,6 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding, GraphPrese
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_graph;
-    }
-
-    @Override
-    protected GraphPresenter getPresenter() {
-        return new GraphPresenter(GraphFragment.this, getContext());
     }
 
     @Override
