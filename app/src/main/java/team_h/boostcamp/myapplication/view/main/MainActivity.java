@@ -7,6 +7,7 @@ import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
 import team_h.boostcamp.myapplication.view.graph.GraphFragment;
+import team_h.boostcamp.myapplication.view.memories.MemoriesFragment;
 
 
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements MainContractor.View {
@@ -41,6 +42,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     private void initView() {
         Log.e(TAG, "initView");
         tabAdapter = new MainTabAdapter(getSupportFragmentManager());
+        tabAdapter.addFragment(new MemoriesFragment());
         tabAdapter.addFragment(new GraphFragment());
         binding.vpMain.setAdapter(tabAdapter);
         binding.vpMain.setOffscreenPageLimit(3);
