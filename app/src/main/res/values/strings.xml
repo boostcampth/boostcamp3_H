@@ -24,4 +24,6 @@
     <string name="good">☺</string>
     <string name="happy">😍</string>
 
+    <!-- Memories fragment -->
+    <string name="Memories">Memories</string>
 </resources>
