@@ -5,14 +5,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/all_body_16sp"
             app:cardCornerRadius="10dp"
-            app:cardElevation="10dp">
+            app:cardElevation="@dimen/card_elevation">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -34,12 +35,13 @@
                     android:id="@+id/iv_play"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:src="@drawable/ic_memories_play"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_sub_title"
                     app:layout_constraintEnd_toStartOf="@+id/iv_close"
-                    app:layout_constraintTop_toTopOf="@+id/tv_title" />
+                    app:layout_constraintTop_toTopOf="@+id/tv_sub_title" />
 
                 <ImageView
                     android:id="@+id/iv_close"
@@ -65,7 +67,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_sub_title"
                     tools:listitme="@layout/item_diary" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
