@@ -39,7 +39,7 @@ public class HashTagEditText extends AppCompatEditText {
         setFilters(new InputFilter[]{
                 (source, start, end, dest, dStart, dEnd) -> {
                     for (int i = start; i < end; ++i) {
-                        if (Character.isSpaceChar(source.charAt(i))) {
+                        if (mHashListAdapter != null && Character.isSpaceChar(source.charAt(i))) {
                             mHashListAdapter.addItem("#" + getText().toString().trim());
                             setText("");
                             return null;

@@ -4,7 +4,6 @@
     <!-- ALL -->
     <string name="deep_affects_key">IOOqzHEiEwhd5c4lbwG3Ni4gEzKvK3aS</string>
 
-
     <!-- List Fragment String -->
     <string name="item_record_done">Done</string>
     <string name="item_record_today">Today</string>
@@ -16,7 +15,6 @@
     <string name="item_record_hash_tag_hint">Tag 를 입력해주세요</string>
 
     <string name="emojitest">&#128522;</string>
-
 
     <string name="mad">😡</string>
     <string name="bad">😡</string>
