@@ -1,29 +1,42 @@
 <resources>
 
-<!-- Base application theme. -->
-<style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    <!-- Customize your theme here. -->
-    <item name="colorPrimary">@color/colorPrimary</item>
-    <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-    <item name="colorAccent">@color/colorAccent</item>
-</style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:screenOrientation">portrait</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 
+    <style name="Title">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/all_title_34sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginLeft">@dimen/title_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/title_margin_right</item>
+        <item name="android:layout_marginTop">@dimen/layout_margin</item>
+    </style>
 
-<style name="Title">
-    <item name="android:textColor">@color/black</item>
-    <item name="android:textSize">@dimen/all_title_34sp</item>
-    <item name="android:textStyle">bold</item>
-    <item name="android:layout_marginLeft">@dimen/title_margin_left</item>
-    <item name="android:layout_marginRight">@dimen/title_margin_right</item>
-    <item name="android:layout_marginTop">@dimen/layout_margin</item>
-</style>
+    <style name="SubTitle">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/sub_title_24sp</item>
+        <item name="android:layout_marginLeft">@dimen/title_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/title_margin_right</item>
+        <item name="android:layout_marginTop">@dimen/layout_gutter</item>
+    </style>
 
-<style name="SubTitle">
-    <item name="android:textColor">@color/black</item>
-    <item name="android:textSize">@dimen/sub_title_24sp</item>
-    <item name="android:layout_marginLeft">@dimen/title_margin_left</item>
-    <item name="android:layout_marginRight">@dimen/title_margin_right</item>
-    <item name="android:layout_marginTop">@dimen/layout_gutter</item>
-</style>
+    <style name="DiaryListTheme">
+        <item name="android:layout_marginRight">@dimen/layout_margin</item>
+        <item name="android:layout_marginLeft">@dimen/layout_margin</item>
+        <item name="android:layout_marginTop">@dimen/layout_gutter</item>
+    </style>
 
+    <style name="EmojiChoiceType">
+        <item name="android:textSize">40dp</item>
+        <item name="android:layout_weight">0.2</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
 </resources>
