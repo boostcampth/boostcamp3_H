@@ -1,25 +1,24 @@
 package team_h.boostcamp.myapplication.view.main;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
-import team_h.boostcamp.myapplication.view.list.DairyFragment;
 
-public class MainActivity extends BaseActivity<ActivityMainBinding, MainPresenter> implements MainContractor.View {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements MainContractor.View {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private DairyFragment dairyFragment;
     private MainTabAdapter tabAdapter;
+    private MainContractor.Presenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mPresenter = generatePresenter();
 
         initView();
     }
@@ -30,13 +29,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainPresente
     }
 
     @Override
-    protected MainPresenter getPresenter() {
-        return new MainPresenter(MainActivity.this);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public MainContractor.Presenter generatePresenter() {
+        /* 1 : 1 관계 유지 */
+        if(mPresenter == null) {
+            mPresenter = new MainPresenter(MainActivity.this);
+        }
+        return mPresenter;
     }
 
     private void initView() {

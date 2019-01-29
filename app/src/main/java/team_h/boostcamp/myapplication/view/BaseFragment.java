@@ -10,12 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public abstract class BaseFragment<B extends ViewDataBinding, P extends BasePresenter> extends Fragment {
-
-    protected final String TAG = getClass().getSimpleName();
+public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment implements BaseView{
 
     protected B mBinding;
-    protected P mPresenter;
 
     public BaseFragment() {
     }
@@ -27,16 +24,7 @@ public abstract class BaseFragment<B extends ViewDataBinding, P extends BasePres
         // Binding 설정
         mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
 
-        // presenter 설정
-        mPresenter = getPresenter();
-
         return mBinding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
     }
 
     @Override
@@ -45,5 +33,4 @@ public abstract class BaseFragment<B extends ViewDataBinding, P extends BasePres
     }
 
     protected abstract int getLayoutId();
-    protected abstract P getPresenter();
 }

@@ -11,7 +11,7 @@ public class MainTabAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> mFragments;
 
-    public MainTabAdapter(FragmentManager fm) {
+    MainTabAdapter(FragmentManager fm) {
         super(fm);
         this.mFragments = new ArrayList<>();
     }

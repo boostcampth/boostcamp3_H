@@ -2,9 +2,8 @@ package team_h.boostcamp.myapplication.view;
 
 /*
  * Created by Jongseong */
-public interface BaseView {
+public interface BaseView<P extends BasePresenter> {
 
-    /*
-     * 토스트 메시지 출력 */
-    void showToastMessage(String message, int exposedTime);
+    /* View(Activity,Fragment) 에서 가져야할 공통 기능 */
+    P generatePresenter();
 }
