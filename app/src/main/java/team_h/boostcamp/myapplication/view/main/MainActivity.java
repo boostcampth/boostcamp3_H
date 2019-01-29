@@ -8,7 +8,6 @@ import android.util.Log;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
-import team_h.boostcamp.myapplication.view.graph.GraphFragment;
 
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainPresenter> implements MainContractor.View {
@@ -21,6 +20,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainPresente
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         initView();
     }
 
@@ -42,7 +42,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainPresente
     private void initView() {
         Log.e(TAG, "initView");
         tabAdapter = new MainTabAdapter(getSupportFragmentManager());
-        tabAdapter.addFragment(new GraphFragment());
         binding.vpMain.setAdapter(tabAdapter);
         binding.vpMain.setOffscreenPageLimit(3);
     }
