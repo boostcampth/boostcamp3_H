@@ -10,6 +10,7 @@ import team_h.boostcamp.myapplication.view.graph.GraphFragment;
 import team_h.boostcamp.myapplication.view.memories.MemoriesFragment;
 
 
+
 public class MainActivity extends BaseActivity<ActivityMainBinding> implements MainContractor.View {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -21,8 +22,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPresenter = generatePresenter();
 
+        mPresenter = generatePresenter();
+      
         initView();
     }
 
