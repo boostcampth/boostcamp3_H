@@ -15,27 +15,28 @@ import java.util.List;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableField;
 import team_h.boostcamp.myapplication.R;
+import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 
 public class GraphPresenter implements GraphContractor.Presenter {
     public static final ObservableField<String> observer = new ObservableField<>("Statics");
     private List<Entry> entries = new ArrayList<>();
-    private String[] mDays = {"월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"};
+    private String[] mDays;
     private String[] mEmojis = {"\uD83D\uDE21", "😞", "\uD83D\uDE10", "\uD83D\uDE0A", "\uD83D\uDE0D"};
     private GraphContractor.View view;
-    private Context mContext;
+    private ResourceSendUtil resourceSendUtil;
     private LineDataSet lineDataSet;
     private LineData lineData;
     private XAxis xAxis;
     private YAxis yLAxis, yRAxis;
-    private Description description;
 
-    GraphPresenter(GraphContractor.View view, Context context) {
+    GraphPresenter(GraphContractor.View view, ResourceSendUtil resourceSendUtil) {
         this.view = view;
-        this.mContext = context;
+        this.resourceSendUtil = resourceSendUtil;
     }
 
     @Override
     public void onViewAttached() {
+        mDays = resourceSendUtil.getStringArray(R.array.graph_days);
         initEntry();
 
         setLineDataset();
@@ -82,9 +83,9 @@ public class GraphPresenter implements GraphContractor.Presenter {
         // 곡률
         lineDataSet.setCircleRadius(5);
         // 원 색상 지정
-        lineDataSet.setCircleColor(ContextCompat.getColor(mContext, R.color.graphColor));
-        lineDataSet.setCircleHoleColor(ContextCompat.getColor(mContext, R.color.graphColor));
-        lineDataSet.setColor(ContextCompat.getColor(mContext, R.color.graphColor));
+        lineDataSet.setCircleColor(resourceSendUtil.getColor(R.color.graphColor));
+        lineDataSet.setCircleHoleColor(resourceSendUtil.getColor(R.color.graphColor));
+        lineDataSet.setColor(resourceSendUtil.getColor(R.color.graphColor));
         lineDataSet.setDrawCircleHole(true);
         lineDataSet.setDrawCircles(true);
         lineDataSet.setDrawHorizontalHighlightIndicator(false);
@@ -103,7 +104,6 @@ public class GraphPresenter implements GraphContractor.Presenter {
     @Override
     public void onViewDetached() {
         // 리소스 해제
-        mContext = null;
         mEmojis = null;
     }
 }
