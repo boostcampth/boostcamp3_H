@@ -19,4 +19,15 @@
     <dimen name="all_body_16sp">16sp</dimen>
     <dimen name="all_button_14sp">14sp</dimen>
     <dimen name="setting_body_14sp">14sp</dimen>
+
+    <!--corner radius-->
+    <dimen name="diary_card_corner_radius_10dp">10dp</dimen>
+
+    <!-- Emoji Default -->
+    <dimen name="diary_emoji_min">60dp</dimen>
+
+
+    <!-- Diary Fragment -->
+    <dimen name="diary_progress_height">10dp</dimen>
+
 </resources>

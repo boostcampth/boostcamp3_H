@@ -7,4 +7,14 @@
     <color name="graphColor">#7E39FB</color>
     <color name="dd">#FFA1B4DC</color>
 
+
+
+    <color name="all_blue">#0000ff</color>
+    <color name="all_white">#FFFFFF</color>
+    <color name="all_purple">#7E39FB</color>
+
+    <!-- Diary Fragment Color -->
+    <color name="list_violet">#7E39FB</color>
+    <color name="list_hash_tag_back">#F0F0F0</color>
+
 </resources>

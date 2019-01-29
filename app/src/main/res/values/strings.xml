@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <!-- ALL -->
+    <string name="deep_affects_key">IOOqzHEiEwhd5c4lbwG3Ni4gEzKvK3aS</string>
+
+
+    <!-- List Fragment String -->
+    <string name="item_record_done">Done</string>
+    <string name="item_record_today">Today</string>
+    <string name="item_record_permission_title">권한 요구</string>
+    <string name="item_record_permission_msg">
+        일기 녹음 : 마이크
+        일기 저장 : 내부저장소 쓰기 권한
+    </string>
+    <string name="item_record_hash_tag_hint">Tag 를 입력해주세요</string>
+
+    <string name="emojitest">&#128522;</string>
+
+
+    <string name="mad">😡</string>
+    <string name="bad">😡</string>
+    <string name="normal">😐</string>
+    <string name="good">☺</string>
+    <string name="happy">😍</string>
+
 </resources>
