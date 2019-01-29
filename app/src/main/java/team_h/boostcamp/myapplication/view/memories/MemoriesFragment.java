@@ -60,7 +60,7 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
     @Override
     public MemoriesContractor.Presenter generatePresenter() {
         if(mPresenter == null){
-            mPresenter = new MemoriesPresenter(MemoriesFragment.this, getContext());
+            mPresenter = new MemoriesPresenter(MemoriesFragment.this);
         }
         return mPresenter;
     }

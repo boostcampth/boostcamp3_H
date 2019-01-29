@@ -29,15 +29,12 @@ public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, Memorie
     }
 
     @Override
-    protected void onBindView(ViewHolder holder, int position) {
-        ViewHolder viewHolder = holder;
-
-        viewHolder.binding.tvSubTitle.setText(itemList.get(position).getTitle());
-
-        viewHolder.binding.rvDiary.setHasFixedSize(true);
+    protected void onBindView(ViewHolder holder, int position) {;
+        holder.binding.tvSubTitle.setText(itemList.get(position).getTitle());
+        holder.binding.rvDiary.setHasFixedSize(true);
         MemoriesDiaryAdapter adapter = new MemoriesDiaryAdapter(getContext());
-        viewHolder.binding.rvDiary.setAdapter(adapter);
-        viewHolder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(getContext()));
+        holder.binding.rvDiary.setAdapter(adapter);
+        holder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(getContext()));
 
         adapter.addItems(itemList.get(position).getMemories());
     }

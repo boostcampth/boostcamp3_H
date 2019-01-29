@@ -28,9 +28,7 @@ public class MemoriesDiaryAdapter extends BaseRecyclerViewAdapter<String, Memori
 
     @Override
     protected void onBindView(ViewHolder holder, int position) {
-        ViewHolder viewHolder = holder;
-
-        viewHolder.binding.tvDiaryTitle.setText(itemList.get(position));
+        holder.binding.tvDiaryTitle.setText(itemList.get(position));
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
