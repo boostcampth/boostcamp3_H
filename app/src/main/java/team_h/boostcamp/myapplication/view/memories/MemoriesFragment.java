@@ -40,6 +40,8 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
         mBinding.rvCard.setAdapter(adapter);
         mBinding.rvCard.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+        mBinding.rvCard.setVerticalScrollbarPosition(0);
         //dummy data
         List<String> diaryList = Arrays.asList("1", "2", "3", "4", "5");
         adapter.addItem(new Memory("Happy of January", diaryList));
