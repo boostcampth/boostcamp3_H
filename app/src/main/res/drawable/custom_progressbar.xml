@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/progress"
+        android:gravity="center_vertical|fill_horizontal">
+        <scale android:scaleWidth="100%">
+            <shape android:shape="rectangle"
+                android:tint="?attr/colorControlActivated">
+                <size android:height="16dp" />
+                <solid android:color="@color/white" />
+            </shape>
+        </scale>
+    </item>
+</layer-list>

@@ -24,4 +24,8 @@
 
     <!-- Memories fragment -->
     <string name="Memories">Memories</string>
+
+    <!-- Play activity -->
+    <string name="play">PLAY</string>
+    <string name="tv_progress">추억을 불러오는 중입니다.</string>
 </resources>
