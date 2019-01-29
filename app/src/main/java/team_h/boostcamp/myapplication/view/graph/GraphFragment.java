@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentGraphBinding;
+import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
 import team_h.boostcamp.myapplication.view.BasePresenter;
 
@@ -54,7 +55,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     @Override
     public GraphContractor.Presenter generatePresenter() {
         if(mPresenter == null)
-            mPresenter = new GraphPresenter(GraphFragment.this, getContext());
+            mPresenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(getContext()));
         return mPresenter;
     }
 
