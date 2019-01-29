@@ -1,10 +1,10 @@
-package team_h.boostcamp.myapplication;
+package team_h.boostcamp.myapplication.view.diaryList;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import team_h.boostcamp.myapplication.R;
 
 import android.view.LayoutInflater;
 import android.view.View;
