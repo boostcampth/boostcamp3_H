@@ -13,7 +13,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    //private DairyFragment dairyFragment;
     private MainTabAdapter tabAdapter;
     private MainContractor.Presenter mPresenter;
 
