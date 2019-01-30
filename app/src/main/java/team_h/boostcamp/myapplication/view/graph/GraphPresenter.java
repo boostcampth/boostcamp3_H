@@ -14,7 +14,8 @@ import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 
 public class GraphPresenter implements GraphContractor.Presenter {
-    public static final ObservableField<String> observer = new ObservableField<>("Statics");
+    public static final ObservableField<String> OBSERVER = new ObservableField<>("Statics");
+    public static final ObservableField<String> HASHTAG_OBSERVER = new ObservableField<>("#HashTags");
     private List<Entry> entries = new ArrayList<>();
     private String[] mDays;
     private String[] mEmojis = {"\uD83D\uDE21", "😞", "\uD83D\uDE10", "\uD83D\uDE0A", "\uD83D\uDE0D"};
