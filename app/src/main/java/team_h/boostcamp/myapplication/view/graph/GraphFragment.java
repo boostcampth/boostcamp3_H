@@ -1,13 +1,14 @@
 package team_h.boostcamp.myapplication.view.graph;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.LineData;
@@ -18,7 +19,6 @@ import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentGraphBinding;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
-import team_h.boostcamp.myapplication.view.BasePresenter;
 
 /**
  * 추상 클래스인 BaseFragment를 상속받음.
@@ -27,6 +27,18 @@ import team_h.boostcamp.myapplication.view.BasePresenter;
 public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements GraphContractor.View {
 
     private GraphContractor.Presenter mPresenter;
+    private String[] mHashTags;
+    LayoutInflater mInflater;
+    View mTagView;
+    TextView mTagTextView;
+    private ResourceSendUtil mResourceSendUtil;
+    private Context mContext;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Nullable
     @Override
@@ -41,6 +53,9 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (mResourceSendUtil == null) {
+            mResourceSendUtil = new ResourceSendUtil(mContext);
+        }
         // Presenter 설정
         mPresenter = generatePresenter();
         mPresenter.onViewAttached();
@@ -54,8 +69,8 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
 
     @Override
     public GraphContractor.Presenter generatePresenter() {
-        if(mPresenter == null)
-            mPresenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(getContext()));
+        if (mPresenter == null)
+            mPresenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(mContext));
         return mPresenter;
     }
 
@@ -80,8 +95,21 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     }
 
     @Override
-    public void setDescription(Description description) {
-        mBinding.lcEmotionGraph.setDescription(description);
+    public void loadHastTagWord(String[] hashTags) {
+        mHashTags = hashTags;
+        mInflater = getLayoutInflater();
+
+        for (int i = 0; i < mHashTags.length; i++) {
+            mTagView = mInflater.inflate(R.layout.layout_graph_hash_tag, null, false);
+            mTagTextView = mTagView.findViewById(R.id.tv_hash_tag);
+
+            if (i % 3 == 0) {
+                mTagTextView.setTextColor(mResourceSendUtil.getColor(R.color.graphColor));
+            }
+            mTagTextView.setTextSize(30f);
+            mTagTextView.setText(mHashTags[i]);
+            mBinding.hashTagCustomLayout.addView(mTagView);
+        }
     }
 
     @Override

@@ -12,44 +12,64 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_graph"
-            style="@style/Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/title_margin_left"
-            android:layout_marginTop="@dimen/layout_margin"
-            android:text="@{presenter.OBSERVER}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/lc_emotion_graph"
-            android:layout_width="0dp"
-            android:layout_height="539dp"
-            android:layout_marginLeft="@dimen/layout_margin"
-            android:layout_marginRight="@dimen/layout_margin"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_graph" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_hashtag"
-            style="@style/Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/layout_margin"
-            android:layout_marginTop="@dimen/layout_gutter"
-            android:text="@{presenter.HASHTAG_OBSERVER}"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lc_emotion_graph" />
+            <TextView
+                android:id="@+id/tv_graph"
+                style="@style/Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/title_margin_left"
+                android:layout_marginTop="@dimen/layout_margin"
+                android:text="@{presenter.OBSERVER}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/lc_emotion_graph"
+                android:layout_width="0dp"
+                android:layout_height="539dp"
+                android:layout_marginLeft="@dimen/layout_margin"
+                android:layout_marginRight="@dimen/layout_margin"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_graph" />
+
+            <TextView
+                android:id="@+id/tv_hashtag"
+                style="@style/Title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/layout_margin"
+                android:layout_marginTop="@dimen/layout_gutter"
+                android:text="@{presenter.HASHTAG_OBSERVER}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lc_emotion_graph" />
+
+            <team_h.boostcamp.myapplication.view.graph.HashTagCustomLayout
+                android:id="@+id/hash_tag_custom_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/layout_margin"
+                android:layout_marginTop="@dimen/layout_gutter"
+                android:layout_marginRight="@dimen/layout_margin"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hashtag" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
 
 </layout>

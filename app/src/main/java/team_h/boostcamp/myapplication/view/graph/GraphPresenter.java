@@ -17,6 +17,7 @@ public class GraphPresenter implements GraphContractor.Presenter {
     public static final ObservableField<String> OBSERVER = new ObservableField<>("Statics");
     public static final ObservableField<String> HASHTAG_OBSERVER = new ObservableField<>("#HashTags");
     private List<Entry> entries = new ArrayList<>();
+    private String[] hashtags = new String[20];
     private String[] mDays;
     private String[] mEmojis = {"\uD83D\uDE21", "😞", "\uD83D\uDE10", "\uD83D\uDE0A", "\uD83D\uDE0D"};
     private GraphContractor.View view;
@@ -61,6 +62,20 @@ public class GraphPresenter implements GraphContractor.Presenter {
 
         // 비활성화
         setDisableYRightAxis();
+        initHashTagWord();
+    }
+
+    void initHashTagWord() {
+        /**
+         * Model로부터 데이터를 가지고 와서 View에게 넘겨준다.
+         * 이 부분에서 Model에 접근해서 가공된 데이터를 가지고 오는 로직이 있어야 함.
+         *
+         * 지금은 Presenter에서 만든 데이터를 View 쪽으로 넘겨주고 있다.
+         * */
+        for (int i = 0; i < hashtags.length; i++) {
+            hashtags[i] = "#tag" + i;
+        }
+        view.loadHastTagWord(hashtags);
     }
 
     void initEntry() {
@@ -73,7 +88,7 @@ public class GraphPresenter implements GraphContractor.Presenter {
         entries.add(new Entry(6, 0.0f));
     }
 
-    void setLineDataset(){
+    void setLineDataset() {
         lineDataSet = new LineDataSet(entries, "Emotion");
 
         lineDataSet.setLineWidth(2);
