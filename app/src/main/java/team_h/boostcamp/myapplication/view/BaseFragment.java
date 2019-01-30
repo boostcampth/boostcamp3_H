@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment implements BaseView{
-
+    /* View 가 모두 Presenter 가 필요하지 않다고 생각함
+     * 하지만 Databinding 은 모든 View 가 필요하므로 공통 속성으로 추출 */
     protected B mBinding;
 
-    public BaseFragment() {
-    }
+    public BaseFragment() { }
 
     @Nullable
     @Override

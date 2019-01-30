@@ -12,6 +12,7 @@
         일기 녹음 : 마이크
         일기 저장 : 내부저장소 쓰기 권한
     </string>
+    <string name="item_record_permission_denied">권한 허용이 필요합니다 !</string>
     <string name="item_record_hash_tag_hint">Tag 를 입력해주세요</string>
 
     <string name="emojitest">&#128522;</string>
@@ -28,4 +29,16 @@
     <!-- Play activity -->
     <string name="play">PLAY</string>
     <string name="tv_progress">추억을 불러오는 중입니다.</string>
+
+    <!--Graph Days-->
+    <string-array name="graph_days">
+        <item>월</item>
+        <item>화</item>
+        <item>수</item>
+        <item>목</item>
+        <item>금</item>
+        <item>토</item>
+        <item>일</item>
+    </string-array>
+  
 </resources>

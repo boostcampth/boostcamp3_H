@@ -26,4 +26,7 @@ public class ResourceSendUtil {
     public String getString(@NonNull final int id) {
         return mContext.getResources().getString(id);
     }
+    public String[] getStringArray(@NonNull final int id){
+        return mContext.getResources().getStringArray(id);
+    }
 }
