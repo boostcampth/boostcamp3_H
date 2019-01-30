@@ -14,13 +14,13 @@ public interface GraphContractor {
 
         void setLineData(LineData lineData);
 
-        void setDescription(Description description);
-
         XAxis getXAxis();
 
         YAxis getYLeftAxis();
 
         YAxis getYRightAxis();
+
+        void loadHastTagWord(String[] hashTags);
     }
 
     interface Presenter extends BasePresenter {
