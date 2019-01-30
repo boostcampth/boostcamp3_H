@@ -3,6 +3,13 @@ package team_h.boostcamp.myapplication.view.diaryList;
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,14 +20,6 @@ import team_h.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import team_h.boostcamp.myapplication.utils.KeyPadUtil;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
 public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> implements DiaryContract.View{
 
@@ -75,6 +74,11 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
+    public void showToastMessage(String message, int exposedTime) {
+        Toast.makeText(mContext, message, exposedTime).show();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 
@@ -122,6 +126,5 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         // Presenter 에 Adapter 등록
         presenter.setHashTagListModelAdapter(mHashTagListAdapter);
         presenter.setHashTagListModelAdapter(mHashTagListAdapter);
-
     }
 }

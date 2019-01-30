@@ -50,4 +50,12 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0-beta01'
     // Graph
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
+    // Retrofit 설정 -> API 통신
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'
+    // okHttp
+    implementation 'com.squareup.okhttp3:okhttp:3.12.1'
+    // okHttp Log
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
 }
