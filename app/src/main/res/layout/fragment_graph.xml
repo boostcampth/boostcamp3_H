@@ -24,7 +24,7 @@
             android:layout_marginLeft="@dimen/title_margin_left"
             android:layout_marginTop="@dimen/layout_margin"
             android:text="@{presenter.OBSERVER}"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.github.mikephil.charting.charts.LineChart
@@ -33,8 +33,8 @@
             android:layout_height="539dp"
             android:layout_marginLeft="@dimen/layout_margin"
             android:layout_marginRight="@dimen/layout_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_graph" />
 
         <TextView
@@ -45,8 +45,8 @@
             android:layout_marginLeft="@dimen/layout_margin"
             android:layout_marginTop="@dimen/layout_gutter"
             android:text="@{presenter.HASHTAG_OBSERVER}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lc_emotion_graph" />
 
 
