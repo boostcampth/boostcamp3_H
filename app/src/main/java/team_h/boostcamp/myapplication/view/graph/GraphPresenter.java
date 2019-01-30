@@ -1,8 +1,5 @@
 package team_h.boostcamp.myapplication.view.graph;
 
-import android.content.Context;
-
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -12,7 +9,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.core.content.ContextCompat;
 import androidx.databinding.ObservableField;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
