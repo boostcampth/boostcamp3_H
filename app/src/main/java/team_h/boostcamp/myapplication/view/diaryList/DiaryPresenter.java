@@ -231,7 +231,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         Call<List<EmotionAnalysisResponse>> list = APIClient.getInstance()
                 .getClient()
                 .create(EmotionAnalysisAPI.class)
-                .test(apiKey, EmotionAnalyzeRequest.request(encodedRecord));
+                .analyzeRecordEmotionByCallback(apiKey, EmotionAnalyzeRequest.request(encodedRecord));
 
         list.enqueue(new Callback<List<EmotionAnalysisResponse>>() {
             @Override

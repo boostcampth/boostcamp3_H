@@ -20,7 +20,7 @@ public interface EmotionAnalysisAPI {
                                                                @Body Map<String, String > params);
     // Callback 비교
     @POST("sync/recognise_emotion")
-    Call<List<EmotionAnalysisResponse>> test(@Query("apiKey") String apiKey,
-                                                               @Body Map<String, String > params);
+    Call<List<EmotionAnalysisResponse>> analyzeRecordEmotionByCallback(@Query("apiKey") String apiKey,
+                                                                       @Body Map<String, String > params);
 
 }
