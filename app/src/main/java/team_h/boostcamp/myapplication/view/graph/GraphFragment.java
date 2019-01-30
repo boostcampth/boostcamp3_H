@@ -1,5 +1,6 @@
 package team_h.boostcamp.myapplication.view.graph;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,10 +28,17 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
 
     private GraphContractor.Presenter mPresenter;
     private String[] mHashTags;
-    private LayoutInflater mInflater;
-    private View mTagView;
-    private TextView mTagTextView;
+    LayoutInflater mInflater;
+    View mTagView;
+    TextView mTagTextView;
     private ResourceSendUtil mResourceSendUtil;
+    private Context mContext;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     @Nullable
     @Override
@@ -46,7 +54,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (mResourceSendUtil == null) {
-            mResourceSendUtil = new ResourceSendUtil(getContext());
+            mResourceSendUtil = new ResourceSendUtil(mContext);
         }
         // Presenter 설정
         mPresenter = generatePresenter();
@@ -62,7 +70,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     @Override
     public GraphContractor.Presenter generatePresenter() {
         if (mPresenter == null)
-            mPresenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(getContext()));
+            mPresenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(mContext));
         return mPresenter;
     }
 
