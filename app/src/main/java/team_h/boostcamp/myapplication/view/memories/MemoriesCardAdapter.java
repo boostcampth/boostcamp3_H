@@ -4,14 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import team_h.boostcamp.myapplication.databinding.ItemMemoryCardBinding;
 import team_h.boostcamp.myapplication.model.Memory;
+import team_h.boostcamp.myapplication.view.adapter.AdapterContract;
 import team_h.boostcamp.myapplication.view.adapter.BaseRecyclerViewAdapter;
 
-public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, MemoriesCardAdapter.ViewHolder> {
+public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, MemoriesCardAdapter.ViewHolder>{
 
     public MemoriesCardAdapter(Context context) {
         super(context);
@@ -29,7 +32,7 @@ public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, Memorie
     }
 
     @Override
-    protected void onBindView(ViewHolder holder, int position) {;
+    protected void onBindView(ViewHolder holder, int position) {
         holder.binding.tvSubTitle.setText(itemList.get(position).getTitle());
         holder.binding.rvDiary.setHasFixedSize(true);
         MemoriesDiaryAdapter adapter = new MemoriesDiaryAdapter(getContext());

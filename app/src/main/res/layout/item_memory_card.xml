@@ -41,7 +41,7 @@
                     android:src="@drawable/ic_memories_play"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_sub_title"
                     app:layout_constraintEnd_toStartOf="@+id/iv_close"
-                    app:layout_constraintTop_toTopOf="@+id/tv_sub_title" />
+                    app:layout_constraintTop_toTopOf="@+id/tv_sub_title"/>
 
                 <ImageView
                     android:id="@+id/iv_close"
