@@ -1,5 +1,7 @@
 package team_h.boostcamp.myapplication.view.memories;
 
+import android.view.View;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +14,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     private MemoriesContractor.View view;
     private AdapterContract.Model<Memory> mMemoriesCardAdapterModel;
     private AdapterContract.View mMemoriesCardAdapterView;
+    List<Memory> memories = new ArrayList<>();
 
     public MemoriesPresenter(MemoriesContractor.View view) {
         this.view = view;
@@ -33,18 +36,37 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     }
 
     @Override
-    public void onRecommendButtonClicked() {
+    public void onRecommendButtonClicked(View v) {
         view.makeToast("추천하겠습니다.");
+
+        if(!isRecommended()){
+            Memory newMemory = generateMemory();
+            mMemoriesCardAdapterModel.addItem(newMemory);
+        }
+    }
+
+    private Memory generateMemory() {
+        view.makeToast("선택된 감정" + generateRandomNumber());
+        Memory memory = new Memory("newMemory", Arrays.asList("1","2","3"));
+        return memory;
+    }
+
+    private boolean isRecommended() {
+        // memories 테이블에서 최신추가된 추천 튜플과 오늘 날짜 비교
+        return false;
     }
 
     @Override
-    public void onDeleteButtonClicked() {
+    public void onDeleteButtonClicked(int position) {
         view.makeToast("삭제버튼이눌렸습니다.");
+        memories.remove(position);
+        mMemoriesCardAdapterModel.removeItem(position);
     }
 
     @Override
-    public void onPlayButtonClicked() {
+    public void onPlayButtonClicked(int position) {
         view.makeToast("플레이하겠습니다.");
+        view.navigateToPlayActivity(memories.get(position));
     }
 
     @Override
@@ -52,7 +74,6 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
 
         //dummy data
         List<String> diaryList = Arrays.asList("1", "2", "3", "4", "5");
-        List<Memory> memories = new ArrayList<>();
         memories.add(new Memory("Happy of January", diaryList));
         memories.add(new Memory("Sad of January", diaryList));
         memories.add(new Memory("Not bad of January", diaryList));
@@ -68,6 +89,9 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     @Override
     public void onViewDetached() {
         view = null;
+    }
 
+    public int generateRandomNumber(){
+        return (int)(Math.random()*5);
     }
 }

@@ -7,7 +7,6 @@
     <dimen name="layout_gutter">8dp</dimen>
 
     <!--elevation-->
-    <dimen name="card_view_radius">10dp</dimen>
     <dimen name="card_elevation">2dp</dimen>
     <dimen name="app_bar_elevation">4dp</dimen>
     <dimen name="dialog_elevation">24dp</dimen>
@@ -22,6 +21,7 @@
 
     <!--corner radius-->
     <dimen name="diary_card_corner_radius_10dp">10dp</dimen>
+    <dimen name="card_view_radius">15dp</dimen>
 
     <!-- Emoji Default -->
     <dimen name="diary_emoji_min">60dp</dimen>

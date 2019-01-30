@@ -17,10 +17,11 @@ import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentMemoriesBinding;
 import team_h.boostcamp.myapplication.model.Memory;
 import team_h.boostcamp.myapplication.view.BaseFragment;
+import team_h.boostcamp.myapplication.view.adapter.OnItemClickListener;
 import team_h.boostcamp.myapplication.view.play.PlayActivity;
 
 
-public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> implements MemoriesContractor.View{
+public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> implements MemoriesContractor.View, MemoriesCardAdapter.ViewClickListener{
 
     private MemoriesPresenter mPresenter;
     private MemoriesCardAdapter mMemoriesCardAdapter;
@@ -32,10 +33,12 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
         super.onCreateView(inflater, container, savedInstanceState);
         mPresenter = generatePresenter();
         mPresenter.onViewAttached();
+        mBinding.setPresenter(mPresenter);
 
         mBinding.rvCard.setHasFixedSize(true);
         mBinding.rvCard.setVerticalScrollbarPosition(0);
         mMemoriesCardAdapter = new MemoriesCardAdapter(getContext());
+        mMemoriesCardAdapter.setOnClickListener(this);
         mBinding.rvCard.setLayoutManager(new LinearLayoutManager(getContext()));
         mBinding.rvCard.setAdapter(mMemoriesCardAdapter);
 
@@ -50,7 +53,6 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
         super.onResume();
 
         mPresenter.loadData();
-
     }
 
     @Override
@@ -79,10 +81,20 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
     }
 
     @Override
-    public void navigateToPlayActivity(String string) {
+    public void navigateToPlayActivity(Memory memory) {
         Intent intent = new Intent(getContext(), PlayActivity.class);
-        intent.putExtra("data",string);
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        intent.putExtra("memory", memory);
         startActivity(intent);
+        this.getActivity().overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_stop);
+    }
+
+    @Override
+    public void onPlayButtonClicked(int position) {
+        mPresenter.onPlayButtonClicked(position);
+    }
+
+    @Override
+    public void onCloseButtonLicked(int position) {
+        mPresenter.onDeleteButtonClicked(position);
     }
 }
