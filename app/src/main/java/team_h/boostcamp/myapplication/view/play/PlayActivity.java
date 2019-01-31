@@ -14,12 +14,13 @@ import android.view.View;
 public class PlayActivity extends BaseActivity<ActivityPlayBinding> {
 
     private static final String TAG = "PlayActivity";
+    private static final String EXTRA_MEMORY = "memory";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding.setActivity(this);
-        Memory memory = (Memory) getIntent().getParcelableExtra("memory");
+        Memory memory = (Memory) getIntent().getParcelableExtra(EXTRA_MEMORY);
         binding.tvTitle.setText(memory.getTitle());
     }
 

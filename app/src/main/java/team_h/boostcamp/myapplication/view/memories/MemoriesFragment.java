@@ -23,6 +23,7 @@ import team_h.boostcamp.myapplication.view.play.PlayActivity;
 
 public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> implements MemoriesContractor.View, MemoriesCardAdapter.ViewClickListener{
 
+    private static final String EXTRA_MEMORY = "memory";
     private MemoriesPresenter mPresenter;
     private MemoriesCardAdapter mMemoriesCardAdapter;
 
@@ -83,7 +84,7 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
     @Override
     public void navigateToPlayActivity(Memory memory) {
         Intent intent = new Intent(getContext(), PlayActivity.class);
-        intent.putExtra("memory", memory);
+        intent.putExtra(EXTRA_MEMORY, memory);
         startActivity(intent);
         this.getActivity().overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_stop);
     }
