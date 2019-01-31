@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 
 public class HashTagCustomLayout extends ViewGroup {
+
     int deviceWidth;
 
     public HashTagCustomLayout(Context context) {

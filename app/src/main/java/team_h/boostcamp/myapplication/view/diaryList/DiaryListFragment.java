@@ -17,11 +17,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
+import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.utils.KeyPadUtil;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
 
-public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> implements DiaryContract.View{
+public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> implements DiaryContract.View {
 
     private Context mContext;
 
@@ -34,8 +35,10 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+
         // presenter 생성. 1 : 1 관계 유지
         presenter = generatePresenter();
+
         // XML presenter 등록
         mBinding.setPresenter(presenter);
 
@@ -54,8 +57,8 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
 
     @Override
     public DiaryPresenter generatePresenter() {
-        if(presenter == null) {
-            presenter = new DiaryPresenter(this, new ResourceSendUtil(mContext));
+        if (presenter == null) {
+            presenter = new DiaryPresenter(this, AppDatabase.getInstance(mContext), new ResourceSendUtil(mContext));
         }
         return presenter;
     }
@@ -87,25 +90,25 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
 
         // 녹음 버튼 이벤트
         mBinding.buttonRecordItemRecord.setOnClickListener(v ->
-            TedRx2Permission.with(mContext)
-                    .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
-                    .setRationaleMessage(getString(R.string.item_record_permission_msg))
-                    .setRationaleTitle(getString(R.string.item_record_permission_title))
-                    .request()
-                    .subscribe(tedPermissionResult -> {
-                        if(tedPermissionResult.isGranted()) {
-                            // KeyPad 가 열려있으면 닫아주기
-                            KeyPadUtil.closeKeyPad(mContext, mBinding.hashTagEditTextItemRecordInput);
-                            // 버튼 클릭 이벤트 처리
-                            presenter.onRecordButtonClicked();
-                        } else {
-                            // 요구한 권한이 하나라도 없으면 토스트 메시지
-                            Toast.makeText(mContext, getString(R.string.item_record_permission_denied), Toast.LENGTH_SHORT).show();
-                        }
-                    }, error -> {
-                        // 에러 출력
-                        Log.e("Test", error.getMessage());
-                    })
+                TedRx2Permission.with(mContext)
+                        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
+                        .setRationaleMessage(getString(R.string.item_record_permission_msg))
+                        .setRationaleTitle(getString(R.string.item_record_permission_title))
+                        .request()
+                        .subscribe(tedPermissionResult -> {
+                            if (tedPermissionResult.isGranted()) {
+                                // KeyPad 가 열려있으면 닫아주기
+                                KeyPadUtil.closeKeyPad(mContext, mBinding.hashTagEditTextItemRecordInput);
+                                // 버튼 클릭 이벤트 처리
+                                presenter.onRecordButtonClicked();
+                            } else {
+                                // 요구한 권한이 하나라도 없으면 토스트 메시지
+                                Toast.makeText(mContext, getString(R.string.item_record_permission_denied), Toast.LENGTH_SHORT).show();
+                            }
+                        }, error -> {
+                            // 에러 출력
+                            Log.e("Test", error.getMessage());
+                        })
         );
 
         // 저장 버튼 클릭

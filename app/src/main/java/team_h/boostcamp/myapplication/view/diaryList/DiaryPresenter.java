@@ -5,6 +5,7 @@ import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -15,6 +16,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.databinding.Bindable;
+import androidx.databinding.ObservableBoolean;
+import androidx.databinding.ObservableInt;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,13 +28,14 @@ import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalysisAPI;
 import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalysisResponse;
 import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalyzeRequest;
 import team_h.boostcamp.myapplication.api_service.emotion.mapper.AnalyzedEmotionMapper;
+import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.adapter.AdapterContract;
 
 public class DiaryPresenter implements DiaryContract.Presenter {
 
     private static final String TAG = DiaryPresenter.class.getSimpleName();
-
+    public final ObservableBoolean isSaving = new ObservableBoolean(false); // 로딩 중 flag 바인딩
 
     private DiaryContract.View view;
     private ResourceSendUtil mResourceSendUtil;
@@ -41,13 +46,17 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private AdapterContract.Model<String> mHashTagListModelAdapter;
     private AdapterContract.View mHashTagListViewAdapter;
 
+    // DB
+    private AppDatabase db;
+
     private int selectedEmotion = -1;
     private boolean isRecording = false;
 
 
-    DiaryPresenter(DiaryContract.View view, ResourceSendUtil resourceSendUtil) {
+    DiaryPresenter(DiaryContract.View view, AppDatabase db, ResourceSendUtil resourceSendUtil) {
         this.view = view;
         this.mResourceSendUtil = resourceSendUtil;
+        this.db = db;
     }
 
     @Override
@@ -134,7 +143,11 @@ public class DiaryPresenter implements DiaryContract.Presenter {
      * 저장 버튼 클릭 이벤트 */
     @Override
     public void onDoneButtonClicked() {
-        // String apiKey = mResourceSendUtil.getString(R.string.deep_affects_key);
+        // 현재 녹음중이면 거부
+        if(isRecording) {
+            view.showToastMessage(mResourceSendUtil.getString(R.string.item_record_now_recording), Toast.LENGTH_SHORT);
+            return;
+        }
 
         // 감정을 선택하지 않았다면
         if (selectedEmotion == -1) {
@@ -155,6 +168,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         String encodedRecordFile = getBase64EncodedFile(file);
 
         // API 호출 및 Room 저장
+        isSaving.set(true);
         analyzeRecordEmotion(encodedRecordFile);
     }
 
@@ -239,12 +253,14 @@ public class DiaryPresenter implements DiaryContract.Presenter {
                 /* 분석된 감정을 0 - 4 값으로 Mapping 하는 과정 */
                 Log.e("Test", "onResponse");
                 AnalyzedEmotionMapper.parseAnalyzedEmotion(response.body());
+                isSaving.set(false);
             }
 
             @Override
             public void onFailure(Call<List<EmotionAnalysisResponse>> call, Throwable t) {
                 /* Error 처리 */
                 Log.e("Test", "onError");
+                isSaving.set(false);
             }
         });
     }

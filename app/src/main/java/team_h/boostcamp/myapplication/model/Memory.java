@@ -7,14 +7,19 @@ import java.util.List;
 
 public class Memory implements Parcelable {
 
-    //dummy용 파일입니다.
-
     private String title;
     private List<String> memories;
 
     protected Memory(Parcel in) {
         title = in.readString();
         memories = in.createStringArrayList();
+    }
+
+    public Memory() { }
+
+    public Memory(String title, List<String> memories) {
+        this.title = title;
+        this.memories = memories;
     }
 
     public static final Creator<Memory> CREATOR = new Creator<Memory>() {
@@ -42,11 +47,6 @@ public class Memory implements Parcelable {
     }
 
     public void setMemories(List<String> memories) {
-        this.memories = memories;
-    }
-
-    public Memory(String title, List<String> memories) {
-        this.title = title;
         this.memories = memories;
     }
 
