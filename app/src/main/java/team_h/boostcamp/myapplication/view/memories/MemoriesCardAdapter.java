@@ -50,7 +50,7 @@ public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, Memorie
         MemoriesDiaryAdapter adapter = new MemoriesDiaryAdapter(getContext());
         holder.binding.rvDiary.setAdapter(adapter);
         holder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter.addItems(itemList.get(position).getMemories());
+        //adapter.addItems(itemList.get(position).getMemories());
 
         if(mListener != null){
             holder.binding.ivPlay.setOnClickListener(new View.OnClickListener() {

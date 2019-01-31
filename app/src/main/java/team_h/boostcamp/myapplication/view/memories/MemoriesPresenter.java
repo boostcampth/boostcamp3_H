@@ -47,7 +47,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
 
     private Memory generateMemory() {
         view.makeToast("선택된 감정" + generateRandomNumber());
-        Memory memory = new Memory("newMemory", Arrays.asList("1","2","3"));
+        Memory memory = new Memory(1,"Happy of January","1d일",1);
         return memory;
     }
 
@@ -73,16 +73,9 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     public void loadData() {
 
         //dummy data
-        List<String> diaryList = Arrays.asList("1", "2", "3", "4", "5");
-        memories.add(new Memory("Happy of January", diaryList));
-        memories.add(new Memory("Sad of January", diaryList));
-        memories.add(new Memory("Not bad of January", diaryList));
-        memories.add(new Memory("Not bad of January", diaryList));
-        memories.add(new Memory("Not bad of January", diaryList));
-        memories.add(new Memory("Not bad of January", diaryList));
-        memories.add(new Memory("Not bad of January", diaryList));
-        memories.add(new Memory("Not bad of January", diaryList));
 
+        List<String> diaryList = Arrays.asList("1", "2", "3", "4", "5");
+        memories.add(new Memory(1,"Happy of January","1d일",1));
         mMemoriesCardAdapterModel.addItems(memories);
     }
 
