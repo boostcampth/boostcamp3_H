@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.Recommendation;
 
-@Database(entities = {Diary.class, Recommendation.class, /*Memory.class*/}, version = 1)
+@Database(entities = {Diary.class, Recommendation.class, /*Memory.class*/}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "appDB.db";

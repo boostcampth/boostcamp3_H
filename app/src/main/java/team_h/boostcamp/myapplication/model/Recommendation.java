@@ -11,9 +11,9 @@ import static androidx.room.ForeignKey.CASCADE;
         @ForeignKey(entity = Memory.class,
         parentColumns = "id",
         childColumns = "memoryId", onDelete = CASCADE),*/
-        @ForeignKey(entity = Diary.class,
+        /*@ForeignKey(entity = Diary.class,
         parentColumns = "id",
-        childColumns = "diaryId", onDelete = CASCADE)
+        childColumns = "diaryId", onDelete = CASCADE)*/
 }) // Search 를 빠르게 하기위해 Index 걸어두기
 public class Recommendation {
 
