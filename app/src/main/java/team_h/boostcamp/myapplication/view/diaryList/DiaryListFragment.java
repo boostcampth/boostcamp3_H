@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
+import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.utils.KeyPadUtil;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
@@ -57,7 +58,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     @Override
     public DiaryPresenter generatePresenter() {
         if (presenter == null) {
-            presenter = new DiaryPresenter(this, new ResourceSendUtil(mContext));
+            presenter = new DiaryPresenter(this, AppDatabase.getInstance(mContext), new ResourceSendUtil(mContext));
         }
         return presenter;
     }

@@ -28,6 +28,7 @@ import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalysisAPI;
 import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalysisResponse;
 import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalyzeRequest;
 import team_h.boostcamp.myapplication.api_service.emotion.mapper.AnalyzedEmotionMapper;
+import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.adapter.AdapterContract;
 
@@ -45,13 +46,17 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private AdapterContract.Model<String> mHashTagListModelAdapter;
     private AdapterContract.View mHashTagListViewAdapter;
 
+    // DB
+    private AppDatabase db;
+
     private int selectedEmotion = -1;
     private boolean isRecording = false;
 
 
-    DiaryPresenter(DiaryContract.View view, ResourceSendUtil resourceSendUtil) {
+    DiaryPresenter(DiaryContract.View view, AppDatabase db, ResourceSendUtil resourceSendUtil) {
         this.view = view;
         this.mResourceSendUtil = resourceSendUtil;
+        this.db = db;
     }
 
     @Override
