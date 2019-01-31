@@ -16,9 +16,17 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableInt;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,12 +36,14 @@ import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalysisAPI;
 import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalysisResponse;
 import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalyzeRequest;
 import team_h.boostcamp.myapplication.api_service.emotion.mapper.AnalyzedEmotionMapper;
+import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.adapter.AdapterContract;
 
 public class DiaryPresenter implements DiaryContract.Presenter {
 
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
     private static final String TAG = DiaryPresenter.class.getSimpleName();
     public final ObservableBoolean isSaving = new ObservableBoolean(false); // 로딩 중 flag 바인딩
 
@@ -52,8 +62,11 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private int selectedEmotion = -1;
     private boolean isRecording = false;
 
+    private String mFilePath;
 
-    DiaryPresenter(DiaryContract.View view, AppDatabase db, ResourceSendUtil resourceSendUtil) {
+    DiaryPresenter(@NonNull DiaryContract.View view,
+                   @NonNull AppDatabase db,
+                   @NonNull ResourceSendUtil resourceSendUtil) {
         this.view = view;
         this.mResourceSendUtil = resourceSendUtil;
         this.db = db;
@@ -137,6 +150,8 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         }
         // 녹음 상태 변경
         isRecording = !isRecording;
+        // 저장될 파일 경로
+        mFilePath = getTodayRecordFilePath();
     }
 
     /*
@@ -144,7 +159,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     @Override
     public void onDoneButtonClicked() {
         // 현재 녹음중이면 거부
-        if(isRecording) {
+        if (isRecording) {
             view.showToastMessage(mResourceSendUtil.getString(R.string.item_record_now_recording), Toast.LENGTH_SHORT);
             return;
         }
@@ -152,7 +167,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         // 감정을 선택하지 않았다면
         if (selectedEmotion == -1) {
             // 감정 선택 Toast
-            view.showToastMessage(mResourceSendUtil.getString(R.string.item_record_no_emotion_selected),Toast.LENGTH_SHORT);
+            view.showToastMessage(mResourceSendUtil.getString(R.string.item_record_no_emotion_selected), Toast.LENGTH_SHORT);
             return;
         }
 
@@ -168,6 +183,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         String encodedRecordFile = getBase64EncodedFile(file);
 
         // API 호출 및 Room 저장
+        view.closeHashTagKeyPad();
         isSaving.set(true);
         analyzeRecordEmotion(encodedRecordFile);
     }
@@ -191,11 +207,11 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private String getTodayRecordFilePath() {
         return String.format("%s/%s.acc",
                 Environment.getExternalStorageDirectory().getAbsolutePath(),
-                new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date()));
+                DATE_FORMAT.format(new Date()));
     }
 
     // API 분석을 위해 녹음 파일을 Base64 Encoding 수행
-    private String getBase64EncodedFile(File file) {
+    private String getBase64EncodedFile(final File file) {
 
         byte[] encodedByteArray = new byte[(int) file.length()];
         FileInputStream fileInputStream = null;
@@ -218,50 +234,47 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         return Base64.encodeToString(encodedByteArray, Base64.DEFAULT);
     }
 
-    private void analyzeRecordEmotion(String encodedRecord) {
+    private void analyzeRecordEmotion(final String encodedRecord) {
 
+        
         String apiKey = mResourceSendUtil.getString(R.string.deep_affects_key);
 
-/*
-        // 이 방식을 이용하면 No Network Security Config specified, using platform default 에러 발생. 추후 수정
-        Disposable disposable = APIClient.getInstance(mResourceSendUtil.getString(R.string.deep_affects_base_url))
+        // RxJava 로 감정 분석 및 저장까지 수행
+        APIClient.getInstance().getClient()
                 .create(EmotionAnalysisAPI.class)
                 .analyzeRecordEmotion(apiKey, EmotionAnalyzeRequest.request(encodedRecord))
                 .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         emotionAnalysisResponses -> {
                             Log.e("Test", "onResponse");
 
-                            List<EmotionAnalysisResponse> emotionAnalysisResult = emotionAnalysisResponses;
+                            int analyzedEmotion = AnalyzedEmotionMapper.parseAnalyzedEmotion(emotionAnalysisResponses);
+
+                            //다이어리 객체 생성
+                            Diary todayDiaryItem = new Diary(0,
+                                    DATE_FORMAT.format(new Date()),
+                                    mFilePath,
+                                    mHashTagListModelAdapter.getItemList().toString(),
+                                    selectedEmotion,
+                                    analyzedEmotion);
+
+                            Completable.fromAction(() -> db.appDao().insertDiary(todayDiaryItem))
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(() -> {
+                                        isSaving.set(false);
+                                        Log.e("Test", "저장되었어여~~");
+                                    }, throwable -> {
+                                        isSaving.set(false);
+                                        Log.e("Test", "저장안도미...");
+
+                                    });
                         }, throwable -> {
+                            isSaving.set(false);
                             // 에러처리는 어떤식으로 ?
                             Log.e("Test", "onError");
                         }
                 );
-        disposable.dispose();
-*/
-
-        // Emotion 분석 Request
-        Call<List<EmotionAnalysisResponse>> list = APIClient.getInstance()
-                .getClient()
-                .create(EmotionAnalysisAPI.class)
-                .analyzeRecordEmotionByCallback(apiKey, EmotionAnalyzeRequest.request(encodedRecord));
-
-        list.enqueue(new Callback<List<EmotionAnalysisResponse>>() {
-            @Override
-            public void onResponse(Call<List<EmotionAnalysisResponse>> call, Response<List<EmotionAnalysisResponse>> response) {
-                /* 분석된 감정을 0 - 4 값으로 Mapping 하는 과정 */
-                Log.e("Test", "onResponse");
-                AnalyzedEmotionMapper.parseAnalyzedEmotion(response.body());
-                isSaving.set(false);
-            }
-
-            @Override
-            public void onFailure(Call<List<EmotionAnalysisResponse>> call, Throwable t) {
-                /* Error 처리 */
-                Log.e("Test", "onError");
-                isSaving.set(false);
-            }
-        });
     }
 }
