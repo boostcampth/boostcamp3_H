@@ -1,6 +1,7 @@
 package team_h.boostcamp.myapplication.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -11,25 +12,31 @@ public class Diary {
 
     // DB 에서 인식하기 위한 PK
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     @NonNull
     private int id;
 
     // 저장한 날
+    @ColumnInfo(name = "recordDate")
     @NonNull
     private String recordDate;
 
     // 저장된 파일 경로
+    @ColumnInfo(name = "recordFilePath")
     @NonNull
     private String recordFilePath;
 
     // 설정한 태그들
+    @ColumnInfo(name = "tags")
     private String tags;
 
     // 선택한 감정 번호
+    @ColumnInfo(name = "selectedEmotion")
     @NonNull
     private int selectedEmotion;
 
     // API 를 통해 분석된 감정
+    @ColumnInfo(name = "analyzedEmotion")
     private int analyzedEmotion;
 
     public Diary() { }

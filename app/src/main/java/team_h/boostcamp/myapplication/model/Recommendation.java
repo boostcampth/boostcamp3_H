@@ -1,30 +1,37 @@
 package team_h.boostcamp.myapplication.model;
 
 import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "recommended", foreignKeys = {/*
-        @ForeignKey(entity = Memory.class,
+/*
+@ForeignKey(entity = Memory.class,
         parentColumns = "id",
-        childColumns = "memoryId", onDelete = CASCADE),*/
-        /*@ForeignKey(entity = Diary.class,
+        childColumns = "memoryId", onDelete = CASCADE),
+*/
+
+@Entity(tableName = "recommended", foreignKeys = {
+        @ForeignKey(entity = Diary.class,
         parentColumns = "id",
-        childColumns = "diaryId", onDelete = CASCADE)*/
+        childColumns = "id", onDelete = CASCADE)
 }) // Search 를 빠르게 하기위해 Index 걸어두기
 public class Recommendation {
 
     @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "id")
     @NonNull
     private int id;
 
     // 이화중님 수정
+    @ColumnInfo(name = "memoryId")
     @NonNull
     private int memoryId;
 
+    @ColumnInfo(name = "diaryId")
     @NonNull
     private int diaryId;
 

@@ -4,14 +4,9 @@ import android.content.Context;
 import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-
-import androidx.databinding.DataBindingUtil;
-import team_h.boostcamp.myapplication.R;
-import team_h.boostcamp.myapplication.databinding.LayoutGraphHashTagBinding;
 
 public class HashTagCustomLayout extends ViewGroup {
 
