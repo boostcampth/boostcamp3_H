@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
     
     <data>
+
         <variable
-            name="presenter"
-            type="team_h.boostcamp.myapplication.view.memories.MemoriesPresenter"/>
+            name="view"
+            type="team_h.boostcamp.myapplication.view.memories.MemoriesFragment"/>
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -39,7 +41,7 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv_title"
-            android:onClick="@{presenter::onRecommendButtonClicked}"/>
+            android:onClick="@{view::onRecommendButtonClicked}"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_card"

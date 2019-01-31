@@ -1,6 +1,7 @@
 package team_h.boostcamp.myapplication.view.memories;
 
 import team_h.boostcamp.myapplication.model.Memory;
+import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.view.BasePresenter;
 import team_h.boostcamp.myapplication.view.BaseView;
 
@@ -16,11 +17,13 @@ public interface MemoriesContractor {
 
     interface Presenter extends BasePresenter {
 
-        void onRecommendButtonClicked(android.view.View v);
+        void onRecommendMemory();
 
         void onDeleteButtonClicked(int position);
 
         void onPlayButtonClicked(int position);
+
+        void setDatabase(AppDatabase appDatabase);
 
         void setMemoriesCardAdapterView(MemoriesCardAdapter adapter);
 

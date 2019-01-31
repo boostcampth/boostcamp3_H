@@ -35,6 +35,12 @@ public class Recommendation {
     @NonNull
     private int diaryId;
 
+    public Recommendation(int id, int memoryId, int diaryId) {
+        this.id = id;
+        this.memoryId = memoryId;
+        this.diaryId = diaryId;
+    }
+
     public int getId() {
         return id;
     }

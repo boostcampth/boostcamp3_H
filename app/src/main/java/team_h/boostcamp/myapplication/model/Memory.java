@@ -3,8 +3,6 @@ package team_h.boostcamp.myapplication.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -22,25 +20,25 @@ public class Memory implements Parcelable {
     @NonNull
     private String title;
 
-    @ColumnInfo(name = "data")
+    @ColumnInfo(name = "date")
     @NonNull
-    private String data;
+    private String date;
 
     @ColumnInfo(name = "selectedEmotion")
     @NonNull
     private int selectedEmotion;
 
-    public Memory(int id, @NonNull String title, @NonNull String data, int selectedEmotion) {
+    public Memory(int id, @NonNull String title, @NonNull String date, int selectedEmotion) {
         this.id = id;
         this.title = title;
-        this.data = data;
+        this.date = date;
         this.selectedEmotion = selectedEmotion;
     }
 
     protected Memory(Parcel in) {
         id = in.readInt();
         title = in.readString();
-        data = in.readString();
+        date = in.readString();
         selectedEmotion = in.readInt();
     }
 
@@ -65,7 +63,7 @@ public class Memory implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(title);
-        dest.writeString(data);
+        dest.writeString(date);
         dest.writeInt(selectedEmotion);
     }
 
@@ -87,12 +85,12 @@ public class Memory implements Parcelable {
     }
 
     @NonNull
-    public String getData() {
-        return data;
+    public String getDate() {
+        return date;
     }
 
-    public void setData(@NonNull String data) {
-        this.data = data;
+    public void setDate(@NonNull String date) {
+        this.date = date;
     }
 
     public int getSelectedEmotion() {

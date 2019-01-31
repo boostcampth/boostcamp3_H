@@ -13,14 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentMemoriesBinding;
 import team_h.boostcamp.myapplication.model.Memory;
+import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.view.BaseFragment;
 import team_h.boostcamp.myapplication.view.play.PlayActivity;
 
 
-public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> implements MemoriesContractor.View, MemoriesCardAdapter.ViewClickListener{
+public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> implements MemoriesContractor.View, MemoriesCardAdapter.ViewClickListener {
 
     private static final String EXTRA_MEMORY = "memory";
-    private MemoriesPresenter mPresenter;
+    private MemoriesPresenter presenter;
     private MemoriesCardAdapter mMemoriesCardAdapter;
 
     @Nullable
@@ -28,9 +29,9 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        mPresenter = new MemoriesPresenter(this);
-        mPresenter.onViewAttached();
-        binding.setPresenter(mPresenter);
+        presenter = new MemoriesPresenter(this);
+        presenter.onViewAttached();
+        binding.setView(this);
 
         binding.rvCard.setHasFixedSize(true);
         binding.rvCard.setVerticalScrollbarPosition(0);
@@ -39,8 +40,9 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
         binding.rvCard.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvCard.setAdapter(mMemoriesCardAdapter);
 
-        mPresenter.setMemoriesCardAdapterModel(mMemoriesCardAdapter);
-        mPresenter.setMemoriesCardAdapterView(mMemoriesCardAdapter);
+        presenter.setMemoriesCardAdapterModel(mMemoriesCardAdapter);
+        presenter.setMemoriesCardAdapterView(mMemoriesCardAdapter);
+        presenter.setDatabase(AppDatabase.getInstance(getContext()));
 
         return binding.getRoot();
     }
@@ -49,14 +51,14 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
     public void onResume() {
         super.onResume();
 
-        mPresenter.loadData();
+        presenter.loadData();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mPresenter.onViewDetached();
-        mPresenter = null;
+        presenter.onViewDetached();
+        presenter = null;
     }
 
     @Override
@@ -79,11 +81,15 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
 
     @Override
     public void onPlayButtonClicked(int position) {
-        mPresenter.onPlayButtonClicked(position);
+        presenter.onPlayButtonClicked(position);
     }
 
     @Override
     public void onCloseButtonLicked(int position) {
-        mPresenter.onDeleteButtonClicked(position);
+        presenter.onDeleteButtonClicked(position);
+    }
+
+    public void onRecommendButtonClicked(View view) {
+        presenter.onRecommendMemory();
     }
 }
