@@ -5,9 +5,10 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-public class Memory implements Parcelable {
+import androidx.room.Entity;
 
-    //dummy용 파일입니다.
+@Entity(tableName = "memory")
+public class Memory implements Parcelable {
 
     private String title;
     private List<String> memories;

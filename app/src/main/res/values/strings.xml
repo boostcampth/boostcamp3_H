@@ -17,7 +17,7 @@
     <string name="deep_affects_base_url">https://proxy.api.deepaffects.com/audio/generic/api/v2/</string>
     <string name="item_record_no_voice_file">일기를 먼저 녹음해주세요 !</string>
     <string name="item_record_no_emotion_selected">오늘의 기분을 선택해주세요 !</string>
-
+    <string name="item_record_now_recording">일기 작성을 마쳐주세요 !</string>
 
     <string name="emojitest">&#128522;</string>
 

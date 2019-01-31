@@ -1,29 +1,39 @@
 package team_h.boostcamp.myapplication.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 /*
  * 일기 아이템 데이터를 가지는 DataClass */
+@Entity(tableName = "diary")
 public class Diary {
 
     // DB 에서 인식하기 위한 PK
-    private int diaryId;
+    @PrimaryKey(autoGenerate = true)
+    @NonNull
+    private int id;
 
     // 저장한 날
+    @NonNull
     private String recordDate;
 
     // 저장된 파일 경로
+    @NonNull
     private String recordFilePath;
 
     // 설정한 태그들
     private String tags;
 
     // 선택한 감정 번호
+    @NonNull
     private int selectedEmotion;
 
     // API 를 통해 분석된 감정
     private int analyzedEmotion;
 
     public Diary(int diaryId, String recordDate, String recordFilePath, String tags, int selectedEmotion, int analyzedEmotion) {
-        this.diaryId = diaryId;
+        this.id = diaryId;
         this.recordDate = recordDate;
         this.recordFilePath = recordFilePath;
         this.tags = tags;
@@ -31,12 +41,12 @@ public class Diary {
         this.analyzedEmotion = analyzedEmotion;
     }
 
-    public int getDiaryId() {
-        return diaryId;
+    public int getId() {
+        return id;
     }
 
-    public void setDiaryId(int diaryId) {
-        this.diaryId = diaryId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getRecordDate() {
