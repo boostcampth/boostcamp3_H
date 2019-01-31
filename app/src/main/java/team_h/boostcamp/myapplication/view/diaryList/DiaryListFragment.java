@@ -82,6 +82,11 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
+    public void closeHashTagKeyPad() {
+        KeyPadUtil.closeKeyPad(mContext, mBinding.hashTagEditTextItemRecordInput);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
 

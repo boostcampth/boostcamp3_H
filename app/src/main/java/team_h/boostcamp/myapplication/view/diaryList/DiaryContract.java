@@ -9,6 +9,7 @@ public interface DiaryContract {
     interface View extends BaseView {
         /* 오류 발생시 메시지 출력 용도 */
         void showToastMessage(String message, int exposedTime);
+        void closeHashTagKeyPad();
     }
 
     interface Presenter extends BasePresenter {

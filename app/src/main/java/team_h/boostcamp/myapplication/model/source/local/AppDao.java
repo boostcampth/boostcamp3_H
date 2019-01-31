@@ -7,13 +7,14 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import io.reactivex.Single;
 import team_h.boostcamp.myapplication.model.Diary;
 
 @Dao
 public interface AppDao {
 
     @Query("SELECT * FROM diary LIMIT 10")
-    List<Diary> loadMoreDiary();
+    Single<List<Diary>> loadMoreDiary();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertDiary(Diary ...diaries);
