@@ -14,7 +14,7 @@ import team_h.boostcamp.myapplication.model.Diary;
 public interface AppDao {
 
     @Query("SELECT * FROM diary LIMIT 10")
-    Single<List<Diary>> loadMoreDiary();
+    List<Diary> loadMoreDiary();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertDiary(Diary ...diaries);
