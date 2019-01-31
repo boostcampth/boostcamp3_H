@@ -39,4 +39,11 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="TextButton">
+        <item name="android:textColor">@color/all_purple</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
 </resources>

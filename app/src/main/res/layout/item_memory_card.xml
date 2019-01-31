@@ -24,7 +24,6 @@
                     style="@style/SubTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -36,18 +35,16 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:src="@drawable/ic_memories_play"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_sub_title"
                     app:layout_constraintEnd_toStartOf="@+id/iv_close"
-                    app:layout_constraintTop_toTopOf="@+id/tv_sub_title" />
+                    app:layout_constraintTop_toTopOf="@+id/tv_sub_title"/>
 
                 <ImageView
                     android:id="@+id/iv_close"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:src="@drawable/ic_memories_close"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_play"
@@ -58,10 +55,8 @@
                     android:id="@+id/rv_diary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"

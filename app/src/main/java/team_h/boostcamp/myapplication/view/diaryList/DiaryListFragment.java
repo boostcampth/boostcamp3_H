@@ -39,7 +39,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         // XML presenter 등록
         mBinding.setPresenter(presenter);
 
-        // View 초기화
+            // View 초기화
         initView();
 
         presenter.onViewAttached();
