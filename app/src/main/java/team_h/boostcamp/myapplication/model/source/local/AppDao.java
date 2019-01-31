@@ -2,13 +2,14 @@ package team_h.boostcamp.myapplication.model.source.local;
 
 import java.util.List;
 
+import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import team_h.boostcamp.myapplication.model.Diary;
 
-@androidx.room.Dao
+@Dao
 public interface AppDao {
 
     @Query("SELECT * FROM diary LIMIT 10")

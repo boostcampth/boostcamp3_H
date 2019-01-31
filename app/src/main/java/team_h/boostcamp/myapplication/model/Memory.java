@@ -18,8 +18,6 @@ public class Memory implements Parcelable {
     public Memory() {
     }
 
-
-
     public static final Creator<Memory> CREATOR = new Creator<Memory>() {
         @Override
         public Memory createFromParcel(Parcel in) {

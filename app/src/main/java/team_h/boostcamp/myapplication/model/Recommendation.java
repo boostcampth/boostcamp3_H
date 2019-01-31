@@ -21,7 +21,6 @@ public class Recommendation {
     @NonNull
     private int id;
 
-
     // 이화중님 수정
     @NonNull
     private int memoryId;

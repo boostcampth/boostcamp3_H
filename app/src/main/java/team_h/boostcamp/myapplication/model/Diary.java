@@ -32,6 +32,8 @@ public class Diary {
     // API 를 통해 분석된 감정
     private int analyzedEmotion;
 
+    public Diary() { }
+
     public Diary(int diaryId, String recordDate, String recordFilePath, String tags, int selectedEmotion, int analyzedEmotion) {
         this.id = diaryId;
         this.recordDate = recordDate;
