@@ -17,6 +17,10 @@ public class APIClient {
     private static Retrofit retrofit;
 
     private APIClient() {
+
+    }
+
+    public static APIClient getInstance() {
         if(INSTANCE == null) {
             synchronized (APIClient.class) {
                 if(INSTANCE == null) {
@@ -36,14 +40,11 @@ public class APIClient {
                             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                             .client(client)
                             .build();
+
+                    INSTANCE = new APIClient();
                 }
             }
         }
-    }
-
-    public static APIClient getInstance() {
-        if(INSTANCE == null)
-            INSTANCE = new APIClient();
         return INSTANCE;
     }
 

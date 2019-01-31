@@ -44,7 +44,7 @@ public class HashTagListAdapter extends BaseRecyclerViewAdapter<String, HashTagL
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        // super.onBindViewHolder(holder, position);
+        //super.onBindViewHolder(holder, position);
         TagHolder tagHolder = (TagHolder) holder;
 
         tagHolder.itemHashTagBinding.btnItemTagRemove.setOnClickListener(view -> {
@@ -53,7 +53,7 @@ public class HashTagListAdapter extends BaseRecyclerViewAdapter<String, HashTagL
             }
         });
 
-        bindViewHolder(tagHolder, position);
+        onBindView(tagHolder, position);
     }
 
     @Override
