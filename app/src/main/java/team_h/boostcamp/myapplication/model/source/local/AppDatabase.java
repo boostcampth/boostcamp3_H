@@ -9,7 +9,7 @@ import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.Memory;
 import team_h.boostcamp.myapplication.model.Recommendation;
 
-@Database(version = 1, entities = {Diary.class, Memory.class, Recommendation.class})
+@Database(version = 1, entities = {Diary.class, Recommendation.class, /*Memory.class*/}, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "appDatabase.db";

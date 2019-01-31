@@ -5,7 +5,16 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "recommended")
+import static androidx.room.ForeignKey.CASCADE;
+
+@Entity(tableName = "recommended", foreignKeys = {/*
+        @ForeignKey(entity = Memory.class,
+        parentColumns = "id",
+        childColumns = "memoryId", onDelete = CASCADE),*/
+        @ForeignKey(entity = Diary.class,
+        parentColumns = "id",
+        childColumns = "diaryId", onDelete = CASCADE)
+}) // Search 를 빠르게 하기위해 Index 걸어두기
 public class Recommendation {
 
     @PrimaryKey(autoGenerate = true)
@@ -14,15 +23,10 @@ public class Recommendation {
 
 
     // 이화중님 수정
-    @ForeignKey(entity = Memory.class,
-            parentColumns = "id",
-            childColumns = "memoryId")
+    @NonNull
     private int memoryId;
 
     @NonNull
-    @ForeignKey(entity = Diary.class,
-            parentColumns = "id",
-            childColumns = "diaryId")
     private int diaryId;
 
     public int getId() {

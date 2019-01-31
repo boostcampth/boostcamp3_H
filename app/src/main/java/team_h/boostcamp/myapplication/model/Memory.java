@@ -5,9 +5,6 @@ import android.os.Parcelable;
 
 import java.util.List;
 
-import androidx.room.Entity;
-
-@Entity(tableName = "memory")
 public class Memory implements Parcelable {
 
     private String title;
@@ -17,6 +14,11 @@ public class Memory implements Parcelable {
         title = in.readString();
         memories = in.createStringArrayList();
     }
+
+    public Memory() {
+    }
+
+
 
     public static final Creator<Memory> CREATOR = new Creator<Memory>() {
         @Override
