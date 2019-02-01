@@ -6,7 +6,7 @@ import android.util.Log;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
-import team_h.boostcamp.myapplication.view.diaryList.DiaryListFragment;
+import team_h.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import team_h.boostcamp.myapplication.view.graph.GraphFragment;
 import team_h.boostcamp.myapplication.view.memories.MemoriesFragment;
 
@@ -23,7 +23,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mPresenter = generatePresenter();
+        mPresenter = new MainPresenter(this);
       
         initView();
     }
@@ -33,20 +33,12 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         return R.layout.activity_main;
     }
 
-    @Override
-    public MainContractor.Presenter generatePresenter() {
-        if(mPresenter == null) {
-            mPresenter = new MainPresenter(MainActivity.this);
-        }
-        return mPresenter;
-    }
-
     private void initView() {
         Log.e(TAG, "initView");
         tabAdapter = new MainTabAdapter(getSupportFragmentManager());
         tabAdapter.addFragment(new GraphFragment());
         tabAdapter.addFragment(new MemoriesFragment());
-        tabAdapter.addFragment(new DiaryListFragment());
+        tabAdapter.addFragment(DiaryListFragment.newInstance());
         binding.vpMain.setAdapter(tabAdapter);
         binding.vpMain.setOffscreenPageLimit(3);
     }

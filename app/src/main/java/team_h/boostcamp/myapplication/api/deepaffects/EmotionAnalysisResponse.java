@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.api.emotion;
+package team_h.boostcamp.myapplication.api.deepaffects;
 
 /*
  * 분석된 감정 결과를 나타내는 Data class */
