@@ -9,18 +9,18 @@
 
         <variable
             name="presenter"
-            type="team_h.boostcamp.myapplication.view.diaryList.DiaryPresenter" />
+            type="team_h.boostcamp.myapplication.view.diarylist.DiaryPresenter" />
 
         <variable
             name="recorder"
-            type="team_h.boostcamp.myapplication.view.diaryList.MediaRecorderWrapper"/>
+            type="team_h.boostcamp.myapplication.view.diarylist.MediaRecorderWrapper"/>
     </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.diaryList.DiaryListFragment">
+        tools:context=".view.diarylist.DiaryListFragment">
 
         <TextView
             android:id="@+id/tv_fragment_diary_today"
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:background="@drawable/bg_mic_record_btn"
-                    android:clickable="@{!recorder.isSaving}"
+                    android:clickable="@{!recorder.isRecording}"
                     android:minWidth="60dp"
                     android:minHeight="60dp"
                     android:scaleType="center"
@@ -79,36 +79,36 @@
                     <TextView
                         android:id="@+id/tv_record_item_mad"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!presenter.isSaving}"
+                        android:clickable="@{!recorder.isRecording}"
                         android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/mad" />
 
                     <TextView
                         android:id="@+id/tv_record_item_bad"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!presenter.isSaving}"
+                        android:clickable="@{!recorder.isRecording}"
                         android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/bad" />
 
                     <TextView
                         android:id="@+id/tv_record_item_normal"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!presenter.isSaving}"
+                        android:clickable="@{!recorder.isRecording}"
                         android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/normal" />
 
                     <TextView
                         android:id="@+id/tv_record_item_pgood"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!presenter.isSaving}"
+                        android:clickable="@{!recorder.isRecording}"
                         android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/good" />
 
                     <TextView
                         android:id="@+id/tv_record_item_good"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!presenter.isSaving}"
-                        android:onClick="@{v -> presenter.emotionChanged()}"
+                        android:clickable="@{!recorder.isRecording}"
+                        android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/happy" />
 
                 </LinearLayout>
@@ -150,8 +150,8 @@
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:layout_marginRight="@dimen/layout_gutter"
                     android:layout_marginBottom="@dimen/layout_gutter"
-                    android:clickable="@{!recorder.isSaving}"
-                    android:visibility="@{recorder.isSaving ? View.VISIBLE : View.GONE}"
+                    android:clickable="@{!recorder.isRecording}"
+                    android:visibility="@{recorder.isRecording ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="@id/et_item_record_input"
                     app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
@@ -163,11 +163,11 @@
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:layout_marginRight="@dimen/layout_gutter"
                     android:layout_marginBottom="@dimen/layout_gutter"
-                    android:clickable="@{!recorder.isSaving}"
+                    android:clickable="@{!recorder.isRecording}"
                     android:text="@string/item_record_done"
                     android:textColor="@color/list_violet"
                     android:textStyle="bold"
-                    android:visibility="@{recorder.isSaving ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{recorder.isRecording ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="@id/et_item_record_input"
                     app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />

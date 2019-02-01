@@ -29,11 +29,6 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> {
         return R.layout.activity_play;
     }
 
-    @Override
-    public BasePresenter generatePresenter() {
-        return null;
-    }
-
     public void onCloseButtonClicked(View view){
         Log.d(TAG, "onCloseButtonClicked: ");
         finish();

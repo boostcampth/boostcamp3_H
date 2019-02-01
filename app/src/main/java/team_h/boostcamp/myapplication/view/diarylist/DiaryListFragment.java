@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.view.diaryList;
+package team_h.boostcamp.myapplication.view.diarylist;
 
 import android.Manifest;
 import android.content.Context;

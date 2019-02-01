@@ -57,7 +57,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
             mResourceSendUtil = new ResourceSendUtil(mContext);
         }
         // Presenter 설정
-        mPresenter = generatePresenter();
+        mPresenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(mContext));
         mPresenter.onViewAttached();
 
         binding.lcEmotionGraph.setBackgroundColor(Color.TRANSPARENT);
@@ -65,13 +65,6 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
         binding.lcEmotionGraph.setDrawGridBackground(false);
         binding.lcEmotionGraph.animateY(2000, Easing.EaseInCubic);
         binding.lcEmotionGraph.invalidate();
-    }
-
-    @Override
-    public GraphContractor.Presenter generatePresenter() {
-        if (mPresenter == null)
-            mPresenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(mContext));
-        return mPresenter;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        mPresenter = generatePresenter();
+        mPresenter = new MemoriesPresenter(this);
         mPresenter.onViewAttached();
         binding.setPresenter(mPresenter);
 
@@ -62,14 +62,6 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_memories;
-    }
-
-    @Override
-    public MemoriesPresenter generatePresenter() {
-        if(mPresenter == null){
-            mPresenter = new MemoriesPresenter(MemoriesFragment.this);
-        }
-        return mPresenter;
     }
 
     @Override

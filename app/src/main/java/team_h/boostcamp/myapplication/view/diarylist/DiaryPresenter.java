@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.view.diaryList;
+package team_h.boostcamp.myapplication.view.diarylist;
 
 import android.util.Base64;
 import android.util.Log;
@@ -14,10 +14,10 @@ import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import team_h.boostcamp.myapplication.BuildConfig;
 import team_h.boostcamp.myapplication.R;
-import team_h.boostcamp.myapplication.api.APIClient;
-import team_h.boostcamp.myapplication.api.emotion.EmotionAnalysisAPI;
-import team_h.boostcamp.myapplication.api.emotion.EmotionAnalysisResponse;
-import team_h.boostcamp.myapplication.api.emotion.EmotionAnalyzeRequest;
+import team_h.boostcamp.myapplication.api.deepaffects.DeepAffectApiClient;
+import team_h.boostcamp.myapplication.api.deepaffects.EmotionAnalysisAPI;
+import team_h.boostcamp.myapplication.api.deepaffects.EmotionAnalysisResponse;
+import team_h.boostcamp.myapplication.api.deepaffects.EmotionAnalyzeRequest;
 import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.utils.AnalyzedEmotionMapper;
@@ -27,7 +27,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private static final String TAG = "DiaryPresenter";
 
     private DiaryContract.View view;
-    
+
     private AppDatabase appDatabase;
     private MediaRecorderWrapper mediaRecorderWrapper;
 
@@ -150,7 +150,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
 
     private Single<List<EmotionAnalysisResponse>> analyzeEmotion(String encodedRecordFile) {
 
-        return APIClient.getInstance()
+        return DeepAffectApiClient.getInstance()
                 .create(EmotionAnalysisAPI.class)
                 .analyzeRecordEmotion(BuildConfig.apikey, EmotionAnalyzeRequest.request(encodedRecordFile))
                 .subscribeOn(Schedulers.io());

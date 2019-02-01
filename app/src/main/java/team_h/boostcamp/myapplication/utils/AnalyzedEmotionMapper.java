@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import team_h.boostcamp.myapplication.api.emotion.EmotionAnalysisResponse;
+import team_h.boostcamp.myapplication.api.deepaffects.EmotionAnalysisResponse;
 
 /*
  * 분석된 감정을 0 - 4 사이의 값으로 매핑하기 위한 툴 */

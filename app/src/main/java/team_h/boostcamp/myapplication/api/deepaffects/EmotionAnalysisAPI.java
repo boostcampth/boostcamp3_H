@@ -1,11 +1,10 @@
-package team_h.boostcamp.myapplication.api.emotion;
+package team_h.boostcamp.myapplication.api.deepaffects;
 
 
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Single;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
