@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.api_service;
+package team_h.boostcamp.myapplication.api;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
