@@ -15,6 +15,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        /* API Key 관리 수정 */
+        buildTypes.each {
+            it.buildConfigField 'String', 'apikey', deep_affects_api_key
+        }
     }
     // Databinding 설정
     dataBinding {
@@ -58,4 +62,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.12.1'
     // okHttp Log
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+    // rxjava
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
 }

@@ -6,7 +6,7 @@ import android.util.Log;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
-import team_h.boostcamp.myapplication.view.diaryList.DiaryListFragment;
+import team_h.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import team_h.boostcamp.myapplication.view.graph.GraphFragment;
 import team_h.boostcamp.myapplication.view.memories.MemoriesFragment;
 
@@ -46,7 +46,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         tabAdapter = new MainTabAdapter(getSupportFragmentManager());
         tabAdapter.addFragment(new GraphFragment());
         tabAdapter.addFragment(new MemoriesFragment());
-        tabAdapter.addFragment(new DiaryListFragment());
+        tabAdapter.addFragment(DiaryListFragment.newInstance());
         binding.vpMain.setAdapter(tabAdapter);
         binding.vpMain.setOffscreenPageLimit(3);
     }

@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.api_service;
+package team_h.boostcamp.myapplication.api;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -13,10 +13,11 @@ public class APIClient {
 
     private static final String BASE_URL = "https://proxy.api.deepaffects.com/audio/generic/api/v2/";
 
-    private static APIClient INSTANCE;
-    private static Retrofit retrofit;
+    private static Retrofit INSTANCE;
 
-    private APIClient() {
+    private APIClient() { }
+
+    public static Retrofit getInstance() {
         if(INSTANCE == null) {
             synchronized (APIClient.class) {
                 if(INSTANCE == null) {
@@ -30,7 +31,7 @@ public class APIClient {
                             .build();
 
                     // retrofit client 생성
-                    retrofit = new Retrofit.Builder()
+                    INSTANCE = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -39,15 +40,6 @@ public class APIClient {
                 }
             }
         }
-    }
-
-    public static APIClient getInstance() {
-        if(INSTANCE == null)
-            INSTANCE = new APIClient();
         return INSTANCE;
-    }
-
-    public Retrofit getClient() {
-        return retrofit;
     }
 }
