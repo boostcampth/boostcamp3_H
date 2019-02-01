@@ -6,7 +6,7 @@ import android.util.Log;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
-import team_h.boostcamp.myapplication.view.diarylist.DiaryListFragment;
+import team_h.boostcamp.myapplication.view.diaryList.DiaryListFragment;
 import team_h.boostcamp.myapplication.view.graph.GraphFragment;
 import team_h.boostcamp.myapplication.view.memories.MemoriesFragment;
 

@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.view.diarylist;
+package team_h.boostcamp.myapplication.view.diaryList;
 
 import android.util.Base64;
 import android.util.Log;
@@ -18,17 +18,16 @@ import team_h.boostcamp.myapplication.api.APIClient;
 import team_h.boostcamp.myapplication.api.emotion.EmotionAnalysisAPI;
 import team_h.boostcamp.myapplication.api.emotion.EmotionAnalysisResponse;
 import team_h.boostcamp.myapplication.api.emotion.EmotionAnalyzeRequest;
-import team_h.boostcamp.myapplication.utils.AnalyzedEmotionMapper;
 import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
+import team_h.boostcamp.myapplication.utils.AnalyzedEmotionMapper;
 
 public class DiaryPresenter implements DiaryContract.Presenter {
 
     private static final String TAG = "DiaryPresenter";
 
     private DiaryContract.View view;
-
-    // 의존성 주입
+    
     private AppDatabase appDatabase;
     private MediaRecorderWrapper mediaRecorderWrapper;
 

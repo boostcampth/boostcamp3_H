@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.view.diarylist;
+package team_h.boostcamp.myapplication.view.diaryList;
 
 import android.content.Context;
 import android.view.LayoutInflater;

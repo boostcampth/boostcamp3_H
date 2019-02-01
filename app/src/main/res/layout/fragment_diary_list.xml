@@ -9,18 +9,18 @@
 
         <variable
             name="presenter"
-            type="team_h.boostcamp.myapplication.view.diarylist.DiaryPresenter" />
+            type="team_h.boostcamp.myapplication.view.diaryList.DiaryPresenter" />
 
         <variable
             name="recorder"
-            type="team_h.boostcamp.myapplication.view.diarylist.MediaRecorderWrapper"/>
+            type="team_h.boostcamp.myapplication.view.diaryList.MediaRecorderWrapper"/>
     </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.diarylist.DiaryListFragment">
+        tools:context=".view.diaryList.DiaryListFragment">
 
         <TextView
             android:id="@+id/tv_fragment_diary_today"

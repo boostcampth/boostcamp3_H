@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.view.diarylist;
+package team_h.boostcamp.myapplication.view.diaryList;
 
 import android.Manifest;
 import android.content.Context;
@@ -115,7 +115,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         hashTagListAdapter.setOnItemClickListener((position -> {
             // Adapter 도 View 라고 생각하면
             // View 의 동작을 처리해주는 Presenter 는 누구인가 ?
-
+            hashTagListAdapter.removeItem(position);
         }));
 
         binding.recyclerViewItemRecordTags.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
