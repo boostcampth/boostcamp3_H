@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.api_service.emotion;
+package team_h.boostcamp.myapplication.api.emotion;
 
 import java.util.HashMap;
 import java.util.Map;
