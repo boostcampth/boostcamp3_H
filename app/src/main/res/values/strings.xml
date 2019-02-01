@@ -42,5 +42,13 @@
         <item>토</item>
         <item>일</item>
     </string-array>
-  
+
+    <!--Graph Emojis-->
+    <string-array name="graph_emojis">
+        <item>😡</item>
+        <item>😞</item>
+        <item>😐</item>
+        <item>😊</item>
+        <item>😍</item>
+    </string-array>
 </resources>
