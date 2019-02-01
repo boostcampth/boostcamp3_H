@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.view.diaryList;
+package team_h.boostcamp.myapplication.view.diarylist;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -68,7 +68,7 @@ public class HashTagListAdapter extends BaseRecyclerViewAdapter<String, HashTagL
 
     class TagHolder extends RecyclerView.ViewHolder {
 
-        public ItemHashTagBinding itemHashTagBinding;
+        ItemHashTagBinding itemHashTagBinding;
 
         TagHolder(ItemHashTagBinding itemHashTagBinding) {
             super(itemHashTagBinding.getRoot());

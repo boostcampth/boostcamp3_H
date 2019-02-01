@@ -47,7 +47,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
         super.onCreateView(inflater, container, savedInstanceState);
         // binding할 때 만들어지는 View를 바로 리턴하면 된다.
         // getRoot()를 통해서!
-        return mBinding.getRoot();
+        return binding.getRoot();
     }
 
     @Override
@@ -60,11 +60,11 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
         mPresenter = generatePresenter();
         mPresenter.onViewAttached();
 
-        mBinding.lcEmotionGraph.setBackgroundColor(Color.TRANSPARENT);
-        mBinding.lcEmotionGraph.setDoubleTapToZoomEnabled(false);
-        mBinding.lcEmotionGraph.setDrawGridBackground(false);
-        mBinding.lcEmotionGraph.animateY(2000, Easing.EaseInCubic);
-        mBinding.lcEmotionGraph.invalidate();
+        binding.lcEmotionGraph.setBackgroundColor(Color.TRANSPARENT);
+        binding.lcEmotionGraph.setDoubleTapToZoomEnabled(false);
+        binding.lcEmotionGraph.setDrawGridBackground(false);
+        binding.lcEmotionGraph.animateY(2000, Easing.EaseInCubic);
+        binding.lcEmotionGraph.invalidate();
     }
 
     @Override
@@ -76,22 +76,22 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
 
     @Override
     public void setLineData(LineData lineData) {
-        mBinding.lcEmotionGraph.setData(lineData);
+        binding.lcEmotionGraph.setData(lineData);
     }
 
     @Override
     public XAxis getXAxis() {
-        return mBinding.lcEmotionGraph.getXAxis();
+        return binding.lcEmotionGraph.getXAxis();
     }
 
     @Override
     public YAxis getYLeftAxis() {
-        return mBinding.lcEmotionGraph.getAxisLeft();
+        return binding.lcEmotionGraph.getAxisLeft();
     }
 
     @Override
     public YAxis getYRightAxis() {
-        return mBinding.lcEmotionGraph.getAxisRight();
+        return binding.lcEmotionGraph.getAxisRight();
     }
 
     @Override
@@ -108,7 +108,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
             }
             mTagTextView.setTextSize(30f);
             mTagTextView.setText(mHashTags[i]);
-            mBinding.hashTagCustomLayout.addView(mTagView);
+            binding.hashTagCustomLayout.addView(mTagView);
         }
     }
 

@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.api_service.emotion.mapper;
+package team_h.boostcamp.myapplication.utils;
 
 import android.util.Log;
 
@@ -6,25 +6,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import team_h.boostcamp.myapplication.api_service.emotion.EmotionAnalysisResponse;
+import team_h.boostcamp.myapplication.api.emotion.EmotionAnalysisResponse;
 
 /*
  * 분석된 감정을 0 - 4 사이의 값으로 매핑하기 위한 툴 */
 public class AnalyzedEmotionMapper {
 
-    private static final Map<String, Integer> SCORE_MAP = createScoreMap();
+    private static Map<String, Integer> SCORE_MAP;
 
-    private static Map<String, Integer> createScoreMap() {
-        Map<String, Integer> scoreMap = new HashMap<>();
-        // put emotions - score
-        scoreMap.put("excited", 1);
-        scoreMap.put("happy", 1);
-        scoreMap.put("neutral", 0);
-        scoreMap.put("sad", -1);
-        scoreMap.put("frustrated", -1);
-        scoreMap.put("mad", -1);
-        scoreMap.put("fear", -1);
-        return scoreMap;
+    static {
+        SCORE_MAP = new HashMap<>();
+        SCORE_MAP.put("excited", 1);
+        SCORE_MAP.put("happy", 1);
+        SCORE_MAP.put("neutral", 0);
+        SCORE_MAP.put("sad", -1);
+        SCORE_MAP.put("frustrated", -1);
+        SCORE_MAP.put("mad", -1);
+        SCORE_MAP.put("fear", -1);
     }
 
 

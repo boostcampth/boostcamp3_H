@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.util.Arrays;
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -17,7 +14,6 @@ import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentMemoriesBinding;
 import team_h.boostcamp.myapplication.model.Memory;
 import team_h.boostcamp.myapplication.view.BaseFragment;
-import team_h.boostcamp.myapplication.view.adapter.OnItemClickListener;
 import team_h.boostcamp.myapplication.view.play.PlayActivity;
 
 
@@ -34,19 +30,19 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
         super.onCreateView(inflater, container, savedInstanceState);
         mPresenter = generatePresenter();
         mPresenter.onViewAttached();
-        mBinding.setPresenter(mPresenter);
+        binding.setPresenter(mPresenter);
 
-        mBinding.rvCard.setHasFixedSize(true);
-        mBinding.rvCard.setVerticalScrollbarPosition(0);
+        binding.rvCard.setHasFixedSize(true);
+        binding.rvCard.setVerticalScrollbarPosition(0);
         mMemoriesCardAdapter = new MemoriesCardAdapter(getContext());
         mMemoriesCardAdapter.setOnClickListener(this);
-        mBinding.rvCard.setLayoutManager(new LinearLayoutManager(getContext()));
-        mBinding.rvCard.setAdapter(mMemoriesCardAdapter);
+        binding.rvCard.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvCard.setAdapter(mMemoriesCardAdapter);
 
         mPresenter.setMemoriesCardAdapterModel(mMemoriesCardAdapter);
         mPresenter.setMemoriesCardAdapterView(mMemoriesCardAdapter);
 
-        return mBinding.getRoot();
+        return binding.getRoot();
     }
 
     @Override

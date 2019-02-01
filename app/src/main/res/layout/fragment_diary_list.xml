@@ -9,14 +9,18 @@
 
         <variable
             name="presenter"
-            type="team_h.boostcamp.myapplication.view.diaryList.DiaryPresenter" />
+            type="team_h.boostcamp.myapplication.view.diarylist.DiaryPresenter" />
+
+        <variable
+            name="recorder"
+            type="team_h.boostcamp.myapplication.view.diarylist.MediaRecorderWrapper"/>
     </data>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.diaryList.DiaryListFragment">
+        tools:context=".view.diarylist.DiaryListFragment">
 
         <TextView
             android:id="@+id/tv_fragment_diary_today"
@@ -49,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:background="@drawable/bg_mic_record_btn"
-                    android:clickable="@{!presenter.isSaving}"
+                    android:clickable="@{!recorder.isSaving}"
                     android:minWidth="60dp"
                     android:minHeight="60dp"
                     android:scaleType="center"
@@ -76,35 +80,35 @@
                         android:id="@+id/tv_record_item_mad"
                         style="@style/EmojiChoiceType"
                         android:clickable="@{!presenter.isSaving}"
-                        android:onClick="@{presenter::onEmotionButtonClicked}"
+                        android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/mad" />
 
                     <TextView
                         android:id="@+id/tv_record_item_bad"
                         style="@style/EmojiChoiceType"
                         android:clickable="@{!presenter.isSaving}"
-                        android:onClick="@{presenter::onEmotionButtonClicked}"
+                        android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/bad" />
 
                     <TextView
                         android:id="@+id/tv_record_item_normal"
                         style="@style/EmojiChoiceType"
                         android:clickable="@{!presenter.isSaving}"
-                        android:onClick="@{presenter::onEmotionButtonClicked}"
+                        android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/normal" />
 
                     <TextView
                         android:id="@+id/tv_record_item_pgood"
                         style="@style/EmojiChoiceType"
                         android:clickable="@{!presenter.isSaving}"
-                        android:onClick="@{presenter::onEmotionButtonClicked}"
+                        android:onClick="@{v -> presenter.emotionChanged(v.getId())}"
                         android:text="@string/good" />
 
                     <TextView
                         android:id="@+id/tv_record_item_good"
                         style="@style/EmojiChoiceType"
                         android:clickable="@{!presenter.isSaving}"
-                        android:onClick="@{presenter::onEmotionButtonClicked}"
+                        android:onClick="@{v -> presenter.emotionChanged()}"
                         android:text="@string/happy" />
 
                 </LinearLayout>
@@ -122,15 +126,16 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
-                <team_h.boostcamp.myapplication.view.customview.HashTagEditText
-                    android:id="@+id/hash_tag_edit_text_item_record_input"
+                <EditText
+                    android:id="@+id/et_item_record_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/layout_gutter"
                     android:layout_marginTop="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/layout_gutter"
+                    android:lines="1"
                     android:background="@drawable/bg_hash_tag_edittext"
-                    android:enabled="@{!presenter.isSaving}"
+                    android:enabled="@{!recorder.isRecording}"
                     android:hint="@string/item_record_hash_tag_hint"
                     android:padding="10dp"
                     android:textSize="12sp"
@@ -145,11 +150,11 @@
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:layout_marginRight="@dimen/layout_gutter"
                     android:layout_marginBottom="@dimen/layout_gutter"
-                    android:clickable="@{!presenter.isSaving}"
-                    android:visibility="@{presenter.isSaving ? View.VISIBLE : View.GONE}"
+                    android:clickable="@{!recorder.isSaving}"
+                    android:visibility="@{recorder.isSaving ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="@id/hash_tag_edit_text_item_record_input"
-                    app:layout_constraintTop_toBottomOf="@id/hash_tag_edit_text_item_record_input" />
+                    app:layout_constraintRight_toRightOf="@id/et_item_record_input"
+                    app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
 
                 <TextView
                     android:id="@+id/button_item_record_done"
@@ -158,14 +163,14 @@
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:layout_marginRight="@dimen/layout_gutter"
                     android:layout_marginBottom="@dimen/layout_gutter"
-                    android:clickable="@{!presenter.isSaving}"
+                    android:clickable="@{!recorder.isSaving}"
                     android:text="@string/item_record_done"
                     android:textColor="@color/list_violet"
                     android:textStyle="bold"
-                    android:visibility="@{presenter.isSaving ? View.GONE : View.VISIBLE}"
+                    android:visibility="@{recorder.isSaving ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="@id/hash_tag_edit_text_item_record_input"
-                    app:layout_constraintTop_toBottomOf="@id/hash_tag_edit_text_item_record_input" />
+                    app:layout_constraintRight_toRightOf="@id/et_item_record_input"
+                    app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

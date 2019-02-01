@@ -49,7 +49,7 @@ public class Diary {
         this.selectedEmotion = selectedEmotion;
         this.analyzedEmotion = analyzedEmotion;
     }
-
+    /*최대한 안바뀌게 -> final */
     public int getId() {
         return id;
     }

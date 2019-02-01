@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment implements BaseView{
     /* View 가 모두 Presenter 가 필요하지 않다고 생각함
      * 하지만 Databinding 은 모든 View 가 필요하므로 공통 속성으로 추출 */
-    protected B mBinding;
+    protected B binding;
 
     public BaseFragment() { }
 
@@ -22,9 +22,9 @@ public abstract class BaseFragment<B extends ViewDataBinding> extends Fragment i
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         // Binding 설정
-        mBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        binding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
 
-        return mBinding.getRoot();
+        return binding.getRoot();
     }
 
     @Override

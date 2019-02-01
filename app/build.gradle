@@ -15,6 +15,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        /* API Key 관리 수정 */
+        buildTypes.each {
+            it.buildConfigField 'String', 'apikey', deep_affects_api_key
+        }
     }
     // Databinding 설정
     dataBinding {
