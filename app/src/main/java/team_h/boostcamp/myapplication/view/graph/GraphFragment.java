@@ -11,12 +11,18 @@ import android.widget.TextView;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentGraphBinding;
+import team_h.boostcamp.myapplication.model.DataRepository;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
 
@@ -26,18 +32,22 @@ import team_h.boostcamp.myapplication.view.BaseFragment;
  */
 public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements GraphContractor.View {
 
-    private GraphContractor.Presenter mPresenter;
-    private String[] mHashTags;
-    LayoutInflater mInflater;
-    View mTagView;
-    TextView mTagTextView;
-    private ResourceSendUtil mResourceSendUtil;
-    private Context mContext;
+    public static final String EMOTION = "Emotion";
+    private GraphPresenter presenter;
+    private ResourceSendUtil resourceSendUtil;
+    private Context context;
+    private String[] days;
+    private String[] emojis;
+    private LineDataSet lineDataSet;
+    private LineData lineData;
+    LayoutInflater inflater;
+    View tagView;
+    TextView tagTextView;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mContext = context;
+        this.context = context;
     }
 
     @Nullable
@@ -53,56 +63,18 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (mResourceSendUtil == null) {
-            mResourceSendUtil = new ResourceSendUtil(mContext);
+        if (resourceSendUtil == null) {
+            resourceSendUtil = new ResourceSendUtil(context);
         }
+        days = resourceSendUtil.getStringArray(R.array.graph_days);
+        emojis = resourceSendUtil.getStringArray(R.array.graph_emojis);
         // Presenter 설정
-        mPresenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(mContext));
-        mPresenter.onViewAttached();
+        presenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(context), DataRepository.getInstance());
+        binding.setPresenter(presenter);
+        presenter.onViewAttached();
+        presenter.loadHashTagWord(20);
 
-        binding.lcEmotionGraph.setBackgroundColor(Color.TRANSPARENT);
-        binding.lcEmotionGraph.setDoubleTapToZoomEnabled(false);
-        binding.lcEmotionGraph.setDrawGridBackground(false);
-        binding.lcEmotionGraph.animateY(2000, Easing.EaseInCubic);
-        binding.lcEmotionGraph.invalidate();
-    }
-
-    @Override
-    public void setLineData(LineData lineData) {
-        binding.lcEmotionGraph.setData(lineData);
-    }
-
-    @Override
-    public XAxis getXAxis() {
-        return binding.lcEmotionGraph.getXAxis();
-    }
-
-    @Override
-    public YAxis getYLeftAxis() {
-        return binding.lcEmotionGraph.getAxisLeft();
-    }
-
-    @Override
-    public YAxis getYRightAxis() {
-        return binding.lcEmotionGraph.getAxisRight();
-    }
-
-    @Override
-    public void loadHastTagWord(String[] hashTags) {
-        mHashTags = hashTags;
-        mInflater = getLayoutInflater();
-
-        for (int i = 0; i < mHashTags.length; i++) {
-            mTagView = mInflater.inflate(R.layout.layout_graph_hash_tag, null, false);
-            mTagTextView = mTagView.findViewById(R.id.tv_hash_tag);
-
-            if (i % 3 == 0) {
-                mTagTextView.setTextColor(mResourceSendUtil.getColor(R.color.graphColor));
-            }
-            mTagTextView.setTextSize(30f);
-            mTagTextView.setText(mHashTags[i]);
-            binding.hashTagCustomLayout.addView(mTagView);
-        }
+        drawGraph();
     }
 
     @Override
@@ -113,6 +85,84 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mPresenter.onViewDetached();
+        presenter.onViewDetached();
+    }
+
+    @Override
+    public void updateHashTagWord(ArrayList<String> list) {
+        ArrayList<String> hashTagItems = new ArrayList<>();
+        hashTagItems = list;
+
+        inflater = getLayoutInflater();
+
+        for (int i = 0; i < hashTagItems.size(); i++) {
+            tagView = inflater.inflate(R.layout.layout_graph_hash_tag, null, false);
+            tagTextView = tagView.findViewById(R.id.tv_hash_tag);
+
+            if (i % 3 == 0) {
+                tagTextView.setTextColor(resourceSendUtil.getColor(R.color.graphColor));
+            }
+
+            tagTextView.setTextSize(30f);
+            tagTextView.setText(hashTagItems.get(i));
+            binding.hashTagCustomLayout.addView(tagView);
+        }
+    }
+
+    @Override
+    public void updateEntries(List<Entry> entries) {
+        lineDataSet = new LineDataSet(entries,EMOTION);
+        lineDataSet.setLineWidth(2); // 곡률
+        lineDataSet.setCircleRadius(5); // 원 색상 지정
+        lineDataSet.setCircleColor(resourceSendUtil.getColor(R.color.graphColor));
+        lineDataSet.setCircleHoleColor(resourceSendUtil.getColor(R.color.graphColor));
+        lineDataSet.setColor(resourceSendUtil.getColor(R.color.graphColor));
+        lineDataSet.setDrawCircleHole(true);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawHorizontalHighlightIndicator(false);
+        lineDataSet.setDrawHighlightIndicators(false);
+        lineDataSet.setDrawValues(false);
+        lineData = new LineData(lineDataSet);
+        binding.lcEmotionGraph.setData(lineData);
+    }
+
+    private void drawGraph() {
+        final XAxis xAxis;
+        final YAxis yLeftAxis, yRightAxis;
+
+        xAxis = binding.lcEmotionGraph.getXAxis();
+        yLeftAxis = binding.lcEmotionGraph.getAxisLeft();
+        yRightAxis = binding.lcEmotionGraph.getAxisRight();
+        // X축 설정
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextColor(R.color.black);
+        xAxis.setValueFormatter(new GraphAxisValueFormatter(days));
+        xAxis.enableGridDashedLine(8, 24, 0);
+
+        // y축 왼쪽 설정
+        yLeftAxis.setTextColor(R.color.black);
+        // y축 텍스트 사이즈 지정.
+        yLeftAxis.setTextSize(20f);
+        yLeftAxis.setValueFormatter(new GraphYAxisValueFormatter(emojis));
+        // max 값
+        yLeftAxis.setAxisMaximum(4.0f);
+        // min 값
+        yLeftAxis.setAxisMinimum(0.0f);
+        yLeftAxis.setGranularityEnabled(true);
+        // 증가 간격
+        yLeftAxis.setGranularity(1.0f);
+        yLeftAxis.setSpaceMax(500f);
+
+        // y축 오른쪽 설정
+        yRightAxis.setDrawLabels(false);
+        yRightAxis.setDrawAxisLine(false);
+        yRightAxis.setDrawGridLines(false);
+
+        binding.lcEmotionGraph.setDescription(null);
+        binding.lcEmotionGraph.setBackgroundColor(Color.TRANSPARENT);
+        binding.lcEmotionGraph.setDoubleTapToZoomEnabled(false);
+        binding.lcEmotionGraph.setDrawGridBackground(false);
+        binding.lcEmotionGraph.animateY(2000, Easing.EaseInCubic);
+        binding.lcEmotionGraph.invalidate();
     }
 }

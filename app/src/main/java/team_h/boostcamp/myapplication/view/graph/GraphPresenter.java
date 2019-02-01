@@ -1,7 +1,5 @@
 package team_h.boostcamp.myapplication.view.graph;
 
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -11,71 +9,29 @@ import java.util.List;
 
 import androidx.databinding.ObservableField;
 import team_h.boostcamp.myapplication.R;
+import team_h.boostcamp.myapplication.model.DataRepository;
 import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 
 public class GraphPresenter implements GraphContractor.Presenter {
     public static final ObservableField<String> OBSERVER = new ObservableField<>("Statics");
     public static final ObservableField<String> HASHTAG_OBSERVER = new ObservableField<>("#HashTags");
     private List<Entry> entries = new ArrayList<>();
-    private String[] hashtags = new String[20];
-    private String[] mDays;
-    private String[] mEmojis = {"\uD83D\uDE21", "😞", "\uD83D\uDE10", "\uD83D\uDE0A", "\uD83D\uDE0D"};
     private GraphContractor.View view;
     private ResourceSendUtil resourceSendUtil;
     private LineDataSet lineDataSet;
     private LineData lineData;
-    private XAxis xAxis;
-    private YAxis yLAxis, yRAxis;
+    private DataRepository dataRepository;
 
-    GraphPresenter(GraphContractor.View view, ResourceSendUtil resourceSendUtil) {
+    GraphPresenter(GraphContractor.View view, ResourceSendUtil resourceSendUtil, DataRepository dataRepository) {
         this.view = view;
         this.resourceSendUtil = resourceSendUtil;
+        this.dataRepository = dataRepository;
     }
 
     @Override
     public void onViewAttached() {
-        mDays = resourceSendUtil.getStringArray(R.array.graph_days);
         initEntry();
-
-        setLineDataset();
-
-        view.setLineData(lineData);
-        xAxis = view.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setTextColor(R.color.black);
-        xAxis.setValueFormatter(new GraphAxisValueFormatter(mDays));
-        xAxis.enableGridDashedLine(8, 24, 0);
-
-        yLAxis = view.getYLeftAxis();
-        yLAxis.setTextColor(R.color.black);
-        // y축 텍스트 사이즈 지정.
-        yLAxis.setTextSize(20f);
-        yLAxis.setValueFormatter(new GraphYAxisValueFormatter(mEmojis));
-        // max 값
-        yLAxis.setAxisMaximum(4.0f);
-        // min 값
-        yLAxis.setAxisMinimum(0.0f);
-        yLAxis.setGranularityEnabled(true);
-        // 증가 간격
-        yLAxis.setGranularity(1.0f);
-        yLAxis.setSpaceMax(500f);
-
-        // 비활성화
-        setDisableYRightAxis();
-        initHashTagWord();
-    }
-
-    void initHashTagWord() {
-        /**
-         * Model로부터 데이터를 가지고 와서 View에게 넘겨준다.
-         * 이 부분에서 Model에 접근해서 가공된 데이터를 가지고 오는 로직이 있어야 함.
-         *
-         * 지금은 Presenter에서 만든 데이터를 View 쪽으로 넘겨주고 있다.
-         * */
-        for (int i = 0; i < hashtags.length; i++) {
-            hashtags[i] = "#tag" + i;
-        }
-        view.loadHastTagWord(hashtags);
+        view.updateEntries(entries);
     }
 
     void initEntry() {
@@ -87,8 +43,9 @@ public class GraphPresenter implements GraphContractor.Presenter {
         entries.add(new Entry(5, 4.0f));
         entries.add(new Entry(6, 0.0f));
     }
-
-    void setLineDataset() {
+/*
+    void setLineDataSet() {
+        view.updateEntries(entries);
         lineDataSet = new LineDataSet(entries, "Emotion");
 
         lineDataSet.setLineWidth(2);
@@ -104,18 +61,19 @@ public class GraphPresenter implements GraphContractor.Presenter {
         lineDataSet.setDrawHighlightIndicators(false);
         lineDataSet.setDrawValues(false);
         lineData = new LineData(lineDataSet);
-    }
-
-    void setDisableYRightAxis() {
-        yRAxis = view.getYRightAxis();
-        yRAxis.setDrawLabels(false);
-        yRAxis.setDrawAxisLine(false);
-        yRAxis.setDrawGridLines(false);
-    }
+    }*/
 
     @Override
     public void onViewDetached() {
         // 리소스 해제
-        mEmojis = null;
+    }
+
+    @Override
+    public void loadHashTagWord(int size) {
+        dataRepository.getHashTag(size, list -> {
+            if(list !=null){
+                view.updateHashTagWord(list);
+            }
+        });
     }
 }
