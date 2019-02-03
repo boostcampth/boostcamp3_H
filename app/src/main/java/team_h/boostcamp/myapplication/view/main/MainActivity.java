@@ -1,7 +1,10 @@
 package team_h.boostcamp.myapplication.view.main;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.facebook.stetho.Stetho;
 
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
@@ -22,6 +25,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Stetho.initializeWithDefaults(this);
 
         mPresenter = new MainPresenter(this);
       
