@@ -28,7 +28,7 @@ public class GraphPresenter implements GraphContractor.Presenter {
         view.lastWeekUpdateEntries(lastWeekEntries);
     }
 
-    void initEntry() {
+    private void initEntry() {
         // 이번주 감정 데이터
         thisWeekEntries.add(new Entry(0, 1.0f));
         thisWeekEntries.add(new Entry(1, 2.0f));
