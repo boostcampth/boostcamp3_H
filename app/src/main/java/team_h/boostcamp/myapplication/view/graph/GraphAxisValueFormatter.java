@@ -8,15 +8,15 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
  * IAxisValueFormatter 인터페이스를 구현함으로써 해결이 가능
  */
 public class GraphAxisValueFormatter implements IAxisValueFormatter {
-    private String[] mValues;
+    private String[] values;
 
     // 생성자
     GraphAxisValueFormatter(String[] values) {
-        this.mValues = values;
+        this.values = values;
     }
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return mValues[(int) value];
+        return values[(int) value];
     }
 }

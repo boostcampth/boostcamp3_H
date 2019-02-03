@@ -83,12 +83,6 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        presenter.onViewDetached();
-    }
-
-    @Override
     public void updateHashTagWord(ArrayList<String> list) {
         ArrayList<String> hashTagItems = new ArrayList<>();
         hashTagItems = list;
@@ -107,6 +101,16 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
             tagTextView.setText(hashTagItems.get(i));
             binding.hashTagCustomLayout.addView(tagView);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.onViewDetached();
+        emojis = null;
+        days = null;
+        tagTextView = null;
+        tagView = null;
     }
 
     @Override
@@ -143,7 +147,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
         yLeftAxis.setTextColor(R.color.black);
         // y축 텍스트 사이즈 지정.
         yLeftAxis.setTextSize(20f);
-        yLeftAxis.setValueFormatter(new GraphYAxisValueFormatter(emojis));
+        yLeftAxis.setValueFormatter(new GraphAxisValueFormatter(emojis));
         // max 값
         yLeftAxis.setAxisMaximum(4.0f);
         // min 값
