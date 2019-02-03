@@ -20,7 +20,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
 
     private MemoriesContractor.View view;
     private AdapterContract.Model<Memory> memoriesCardAdapterModel;
-    private AdapterContract.View mMemoriesCardAdapterView;
+    private AdapterContract.View memoriesCardAdapterView;
     private AppDatabase appDatabase;
     private CompositeDisposable compositeDisposable;
 
@@ -31,7 +31,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
 
     @Override
     public void setMemoriesCardAdapterView(MemoriesCardAdapter adapter) {
-        this.mMemoriesCardAdapterView = adapter;
+        this.memoriesCardAdapterView = adapter;
     }
 
     @Override
