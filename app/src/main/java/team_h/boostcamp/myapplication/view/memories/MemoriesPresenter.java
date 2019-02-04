@@ -1,8 +1,14 @@
 package team_h.boostcamp.myapplication.view.memories;
 
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import io.reactivex.Completable;
@@ -17,7 +23,7 @@ import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.view.adapter.AdapterContract;
 
 public class MemoriesPresenter implements MemoriesContractor.Presenter {
-
+    private static final String TAG = "MemoriesPresenter";
     private MemoriesContractor.View view;
     private AdapterContract.Model<Memory> memoriesCardAdapterModel;
     private AdapterContract.View memoriesCardAdapterView;
@@ -62,41 +68,42 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
 
     private void generateMemory() {
         int selectedMemory = generateRandomNumber();
+        Date generatedDate = new Date();
         String generateDate = DateToString(new Date());
-        Memory memory = new Memory(0, "Happy of January", generateDate, selectedMemory);
+        String title = generateTitle(selectedMemory, generatedDate);
+        Memory memory = new Memory(0, title, generateDate, selectedMemory);
 
-        view.makeToast("선택된 감정" + generateRandomNumber());
-
-        // 새로운 메모리 추가하기
-        compositeDisposable.add(Observable.just(memory)
-                .subscribeOn(Schedulers.io())
-                .subscribe(m -> {
-                            appDatabase.appDao().insertMemory(m);
-                            memoriesCardAdapterModel.addItem(m);
-                        }
-                ));
-
-        // 새로운 메모리 다이어리 리스트 저장하기
-        compositeDisposable.add(appDatabase.appDao().loadRecentMemory()
+        compositeDisposable.add(appDatabase.appDao().insertMemory(memory)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                        memories1 -> {
-                            int id = memories1.getId();
-                            String endDate = memories1.getDate();
-                            String startDate = generateStartDate(endDate);
-
-                            appDatabase.appDao().getSelectedRecord(startDate, endDate, selectedMemory)
+                .subscribe(() ->{
+                            appDatabase.appDao().loadRecentMemory()
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(diaries -> {
-                                        for (int i = 0; i < diaries.size(); i++) {
-                                            Diary currentDiary = diaries.get(i);
-                                            appDatabase.appDao().insertRecommendation(new Recommendation(0, id, currentDiary.getId()));
-                                        }
-                                    });
+                                    .subscribe(
+                                            memories1 -> {
+                                                int id = memories1.getId();
+                                                String endDate = memories1.getDate();
+                                                String startDate = generateStartDate(endDate);
+
+                                                appDatabase.appDao().getSelectedRecord(startDate, endDate, selectedMemory)
+                                                        .subscribeOn(Schedulers.io())
+                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                        .subscribe(diaries -> {
+                                                            for (int i = 0; i < diaries.size(); i++) {
+                                                                Log.d(TAG, "generateMemory: insertRecommendation" + diaries.get(i).getId());
+                                                                Diary currentDiary = diaries.get(i);
+                                                                appDatabase.appDao().insertRecommendation(new Recommendation(0, id, currentDiary.getId()))
+                                                                .subscribeOn(Schedulers.io())
+                                                                .observeOn(AndroidSchedulers.mainThread())
+                                                                .subscribe(() -> {});
+                                                            }
+                                                        });
+                                            }
+                                    );
                         }
-                ));
+                ,throwable -> {})
+        );
     }
 
     private boolean checkCurrentMemory() {
@@ -108,7 +115,8 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     public void onDeleteButtonClicked(int position) {
         view.makeToast("삭제버튼이눌렸습니다.");
         Memory memory = memoriesCardAdapterModel.getItem(position);
-        compositeDisposable.add(Completable.fromAction(() -> appDatabase.appDao().deleteMemory(memory))
+        compositeDisposable.add(
+                appDatabase.appDao().deleteMemory(memory)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> memoriesCardAdapterModel.removeItem(position)));
@@ -139,7 +147,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     }
 
     private String generateStartDate(String endDate) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyMMdd", Locale.KOREA);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         Date currentDate = null;
         try {
             currentDate = simpleDateFormat.parse(endDate);
@@ -149,6 +157,32 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
         Date startDate = new Date(currentDate.getTime() - (14 * 24 * 60 * 60 * 1000));
 
         return simpleDateFormat.format(startDate);
+    }
+
+    private String generateTitle(int selectedMemory, Date generatedDate) {
+        StringBuilder newTitle = new StringBuilder();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM", Locale.KOREA);
+        newTitle.append(simpleDateFormat.format(generatedDate)+"의 ");
+
+        switch (selectedMemory){
+            case 0:
+                newTitle.append("끔직한 날들");
+                break;
+            case 1:
+                newTitle.append("우울한 날들");
+                break;
+            case 2:
+                newTitle.append("적당한 날들");
+                break;
+            case 3:
+                newTitle.append("즐거운 날들");
+                break;
+            case 4:
+                newTitle.append("매우 행복한 날들");
+                break;
+        }
+
+        return newTitle.toString();
     }
 
     private String DateToString(Date today) {

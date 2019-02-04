@@ -17,22 +17,19 @@ import static androidx.room.ForeignKey.CASCADE;
 @Entity(tableName = "recommended", foreignKeys = {
         @ForeignKey(entity = Diary.class,
         parentColumns = "id",
-        childColumns = "id", onDelete = CASCADE)
+        childColumns = "diaryId", onDelete = CASCADE),@ForeignKey(entity = Memory.class, parentColumns = "id", childColumns = "memoryId", onDelete = CASCADE)
 }) // Search 를 빠르게 하기위해 Index 걸어두기
 public class Recommendation {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    @NonNull
     private int id;
 
     // 이화중님 수정
     @ColumnInfo(name = "memoryId")
-    @NonNull
     private int memoryId;
 
     @ColumnInfo(name = "diaryId")
-    @NonNull
     private int diaryId;
 
     public Recommendation(int id, int memoryId, int diaryId) {

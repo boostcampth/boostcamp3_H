@@ -1,22 +1,28 @@
 package team_h.boostcamp.myapplication.view.memories;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import team_h.boostcamp.myapplication.databinding.ItemMemoryCardBinding;
+import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.Memory;
-import team_h.boostcamp.myapplication.view.adapter.AdapterContract;
+import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.view.adapter.BaseRecyclerViewAdapter;
 
 public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, MemoriesCardAdapter.ViewHolder>{
     private ViewClickListener mListener;
+    private static final String TAG = "MemoriesCardAdapter";
 
     public interface ViewClickListener{
 
@@ -50,7 +56,27 @@ public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, Memorie
         MemoriesDiaryAdapter adapter = new MemoriesDiaryAdapter(getContext());
         holder.binding.rvDiary.setAdapter(adapter);
         holder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(getContext()));
-        //adapter.addItems(itemList.get(position).getMemories());
+
+        AppDatabase appDatabase = AppDatabase.getInstance(getContext());
+
+//        appDatabase.appDao().loadSelectedDiaryList(itemList.get(position).getId())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(recommendations -> {
+//
+//                    List<Diary> list= new ArrayList<>();
+//                    for (int i = 0; i < recommendations.size() ; i++) {
+//                        appDatabase.appDao().loadSelectedDiary(recommendations.get(i).getDiaryId())
+//                                .subscribeOn(Schedulers.io())
+//                                .observeOn(AndroidSchedulers.mainThread())
+//                                .subscribe(diary -> {
+//                                    Log.d(TAG, "onBindView: " + diary.getId());
+//                                    list.add(diary);
+//                                });
+//                    }
+//
+//                    adapter.addItems(list);
+//                });
 
         if(mListener != null){
             holder.binding.ivPlay.setOnClickListener(new View.OnClickListener() {
