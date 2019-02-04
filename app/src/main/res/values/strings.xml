@@ -51,4 +51,11 @@
         <item>😊</item>
         <item>😍</item>
     </string-array>
+
+    <!--Setting-->
+    <string name="setting_title">setting</string>
+    <string name="setting_alarm">알람</string>
+    <string name="setting_password">비밀번호</string>
+    <string name="setting_login">로그인</string>
+    <string name="setting_logout">로그아웃</string>
 </resources>
