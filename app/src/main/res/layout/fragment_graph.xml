@@ -36,7 +36,7 @@
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lc_emotion_graph"
                 android:layout_width="0dp"
-                android:layout_height="539dp"
+                android:layout_height="400dp"
                 android:layout_marginLeft="@dimen/layout_margin"
                 android:layout_marginRight="@dimen/layout_margin"
                 app:layout_constraintLeft_toLeftOf="parent"
