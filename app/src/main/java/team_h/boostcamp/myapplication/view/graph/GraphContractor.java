@@ -1,8 +1,6 @@
 package team_h.boostcamp.myapplication.view.graph;
 
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +14,10 @@ public interface GraphContractor {
 
         void updateHashTagWord(ArrayList<String> list);
 
-        void updateEntries(List<Entry> entries);
+        void updateThisWeekEntries(List<Entry> thisWeekEntries);
+
+        void updateLastWeekEntries(List<Entry> lastWeekEntries);
+
     }
 
     interface Presenter extends BasePresenter {

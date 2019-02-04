@@ -14,9 +14,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,20 +32,19 @@ import team_h.boostcamp.myapplication.view.BaseFragment;
  */
 public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements GraphContractor.View {
 
-    public static final String EMOTION = "Emotion";
+    private static final String EMOTION = "선택한 감정";
+    private static final String LAST_WEEK_EMOTION = "분석된 감정";
     private GraphPresenter presenter;
     private ResourceSendUtil resourceSendUtil;
     private Context context;
     private String[] days;
     private String[] emojis;
-    private LineDataSet lineDataSet;
-    private LineData lineData;
-    LayoutInflater inflater;
-    View tagView;
-    TextView tagTextView;
+    private ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+    private View tagView;
+    private TextView tagTextView;
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
     }
@@ -69,7 +68,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
         days = resourceSendUtil.getStringArray(R.array.graph_days);
         emojis = resourceSendUtil.getStringArray(R.array.graph_emojis);
         // Presenter 설정
-        presenter = new GraphPresenter(GraphFragment.this, new ResourceSendUtil(context), DataRepository.getInstance());
+        presenter = new GraphPresenter(GraphFragment.this, DataRepository.getInstance());
         binding.setPresenter(presenter);
         presenter.onViewAttached();
         presenter.loadHashTagWord(20);
@@ -84,10 +83,10 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
 
     @Override
     public void updateHashTagWord(ArrayList<String> list) {
-        ArrayList<String> hashTagItems = new ArrayList<>();
+        ArrayList<String> hashTagItems;
         hashTagItems = list;
 
-        inflater = getLayoutInflater();
+        LayoutInflater inflater = getLayoutInflater();
 
         for (int i = 0; i < hashTagItems.size(); i++) {
             tagView = inflater.inflate(R.layout.layout_graph_hash_tag, null, false);
@@ -104,6 +103,43 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     }
 
     @Override
+    public void updateThisWeekEntries(java.util.List<Entry> thisWeekEntries) {
+        final LineDataSet thisWeekLineDataSet = new LineDataSet(thisWeekEntries, EMOTION);
+        setLineData(thisWeekLineDataSet, 1);
+    }
+
+    @Override
+    public void updateLastWeekEntries(java.util.List<Entry> lastWeekEntries) {
+        final LineDataSet lastWeekLineDataSet = new LineDataSet(lastWeekEntries, LAST_WEEK_EMOTION);
+        setLineData(lastWeekLineDataSet, 2);
+        final LineData lineData = new LineData(dataSets);
+        binding.lcEmotionGraph.setData(lineData);
+    }
+
+    private void setLineData(LineDataSet lineDataSet, int type) {
+        lineDataSet.setLineWidth(2); // 곡률
+        lineDataSet.setCircleRadius(5); // 원 색상 지정
+        switch (type) {
+            case 1:
+                lineDataSet.setCircleColor(resourceSendUtil.getColor(R.color.graphColor));
+                lineDataSet.setCircleHoleColor(resourceSendUtil.getColor(R.color.graphColor));
+                lineDataSet.setColor(resourceSendUtil.getColor(R.color.graphColor));
+                break;
+            case 2:
+                lineDataSet.setCircleColor(resourceSendUtil.getColor(R.color.graph_analyzed_color));
+                lineDataSet.setCircleHoleColor(resourceSendUtil.getColor(R.color.graph_analyzed_color));
+                lineDataSet.setColor(resourceSendUtil.getColor(R.color.graph_analyzed_color));
+                break;
+        }
+        lineDataSet.setDrawCircleHole(true);
+        lineDataSet.setDrawCircles(true);
+        lineDataSet.setDrawHorizontalHighlightIndicator(false);
+        lineDataSet.setDrawHighlightIndicators(false);
+        lineDataSet.setDrawValues(false);
+        dataSets.add(lineDataSet);
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         presenter.onViewDetached();
@@ -111,23 +147,6 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
         days = null;
         tagTextView = null;
         tagView = null;
-    }
-
-    @Override
-    public void updateEntries(List<Entry> entries) {
-        lineDataSet = new LineDataSet(entries,EMOTION);
-        lineDataSet.setLineWidth(2); // 곡률
-        lineDataSet.setCircleRadius(5); // 원 색상 지정
-        lineDataSet.setCircleColor(resourceSendUtil.getColor(R.color.graphColor));
-        lineDataSet.setCircleHoleColor(resourceSendUtil.getColor(R.color.graphColor));
-        lineDataSet.setColor(resourceSendUtil.getColor(R.color.graphColor));
-        lineDataSet.setDrawCircleHole(true);
-        lineDataSet.setDrawCircles(true);
-        lineDataSet.setDrawHorizontalHighlightIndicator(false);
-        lineDataSet.setDrawHighlightIndicators(false);
-        lineDataSet.setDrawValues(false);
-        lineData = new LineData(lineDataSet);
-        binding.lcEmotionGraph.setData(lineData);
     }
 
     private void drawGraph() {

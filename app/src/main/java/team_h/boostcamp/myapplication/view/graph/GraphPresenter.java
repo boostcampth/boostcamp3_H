@@ -7,16 +7,16 @@ import java.util.List;
 
 import androidx.databinding.ObservableField;
 import team_h.boostcamp.myapplication.model.DataRepository;
-import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 
 public class GraphPresenter implements GraphContractor.Presenter {
     public static final ObservableField<String> OBSERVER = new ObservableField<>("Statics");
     public static final ObservableField<String> HASHTAG_OBSERVER = new ObservableField<>("#HashTags");
-    private List<Entry> entries = new ArrayList<>();
+    private List<Entry> thisWeekEntries = new ArrayList<>();
+    private List<Entry> lastWeekEntries = new ArrayList<>();
     private GraphContractor.View view;
     private DataRepository dataRepository;
 
-    GraphPresenter(GraphContractor.View view, ResourceSendUtil resourceSendUtil, DataRepository dataRepository) {
+    GraphPresenter(GraphContractor.View view, DataRepository dataRepository) {
         this.view = view;
         this.dataRepository = dataRepository;
     }
@@ -24,17 +24,27 @@ public class GraphPresenter implements GraphContractor.Presenter {
     @Override
     public void onViewAttached() {
         initEntry();
-        view.updateEntries(entries);
+        view.updateThisWeekEntries(thisWeekEntries);
+        view.updateLastWeekEntries(lastWeekEntries);
     }
 
-    void initEntry() {
-        entries.add(new Entry(0, 1.0f));
-        entries.add(new Entry(1, 2.0f));
-        entries.add(new Entry(2, 3.0f));
-        entries.add(new Entry(3, 4.0f));
-        entries.add(new Entry(4, 2.0f));
-        entries.add(new Entry(5, 4.0f));
-        entries.add(new Entry(6, 0.0f));
+    private void initEntry() {
+        // 이번주 감정 데이터
+        thisWeekEntries.add(new Entry(0, 1.0f));
+        thisWeekEntries.add(new Entry(1, 2.0f));
+        thisWeekEntries.add(new Entry(2, 3.0f));
+        thisWeekEntries.add(new Entry(3, 4.0f));
+        thisWeekEntries.add(new Entry(4, 2.0f));
+        thisWeekEntries.add(new Entry(5, 4.0f));
+        thisWeekEntries.add(new Entry(6, 0.0f));
+        // 지난주 감정 데이터
+        lastWeekEntries.add(new Entry(0,0.0f));
+        lastWeekEntries.add(new Entry(1,1.0f));
+        lastWeekEntries.add(new Entry(2,3.0f));
+        lastWeekEntries.add(new Entry(3,4.0f));
+        lastWeekEntries.add(new Entry(4,2.0f));
+        lastWeekEntries.add(new Entry(5,1.0f));
+        lastWeekEntries.add(new Entry(6,2.0f));
     }
 
     @Override
@@ -42,7 +52,8 @@ public class GraphPresenter implements GraphContractor.Presenter {
         // 리소스 해제
         dataRepository = null;
         view = null;
-        entries = null;
+        thisWeekEntries = null;
+        lastWeekEntries = null;
     }
 
     @Override

@@ -18,4 +18,6 @@
     <!-- Memories fragment -->
     <color name="white">#ffffffff</color>
 
+    <!--Graph Color-->
+    <color name="graph_analyzed_color">#ec407a</color>
 </resources>
