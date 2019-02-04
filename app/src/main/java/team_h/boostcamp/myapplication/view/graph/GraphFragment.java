@@ -103,13 +103,13 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
     }
 
     @Override
-    public void thisWeekUpdateEntries(java.util.List<Entry> thisWeekEntries) {
+    public void updateThisWeekEntries(java.util.List<Entry> thisWeekEntries) {
         final LineDataSet thisWeekLineDataSet = new LineDataSet(thisWeekEntries, EMOTION);
         setLineData(thisWeekLineDataSet, 1);
     }
 
     @Override
-    public void lastWeekUpdateEntries(java.util.List<Entry> lastWeekEntries) {
+    public void updateLastWeekEntries(java.util.List<Entry> lastWeekEntries) {
         final LineDataSet lastWeekLineDataSet = new LineDataSet(lastWeekEntries, LAST_WEEK_EMOTION);
         setLineData(lastWeekLineDataSet, 2);
         final LineData lineData = new LineData(dataSets);

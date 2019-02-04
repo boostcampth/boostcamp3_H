@@ -24,8 +24,8 @@ public class GraphPresenter implements GraphContractor.Presenter {
     @Override
     public void onViewAttached() {
         initEntry();
-        view.thisWeekUpdateEntries(thisWeekEntries);
-        view.lastWeekUpdateEntries(lastWeekEntries);
+        view.updateThisWeekEntries(thisWeekEntries);
+        view.updateLastWeekEntries(lastWeekEntries);
     }
 
     private void initEntry() {

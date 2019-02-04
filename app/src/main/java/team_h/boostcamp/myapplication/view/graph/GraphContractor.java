@@ -14,9 +14,9 @@ public interface GraphContractor {
 
         void updateHashTagWord(ArrayList<String> list);
 
-        void thisWeekUpdateEntries(List<Entry> thisWeekEntries);
+        void updateThisWeekEntries(List<Entry> thisWeekEntries);
 
-        void lastWeekUpdateEntries(List<Entry> lastWeekEntries);
+        void updateLastWeekEntries(List<Entry> lastWeekEntries);
 
     }
 
