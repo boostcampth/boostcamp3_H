@@ -10,6 +10,7 @@ import com.facebook.stetho.Stetho;
 import androidx.viewpager.widget.ViewPager;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityMainBinding;
+import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.BaseActivity;
 import team_h.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import team_h.boostcamp.myapplication.view.graph.GraphFragment;
@@ -23,6 +24,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
     private MainTabAdapter tabAdapter;
     private MainContractor.Presenter presenter;
+    private ResourceSendUtil resourceSendUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +34,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
         presenter = new MainPresenter(this);
 
+        if(resourceSendUtil == null){
+            resourceSendUtil = new ResourceSendUtil(MainActivity.this);
+        }
         initView();
     }
 
@@ -61,13 +66,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        binding.tvMainTitle.setText("Memories");
+                        binding.tvMainTitle.setText(resourceSendUtil.getString(R.string.Memories));
                         break;
                     case 1:
-                        binding.tvMainTitle.setText("Todays");
+                        binding.tvMainTitle.setText(resourceSendUtil.getString(R.string.main_toolbar_diary_title));
                         break;
                     case 2:
-                        binding.tvMainTitle.setText("Statics");
+                        binding.tvMainTitle.setText(resourceSendUtil.getString(R.string.main_toolbar_graph_title));
                         break;
                 }
             }
