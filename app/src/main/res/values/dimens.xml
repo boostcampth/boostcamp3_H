@@ -31,4 +31,10 @@
 
     <dimen name="setting_elevation">2dp</dimen>
 
+    <!--Switch Button-->
+    <dimen name="switch_track_button_radius">15dp</dimen>
+    <dimen name="switch_track_button_width">75dp</dimen>
+    <dimen name="switch_track_button_height">25dp</dimen>
+    <dimen name="switch_thumb_size">25dp</dimen>
+
 </resources>

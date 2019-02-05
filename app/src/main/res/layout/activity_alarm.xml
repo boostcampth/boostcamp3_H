@@ -7,18 +7,19 @@
 
         <variable
             name="activity"
-            type="team_h.boostcamp.myapplication.view.setting.AlarmActivity" />
+            type="team_h.boostcamp.myapplication.view.alarm.AlarmActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.setting.AlarmActivity">
+        tools:context=".view.alarm.AlarmActivity">
 
         <RelativeLayout
             android:id="@+id/rl_alarm_toolbar"
             android:layout_width="0dp"
             android:layout_height="?actionBarSize"
+            android:background="@android:color/white"
             android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -58,14 +59,46 @@
 
         <Switch
             android:id="@+id/switch_alarm"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:thumb="@drawable/switch_thumb"
+            android:track="@drawable/switch_track_selector"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.044"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_alarm_toolbar" />
 
+        <LinearLayout
+            android:id="@+id/ll_alarm_time_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_alarm_toolbar">
+
+            <TextView
+                android:id="@+id/tv_alarm_time_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="알람을 설정해주세요."
+                app:layout_constraintEnd_toStartOf="@+id/btn_alarm_select"
+                app:layout_constraintStart_toEndOf="@+id/switch_alarm" />
+
+            <Button
+                android:id="@+id/btn_alarm_select"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="@{v -> activity.onClickButton(v.getId())}"
+                android:text="시간 선택"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
