@@ -9,19 +9,22 @@ import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.Memory;
 import team_h.boostcamp.myapplication.model.Recommendation;
 
-@Database(entities = {Diary.class, Recommendation.class, Memory.class}, version = 1, exportSchema = false)
+@Database(entities = {Diary.class, Recommendation.class, Memory.class}, version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "appDB.db";
     private static AppDatabase INSTANCE;
 
     public static AppDatabase getInstance(Context context) {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
-                if(INSTANCE == null) {
-                    INSTANCE = Room.databaseBuilder(context,
+                if (INSTANCE == null) {
+                    INSTANCE = Room.databaseBuilder(
+                            context,
                             AppDatabase.class,
-                            DB_NAME).build();
+                            DB_NAME)
+                            .fallbackToDestructiveMigration()
+                            .build();
                 }
             }
         }

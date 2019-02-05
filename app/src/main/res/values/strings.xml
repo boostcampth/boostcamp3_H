@@ -27,6 +27,11 @@
 
     <!-- Memories fragment -->
     <string name="Memories">Memories</string>
+    <string name="title_emition4">매우 행복했던 날들</string>
+    <string name="title_emition3">즐거웠던 날들</string>
+    <string name="title_emition2">적당했던 날들</string>
+    <string name="title_emition1">우울했던 날들</string>
+    <string name="title_emition0">끔직했던 날들</string>
 
     <!-- Play activity -->
     <string name="play">PLAY</string>

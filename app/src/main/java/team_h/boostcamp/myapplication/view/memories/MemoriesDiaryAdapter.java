@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import team_h.boostcamp.myapplication.databinding.ItemDiaryBinding;
+import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.view.adapter.BaseRecyclerViewAdapter;
 
-public class MemoriesDiaryAdapter extends BaseRecyclerViewAdapter<String, MemoriesDiaryAdapter.ViewHolder> {
+public class MemoriesDiaryAdapter extends BaseRecyclerViewAdapter<Diary, MemoriesDiaryAdapter.ViewHolder> {
 
     public MemoriesDiaryAdapter(Context context) {
         super(context);
@@ -28,7 +29,7 @@ public class MemoriesDiaryAdapter extends BaseRecyclerViewAdapter<String, Memori
 
     @Override
     protected void onBindView(ViewHolder holder, int position) {
-        holder.binding.tvDiaryTitle.setText(itemList.get(position));
+        holder.binding.tvDiaryTitle.setText(itemList.get(position).getRecordDate());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
