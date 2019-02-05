@@ -1,6 +1,5 @@
 package team_h.boostcamp.myapplication.model;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
@@ -16,8 +15,13 @@ import static androidx.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "recommended", foreignKeys = {
         @ForeignKey(entity = Diary.class,
-        parentColumns = "id",
-        childColumns = "diaryId", onDelete = CASCADE),@ForeignKey(entity = Memory.class, parentColumns = "id", childColumns = "memoryId", onDelete = CASCADE)
+                parentColumns = "id",
+                childColumns = "diaryId",
+                onDelete = CASCADE),
+        @ForeignKey(entity = Memory.class,
+                parentColumns = "id",
+                childColumns = "memoryId",
+                onDelete = CASCADE)
 }) // Search 를 빠르게 하기위해 Index 걸어두기
 public class Recommendation {
 

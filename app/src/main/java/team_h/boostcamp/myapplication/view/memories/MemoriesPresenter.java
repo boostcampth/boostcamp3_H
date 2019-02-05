@@ -1,25 +1,22 @@
 package team_h.boostcamp.myapplication.view.memories;
 
-import android.os.AsyncTask;
+import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
+import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.Memory;
 import team_h.boostcamp.myapplication.model.Recommendation;
 import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
+import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.adapter.AdapterContract;
 
 public class MemoriesPresenter implements MemoriesContractor.Presenter {
@@ -29,9 +26,11 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     private AdapterContract.View memoriesCardAdapterView;
     private AppDatabase appDatabase;
     private CompositeDisposable compositeDisposable;
+    private ResourceSendUtil resourceSendUtil;
 
-    MemoriesPresenter(MemoriesContractor.View view) {
+    MemoriesPresenter(MemoriesContractor.View view, ResourceSendUtil resourceSendUtil) {
         this.view = view;
+        this.resourceSendUtil = resourceSendUtil;
         compositeDisposable = new CompositeDisposable();
     }
 
@@ -76,7 +75,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
         compositeDisposable.add(appDatabase.appDao().insertMemory(memory)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() ->{
+                .subscribe(() -> {
                             appDatabase.appDao().loadRecentMemory()
                                     .subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
@@ -94,15 +93,17 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
                                                                 Log.d(TAG, "generateMemory: insertRecommendation" + diaries.get(i).getId());
                                                                 Diary currentDiary = diaries.get(i);
                                                                 appDatabase.appDao().insertRecommendation(new Recommendation(0, id, currentDiary.getId()))
-                                                                .subscribeOn(Schedulers.io())
-                                                                .observeOn(AndroidSchedulers.mainThread())
-                                                                .subscribe(() -> {});
+                                                                        .subscribeOn(Schedulers.io())
+                                                                        .observeOn(AndroidSchedulers.mainThread())
+                                                                        .subscribe(() -> {
+                                                                        });
                                                             }
                                                         });
                                             }
                                     );
                         }
-                ,throwable -> {})
+                        , throwable -> {
+                        })
         );
     }
 
@@ -117,9 +118,9 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
         Memory memory = memoriesCardAdapterModel.getItem(position);
         compositeDisposable.add(
                 appDatabase.appDao().deleteMemory(memory)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> memoriesCardAdapterModel.removeItem(position)));
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> memoriesCardAdapterModel.removeItem(position)));
     }
 
     @Override
@@ -162,23 +163,23 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     private String generateTitle(int selectedMemory, Date generatedDate) {
         StringBuilder newTitle = new StringBuilder();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM", Locale.KOREA);
-        newTitle.append(simpleDateFormat.format(generatedDate)+"의 ");
+        newTitle.append(simpleDateFormat.format(generatedDate)).append("의 ");
 
-        switch (selectedMemory){
+        switch (selectedMemory) {
             case 0:
-                newTitle.append("끔직한 날들");
+                newTitle.append(resourceSendUtil.getString(R.string.title_emition0));
                 break;
             case 1:
-                newTitle.append("우울한 날들");
+                newTitle.append(resourceSendUtil.getString(R.string.title_emition1));
                 break;
             case 2:
-                newTitle.append("적당한 날들");
+                newTitle.append(resourceSendUtil.getString(R.string.title_emition2));
                 break;
             case 3:
-                newTitle.append("즐거운 날들");
+                newTitle.append(resourceSendUtil.getString(R.string.title_emition3));
                 break;
             case 4:
-                newTitle.append("매우 행복한 날들");
+                newTitle.append(resourceSendUtil.getString(R.string.title_emition4));
                 break;
         }
 
