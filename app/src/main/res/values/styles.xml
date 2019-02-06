@@ -42,8 +42,13 @@
 
     <style name="TextButton">
         <item name="android:textColor">@color/all_purple</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">16dp</item>
         <item name="android:textStyle">bold</item>
+    </style>
 
+    <style name="CustomTimePickerDialogTheme" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="colorAccent">@color/all_purple</item>
+        <item name="colorControlActivated">@color/all_purple</item>
+        <item name="android:textColorPrimary">@color/white</item>
     </style>
 </resources>

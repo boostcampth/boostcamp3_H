@@ -13,11 +13,11 @@
 
     <!--textSize-->
     <dimen name="toolbar_title_20sp">20sp</dimen>
-    <dimen name="all_title_34sp">34sp</dimen>
-    <dimen name="sub_title_24sp">24sp</dimen>
-    <dimen name="all_body_16sp">16sp</dimen>
-    <dimen name="all_button_14sp">14sp</dimen>
-    <dimen name="setting_body_14sp">14sp</dimen>
+    <dimen name="all_title_34sp">34dp</dimen>
+    <dimen name="sub_title_24sp">24dp</dimen>
+    <dimen name="all_body_16sp">16dp</dimen>
+    <dimen name="all_button_14sp">14dp</dimen>
+    <dimen name="setting_body_14sp">14dp</dimen>
 
     <!--corner radius-->
     <dimen name="diary_card_corner_radius_10dp">10dp</dimen>
@@ -28,5 +28,13 @@
 
     <!-- Diary Fragment -->
     <dimen name="diary_progress_height">10dp</dimen>
+
+    <dimen name="setting_elevation">2dp</dimen>
+
+    <!--Switch Button-->
+    <dimen name="switch_track_button_radius">15dp</dimen>
+    <dimen name="switch_track_button_width">75dp</dimen>
+    <dimen name="switch_track_button_height">25dp</dimen>
+    <dimen name="switch_thumb_size">25dp</dimen>
 
 </resources>

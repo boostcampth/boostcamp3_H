@@ -14,6 +14,7 @@ import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.FragmentMemoriesBinding;
 import team_h.boostcamp.myapplication.model.Memory;
 import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
+import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
 import team_h.boostcamp.myapplication.view.play.PlayActivity;
 
@@ -29,7 +30,8 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        presenter = new MemoriesPresenter(this);
+
+        presenter = new MemoriesPresenter(this, new ResourceSendUtil(getContext()));
         presenter.onViewAttached();
         binding.setView(this);
 

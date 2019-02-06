@@ -29,6 +29,11 @@
 
     <!-- Memories fragment -->
     <string name="Memories">Memories</string>
+    <string name="title_emition4">매우 행복했던 날들</string>
+    <string name="title_emition3">즐거웠던 날들</string>
+    <string name="title_emition2">적당했던 날들</string>
+    <string name="title_emition1">우울했던 날들</string>
+    <string name="title_emition0">끔직했던 날들</string>
 
     <!-- Play activity -->
     <string name="play">PLAY</string>
@@ -53,4 +58,16 @@
         <item>😊</item>
         <item>😍</item>
     </string-array>
+
+    <!--Setting-->
+    <string name="setting_title">setting</string>
+    <string name="setting_alarm">알람</string>
+    <string name="setting_password">비밀번호</string>
+    <string name="setting_login">로그인</string>
+    <string name="setting_logout">로그아웃</string>
+
+    <!--Toolbar title-->
+    <string name="main_toolbar_diary_title">Todays</string>
+    <string name="main_toolbar_graph_title">Statics</string>
+
 </resources>

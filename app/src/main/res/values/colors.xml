@@ -20,4 +20,7 @@
 
     <!--Graph Color-->
     <color name="graph_analyzed_color">#ec407a</color>
+
+    <!--Alarm Color-->
+    <color name="alarm_inaction_color">#9E9D9F</color>
 </resources>

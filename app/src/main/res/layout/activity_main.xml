@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="activity"
+            type="team_h.boostcamp.myapplication.view.main.MainActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,28 +15,60 @@
         android:layout_height="match_parent"
         tools:context=".view.main.MainActivity">
 
-        <androidx.appcompat.widget.Toolbar
+        <!--  <androidx.appcompat.widget.Toolbar
+              android:id="@+id/tb_main_top"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="#FFFFFF"
+              android:text="툴바"
+              android:elevation="@dimen/app_bar_elevation"
+              app:contentInsetLeft="0dp"
+              android:onClick="@{activity::startSetting}"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintTop_toTopOf="parent">
+
+          </androidx.appcompat.widget.Toolbar>-->
+
+        <RelativeLayout
             android:id="@+id/tb_main_top"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:text="툴바"
-            android:elevation="@dimen/app_bar_elevation"
-            app:contentInsetLeft="0dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="?actionBarSize"
+            android:background="@android:color/white"
+            android:elevation="2dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        </androidx.appcompat.widget.Toolbar>
+            <TextView
+                android:id="@+id/tv_main_title"
+                style="@style/SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Todays" />
+
+            <ImageView
+                android:id="@+id/iv_main_setting"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/layout_margin"
+                android:onClick="@{v -> activity.startSetting(v)}"
+                android:src="@drawable/settings" />
+
+
+        </RelativeLayout>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tb_main_top"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tb_main_top">
 
         </androidx.viewpager.widget.ViewPager>
 

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!--곡률-->
+    <corners android:radius="@dimen/switch_track_button_radius" />
+
+    <!--폭과 높이-->
+    <size
+        android:width="@dimen/switch_track_button_width"
+        android:height="@dimen/switch_track_button_height" />
+
+    <!--채울 색상-->
+    <solid android:color="@color/alarm_inaction_color" />
+
+    <!--테두리 색상-->
+    <stroke android:color="@color/alarm_inaction_color" />
+</shape>
