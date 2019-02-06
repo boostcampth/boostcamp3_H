@@ -14,8 +14,8 @@ import team_h.boostcamp.myapplication.utils.NotificationHelper;
 public class AlertReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationHelper helper = new NotificationHelper(context);
-        NotificationCompat.Builder nb = helper.getChannelNotification();
-        helper.getManager().notify(1, nb.build());
+        NotificationHelper notificationHelper = new NotificationHelper(context);
+        NotificationCompat.Builder builder = notificationHelper.getChannelNotification();
+        notificationHelper.getManager().notify(1, builder.build());
     }
 }

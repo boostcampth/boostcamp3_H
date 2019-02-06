@@ -47,7 +47,7 @@ public class NotificationHelper extends ContextWrapper {
     }
 
     public NotificationCompat.Builder getChannelNotification() {
-        Resources res = getResources();
+        Resources resources = getResources();
 
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -58,7 +58,7 @@ public class NotificationHelper extends ContextWrapper {
                 .setContentText("일기를 녹음해주세요 :)")
                 .setTicker("상태바 한줄 메시지")
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
                 .setWhen(System.currentTimeMillis())
