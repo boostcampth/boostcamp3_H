@@ -13,7 +13,9 @@ public class PlayPresenter implements PlayContractor.Presenter {
     private MediaPlayerWrapper mediaPlayerWrapper;
     private CompositeDisposable compositeDisposable;
 
-    PlayPresenter(PlayContractor.View view) {
+    PlayPresenter(AppDatabase appDatabase, MediaPlayerWrapper mediaPlayerWrapper, PlayContractor.View view) {
+        this.appDatabase = appDatabase;
+        this.mediaPlayerWrapper = mediaPlayerWrapper;
         this.view = view;
         compositeDisposable = new CompositeDisposable();
     }
@@ -28,19 +30,10 @@ public class PlayPresenter implements PlayContractor.Presenter {
         mediaPlayerWrapper.stopList();
         mediaPlayerWrapper = null;
         appDatabase = null;
-
-    }
-
-    public void setAppDatabase(AppDatabase database) {
-        appDatabase = database;
     }
 
     public void setPlayDiaryAdapter(PlayDiaryAdapter playDiaryAdapter) {
         this.playDiaryAdapter = playDiaryAdapter;
-    }
-
-    public void setMediaPlayer(MediaPlayerWrapper mediaPlayerWrapper) {
-        this.mediaPlayerWrapper = mediaPlayerWrapper;
     }
 
     public void loadData(int MemoryId) {

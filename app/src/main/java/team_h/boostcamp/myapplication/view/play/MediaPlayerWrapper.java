@@ -10,12 +10,23 @@ import team_h.boostcamp.myapplication.model.Diary;
 
 public class MediaPlayerWrapper {
     private static final String TAG = "MediaPlayerWrapper";
+    private static MediaPlayerWrapper INSTANCE;
     private MediaPlayer mediaPlayer;
     private List<Diary> playList;
     private boolean playing = false;
     private int count = 0;
 
-    public MediaPlayerWrapper() {
+    public static MediaPlayerWrapper getINSTANCE() {
+        if (INSTANCE == null) {
+            synchronized (MediaPlayerWrapper.class) {
+                INSTANCE = new MediaPlayerWrapper();
+            }
+        }
+
+        return INSTANCE;
+    }
+
+    private MediaPlayerWrapper() {
         if (mediaPlayer == null) {
             this.mediaPlayer = new MediaPlayer();
         }

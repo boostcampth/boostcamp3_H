@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -16,7 +17,7 @@ public class PlayDiaryAdapter extends RecyclerView.Adapter<PlayDiaryAdapter.View
     private Context context;
     private List<Diary> itemList;
 
-    public PlayDiaryAdapter(Context context) {
+    PlayDiaryAdapter(Context context) {
         this.context = context;
     }
 
@@ -41,14 +42,14 @@ public class PlayDiaryAdapter extends RecyclerView.Adapter<PlayDiaryAdapter.View
     @Override
     public int getItemCount() {
         if (this.itemList == null){
-            return 0;
+            this.itemList = new ArrayList<>();
         }
 
         return this.itemList.size();
     }
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         ItemDiaryBinding binding;
 
         ViewHolder(ItemDiaryBinding binding) {
@@ -57,7 +58,7 @@ public class PlayDiaryAdapter extends RecyclerView.Adapter<PlayDiaryAdapter.View
         }
     }
 
-    public void addItems(List<Diary> items) {
+    void addItems(List<Diary> items) {
         if( this.itemList == null){
             this.itemList = items;
             notifyDataSetChanged();
