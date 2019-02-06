@@ -51,7 +51,7 @@ dependencies {
     // CardView
     implementation 'androidx.cardview:cardview:1.0.0'
     // RecyclerView
-    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha01'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha02'
     // Graph
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0-alpha'
     // Retrofit 설정 -> API 통신
@@ -64,7 +64,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
     // rxjava
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
-    implementation 'io.reactivex.rxjava2:rxjava:2.2.2'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.6'
     //stetho
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
 }

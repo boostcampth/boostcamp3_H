@@ -16,6 +16,8 @@
     <string name="item_record_no_emotion_selected">오늘의 기분을 선택해주세요 !</string>
     <string name="item_record_emotion_analyze_fail">감정 분석을 실패했습니다</string>
     <string name="item_record_now_recording">일기 작성을 마쳐주세요 !</string>
+    <string name="item_record_save_fail">일기 저장을 실패하였습니다.</string>
+    <string name="item_record_save_success">일기 저장에 성공하였습니다.</string>
 
     <string name="emojitest">&#128522;</string>
 

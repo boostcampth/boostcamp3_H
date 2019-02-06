@@ -1,7 +1,9 @@
-package team_h.boostcamp.myapplication.api.deepaffects;
+package team_h.boostcamp.myapplication.data.remote.deepaffects.request;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import androidx.annotation.NonNull;
 
 public class EmotionAnalyzeRequest {
 
@@ -15,14 +17,19 @@ public class EmotionAnalyzeRequest {
     private static final String DEFAULT_LANGUAGE_CODE = "ko-KR";
     private static final String DEFAULT_SAMPLE_RATE = "44100";
 
-    public static Map<String, String> request(String encodedRecord) {
 
-        Map<String, String> req = new HashMap<>();
-        req.put(QUERY_ENCODING, DEFAULT_ENCODING);
-        req.put(QUERY_LANGUAGE_CODE, DEFAULT_LANGUAGE_CODE);
-        req.put(QUERY_SAMPLE_RATE, DEFAULT_SAMPLE_RATE);
-        req.put(QUERY_CONTENT, encodedRecord);
+    private final Map<String, String> request;
 
-        return req;
+    public EmotionAnalyzeRequest(String encodedRecord) {
+        request = new HashMap<>();
+        request.put(QUERY_ENCODING, DEFAULT_ENCODING);
+        request.put(QUERY_LANGUAGE_CODE, DEFAULT_LANGUAGE_CODE);
+        request.put(QUERY_SAMPLE_RATE, DEFAULT_SAMPLE_RATE);
+        request.put(QUERY_CONTENT, encodedRecord);
+    }
+
+    @NonNull
+    public Map<String, String> getRequest() {
+        return request;
     }
 }

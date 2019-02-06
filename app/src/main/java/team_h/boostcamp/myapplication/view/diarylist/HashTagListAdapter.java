@@ -5,34 +5,49 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ItemHashTagBinding;
-import team_h.boostcamp.myapplication.view.adapter.BaseRecyclerViewAdapter;
+import team_h.boostcamp.myapplication.view.adapter.OnItemClickListener;
 
-public class HashTagListAdapter extends BaseRecyclerViewAdapter<String, HashTagListAdapter.TagHolder>{
+public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.TagHolder> {
 
     private static final int MAX_TAG_NUM = 5;
 
+    private List<String> itemList;
+    private Context context;
+    private OnItemClickListener itemClickListener;
+
+
     HashTagListAdapter(Context context) {
-        super(context);
-        itemList = new ArrayList<>();
+        this.context = context;
+        this.itemList = new ArrayList<>();
+    }
+
+    void setItemClickListener(@NonNull OnItemClickListener itemClickListener) {
+        this.itemClickListener = itemClickListener;
     }
 
     @Override
-    protected void onBindView(TagHolder holder, int position) {
-        // item 에 Data 설정
+    public void onBindViewHolder(@NonNull TagHolder holder, final int position) {
         holder.itemHashTagBinding.textViewItemTagTitle.setText(itemList.get(position));
-        // item remove event 설정
-        holder.itemHashTagBinding.btnItemTagRemove.setOnClickListener(view -> removeItem(position));
+        if (itemClickListener != null) {
+            holder.itemHashTagBinding.btnItemTagRemove.setOnClickListener(view -> itemClickListener.onClickItem(position));
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return itemList.size();
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public TagHolder onCreateViewHolder(@NonNull ViewGroup parent, final int viewType) {
         ItemHashTagBinding itemHashTagBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(context),
                 R.layout.item_hash_tag,
@@ -42,28 +57,31 @@ public class HashTagListAdapter extends BaseRecyclerViewAdapter<String, HashTagL
         return new TagHolder(itemHashTagBinding);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        //super.onBindViewHolder(holder, position);
-        TagHolder tagHolder = (TagHolder) holder;
-
-        tagHolder.itemHashTagBinding.btnItemTagRemove.setOnClickListener(view -> {
-            if(onItemClickListener != null) {
-                onItemClickListener.onClickItem(position);
-            }
-        });
-
-        onBindView(tagHolder, position);
+    @NonNull
+    List<String> getItemList() {
+        return itemList;
     }
 
-    @Override
-    public void addItem(String item) {
-        if(itemList.size() < MAX_TAG_NUM) {
-            super.addItem(item);
-        } else {
-            itemList.remove(0);
-            itemList.add(item);
+
+    void removeItem(int position) {
+        if (itemList != null && itemList.size() < position) {
+            itemList.remove(position);
+            notifyItemRemoved(position);
         }
+    }
+
+    void addItem(String item) {
+        if (itemList == null) {
+            itemList = new ArrayList<>();
+        }
+        // 태그는 최대 5개까지
+        if (itemList.size() == MAX_TAG_NUM) {
+            removeItem(0);
+        }
+        // 아이템 뒤에 추가하기
+        int size = this.itemList.size();
+        this.itemList.add(item);
+        notifyItemInserted(size);
     }
 
     class TagHolder extends RecyclerView.ViewHolder {

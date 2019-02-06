@@ -8,61 +8,53 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import androidx.databinding.ObservableBoolean;
+import androidx.annotation.NonNull;
 
 /*
  * MediaRecord 작업에만 관심이 있는 클래스 분리
  * Presenter 에 주입하는 방식으로 수행 */
-public class MediaRecorderWrapper {
+class DiaryRecorder implements MediaRecorderContract{
 
     // 저장 경로 생성용
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
-    // xml 과 연결하여 저장시 조작 가능 여부 변경
-    public final ObservableBoolean isRecording = new ObservableBoolean(false);
-
     private MediaRecorder mediaRecorder;
     private String filePath;
 
-    MediaRecorderWrapper() {
+    DiaryRecorder() {
         mediaRecorder = new MediaRecorder();
     }
 
-    // 녹음 시작
-    void startRecord() {
+
+    @Override
+    public void startRecord() {
         prepareRecord();
-        isRecording.set(true);
         mediaRecorder.start();
     }
 
-    // 녹음 종료
-    void finishRecord() {
+    @Override
+    public void finishRecord() {
         mediaRecorder.stop();
-        isRecording.set(false);
     }
 
-    // 리소스 해제
-    void releaseRecord() {
-        if (isRecording.get()) {
+
+    @Override
+    public void releaseRecorder() {
+        if(mediaRecorder != null) {
             mediaRecorder.stop();
-            isRecording.set(false);
+            mediaRecorder.release();
+            mediaRecorder = null;
         }
-        mediaRecorder.release();
     }
 
-    // 파일 경로 반환
-    String getFilePath() {
+    @NonNull
+    @Override
+    public String getFilePath() {
         return filePath;
     }
 
-    // 녹음 상태 반환
-    boolean isRecordingNow() {
-        return isRecording.get();
-    }
-
-    // 녹음 사전 준비 (순서 유의)
-    private void prepareRecord() {
-
+    @Override
+    public void prepareRecord() {
         if (mediaRecorder == null) {
             mediaRecorder = new MediaRecorder();
         }

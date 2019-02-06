@@ -8,7 +8,9 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.Memory;
 import team_h.boostcamp.myapplication.model.Recommendation;
@@ -18,10 +20,10 @@ public interface AppDao {
 
     // Diary 관련
     @Query("SELECT * FROM diary LIMIT 10")
-    List<Diary> loadMoreDiary();
+    Single<List<Diary>> loadMoreDiary();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertDiary(Diary ...diaries);
+    Completable insertDiary(Diary ...diaries);
 
     @Delete
     void deleteDiary(Diary diary);

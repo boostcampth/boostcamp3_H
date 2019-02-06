@@ -18,7 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import team_h.boostcamp.myapplication.R;
+import team_h.boostcamp.myapplication.data.remote.deepaffects.DeepAffectApiClient;
+import team_h.boostcamp.myapplication.data.repository.DiaryRepository;
 import team_h.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
+import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 import team_h.boostcamp.myapplication.utils.KeyPadUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
@@ -42,15 +45,12 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        MediaRecorderWrapper mediaRecorderWrapper = new MediaRecorderWrapper();
+        initPresenter();
+        initView();
 
-        presenter = new DiaryPresenter(this, AppDatabase.getInstance(context), mediaRecorderWrapper);
         binding.setPresenter(presenter);
-        binding.setRecorder(mediaRecorderWrapper);
 
         compositeDisposable = new CompositeDisposable();
-
-        initView();
 
         return binding.getRoot();
     }
@@ -61,7 +61,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
     }
@@ -69,6 +69,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     @Override
     public void onDetach() {
         super.onDetach();
+        presenter.onViewDetached();
         context = null;
         presenter = null;
         compositeDisposable.clear();
@@ -95,8 +96,13 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
-    public void showDiaryItemSaved() {
+    public void showDiaryItemSaveFail() {
+        showToastMessage(R.string.item_record_save_fail);
+    }
 
+    @Override
+    public void showDiaryItemSaved() {
+        showToastMessage(R.string.item_record_save_success);
     }
 
     @Override
@@ -104,19 +110,27 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         KeyPadUtil.closeKeyPad(context, binding.etItemRecordInput);
     }
 
+    @Override
+    public void addSavedDiaryItem(@NonNull Diary diary) {
+        // Adapter 에 데이터 저장하기
+    }
+
     private void showToastMessage(int stringId) {
         Toast.makeText(context, getString(stringId), Toast.LENGTH_SHORT).show();
+    }
+
+    private void initPresenter() {
+        presenter = new DiaryPresenter(this,
+                DiaryRepository.getInstance(DeepAffectApiClient.getInstance(),
+                        AppDatabase.getInstance(context).diaryDao()),
+                new DiaryRecorder());
     }
 
     /* View 초기화 */
     private void initView() {
         // Tag RecyclerView, Adapter 설정
         hashTagListAdapter = new HashTagListAdapter(getContext());
-        hashTagListAdapter.setOnItemClickListener((position -> {
-            // Adapter 도 View 라고 생각하면
-            // View 의 동작을 처리해주는 Presenter 는 누구인가 ?
-            hashTagListAdapter.removeItem(position);
-        }));
+        hashTagListAdapter.setItemClickListener(position -> hashTagListAdapter.removeItem(position));
 
         binding.recyclerViewItemRecordTags.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         binding.recyclerViewItemRecordTags.setAdapter(hashTagListAdapter);
