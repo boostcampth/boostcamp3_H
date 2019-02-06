@@ -1,25 +1,20 @@
 package team_h.boostcamp.myapplication.view.alarm;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.app.TimePickerDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityAlarmBinding;
+import team_h.boostcamp.myapplication.utils.SharedPreference;
 import team_h.boostcamp.myapplication.view.BaseActivity;
 
 public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
         AlarmContractor.View, TimePickerDialog.OnTimeSetListener {
-
 
     private AlarmPresenter presenter;
     private Calendar calendar;
@@ -32,15 +27,30 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
         // 람다식
         binding.switchAlarm.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
-                binding.llAlarmTimeLayout.setVisibility(View.VISIBLE);
+                setVisibility(true);
             } else {
-                binding.llAlarmTimeLayout.setVisibility(View.GONE);
+                setVisibility(false);
             }
         });
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        calendar = null;
+        presenter = null;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkState();
+    }
+
     private void initView() {
-        presenter = new AlarmPresenter();
+        SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
+        presenter = new AlarmPresenter(AlarmActivity.this, getApplicationContext());
+        presenter.onViewAttached();
         binding.setActivity(AlarmActivity.this);
     }
 
@@ -55,8 +65,13 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
                 finish();
                 break;
             case R.id.tv_alarm_done_button:
-                // SharedPreference 저장하는 로직.
-                startAlarm(calendar);
+                if (calendar == null) {
+                    showToast("시간을 다시 선택해주세요.");
+                } else {
+                    presenter.setAlarm(calendar);
+                    showToast("알람을 설정하였습니다.");
+                    finish();
+                }
                 break;
             case R.id.btn_alarm_select:
                 TimePickerFragment timePickerFragment = new TimePickerFragment();
@@ -67,7 +82,12 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
 
     @Override
     public void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void updateTimeText(String timeText) {
+        binding.tvAlarmTimeText.setText(timeText);
     }
 
     @Override
@@ -78,28 +98,27 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
         calendar.set(Calendar.SECOND, 0);
 
         this.calendar = calendar;
-        updateTimeText(calendar);
+        presenter.loadCalendar(calendar);
     }
 
-    private void updateTimeText(Calendar calendar) {
-        String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        binding.tvAlarmTimeText.setText(timeText);
-    }
-
-    private void startAlarm(Calendar calendar) {
-        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(AlarmActivity.this, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
-
-        if (Build.VERSION.SDK_INT >= 23) {
-            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    @Override
+    public void checkState() {
+        String time = SharedPreference.getInstance().getPreferencePushTime(null);
+        if (time != null) {
+            setVisibility(true);
+            binding.tvAlarmTimeText.setText(time);
+            binding.switchAlarm.setChecked(true);
         } else {
-            if (Build.VERSION.SDK_INT >= 19) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            }
+            setVisibility(false);
         }
-        alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+    }
+
+    @Override
+    public void setVisibility(boolean isChecked) {
+        if (isChecked) {
+            binding.llAlarmTimeLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.llAlarmTimeLayout.setVisibility(View.GONE);
+        }
     }
 }

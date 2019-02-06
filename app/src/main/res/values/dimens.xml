@@ -13,11 +13,11 @@
 
     <!--textSize-->
     <dimen name="toolbar_title_20sp">20sp</dimen>
-    <dimen name="all_title_34sp">34sp</dimen>
-    <dimen name="sub_title_24sp">24sp</dimen>
-    <dimen name="all_body_16sp">16sp</dimen>
-    <dimen name="all_button_14sp">14sp</dimen>
-    <dimen name="setting_body_14sp">14sp</dimen>
+    <dimen name="all_title_34sp">34dp</dimen>
+    <dimen name="sub_title_24sp">24dp</dimen>
+    <dimen name="all_body_16sp">16dp</dimen>
+    <dimen name="all_button_14sp">14dp</dimen>
+    <dimen name="setting_body_14sp">14dp</dimen>
 
     <!--corner radius-->
     <dimen name="diary_card_corner_radius_10dp">10dp</dimen>

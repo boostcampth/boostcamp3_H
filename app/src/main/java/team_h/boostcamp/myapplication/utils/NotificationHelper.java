@@ -55,7 +55,7 @@ public class NotificationHelper extends ContextWrapper {
         NotificationCompat.Builder builder = new NotificationCompat
                 .Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentTitle("Alarm!")
-                .setContentText("Alarm is Working")
+                .setContentText("일기를 녹음해주세요 :)")
                 .setTicker("상태바 한줄 메시지")
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(res, R.mipmap.ic_launcher))
@@ -64,12 +64,10 @@ public class NotificationHelper extends ContextWrapper {
                 .setWhen(System.currentTimeMillis())
                 .setDefaults(Notification.DEFAULT_ALL);
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             builder.setCategory(Notification.CATEGORY_MESSAGE)
                     .setPriority(Notification.PRIORITY_HIGH);
         }
-
         return builder;
     }
 }

@@ -10,6 +10,7 @@ import java.util.Calendar;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import team_h.boostcamp.myapplication.R;
 
 public class TimePickerFragment extends DialogFragment {
 
@@ -20,7 +21,7 @@ public class TimePickerFragment extends DialogFragment {
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 
-        return new TimePickerDialog(getActivity(),
+        return new TimePickerDialog(getActivity(), R.style.CustomTimePickerDialogTheme,
                 (TimePickerDialog.OnTimeSetListener) getActivity(), hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
     }
