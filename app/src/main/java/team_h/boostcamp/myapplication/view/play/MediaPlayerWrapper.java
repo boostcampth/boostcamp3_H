@@ -1,9 +1,7 @@
 package team_h.boostcamp.myapplication.view.play;
 
 import android.media.MediaPlayer;
-import android.os.Environment;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.List;
@@ -31,10 +29,9 @@ public class MediaPlayerWrapper {
 
         if (!playing) {
             try {
-                Log.d(TAG, "playList: ~~~~~" + playList.get(0).getRecordFilePath());
-                Log.d(TAG, "playList: ~~~~~" + Environment.getExternalStorageDirectory()+"/Download/first.mp3");
+                playing = true;
                 mediaPlayer.reset();
-                mediaPlayer.setDataSource(Environment.getExternalStorageDirectory()+"/Download/first.mp3");
+                mediaPlayer.setDataSource(playList.get(0).getRecordFilePath());
                 mediaPlayer.prepare();
             } catch (IOException e) {
                 Log.d(TAG, "playList: IOException" + e.getStackTrace());
@@ -46,7 +43,6 @@ public class MediaPlayerWrapper {
 
                     try {
                         mediaPlayer.reset();
-                        Log.d(TAG, "playList: " + count + " " + playList.get(count).getRecordFilePath());
                         mediaPlayer.setDataSource(playList.get(count).getRecordFilePath());
                         mediaPlayer.prepare();
                     } catch (IOException e) {
@@ -68,15 +64,15 @@ public class MediaPlayerWrapper {
     }
 
     void stopList() {
-
-        if(playing){
+        if (playing) {
+            Log.d(TAG, "stopList: ");
             count = 0;
             mediaPlayer.stop();
             playing = false;
         }
     }
 
-    boolean isPlaying(){
+    boolean isPlaying() {
         return playing;
     }
 

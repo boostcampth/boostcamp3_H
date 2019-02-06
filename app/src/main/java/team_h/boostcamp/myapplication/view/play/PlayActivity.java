@@ -68,8 +68,15 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.stopPlay();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.onViewDetached();
         presenter = null;
     }
 }

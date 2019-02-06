@@ -11,8 +11,8 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/all_body_16sp"
-            app:cardCornerRadius="10dp"
+            android:layout_margin="@dimen/all_body_16dp"
+            app:cardCornerRadius="@dimen/card_view_radius"
             app:cardElevation="@dimen/card_elevation">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,8 +24,8 @@
                     style="@style/SubTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="@dimen/title_margin_left"
+                    android:layout_marginTop="@dimen/title_margin_left"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Happy in January" />
@@ -45,7 +45,7 @@
                     android:id="@+id/iv_close"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginRight="@dimen/title_margin_right"
                     android:src="@drawable/ic_memories_close"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_play"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -55,10 +55,10 @@
                     android:id="@+id/rv_diary"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="@dimen/title_margin_left"
+                    android:layout_marginTop="@dimen/layout_gutter"
+                    android:layout_marginRight="@dimen/title_margin_right"
+                    android:layout_marginBottom="@dimen/layout_margin"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
