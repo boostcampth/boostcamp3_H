@@ -8,6 +8,7 @@ import android.widget.Toast;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
+import team_h.boostcamp.myapplication.view.alarm.AlarmActivity;
 
 public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
 

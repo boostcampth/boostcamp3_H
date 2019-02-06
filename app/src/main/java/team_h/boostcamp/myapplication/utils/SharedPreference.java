@@ -12,61 +12,61 @@ public class SharedPreference {
     private SharedPreferences mPreferences;
 
     // Constructor
-    private SharedPreference(){
+    private SharedPreference() {
 
     }
 
     // getInstance()
-    public static SharedPreference getInstance(){
+    public static SharedPreference getInstance() {
         return LazyHolder.INSTANCE;
     }
 
-    public void loadSharedPreference(Context context){
+    public void loadSharedPreference(Context context) {
         getPreference(context);
     }
 
-    public void getPreference(Context context){
-        if(mPreferences == null){
+    public void getPreference(Context context) {
+        if (mPreferences == null) {
             mPreferences = context.getSharedPreferences(TEAM_H, Context.MODE_PRIVATE);
         }
     }
 
-    public void setPreferencePassword(String password){
+    public void setPreferencePassword(String password) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putString(PREF_PASSWORD,password);
+        editor.putString(PREF_PASSWORD, password);
         editor.commit();
     }
 
-    public String getPreferencePassword(String defaultPassword){
+    public String getPreferencePassword(String defaultPassword) {
         return mPreferences.getString(PREF_PASSWORD, defaultPassword);
     }
 
-    public String getPreferencePassword(){
+    public String getPreferencePassword() {
         return getPreferencePassword("");
     }
 
-    public void setPreferencePushTime(int pushTime){
+    public void setPreferencePushTime(String pushTime) {
         SharedPreferences.Editor editor = mPreferences.edit();
-        editor.putInt(PREF_PUSH_TIME, pushTime);
+        editor.putString(PREF_PUSH_TIME, pushTime);
         editor.commit();
     }
 
-    public int getPreferencePushTime(int defaultPushTime){
-        return mPreferences.getInt(PREF_PUSH_TIME, defaultPushTime);
+    public String getPreferencePushTime(String defaultPushTime) {
+        return mPreferences.getString(PREF_PUSH_TIME, defaultPushTime);
     }
 
-    public int getPreferencePushTime(){
-        return getPreferencePushTime(0);
+    public String getPreferencePushTime() {
+        return getPreferencePushTime(null);
     }
 
-    public void removeAllData(){
+    public void removeAllData() {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.clear();
         editor.commit();
     }
 
     // LazyHolder 클래스 - 싱글톤
-    private static class LazyHolder{
+    private static class LazyHolder {
         public static final SharedPreference INSTANCE = new SharedPreference();
     }
 }

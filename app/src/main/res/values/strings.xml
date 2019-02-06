@@ -67,4 +67,5 @@
     <!--Toolbar title-->
     <string name="main_toolbar_diary_title">Todays</string>
     <string name="main_toolbar_graph_title">Statics</string>
+
 </resources>
