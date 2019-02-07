@@ -3,6 +3,7 @@ package team_h.boostcamp.myapplication.view.password;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityPasswordBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
@@ -41,7 +42,7 @@ public class PasswordActivity extends BaseActivity<ActivityPasswordBinding> impl
     }
 
     @Override
-    public void showToast(String message) {
+    public void showToast(@NonNull String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
