@@ -9,6 +9,7 @@ import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import team_h.boostcamp.myapplication.view.BaseActivity;
 import team_h.boostcamp.myapplication.view.alarm.AlarmActivity;
+import team_h.boostcamp.myapplication.view.password.PasswordActivity;
 
 public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
 
@@ -35,6 +36,7 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
                 startActivity(new Intent(SettingActivity.this, AlarmActivity.class));
                 break;
             case R.id.rl_setting_password:
+                startActivity(new Intent(SettingActivity.this, PasswordActivity.class));
                 break;
             case R.id.rl_setting_login:
                 showToast("Login 준비 중");
