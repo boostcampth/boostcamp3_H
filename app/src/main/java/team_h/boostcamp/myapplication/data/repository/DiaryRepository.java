@@ -14,7 +14,7 @@ import team_h.boostcamp.myapplication.model.source.local.DiaryDao;
 
 
 /*
- * Repository 를 data/repository 로 하는 것도  */
+ * Repository 를 data/repository + 가공까지 ! */
 public class DiaryRepository implements DiaryRepositoryContract {
 
     private static DiaryRepository INSTANCE;
@@ -41,8 +41,8 @@ public class DiaryRepository implements DiaryRepositoryContract {
 
     @NonNull
     @Override
-    public Single<List<Diary>> loadMoreDiaryItems() {
-        return diaryDao.loadMoreDiary().subscribeOn(Schedulers.io());
+    public Single<List<Diary>> loadMoreDiaryItems(final int idx) {
+        return diaryDao.loadMoreDiary(idx).subscribeOn(Schedulers.io());
     }
 
     @NonNull
@@ -57,13 +57,9 @@ public class DiaryRepository implements DiaryRepositoryContract {
         return diaryDao.insertDiary(diaryItem).subscribeOn(Schedulers.io());
     }
 
-    /* 사실 이 작업을 Repository 에서 해야하는지 잘 모르겠습니다.
-    *  Repository 에서는 데이터 저장 삭제 불러오기 등.. 과 관련한 연산만 수행해야한다고 생각하는데
-    *  감정 분석까지 Repository 에서 수행하는게 맞는건지.. */
     @NonNull
     @Override
     public Single<Integer> analyzeVoiceEmotion(@NonNull EmotionAnalyzeRequest request) {
-        // repository 에서 map 을 통해 데이터 변경
         return deepAffectApiClient.analyzeVoiceEmotion(request)
                 .map(AnalyzedEmotionMapper::parseAnalyzedEmotion)
                 .subscribeOn(Schedulers.io());

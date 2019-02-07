@@ -4,8 +4,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import team_h.boostcamp.myapplication.model.Diary;
-import team_h.boostcamp.myapplication.view.BasePresenter;
-import team_h.boostcamp.myapplication.view.BaseView;
 
 public interface DiaryContract {
     interface View {
@@ -25,13 +23,14 @@ public interface DiaryContract {
         /* 감정 분석 실패 */
         void showEmotionAnalyzeFailMessage();
 
-        /* 저장 성공 */
+        /* 저장 성공 + 알려주면 ADAPTER 에서 가져오기 + 저장 VIEW 없애기 */
         void showDiaryItemSaved();
 
         /* 저장 실패 */
         void showDiaryItemSaveFail();
 
-        void addSavedDiaryItem(@NonNull Diary diary);
+        /* 불러온 아이템 넘겨주기 */
+        void showMoreDiaryItems(@NonNull List<Diary> diaryList);
     }
 
     interface Presenter {
@@ -43,5 +42,8 @@ public interface DiaryContract {
 
         /* View 가 없어질 때 */
         void onViewDetached();
+
+        /* 아이템 불러오기 */
+        void loadMoreDiaryItems();
     }
 }

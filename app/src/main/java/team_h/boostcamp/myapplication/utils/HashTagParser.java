@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class HashTagParser {
+import androidx.annotation.NonNull;
+
+class HashTagParser {
 
     /**
      * hashtag string format "#hashtag_#hashtag2"
      */
-
-    public static List<String> StringToList(String hashTagString){
+    @NonNull
+    static List<String> StringToList(@NonNull String hashTagString){
         return new ArrayList(Arrays.asList(hashTagString.split(" ")));
     }
 }

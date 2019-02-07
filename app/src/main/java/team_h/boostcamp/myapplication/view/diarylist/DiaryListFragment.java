@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,8 +32,10 @@ import team_h.boostcamp.myapplication.view.BaseFragment;
 public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> implements DiaryContract.View {
 
     private Context context;
-    private DiaryPresenter presenter;
+    private DiaryPresenterImpl presenter;
+
     private HashTagListAdapter hashTagListAdapter;
+    private DiaryListAdapter diaryListAdapter;
 
     private CompositeDisposable compositeDisposable;
 
@@ -49,6 +54,8 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         initView();
 
         binding.setPresenter(presenter);
+
+        presenter.loadMoreDiaryItems();
 
         compositeDisposable = new CompositeDisposable();
 
@@ -81,19 +88,13 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
-    public void showEmotionNotSelectedMessage() {
-        showToastMessage(R.string.item_record_no_emotion_selected);
-    }
+    public void showEmotionNotSelectedMessage() { showToastMessage(R.string.item_record_no_emotion_selected); }
 
     @Override
-    public void showRecordNotFinishedMessage() {
-        showToastMessage(R.string.item_record_now_recording);
-    }
+    public void showRecordNotFinishedMessage() { showToastMessage(R.string.item_record_now_recording); }
 
     @Override
-    public void showEmotionAnalyzeFailMessage() {
-        showToastMessage(R.string.item_record_emotion_analyze_fail);
-    }
+    public void showEmotionAnalyzeFailMessage() { showToastMessage(R.string.item_record_emotion_analyze_fail); }
 
     @Override
     public void showDiaryItemSaveFail() {
@@ -111,8 +112,8 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
-    public void addSavedDiaryItem(@NonNull Diary diary) {
-        // Adapter 에 데이터 저장하기
+    public void showMoreDiaryItems(@NonNull List<Diary> diaryList) {
+        diaryListAdapter.addDiaryItems(diaryList);
     }
 
     private void showToastMessage(int stringId) {
@@ -120,26 +121,43 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     private void initPresenter() {
-        presenter = new DiaryPresenter(this,
+        presenter = new DiaryPresenterImpl(this,
                 DiaryRepository.getInstance(DeepAffectApiClient.getInstance(),
                         AppDatabase.getInstance(context).diaryDao()),
-                new DiaryRecorder());
+                new DiaryRecorderImpl());
     }
 
     /* View 초기화 */
     private void initView() {
         // Tag RecyclerView, Adapter 설정
-        hashTagListAdapter = new HashTagListAdapter(getContext());
+        hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(position -> hashTagListAdapter.removeItem(position));
 
-        binding.recyclerViewItemRecordTags.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+        binding.recyclerViewItemRecordTags.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
         binding.recyclerViewItemRecordTags.setAdapter(hashTagListAdapter);
 
-        // 해시태그 입력
+        // DiaryList 설정
+        diaryListAdapter = new DiaryListAdapter(context);
+        diaryListAdapter.setOnRecordItemClickListener(filePath -> { /*재생 구현*/ });
+
+        binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
+        binding.recyclerViewMainList.setAdapter(diaryListAdapter);
+
+        // 무한 스크롤
+        binding.recyclerViewMainList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                if(!recyclerView.canScrollVertically(1)) {
+                    presenter.loadMoreDiaryItems();
+                }
+            }
+        });
+
+        // 해시태그 스페이스 기준으로 입력
         binding.etItemRecordInput.setFilters(new InputFilter[]{
                 (source, start, end, dest, dStart, dEnd) -> {
                     for (int i = start; i < end; ++i) {
-                        if (hashTagListAdapter != null && Character.isSpaceChar(source.charAt(i))) {
+                        if (Character.isSpaceChar(source.charAt(i)) && binding.etItemRecordInput.getText() != null) {
                             hashTagListAdapter.addItem("#" + binding.etItemRecordInput.getText().toString().trim());
                             binding.etItemRecordInput.setText("");
                             return null;
@@ -170,7 +188,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
                             // 에러 출력
                             Log.e("Test", error.getMessage());
                         })
-        ));
+                ));
 
         // 저장 버튼 클릭
         binding.buttonItemRecordDone.setOnClickListener(v -> presenter.saveDiaryItem(hashTagListAdapter.getItemList()));

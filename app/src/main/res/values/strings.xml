@@ -22,9 +22,9 @@
     <string name="emojitest">&#128522;</string>
 
     <string name="mad">😡</string>
-    <string name="bad">😡</string>
+    <string name="bad">😞</string>
     <string name="normal">😐</string>
-    <string name="good">☺</string>
+    <string name="good">😊</string>
     <string name="happy">😍</string>
 
     <!-- Memories fragment -->

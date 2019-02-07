@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="diary"
+            type="team_h.boostcamp.myapplication.model.Diary"/>
     </data>
 
 
@@ -20,7 +22,6 @@
             style="@style/SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/item_record_today"
             android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

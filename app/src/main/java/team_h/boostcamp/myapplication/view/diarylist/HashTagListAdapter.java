@@ -70,7 +70,7 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
         }
     }
 
-    void addItem(String item) {
+    void addItem(@NonNull String item) {
         if (itemList == null) {
             itemList = new ArrayList<>();
         }
@@ -88,7 +88,7 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
 
         ItemHashTagBinding itemHashTagBinding;
 
-        TagHolder(ItemHashTagBinding itemHashTagBinding) {
+        TagHolder(@NonNull ItemHashTagBinding itemHashTagBinding) {
             super(itemHashTagBinding.getRoot());
             this.itemHashTagBinding = itemHashTagBinding;
         }

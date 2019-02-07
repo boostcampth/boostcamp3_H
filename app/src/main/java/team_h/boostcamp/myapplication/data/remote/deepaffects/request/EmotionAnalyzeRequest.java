@@ -20,7 +20,7 @@ public class EmotionAnalyzeRequest {
 
     private final Map<String, String> request;
 
-    public EmotionAnalyzeRequest(String encodedRecord) {
+    public EmotionAnalyzeRequest(@NonNull String encodedRecord) {
         request = new HashMap<>();
         request.put(QUERY_ENCODING, DEFAULT_ENCODING);
         request.put(QUERY_LANGUAGE_CODE, DEFAULT_LANGUAGE_CODE);

@@ -15,8 +15,8 @@ import team_h.boostcamp.myapplication.model.Diary;
 public interface DiaryDao {
 
     // Diary 관련
-    @Query("SELECT * FROM diary LIMIT 10")
-    Single<List<Diary>> loadMoreDiary();
+    @Query("SELECT * FROM diary WHERE id > :idx ORDER BY recordDate DESC LIMIT 10")
+    Single<List<Diary>> loadMoreDiary(final int idx);
 
     @Delete
     Completable deleteDiary(Diary diary);

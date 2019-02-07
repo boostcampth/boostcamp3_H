@@ -9,17 +9,11 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import team_h.boostcamp.myapplication.data.remote.deepaffects.response.EmotionAnalysisResponse;
 
-/*
- * 분석된 감정을 0 - 4 사이의 값으로 매핑하기 위한 툴
- * 아직 레포지토리를 작성하지 않아서 임시로 Util 쪽으로 뺴뒀습니다.
- * 금방 작성하도록 하겠습니다 ㅠㅠ */
 public class AnalyzedEmotionMapper {
 
     private static final int POSITIVE_EMOTION = 1;
     private static final int NEGATIVE_EMOTION = -1;
     private static final int NEUTRAL_EMOTION = 0;
-
-
 
     private static Map<String, Integer> SCORE_MAP;
 
@@ -43,8 +37,6 @@ public class AnalyzedEmotionMapper {
 
         // 기본 기분은 평범으로 설정
         int result = 2;
-
-        // 현재는 테스트 용도 -> 추후 수정
 
         int totalTime = 0;
         int totalScore = 0;
@@ -78,7 +70,7 @@ public class AnalyzedEmotionMapper {
             result = 4;
         }
 
-        Log.e("Test TotalScore : ", totalScore + " TotalTime : " + totalTime + " Emotion : " + result);
+        Log.d("Test TotalScore : ", totalScore + " TotalTime : " + totalTime + " Emotion : " + result);
 
         return result;
     }
