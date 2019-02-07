@@ -53,6 +53,9 @@ public interface AppDao {
     @Query("SELECT * FROM diary WHERE id=:diaryId")
     Single<Diary> loadSelectedDiary(int diaryId);
 
+    @Query("SELECT diary.* FROM diary, recommended WHERE recommended.memoryId=:memoryId AND recommended.diaryId == diary.id")
+    Single<List<Diary>> loadSelectedDiayLista(int memoryId);
+
     // Graph 관련
     @Query("SELECT diary.tags, diary.selectedEmotion, diary.analyzedEmotion " +
             "FROM diary WHERE diary.recordDate > :start AND diary.recordDate < :end")

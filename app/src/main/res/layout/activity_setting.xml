@@ -70,7 +70,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_alarm"
-                android:textSize="@dimen/setting_body_14sp" />
+                android:textSize="@dimen/setting_body_14dp" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -107,7 +107,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_password"
-                android:textSize="@dimen/setting_body_14sp" />
+                android:textSize="@dimen/setting_body_14dp" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -143,7 +143,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_login"
-                android:textSize="@dimen/setting_body_14sp" />
+                android:textSize="@dimen/setting_body_14dp" />
 
             <ImageView
                 android:layout_width="20dp"
@@ -181,7 +181,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_logout"
-                android:textSize="@dimen/setting_body_14sp" />
+                android:textSize="@dimen/setting_body_14dp" />
 
             <ImageView
                 android:layout_width="20dp"

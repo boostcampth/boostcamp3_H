@@ -12,16 +12,16 @@
     <dimen name="dialog_elevation">24dp</dimen>
 
     <!--textSize-->
-    <dimen name="toolbar_title_20sp">20sp</dimen>
-    <dimen name="all_title_34sp">34dp</dimen>
-    <dimen name="sub_title_24sp">24dp</dimen>
-    <dimen name="all_body_16sp">16dp</dimen>
-    <dimen name="all_button_14sp">14dp</dimen>
-    <dimen name="setting_body_14sp">14dp</dimen>
+    <dimen name="toolbar_title_20dp">20dp</dimen>
+    <dimen name="all_title_34dp">34dp</dimen>
+    <dimen name="sub_title_24dp">24dp</dimen>
+    <dimen name="all_body_16dp">16dp</dimen>
+    <dimen name="all_button_14dp">14dp</dimen>
+    <dimen name="setting_body_14dp">14dp</dimen>
 
     <!--corner radius-->
     <dimen name="diary_card_corner_radius_10dp">10dp</dimen>
-    <dimen name="card_view_radius">15dp</dimen>
+    <dimen name="card_view_radius">20dp</dimen>
 
     <!-- Emoji Default -->
     <dimen name="diary_emoji_min">60dp</dimen>

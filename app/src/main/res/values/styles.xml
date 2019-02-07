@@ -11,7 +11,7 @@
 
     <style name="Title">
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/all_title_34sp</item>
+        <item name="android:textSize">@dimen/all_title_34dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginLeft">@dimen/title_margin_left</item>
         <item name="android:layout_marginRight">@dimen/title_margin_right</item>
@@ -20,7 +20,7 @@
 
     <style name="SubTitle">
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/sub_title_24sp</item>
+        <item name="android:textSize">@dimen/sub_title_24dp</item>
         <item name="android:layout_marginLeft">@dimen/title_margin_left</item>
         <item name="android:layout_marginRight">@dimen/title_margin_right</item>
         <item name="android:layout_marginTop">@dimen/layout_gutter</item>
@@ -46,9 +46,20 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="CustomTimePickerDialogTheme" parent="@style/ThemeOverlay.AppCompat.Dialog.Alert">
+<!--
+    <style name="CustomTimePickerDialogTheme" parent="@android:style/Theme.Holo.Light">
         <item name="colorAccent">@color/all_purple</item>
         <item name="colorControlActivated">@color/all_purple</item>
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:colorControlNormal">@color/black</item>
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
+-->
+
+    <style name="CustomTimePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:colorAccent">@color/all_purple</item>
+        <item name="android:colorPrimary">@color/all_purple</item>
+        <item name="android:colorPrimaryDark">@color/all_purple</item>
+        <item name="android:numbersTextColor">@color/black</item>
+        <item name="colorControlActivated">@color/all_purple</item>
     </style>
 </resources>

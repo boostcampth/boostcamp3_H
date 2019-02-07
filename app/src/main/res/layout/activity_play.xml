@@ -84,6 +84,7 @@
             android:layout_marginEnd="@dimen/layout_margin"
             android:layout_marginRight="@dimen/layout_margin"
             android:text="@string/play"
+            android:onClick="@{activity::onPlayButtonClicked}"
             android:textColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
