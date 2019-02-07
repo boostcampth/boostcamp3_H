@@ -37,6 +37,7 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.onViewDetached();
         calendar = null;
         presenter = null;
     }
