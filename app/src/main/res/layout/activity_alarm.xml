@@ -8,6 +8,10 @@
         <variable
             name="activity"
             type="team_h.boostcamp.myapplication.view.alarm.AlarmActivity" />
+
+        <variable
+            name="handlers"
+            type="team_h.boostcamp.myapplication.view.Handlers" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,47 +19,10 @@
         android:layout_height="match_parent"
         tools:context=".view.alarm.AlarmActivity">
 
-        <RelativeLayout
-            android:id="@+id/rl_alarm_toolbar"
-            android:layout_width="0dp"
-            android:layout_height="?actionBarSize"
-            android:background="@android:color/white"
-            android:elevation="2dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/iv_alarm_back_button"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/layout_margin"
-                android:onClick="@{v -> activity.onClickButton(v.getId())}"
-                android:src="@drawable/back_button" />
-
-            <TextView
-                android:id="@+id/tv_alarm_title"
-                style="@style/SubTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="알람" />
-
-            <TextView
-                android:id="@+id/tv_alarm_done_button"
-                style="@style/TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/layout_margin"
-                android:onClick="@{v -> activity.onClickButton(v.getId())}"
-                android:text="Done" />
-
-
-        </RelativeLayout>
+        <include
+            layout="@layout/toolbar_layout"
+            app:handlers="@{handlers}"
+            app:title="@{@string/alarm_title}" />
 
         <Switch
             android:id="@+id/switch_alarm"
@@ -84,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="알람을 설정해주세요."
+                android:text="@string/alarm_explain"
                 app:layout_constraintEnd_toStartOf="@+id/btn_alarm_select"
                 app:layout_constraintStart_toEndOf="@+id/switch_alarm" />
 

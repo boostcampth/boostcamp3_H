@@ -5,16 +5,20 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
+import team_h.boostcamp.myapplication.R;
+import team_h.boostcamp.myapplication.utils.ResourceSendUtil;
 import team_h.boostcamp.myapplication.utils.SharedPreference;
 
 public class AlarmPresenter implements AlarmContractor.Presenter {
 
     private AlarmContractor.View view;
     private Context context;
+    private ResourceSendUtil resourceSendUtil;
 
     AlarmPresenter(AlarmContractor.View view, Context context) {
         this.view = view;
@@ -24,6 +28,7 @@ public class AlarmPresenter implements AlarmContractor.Presenter {
     @Override
     public void onViewAttached() {
         SharedPreference.getInstance().loadSharedPreference(context);
+        resourceSendUtil = new ResourceSendUtil(context);
     }
 
     @Override
@@ -65,6 +70,17 @@ public class AlarmPresenter implements AlarmContractor.Presenter {
         // SharedPreference 저장하는 로직. String으로 저장.
         String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
         SharedPreference.getInstance().setPreferencePushTime(timeText);
+    }
+
+    @Override
+    public void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(context, AlertReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
+
+        alarmManager.cancel(pendingIntent);
+        Toast.makeText(context, "아랆 취소함~~",Toast.LENGTH_SHORT).show();
+        view.updateTimeText(resourceSendUtil.getString(R.string.alarm_explain));
     }
 
     @Override

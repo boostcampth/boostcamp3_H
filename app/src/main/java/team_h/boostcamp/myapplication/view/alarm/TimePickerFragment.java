@@ -14,6 +14,15 @@ import team_h.boostcamp.myapplication.R;
 
 public class TimePickerFragment extends DialogFragment {
 
+    // default 생성자.
+    public TimePickerFragment(){
+
+    }
+
+    static TimePickerFragment newInstance(){
+        return new TimePickerFragment();
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

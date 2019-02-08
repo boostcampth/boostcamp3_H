@@ -96,4 +96,8 @@
     <string name="password_change_text">변경 비밀번호</string>
     <string name="password_check_text">비밀번호 확인</string>
 
+
+    <!--Alarm-->
+    <string name="alarm_title">알람</string>
+    <string name="alarm_explain">알람을 설정해주세요.</string>
 </resources>
