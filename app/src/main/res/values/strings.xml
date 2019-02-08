@@ -18,6 +18,26 @@
     <string name="item_record_now_recording">일기 작성을 마쳐주세요 !</string>
     <string name="item_record_save_fail">일기 저장을 실패하였습니다.</string>
     <string name="item_record_save_success">일기 저장에 성공하였습니다.</string>
+    <string name="item_record_time_out">최대 녹음 시간을 초과하셨습니다 ! 자동으로 종료됩니다 !</string>
+
+    <string-array name="month">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+
+
+
+
 
     <string name="emojitest">&#128522;</string>
 

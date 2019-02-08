@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.model.source.local;
+package team_h.boostcamp.myapplication.data.room.dao;
 
 import java.util.List;
 
@@ -11,12 +11,16 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import team_h.boostcamp.myapplication.model.Diary;
 
+/*
+ * DiaryDao 관련 */
 @Dao
 public interface DiaryDao {
 
-    // Diary 관련
-    @Query("SELECT * FROM diary WHERE id > :idx ORDER BY recordDate DESC LIMIT 10")
-    Single<List<Diary>> loadMoreDiary(final int idx);
+    @Query("SELECT * FROM diary WHERE timeStamp < :timeStamp ORDER BY timeStamp DESC LIMIT 3")
+    Single<List<Diary>> loadMoreDiary(final long timeStamp);
+
+    @Query("DELETE FROM diary")
+    void deleteAll();
 
     @Delete
     Completable deleteDiary(Diary diary);

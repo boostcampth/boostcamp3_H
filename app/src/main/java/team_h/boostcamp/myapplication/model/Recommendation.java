@@ -22,14 +22,13 @@ import static androidx.room.ForeignKey.CASCADE;
                 parentColumns = "id",
                 childColumns = "memoryId",
                 onDelete = CASCADE)
-}) // Search 를 빠르게 하기위해 Index 걸어두기
+})
 public class Recommendation {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
 
-    // 이화중님 수정
     @ColumnInfo(name = "memoryId")
     private int memoryId;
 

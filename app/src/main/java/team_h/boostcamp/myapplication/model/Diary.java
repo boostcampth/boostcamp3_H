@@ -37,19 +37,26 @@ public class Diary {
     @ColumnInfo(name = "analyzedEmotion")
     private final int analyzedEmotion;
 
+    // TimeStamp 추가
+    @ColumnInfo(name = "timeStamp")
+    private final long timeStamp;
+
     public Diary(int id,
                  @NonNull String recordDate,
                  @NonNull String recordFilePath,
                  @NonNull String tags,
-                 int selectedEmotion,
-                 int analyzedEmotion) {
+                 final int selectedEmotion,
+                 final int analyzedEmotion,
+                 final long timeStamp) {
         this.id = id;
         this.recordDate = recordDate;
         this.recordFilePath = recordFilePath;
         this.tags = tags;
         this.selectedEmotion = selectedEmotion;
         this.analyzedEmotion = analyzedEmotion;
+        this.timeStamp = timeStamp;
     }
+
     /*최대한 안바뀌게 -> final */
     public int getId() {
         return id;
@@ -76,5 +83,9 @@ public class Diary {
 
     public int getAnalyzedEmotion() {
         return analyzedEmotion;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
     }
 }
