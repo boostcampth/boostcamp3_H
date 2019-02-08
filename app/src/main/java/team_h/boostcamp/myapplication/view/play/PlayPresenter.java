@@ -44,17 +44,17 @@ public class PlayPresenter implements PlayContractor.Presenter {
     }
 
     @Override
-    public void playDiaryList() {
+    public void playMemory() {
         if (!recordPlayer.isPlaying()) {
             recordPlayer.playList();
             view.makeToast("일기를 재생합니다.");
         } else {
-            stopDiaryList();
+            stopMemory();
         }
     }
 
     @Override
-    public void stopDiaryList() {
+    public void stopMemory() {
         if(recordPlayer.isPlaying()){
             recordPlayer.stopList();
             view.makeToast("재생을 정지합니다.");

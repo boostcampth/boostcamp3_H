@@ -17,8 +17,8 @@ public interface PlayContractor {
     interface Presenter extends BasePresenter {
 
         void loadData(int MemoryId);
-        void playDiaryList();
-        void stopDiaryList();
+        void playMemory();
+        void stopMemory();
 
     }
 }

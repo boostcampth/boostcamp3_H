@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_left"
             android:layout_marginTop="@dimen/layout_margin"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="@dimen/layout_margin"
             android:text="test"
             android:textColor="@color/white"
             app:layout_constraintEnd_toStartOf="@+id/btn_close"

@@ -36,7 +36,7 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.stopDiaryList();
+        presenter.stopMemory();
     }
 
     @Override
@@ -88,7 +88,7 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     public void onPlayButtonClicked(View view) {
-        presenter.playDiaryList();
+        presenter.playMemory();
     }
 
     @Override
