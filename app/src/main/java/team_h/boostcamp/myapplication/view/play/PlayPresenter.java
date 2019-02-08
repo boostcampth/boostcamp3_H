@@ -6,16 +6,14 @@ import io.reactivex.schedulers.Schedulers;
 import team_h.boostcamp.myapplication.model.source.local.AppDatabase;
 
 public class PlayPresenter implements PlayContractor.Presenter {
-    private static final String TAG = "PlayPresenter";
     private PlayContractor.View view;
     private AppDatabase appDatabase;
-    private PlayDiaryAdapter playDiaryAdapter;
-    private MediaPlayerWrapper mediaPlayerWrapper;
+    private RecordPlayer recordPlayer;
     private CompositeDisposable compositeDisposable;
 
-    PlayPresenter(AppDatabase appDatabase, MediaPlayerWrapper mediaPlayerWrapper, PlayContractor.View view) {
+    PlayPresenter(AppDatabase appDatabase, RecordPlayerImpl recordPlayer, PlayContractor.View view) {
         this.appDatabase = appDatabase;
-        this.mediaPlayerWrapper = mediaPlayerWrapper;
+        this.recordPlayer = recordPlayer;
         this.view = view;
         compositeDisposable = new CompositeDisposable();
     }
@@ -27,37 +25,40 @@ public class PlayPresenter implements PlayContractor.Presenter {
 
     @Override
     public void onViewDetached() {
-        mediaPlayerWrapper.stopList();
-        mediaPlayerWrapper = null;
+        recordPlayer.stopList();
+        recordPlayer = null;
         appDatabase = null;
     }
 
-    public void setPlayDiaryAdapter(PlayDiaryAdapter playDiaryAdapter) {
-        this.playDiaryAdapter = playDiaryAdapter;
-    }
-
+    @Override
     public void loadData(int MemoryId) {
         compositeDisposable.add(
                 appDatabase.appDao().loadSelectedDiayLista(MemoryId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(list -> {
-                            playDiaryAdapter.addItems(list);
-                            mediaPlayerWrapper.setPlayList(list);
+                            view.setDiaryList(list);
+                            recordPlayer.setList(list);
                         })
         );
     }
 
-    public void onPlayDiaryList() {
-        if (!mediaPlayerWrapper.isPlaying()) {
-            mediaPlayerWrapper.playList();
+    @Override
+    public void playMemory() {
+        if (!recordPlayer.isPlaying()) {
+            recordPlayer.playList();
+            view.makeToast("일기를 재생합니다.");
         } else {
-            mediaPlayerWrapper.stopList();
+            stopMemory();
         }
     }
 
-    void stopPlay() {
-        mediaPlayerWrapper.stopList();
+    @Override
+    public void stopMemory() {
+        if(recordPlayer.isPlaying()){
+            recordPlayer.stopList();
+            view.makeToast("재생을 정지합니다.");
+        }
     }
 
 }

@@ -20,8 +20,9 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     private static final String TAG = "PlayActivity";
     private static final String EXTRA_MEMORY = "memory";
 
-    private PlayPresenter presenter;
+    private PlayContractor.Presenter presenter;
     private Memory memory;
+    private PlayDiaryAdapter playDiaryAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +31,12 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
         memory = getIntent().getParcelableExtra(EXTRA_MEMORY);
 
         initViews();
-
-        binding.tvTitle.setText(memory.getTitle());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.stopPlay();
+        presenter.stopMemory();
     }
 
     @Override
@@ -54,7 +53,7 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
 
     @Override
     public void setDiaryList(List<Diary> diaryList) {
-        //adpater에 add한다.
+        playDiaryAdapter.addItems(diaryList);
     }
 
     private void initViews() {
@@ -68,10 +67,9 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     private void initRecyclerView() {
-        PlayDiaryAdapter adapter = new PlayDiaryAdapter(getApplicationContext());
+        playDiaryAdapter = new PlayDiaryAdapter(getApplicationContext());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        binding.recyclerView.setAdapter(adapter);
-        presenter.setPlayDiaryAdapter(adapter);
+        binding.recyclerView.setAdapter(playDiaryAdapter);
 
         presenter.loadData(memory.getId());
     }
@@ -79,7 +77,7 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     private void initPresenter() {
         presenter = new PlayPresenter(
                 AppDatabase.getInstance(getApplicationContext()),
-                MediaPlayerWrapper.getINSTANCE(),
+                RecordPlayerImpl.getINSTANCE(),
                 this);
     }
 
@@ -90,7 +88,7 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     public void onPlayButtonClicked(View view) {
-        presenter.onPlayDiaryList();
+        presenter.playMemory();
     }
 
     @Override
