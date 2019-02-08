@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import team_h.boostcamp.myapplication.R;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.DeepAffectApiClient;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import team_h.boostcamp.myapplication.data.repository.DiaryRepository;
 import team_h.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import team_h.boostcamp.myapplication.model.Diary;
@@ -30,6 +29,8 @@ import team_h.boostcamp.myapplication.utils.KeyPadUtil;
 import team_h.boostcamp.myapplication.view.BaseFragment;
 
 public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> implements DiaryContract.View {
+
+    private static final String TAG = "DiaryListFragment";
 
     private Context context;
     private DiaryPresenterImpl presenter;
@@ -51,12 +52,13 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         super.onCreateView(inflater, container, savedInstanceState);
 
         initPresenter();
-        initView();
 
         binding.setPresenter(presenter);
 
-        presenter.loadMoreDiaryItems();
+        initView();
 
+        // 저장된 아이템 10개만 들고오기
+        presenter.loadMoreDiaryItems();
         compositeDisposable = new CompositeDisposable();
 
         return binding.getRoot();
@@ -76,7 +78,9 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     @Override
     public void onDetach() {
         super.onDetach();
-        presenter.onViewDetached();
+        if (presenter != null) {
+            presenter.onViewDetached();
+        }
         context = null;
         presenter = null;
         compositeDisposable.clear();
@@ -88,13 +92,19 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
-    public void showEmotionNotSelectedMessage() { showToastMessage(R.string.item_record_no_emotion_selected); }
+    public void showEmotionNotSelectedMessage() {
+        showToastMessage(R.string.item_record_no_emotion_selected);
+    }
 
     @Override
-    public void showRecordNotFinishedMessage() { showToastMessage(R.string.item_record_now_recording); }
+    public void showRecordNotFinishedMessage() {
+        showToastMessage(R.string.item_record_now_recording);
+    }
 
     @Override
-    public void showEmotionAnalyzeFailMessage() { showToastMessage(R.string.item_record_emotion_analyze_fail); }
+    public void showEmotionAnalyzeFailMessage() {
+        showToastMessage(R.string.item_record_emotion_analyze_fail);
+    }
 
     @Override
     public void showDiaryItemSaveFail() {
@@ -112,6 +122,12 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
+    public void clearTagEditText() {
+        binding.etItemRecordInput.setText("");
+        hashTagListAdapter.clearItems();
+    }
+
+    @Override
     public void showMoreDiaryItems(@NonNull List<Diary> diaryList) {
         diaryListAdapter.addDiaryItems(diaryList);
     }
@@ -121,10 +137,19 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     private void initPresenter() {
+
+        final DiaryRecorder diaryRecorder = new DiaryRecorderImpl();
+        // 타임 아웃 리스너 달기
+        diaryRecorder.setMediaRecorderTimeOutListener(() -> {
+            diaryRecorder.finishRecord();
+            showToastMessage(R.string.item_record_time_out);
+            Log.d(TAG, "타임 아웃 !");
+        });
+
+        // 주입
         presenter = new DiaryPresenterImpl(this,
-                DiaryRepository.getInstance(DeepAffectApiClient.getInstance(),
-                        AppDatabase.getInstance(context).diaryDao()),
-                new DiaryRecorderImpl());
+                DiaryRepository.getInstance(DeepAffectApiClient.getInstance(), AppDatabase.getInstance(context).diaryDao()),
+                diaryRecorder);
     }
 
     /* View 초기화 */
@@ -147,7 +172,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         binding.recyclerViewMainList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                if(!recyclerView.canScrollVertically(1)) {
+                if (!recyclerView.canScrollVertically(1)) {
                     presenter.loadMoreDiaryItems();
                 }
             }
@@ -191,6 +216,6 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
                 ));
 
         // 저장 버튼 클릭
-        binding.buttonItemRecordDone.setOnClickListener(v -> presenter.saveDiaryItem(hashTagListAdapter.getItemList()));
+        binding.buttonItemRecordDone.setOnClickListener(v -> presenter.saveDiaryItem(hashTagListAdapter.getTags()));
     }
 }

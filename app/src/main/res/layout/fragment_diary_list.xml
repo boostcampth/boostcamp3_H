@@ -134,7 +134,7 @@
                     android:hint="@string/item_record_hash_tag_hint"
                     android:lines="1"
                     android:padding="10dp"
-                    android:textSize="12sp"
+                    android:textSize="12dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/recycler_view_item_record_tags" />
@@ -178,6 +178,9 @@
             style="@style/DiaryListTheme"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginLeft="@dimen/layout_gutter"
+            android:layout_marginTop="@dimen/layout_gutter"
+            android:layout_marginRight="@dimen/layout_gutter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

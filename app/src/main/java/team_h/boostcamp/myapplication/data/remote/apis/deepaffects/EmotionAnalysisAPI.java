@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.data.remote.deepaffects;
+package team_h.boostcamp.myapplication.data.remote.apis.deepaffects;
 
 
 import java.util.List;
@@ -9,7 +9,7 @@ import io.reactivex.Single;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.response.EmotionAnalysisResponse;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.response.EmotionAnalysisResponse;
 
 /*
  * annotation 을 통해 HTTP Method 호출 */

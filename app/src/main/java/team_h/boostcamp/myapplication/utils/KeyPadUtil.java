@@ -11,6 +11,8 @@ public class KeyPadUtil {
         InputMethodManager inputMethodManager =
                 (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
 
+        editText.clearFocus();
+
         if(inputMethodManager != null) {
             inputMethodManager.hideSoftInputFromWindow(editText.getWindowToken(), InputMethodManager.RESULT_UNCHANGED_SHOWN);
         }

@@ -3,6 +3,7 @@ package team_h.boostcamp.myapplication.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,13 +14,15 @@ import androidx.annotation.IntDef;
  * Created By JongSeong */
 public class NetworkStateUtil {
 
+    private static final String TAG = "NetworkStateUtil";
+
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NETWORK_CONNECTED, NETWORK_NOT_CONNECTED})
 
-    public @interface NetworkState {}
+    @interface NetworkState {}
 
-    public static final int NETWORK_CONNECTED = 1;
-    public static final int NETWORK_NOT_CONNECTED = 2;
+    static final int NETWORK_CONNECTED = 1;
+    static final int NETWORK_NOT_CONNECTED = 2;
 
     private static ConnectivityManager sConnectivityManager = null;
 
@@ -31,8 +34,14 @@ public class NetworkStateUtil {
                     (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         }
 
-        // 연결 상태 확인
-        NetworkInfo networkInfo = sConnectivityManager.getActiveNetworkInfo();
+        NetworkInfo networkInfo = null;
+
+        try {
+            networkInfo = sConnectivityManager.getActiveNetworkInfo();
+        } catch (NullPointerException e) {
+            Log.d(TAG, "Network check util error");
+            e.printStackTrace();
+        }
 
         // 결과 반환
         return networkInfo != null && networkInfo.isConnected() ?

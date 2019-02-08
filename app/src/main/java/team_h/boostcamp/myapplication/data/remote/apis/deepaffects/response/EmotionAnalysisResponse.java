@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.data.remote.deepaffects.response;
+package team_h.boostcamp.myapplication.data.remote.apis.deepaffects.response;
 
 import androidx.annotation.NonNull;
 

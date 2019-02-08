@@ -19,12 +19,10 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     private List<Diary> diaryList;
     private Context context;
     private OnRecordItemClickListener onRecordItemClickListener;
-    private String[] selectedEmotion;
 
     DiaryListAdapter(@NonNull Context context) {
         this.context = context;
         this.diaryList = new ArrayList<>();
-        this.selectedEmotion = context.getResources().getStringArray(R.array.graph_emojis);
     }
 
     void setOnRecordItemClickListener(@NonNull OnRecordItemClickListener onRecordItemClickListener) {
@@ -55,9 +53,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
             );
         }
 
-        holder.itemRecordDiaryBinding.tvItemDiaryDate.setText(diary.getRecordDate());
-        holder.itemRecordDiaryBinding.tvItemDiaryEmotion.setText(selectedEmotion[diary.getSelectedEmotion()]);
-        holder.itemRecordDiaryBinding.tvItemDiaryTags.setText(diary.getTags());
+        holder.itemRecordDiaryBinding.setDiary(diary);
     }
 
     @Override

@@ -6,14 +6,14 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableBoolean;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import team_h.boostcamp.myapplication.R;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.request.EmotionAnalyzeRequest;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import team_h.boostcamp.myapplication.data.repository.DiaryRepository;
 import team_h.boostcamp.myapplication.model.Diary;
 
@@ -31,7 +31,7 @@ public class DiaryPresenterImpl implements DiaryContract.Presenter {
     private CompositeDisposable compositeDisposable;
 
     private int selectedEmotion = -1;
-    private int currentIdx = 0;
+    private long currentIdx = Long.MAX_VALUE;
     private boolean isRecording = false;
     private boolean isLoadingItem = false;
 
@@ -46,6 +46,7 @@ public class DiaryPresenterImpl implements DiaryContract.Presenter {
 
     @Override
     public void onViewDetached() {
+        finishRecording();
         // 화면 종료시 리소스 해제
         diaryRecorderImpl.releaseRecorder();
         // 만약 구독중인 비동기 작업이 있다면 해제
@@ -101,7 +102,7 @@ public class DiaryPresenterImpl implements DiaryContract.Presenter {
     }
 
     @Override
-    public void saveDiaryItem(final List<String> tags) {
+    public void saveDiaryItem(@NonNull final String tags) {
 
         // 현재 녹음중이면 거부
         if (isRecording) {
@@ -133,20 +134,23 @@ public class DiaryPresenterImpl implements DiaryContract.Presenter {
         final String encodedRecordFile = getBase64EncodedFile(file);
         final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest(encodedRecordFile);
 
+        // 인터넷 상태에 따라 감정 분석 할지안할지 결정 -> 추가
         // 분석 후 저장
         compositeDisposable.add(diaryRepository.analyzeVoiceEmotion(request)
                 .doOnError(throwable -> view.showEmotionAnalyzeFailMessage())
                 .map(analyzedEmotion -> new Diary(0,
                         file.getName().split("\\.")[0],
                         diaryRecorderImpl.getFilePath(),
-                        tags.toString(),
+                        tags,
                         selectedEmotion,
-                        analyzedEmotion))
+                        analyzedEmotion,
+                        new Date().getTime() / 1000))
                 .flatMapCompletable(diaryRepository::insertRecordItem)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                             Log.d(TAG, "저장 성공");
                             view.showDiaryItemSaved();
+                            view.clearTagEditText();
                             isSaving.set(false);
                         }
                         , throwable -> {
@@ -165,8 +169,12 @@ public class DiaryPresenterImpl implements DiaryContract.Presenter {
             compositeDisposable.add(diaryRepository.loadMoreDiaryItems(currentIdx)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(diaryList -> {
+
+                                isLoadingItem = false;
                                 if (diaryList.size() != 0) {
                                     currentIdx = diaryList.get(diaryList.size() - 1).getId();
+                                } else {
+                                    return;
                                 }
                                 // 받아온 데이터 넘겨주기
                                 view.showMoreDiaryItems(diaryList);
@@ -174,7 +182,15 @@ public class DiaryPresenterImpl implements DiaryContract.Presenter {
                             , throwable -> {
                                 Log.e(TAG, "Diary Fragment Load 에서 발생");
                                 throwable.printStackTrace();
+                                isLoadingItem = false;
                             }));
+        }
+    }
+
+    private void finishRecording() {
+        if(diaryRecorderImpl != null && isRecording) {
+            diaryRecorderImpl.finishRecord();
+            isRecording = false;
         }
     }
 

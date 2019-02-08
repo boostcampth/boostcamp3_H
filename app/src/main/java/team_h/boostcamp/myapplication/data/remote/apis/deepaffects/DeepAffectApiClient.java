@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.data.remote.deepaffects;
+package team_h.boostcamp.myapplication.data.remote.apis.deepaffects;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
@@ -12,8 +12,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import team_h.boostcamp.myapplication.BuildConfig;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.request.EmotionAnalyzeRequest;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.response.EmotionAnalysisResponse;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.response.EmotionAnalysisResponse;
 
 /*
  * Url 에 맞는 Client 생성 */
