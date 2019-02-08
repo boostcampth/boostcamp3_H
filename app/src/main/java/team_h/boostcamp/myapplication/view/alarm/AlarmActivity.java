@@ -12,12 +12,14 @@ import team_h.boostcamp.myapplication.R;
 import team_h.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 import team_h.boostcamp.myapplication.utils.SharedPreference;
 import team_h.boostcamp.myapplication.view.BaseActivity;
+import team_h.boostcamp.myapplication.view.Handlers;
 
 public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
-        AlarmContractor.View, TimePickerDialog.OnTimeSetListener {
+        AlarmContractor.View, TimePickerDialog.OnTimeSetListener, Handlers {
 
     private AlarmPresenter presenter;
     private Calendar calendar;
+    private boolean isChecked = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +29,11 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
         // 람다식
         binding.switchAlarm.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
+                this.isChecked = true;
                 setVisibility(true);
             } else {
+                this.isChecked = false;
+                presenter.cancelAlarm();
                 setVisibility(false);
             }
         });
@@ -53,6 +58,7 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
         presenter = new AlarmPresenter(AlarmActivity.this, getApplicationContext());
         presenter.onViewAttached();
         binding.setActivity(AlarmActivity.this);
+        binding.setHandlers(this);
     }
 
     @Override
@@ -62,20 +68,8 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
 
     public void onClickButton(int id) {
         switch (id) {
-            case R.id.iv_alarm_back_button:
-                finish();
-                break;
-            case R.id.tv_alarm_done_button:
-                if (calendar == null) {
-                    showToast("시간을 다시 선택해주세요.");
-                } else {
-                    presenter.setAlarm(calendar);
-                    showToast("알람을 설정하였습니다.");
-                    finish();
-                }
-                break;
             case R.id.btn_alarm_select:
-                TimePickerFragment timePickerFragment = new TimePickerFragment();
+                TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
                 timePickerFragment.show(getSupportFragmentManager(), "time picker");
                 break;
         }
@@ -120,6 +114,28 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
             binding.llAlarmTimeLayout.setVisibility(View.VISIBLE);
         } else {
             binding.llAlarmTimeLayout.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onClickListener(int id) {
+        switch (id) {
+            case R.id.iv_back_button:
+                finish();
+                break;
+            case R.id.tv_done_button:
+                if (isChecked) {
+                    if (calendar == null) {
+                        showToast("시간을 선택해주세요.");
+                    } else {
+                        presenter.setAlarm(calendar);
+                        showToast("알람을 설정하였습니다.");
+                        finish();
+                    }
+                } else {
+                    finish();
+                }
+                break;
         }
     }
 }

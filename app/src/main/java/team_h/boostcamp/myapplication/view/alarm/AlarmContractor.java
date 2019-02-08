@@ -18,7 +18,10 @@ public interface AlarmContractor {
     }
 
     interface Presenter extends BasePresenter {
+
         void setAlarm(Calendar calendar);
+
+        void cancelAlarm();
 
         void loadCalendar(Calendar calendar);
     }
