@@ -4,7 +4,6 @@ import java.util.List;
 
 import team_h.boostcamp.myapplication.model.Diary;
 import team_h.boostcamp.myapplication.view.BasePresenter;
-import team_h.boostcamp.myapplication.view.BaseView;
 
 public interface PlayContractor {
 
@@ -16,6 +15,10 @@ public interface PlayContractor {
     }
 
     interface Presenter extends BasePresenter {
+
+        void loadData(int MemoryId);
+        void playDiaryList();
+        void stopDiaryList();
 
     }
 }
