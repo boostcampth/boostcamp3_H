@@ -1,5 +1,7 @@
 package team_h.boostcamp.myapplication.data.repository;
 
+import android.util.Log;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -9,8 +11,8 @@ import io.reactivex.schedulers.Schedulers;
 import team_h.boostcamp.myapplication.data.remote.deepaffects.AnalyzedEmotionMapper;
 import team_h.boostcamp.myapplication.data.remote.deepaffects.DeepAffectApiClient;
 import team_h.boostcamp.myapplication.data.remote.deepaffects.request.EmotionAnalyzeRequest;
+import team_h.boostcamp.myapplication.data.room.dao.DiaryDao;
 import team_h.boostcamp.myapplication.model.Diary;
-import team_h.boostcamp.myapplication.model.source.local.DiaryDao;
 
 
 /*
@@ -41,7 +43,7 @@ public class DiaryRepository implements DiaryRepositoryContract {
 
     @NonNull
     @Override
-    public Single<List<Diary>> loadMoreDiaryItems(final int idx) {
+    public Single<List<Diary>> loadMoreDiaryItems(final long idx) {
         return diaryDao.loadMoreDiary(idx).subscribeOn(Schedulers.io());
     }
 

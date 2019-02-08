@@ -17,14 +17,18 @@ class DiaryRecorderImpl implements DiaryRecorder {
 
     // 저장 경로 생성용
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+    // 최대 녹음 시간
+    private static final int MAX_DURATION = 1000 * 60;
 
     private MediaRecorder mediaRecorder;
     private String filePath;
 
+    private MediaRecorderTimeOutListener mediaRecorderTimeOutListener;
+
     DiaryRecorderImpl() {
         mediaRecorder = new MediaRecorder();
+        mediaRecorder.setMaxDuration(MAX_DURATION);
     }
-
 
     @Override
     public void startRecord() {
@@ -40,7 +44,7 @@ class DiaryRecorderImpl implements DiaryRecorder {
 
     @Override
     public void releaseRecorder() {
-        if(mediaRecorder != null) {
+        if (mediaRecorder != null) {
             mediaRecorder.stop();
             mediaRecorder.release();
             mediaRecorder = null;
@@ -71,6 +75,15 @@ class DiaryRecorderImpl implements DiaryRecorder {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void setMediaRecorderTimeOutListener(@NonNull MediaRecorderTimeOutListener mediaRecorderTimeOutListener) {
+        this.mediaRecorderTimeOutListener = mediaRecorderTimeOutListener;
+        // 다른 함수로 빼기
+        this.mediaRecorder.setOnInfoListener((mediaRecorder1, i, i1) ->
+                this.mediaRecorderTimeOutListener.onTimeOut()
+        );
     }
 
     private String generateFilePath() {

@@ -31,6 +31,9 @@ public interface DiaryContract {
 
         /* 불러온 아이템 넘겨주기 */
         void showMoreDiaryItems(@NonNull List<Diary> diaryList);
+
+        /* Tag 초기화*/
+        void clearTagEditText();
     }
 
     interface Presenter {
@@ -38,7 +41,7 @@ public interface DiaryContract {
         void recordDiaryItem();
 
         /* 아이템 저장 */
-        void saveDiaryItem(List<String>tags);
+        void saveDiaryItem(@NonNull final String tags);
 
         /* View 가 없어질 때 */
         void onViewDetached();

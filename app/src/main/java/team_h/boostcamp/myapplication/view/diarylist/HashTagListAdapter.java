@@ -58,8 +58,12 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
     }
 
     @NonNull
-    List<String> getItemList() {
-        return itemList;
+    String getItemList() {
+        String result = "";
+        for(String item : itemList) {
+            result = result.concat(item + " ");
+        }
+        return result;
     }
 
 
@@ -67,6 +71,14 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
         if (itemList != null && itemList.size() < position) {
             itemList.remove(position);
             notifyItemRemoved(position);
+        }
+    }
+
+    void clearItems() {
+        if(itemList == null) {
+            itemList = new ArrayList<>();
+        } else {
+            itemList.clear();
         }
     }
 

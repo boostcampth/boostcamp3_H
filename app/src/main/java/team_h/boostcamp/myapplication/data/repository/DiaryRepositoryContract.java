@@ -11,7 +11,7 @@ import team_h.boostcamp.myapplication.model.Diary;
 public interface DiaryRepositoryContract {
 
     @NonNull
-    Single<List<Diary>> loadMoreDiaryItems(final int idx);
+    Single<List<Diary>> loadMoreDiaryItems(final long idx);
 
     @NonNull
     Single<Integer> analyzeVoiceEmotion(@NonNull EmotionAnalyzeRequest request);
