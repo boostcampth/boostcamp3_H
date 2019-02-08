@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import team_h.boostcamp.myapplication.R;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.DeepAffectApiClient;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import team_h.boostcamp.myapplication.data.repository.DiaryRepository;
 import team_h.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import team_h.boostcamp.myapplication.model.Diary;
@@ -216,6 +216,6 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
                 ));
 
         // 저장 버튼 클릭
-        binding.buttonItemRecordDone.setOnClickListener(v -> presenter.saveDiaryItem(hashTagListAdapter.getItemList()));
+        binding.buttonItemRecordDone.setOnClickListener(v -> presenter.saveDiaryItem(hashTagListAdapter.getTags()));
     }
 }

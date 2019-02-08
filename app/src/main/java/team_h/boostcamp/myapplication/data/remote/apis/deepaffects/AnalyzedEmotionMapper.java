@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.data.remote.deepaffects;
+package team_h.boostcamp.myapplication.data.remote.apis.deepaffects;
 
 import android.util.Log;
 
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.response.EmotionAnalysisResponse;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.response.EmotionAnalysisResponse;
 
 public class AnalyzedEmotionMapper {
 
@@ -32,11 +32,11 @@ public class AnalyzedEmotionMapper {
             SCORE_MAP.put("sad", NEGATIVE_EMOTION);
             SCORE_MAP.put("frustrated", NEUTRAL_EMOTION);
             SCORE_MAP.put("mad", NEGATIVE_EMOTION);
-            SCORE_MAP.put("fear", NEUTRAL_EMOTION);
+            SCORE_MAP.put("fear", NEGATIVE_EMOTION);
         }
 
         // 기본 기분은 평범으로 설정
-        int result = 2;
+        int result = NEUTRAL_EMOTION;
 
         int totalTime = 0;
         int totalScore = 0;

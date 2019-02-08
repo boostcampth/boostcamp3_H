@@ -1,16 +1,14 @@
 package team_h.boostcamp.myapplication.data.repository;
 
-import android.util.Log;
-
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.AnalyzedEmotionMapper;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.DeepAffectApiClient;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.request.EmotionAnalyzeRequest;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.AnalyzedEmotionMapper;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import team_h.boostcamp.myapplication.data.room.dao.DiaryDao;
 import team_h.boostcamp.myapplication.model.Diary;
 

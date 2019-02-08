@@ -1,4 +1,4 @@
-package team_h.boostcamp.myapplication.data.remote.deepaffects.request;
+package team_h.boostcamp.myapplication.data.remote.apis.deepaffects.request;
 
 import java.util.HashMap;
 import java.util.Map;

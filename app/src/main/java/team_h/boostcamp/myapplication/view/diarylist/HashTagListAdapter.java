@@ -58,7 +58,7 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
     }
 
     @NonNull
-    String getItemList() {
+    String getTags() {
         String result = "";
         for(String item : itemList) {
             result = result.concat(item + " ");

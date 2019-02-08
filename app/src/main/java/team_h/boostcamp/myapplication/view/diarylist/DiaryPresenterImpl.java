@@ -13,7 +13,7 @@ import androidx.databinding.ObservableBoolean;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import team_h.boostcamp.myapplication.R;
-import team_h.boostcamp.myapplication.data.remote.deepaffects.request.EmotionAnalyzeRequest;
+import team_h.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import team_h.boostcamp.myapplication.data.repository.DiaryRepository;
 import team_h.boostcamp.myapplication.model.Diary;
 
