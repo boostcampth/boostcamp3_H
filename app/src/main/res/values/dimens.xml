@@ -26,7 +26,7 @@
     <!-- Emoji Default -->
     <dimen name="diary_emoji_min">60dp</dimen>
 
-    <!-- Diary Fragment -->
+    <!-- LegacyDiary Fragment -->
     <dimen name="diary_progress_height">10dp</dimen>
 
     <dimen name="setting_elevation">2dp</dimen>

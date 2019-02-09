@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
@@ -90,7 +90,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
                                                         .subscribe(diaries -> {
                                                             for (int i = 0; i < diaries.size(); i++) {
                                                                 Log.d(TAG, "generateMemory: insertRecommendation" + diaries.get(i).getId());
-                                                                Diary currentDiary = diaries.get(i);
+                                                                LegacyDiary currentDiary = diaries.get(i);
                                                                 appDatabase.appDao().insertRecommendation(new Recommendation(0, id, currentDiary.getId()))
                                                                         .subscribeOn(Schedulers.io())
                                                                         .observeOn(AndroidSchedulers.mainThread())

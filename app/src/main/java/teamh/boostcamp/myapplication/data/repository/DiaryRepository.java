@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
@@ -40,19 +40,19 @@ public class DiaryRepository implements DiaryRepositoryContract {
 
     @NonNull
     @Override
-    public Single<List<Diary>> loadMoreDiaryItems(final long idx) {
+    public Single<List<LegacyDiary>> loadMoreDiaryItems(final long idx) {
         return diaryDao.loadMoreDiary(idx).subscribeOn(Schedulers.io());
     }
 
     @NonNull
     @Override
-    public Completable deleteRecordItem(@NonNull Diary diary) {
+    public Completable deleteRecordItem(@NonNull LegacyDiary diary) {
         return diaryDao.deleteDiary(diary).subscribeOn(Schedulers.io());
     }
 
     @NonNull
     @Override
-    public Completable insertRecordItem(@NonNull Diary diaryItem) {
+    public Completable insertRecordItem(@NonNull LegacyDiary diaryItem) {
         return diaryDao.insertDiary(diaryItem).subscribeOn(Schedulers.io());
     }
 
@@ -73,7 +73,7 @@ public class DiaryRepository implements DiaryRepositoryContract {
 
     @NonNull
     @Override
-    public Completable insertRecordItems(@NonNull Diary... diaries) {
+    public Completable insertRecordItems(@NonNull LegacyDiary... diaries) {
         return diaryDao.insertDiary(diaries)
                 .subscribeOn(Schedulers.io());
     }

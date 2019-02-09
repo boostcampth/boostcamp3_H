@@ -11,7 +11,7 @@
     <color name="all_white">#FFFFFF</color>
     <color name="all_purple">#7E39FB</color>
 
-    <!-- Diary Fragment Color -->
+    <!-- LegacyDiary Fragment Color -->
     <color name="list_violet">#7E39FB</color>
     <color name="list_hash_tag_back">#F0F0F0</color>
 
