@@ -9,6 +9,6 @@ import teamh.boostcamp.myapplication.data.model.Recall;
 public interface RecallRepository {
 
     @NonNull
-    Single<List<Recall>> loadRecalls();
+    Single<List<Recall>> loadRecallList();
 
 }
