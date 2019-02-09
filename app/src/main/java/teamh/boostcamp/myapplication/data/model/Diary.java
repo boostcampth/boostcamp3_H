@@ -13,8 +13,9 @@ public class Diary {
     private final String recordFilePath;
     @Nullable
     private final List<String> tags;
-    private final int id;
+    @NonNull
     private final Emotion selectedEmotion;
+    private final int id;
 
     public Diary(int id,
                  @NonNull final String recordDate,
