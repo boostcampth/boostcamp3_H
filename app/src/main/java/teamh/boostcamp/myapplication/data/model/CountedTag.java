@@ -1,19 +1,19 @@
 package teamh.boostcamp.myapplication.data.model;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 public class CountedTag {
 
-    @Nullable
+    @NonNull
     private String tagName;
     private int count;
 
-    public CountedTag(@Nullable String tagName, int count) {
+    public CountedTag(@NonNull String tagName, int count) {
         this.tagName = tagName;
         this.count = count;
     }
 
-    @Nullable
+    @NonNull
     public String getTagName() {
         return tagName;
     }
