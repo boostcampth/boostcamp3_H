@@ -7,19 +7,25 @@ import androidx.annotation.NonNull;
 
 public class HashTag {
 
-    private String hashTagWord;
+    private String text;
+    private int count;
     private ArrayList<String> hashTagList;
 
-    HashTag(String hashTagWord) {
-        this.hashTagWord = hashTagWord;
+    HashTag(String text) {
+        this.text = text;
         hashTagList = new ArrayList<>();
     }
 
-    public List<String> getHashTagWord() {
+    public List<String> getHashTagList() {
         return this.hashTagList;
     }
 
     public void addItem(@NonNull String word) {
         hashTagList.add(word);
+        count++;
+    }
+
+    public int getCount(){
+        return count;
     }
 }
