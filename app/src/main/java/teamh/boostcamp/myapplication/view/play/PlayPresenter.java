@@ -3,7 +3,7 @@ package teamh.boostcamp.myapplication.view.play;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import teamh.boostcamp.myapplication.data.model.source.local.AppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 
 public class PlayPresenter implements PlayContractor.Presenter {
     private PlayContractor.View view;

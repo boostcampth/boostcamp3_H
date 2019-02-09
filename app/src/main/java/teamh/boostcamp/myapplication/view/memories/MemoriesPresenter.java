@@ -14,7 +14,7 @@ import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
-import teamh.boostcamp.myapplication.data.model.source.local.AppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
 import teamh.boostcamp.myapplication.view.adapter.AdapterContract;
 

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.databinding.ObservableField;
-import teamh.boostcamp.myapplication.data.model.DataRepository;
+import teamh.boostcamp.myapplication.data.repository.DataRepository;
 
 public class GraphPresenter implements GraphContractor.Presenter {
     public static final ObservableField<String> OBSERVER = new ObservableField<>("Statics");

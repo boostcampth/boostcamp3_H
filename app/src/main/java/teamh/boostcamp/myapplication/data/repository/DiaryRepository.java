@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
-import teamh.boostcamp.myapplication.data.room.dao.DiaryDao;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 
 
 /*
@@ -63,4 +63,20 @@ public class DiaryRepository implements DiaryRepositoryContract {
                 .map(AnalyzedEmotionMapper::parseAnalyzedEmotion)
                 .subscribeOn(Schedulers.io());
     }
+
+    @NonNull
+    @Override
+    public Completable clearAllData() {
+        return Completable.fromAction(() -> diaryDao.deleteAll())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable insertRecordItems(@NonNull Diary... diaries) {
+        return diaryDao.insertDiary(diaries)
+                .subscribeOn(Schedulers.io());
+    }
+
+
 }

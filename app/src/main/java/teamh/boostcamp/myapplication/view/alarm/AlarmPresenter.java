@@ -12,7 +12,7 @@ import java.util.Calendar;
 
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
-import teamh.boostcamp.myapplication.utils.SharedPreference;
+import teamh.boostcamp.myapplication.data.local.SharedPreference;
 
 public class AlarmPresenter implements AlarmContractor.Presenter {
 

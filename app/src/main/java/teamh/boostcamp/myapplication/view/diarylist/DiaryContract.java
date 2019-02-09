@@ -55,7 +55,10 @@ public interface DiaryContract {
         /* 아이템 불러오기 */
         void loadMoreDiaryItems();
 
-        /* 저장 flag 설정 */
-        void setIsSaving(boolean isSaving);
+        /* 감정 선택 */
+        void setSelectedEmotion(int emotion);
+
+        /* 샘플 데이터 생성 */
+        void createSampleData();
     }
 }

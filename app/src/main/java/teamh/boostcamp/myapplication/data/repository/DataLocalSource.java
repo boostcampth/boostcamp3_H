@@ -1,8 +1,6 @@
-package teamh.boostcamp.myapplication.data.model.source.local;
+package teamh.boostcamp.myapplication.data.repository;
 
 import java.util.ArrayList;
-
-import teamh.boostcamp.myapplication.data.model.DataSource;
 
 public class DataLocalSource implements DataSource {
     /**

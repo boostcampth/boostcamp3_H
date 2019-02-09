@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.room.dao;
+package teamh.boostcamp.myapplication.data.local.room.dao;
 
 import java.util.List;
 
@@ -19,8 +19,8 @@ public interface DiaryDao {
     @Query("SELECT * FROM diary WHERE timeStamp < :timeStamp ORDER BY timeStamp DESC LIMIT 3")
     Single<List<Diary>> loadMoreDiary(final long timeStamp);
 
-/*    @Query("DELETE FROM diary")
-    void deleteAll();*/
+    @Query("DELETE FROM diary")
+    void deleteAll();
 
     @Delete
     Completable deleteDiary(Diary diary);

@@ -22,7 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.FragmentGraphBinding;
-import teamh.boostcamp.myapplication.data.model.DataRepository;
+import teamh.boostcamp.myapplication.data.repository.DataRepository;
 import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
 import teamh.boostcamp.myapplication.view.BaseFragment;
 

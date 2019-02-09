@@ -1,6 +1,4 @@
-package teamh.boostcamp.myapplication.data.model;
-
-import teamh.boostcamp.myapplication.data.model.source.local.DataLocalSource;
+package teamh.boostcamp.myapplication.data.repository;
 
 public class DataRepository implements DataSource {
 

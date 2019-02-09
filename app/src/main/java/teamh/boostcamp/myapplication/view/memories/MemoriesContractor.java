@@ -1,7 +1,7 @@
 package teamh.boostcamp.myapplication.view.memories;
 
 import teamh.boostcamp.myapplication.data.model.Memory;
-import teamh.boostcamp.myapplication.data.model.source.local.AppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.view.BasePresenter;
 import teamh.boostcamp.myapplication.view.BaseView;
 

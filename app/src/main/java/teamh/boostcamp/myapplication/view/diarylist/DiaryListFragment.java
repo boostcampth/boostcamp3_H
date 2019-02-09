@@ -21,11 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
-import teamh.boostcamp.myapplication.data.model.Diary;
-import teamh.boostcamp.myapplication.data.model.source.local.AppDatabase;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.view.BaseFragment;
 
@@ -61,9 +61,14 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         initView();
 
         binding.setFragment(this);
-        // 저장된 아이템 10개만 들고오기
+
+        // 샘플 데이터 생성
+        // presenter.createSampleData();
+
+        // 저장된 아이템 3개만 들고오기
         presenter.loadMoreDiaryItems();
         compositeDisposable = new CompositeDisposable();
+
 
         return binding.getRoot();
     }
@@ -85,7 +90,6 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         if (presenter != null) {
             presenter.onViewDetached();
             isSaving.set(false);
-            presenter.setIsSaving(isSaving.get());
         }
         context = null;
         presenter = null;
@@ -116,14 +120,12 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     public void showDiaryItemSaveFail() {
         showToastMessage(R.string.item_record_save_fail);
         isSaving.set(false);
-        presenter.setIsSaving(false);
     }
 
     @Override
     public void showDiaryItemSaved() {
         showToastMessage(R.string.item_record_save_success);
         isSaving.set(false);
-        presenter.setIsSaving(false);
     }
 
     @Override
@@ -226,5 +228,12 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
 
         // 저장 버튼 클릭
         binding.buttonItemRecordDone.setOnClickListener(v -> presenter.saveDiaryItem(hashTagListAdapter.getTags()));
+
+        // 감정 선택 버튼 (추후 수정)
+        binding.tvRecordItemMad.setOnClickListener(v -> presenter.setSelectedEmotion(0));
+        binding.tvRecordItemBad.setOnClickListener(v -> presenter.setSelectedEmotion(1));
+        binding.tvRecordItemNormal.setOnClickListener(v -> presenter.setSelectedEmotion(2));
+        binding.tvRecordItemGood.setOnClickListener(v -> presenter.setSelectedEmotion(3));
+        binding.tvRecordItemPgood.setOnClickListener(v -> presenter.setSelectedEmotion(4));
     }
 }

@@ -10,7 +10,7 @@ import java.util.Calendar;
 
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
-import teamh.boostcamp.myapplication.utils.SharedPreference;
+import teamh.boostcamp.myapplication.data.local.SharedPreference;
 import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.Handlers;
 

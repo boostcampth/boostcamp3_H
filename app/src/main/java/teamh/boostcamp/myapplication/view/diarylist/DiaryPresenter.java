@@ -6,15 +6,18 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 import androidx.annotation.NonNull;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
-import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class DiaryPresenter implements DiaryContract.Presenter {
 
@@ -31,7 +34,6 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private long currentIdx = Long.MAX_VALUE;
     private boolean isRecording = false;
     private boolean isLoadingItem = false;
-    private boolean isSaving = false;
 
     DiaryPresenter(@NonNull DiaryContract.View view,
                    @NonNull DiaryRepository diaryRepository,
@@ -59,37 +61,6 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         diaryRecorderImpl.releaseRecorder();
         // 만약 구독중인 비동기 작업이 있다면 해제
         compositeDisposable.clear();
-    }
-
-
-    /* Method Reference 를 통해 Emotion Image Click Event binding */
-    public void emotionChanged(final int id) {
-        switch (id) {
-            case R.id.tv_record_item_mad:
-                Log.e(TAG, "mad");
-                selectedEmotion = 0;
-                break;
-
-            case R.id.tv_record_item_bad:
-                Log.e(TAG, "bad");
-                selectedEmotion = 1;
-                break;
-
-            case R.id.tv_record_item_normal:
-                Log.e(TAG, "normal");
-                selectedEmotion = 2;
-                break;
-
-            case R.id.tv_record_item_pgood:
-                Log.e(TAG, "pgood");
-                selectedEmotion = 3;
-                break;
-
-            case R.id.tv_record_item_good:
-                Log.e(TAG, "good");
-                selectedEmotion = 4;
-                break;
-        }
     }
 
     @Override
@@ -166,6 +137,14 @@ public class DiaryPresenter implements DiaryContract.Presenter {
 
     @Override
     public void loadMoreDiaryItems() {
+ /*       compositeDisposable.add(diaryRepository.clearAllData()
+                .subscribe(() -> {
+                            Log.e("Test", "성공");
+                        }, throwable -> {
+                            Log.e("Test", "실패");
+                        }
+                ));*/
+
         if (!isLoadingItem) {
             isLoadingItem = true;
             compositeDisposable.add(diaryRepository.loadMoreDiaryItems(currentIdx)
@@ -174,7 +153,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
 
                                 isLoadingItem = false;
                                 if (diaryList.size() != 0) {
-                                    currentIdx = diaryList.get(diaryList.size() - 1).getId();
+                                    currentIdx = diaryList.get(diaryList.size() - 1).getTimeStamp();
                                 } else {
                                     return;
                                 }
@@ -189,15 +168,60 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         }
     }
 
+    @Override
+    public void createSampleData() {
+        String filePath = "/storage/emulated/0/2019-02-08.acc";
+        File file = new File("/storage/emulated/0/2019-02-08.acc");
+
+        if (!file.exists()) {
+            try {
+                boolean isCreated = file.createNewFile();
+                if (!isCreated) {
+                    Log.e(TAG, "파일 생성 실패");
+                } else {
+                    Log.e(TAG, "파일 생성 성공");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        Random random = new Random();
+
+        List<Diary> samples = new ArrayList<>();
+
+        for (int i = 1; i <= 20; ++i) {
+            samples.add(new Diary(
+                    i,
+                    String.format(Locale.getDefault(), "2019-01-%2d", i),
+                    filePath,
+                    String.format(Locale.getDefault(), "#%d번", i),
+                    Math.abs(random.nextInt() % 5),
+                    Math.abs(random.nextInt() % 5),
+                    new Date().getTime() / 1000 + i * 10
+            ));
+        }
+
+        Diary[] temp = new Diary[samples.size()];
+
+        compositeDisposable.add(diaryRepository.insertRecordItems(samples.toArray(temp))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> view.showDiaryItemSaved(),
+                        throwable -> view.showDiaryItemSaveFail()
+                ));
+    }
+
+    @Override
+    public void setSelectedEmotion(int emotion) {
+        this.selectedEmotion = emotion;
+        Log.e(TAG, emotion + "");
+    }
+
     private void finishRecording() {
-        if(diaryRecorderImpl != null && isRecording) {
+        if (diaryRecorderImpl != null && isRecording) {
             diaryRecorderImpl.finishRecord();
             isRecording = false;
         }
-    }
-
-    public void setIsSaving(boolean isSaving) {
-        this.isSaving = isSaving;
     }
 
     // API 분석을 위해 녹음 파일을 Base64 Encoding 수행

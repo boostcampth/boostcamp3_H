@@ -20,5 +20,11 @@ public interface DiaryRepositoryContract {
     Completable insertRecordItem(@NonNull Diary diaryItem);
 
     @NonNull
+    Completable insertRecordItems(@NonNull Diary... diaries);
+
+    @NonNull
     Completable deleteRecordItem(@NonNull Diary diary);
+
+    @NonNull
+    Completable clearAllData();
 }

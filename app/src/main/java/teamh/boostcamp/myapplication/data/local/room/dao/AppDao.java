@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.model.source.local;
+package teamh.boostcamp.myapplication.data.local.room.dao;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 
+/* Entity 끼리 Dao 나누기 */
 @Dao
 public interface AppDao {
 

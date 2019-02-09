@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.model;
+package teamh.boostcamp.myapplication.data.repository;
 
 import java.util.ArrayList;
 

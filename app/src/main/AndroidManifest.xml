@@ -14,12 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="teamh.boostcamp.teamh.boostcamp.myapplication.view.password.PasswordActivity"></activity>
-        <activity android:name="teamh.boostcamp.teamh.boostcamp.myapplication.view.alarm.AlarmActivity" />
-        <activity android:name="teamh.boostcamp.teamh.boostcamp.myapplication.view.setting.SettingActivity" />
-        <activity android:name="teamh.boostcamp.teamh.boostcamp.myapplication.view.play.PlayActivity" />
+        <activity android:name="teamh.boostcamp.myapplication.view.password.PasswordActivity"></activity>
+        <activity android:name="teamh.boostcamp.myapplication.view.alarm.AlarmActivity" />
+        <activity android:name="teamh.boostcamp.myapplication.view.setting.SettingActivity" />
+        <activity android:name="teamh.boostcamp.myapplication.view.play.PlayActivity" />
         <activity
-            android:name="teamh.boostcamp.teamh.boostcamp.myapplication.view.main.MainActivity"
+            android:name="teamh.boostcamp.myapplication.view.main.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="teamh.boostcamp.teamh.boostcamp.myapplication.view.alarm.AlertReceiver" />
+        <receiver android:name="teamh.boostcamp.myapplication.view.alarm.AlertReceiver" />
     </application>
 
 </manifest>
