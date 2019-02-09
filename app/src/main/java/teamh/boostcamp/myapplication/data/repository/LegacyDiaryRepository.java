@@ -14,24 +14,24 @@ import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 
 /*
  * Repository 를 data/repository + 가공까지 ! */
-public class DiaryRepository implements DiaryRepositoryContract {
+public class LegacyDiaryRepository implements LegacyDiaryRepositoryContract {
 
-    private static DiaryRepository INSTANCE;
+    private static LegacyDiaryRepository INSTANCE;
     private DeepAffectApiClient deepAffectApiClient;
     private DiaryDao diaryDao;
 
-    private DiaryRepository(@NonNull DeepAffectApiClient deepAffectApiClient,
-                            @NonNull DiaryDao diaryDao) {
+    private LegacyDiaryRepository(@NonNull DeepAffectApiClient deepAffectApiClient,
+                                  @NonNull DiaryDao diaryDao) {
         this.deepAffectApiClient = deepAffectApiClient;
         this.diaryDao = diaryDao;
     }
 
-    public static DiaryRepository getInstance(@NonNull DeepAffectApiClient deepAffectApiClient,
-                                              @NonNull DiaryDao diaryDao) {
+    public static LegacyDiaryRepository getInstance(@NonNull DeepAffectApiClient deepAffectApiClient,
+                                                    @NonNull DiaryDao diaryDao) {
         if (INSTANCE == null) {
-            synchronized (DiaryRepository.class) {
+            synchronized (LegacyDiaryRepository.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new DiaryRepository(deepAffectApiClient, diaryDao);
+                    INSTANCE = new LegacyDiaryRepository(deepAffectApiClient, diaryDao);
                 }
             }
         }

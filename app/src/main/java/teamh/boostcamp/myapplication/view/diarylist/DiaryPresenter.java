@@ -13,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
-import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
+import teamh.boostcamp.myapplication.data.repository.LegacyDiaryRepository;
 
 public class DiaryPresenter implements DiaryContract.Presenter {
 
@@ -21,7 +21,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
 
     private DiaryContract.View view;
 
-    private DiaryRepository diaryRepository;
+    private LegacyDiaryRepository diaryRepository;
     private DiaryRecorder diaryRecorderImpl;
 
     private CompositeDisposable compositeDisposable;
@@ -32,7 +32,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private boolean isLoadingItem = false;
 
     DiaryPresenter(@NonNull DiaryContract.View view,
-                   @NonNull DiaryRepository diaryRepository,
+                   @NonNull LegacyDiaryRepository diaryRepository,
                    @NonNull DiaryRecorder diaryRecorderImpl) {
         this.view = view;
         this.diaryRepository = diaryRepository;
