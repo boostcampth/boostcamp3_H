@@ -14,7 +14,7 @@ import static androidx.room.ForeignKey.CASCADE;
 */
 
 @Entity(tableName = "recommended", foreignKeys = {
-        @ForeignKey(entity = Diary.class,
+        @ForeignKey(entity = LegacyDiary.class,
                 parentColumns = "id",
                 childColumns = "diaryId",
                 onDelete = CASCADE),

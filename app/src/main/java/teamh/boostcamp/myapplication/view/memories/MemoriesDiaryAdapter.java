@@ -7,10 +7,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.databinding.ItemDiaryBinding;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.view.adapter.BaseRecyclerViewAdapter;
 
-public class MemoriesDiaryAdapter extends BaseRecyclerViewAdapter<Diary, MemoriesDiaryAdapter.ViewHolder> {
+public class MemoriesDiaryAdapter extends BaseRecyclerViewAdapter<LegacyDiary, MemoriesDiaryAdapter.ViewHolder> {
 
     public MemoriesDiaryAdapter(Context context) {
         super(context);

@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
@@ -142,7 +142,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     }
 
     @Override
-    public void showMoreDiaryItems(@NonNull List<Diary> diaryList) {
+    public void showMoreDiaryItems(@NonNull List<LegacyDiary> diaryList) {
         diaryListAdapter.addDiaryItems(diaryList);
     }
 
