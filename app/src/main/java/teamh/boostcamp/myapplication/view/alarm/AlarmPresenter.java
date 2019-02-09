@@ -35,8 +35,10 @@ public class AlarmPresenter implements AlarmContractor.Presenter {
     public void onViewDetached() {
         view = null;
         context = null;
+        resourceSendUtil = null;
     }
 
+    // 알람 설정
     @Override
     public void setAlarm(Calendar calendar) {
 
@@ -64,7 +66,6 @@ public class AlarmPresenter implements AlarmContractor.Presenter {
                 alarmManager.set(AlarmManager.RTC_WAKEUP, userAlarmTime, pendingIntent);
             }
         }
-        //alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userAlarmTime, INTERVAL_TIME, pendingIntent);
 
         // SharedPreference 저장하는 로직. String으로 저장.
@@ -72,6 +73,7 @@ public class AlarmPresenter implements AlarmContractor.Presenter {
         SharedPreference.getInstance().setPreferencePushTime(timeText);
     }
 
+    // 알람 해제
     @Override
     public void cancelAlarm() {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
@@ -79,8 +81,8 @@ public class AlarmPresenter implements AlarmContractor.Presenter {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
 
         alarmManager.cancel(pendingIntent);
-        Toast.makeText(context, "아랆 취소함~~",Toast.LENGTH_SHORT).show();
         view.updateTimeText(resourceSendUtil.getString(R.string.alarm_explain));
+        SharedPreference.getInstance().removePreferencePushTime();
     }
 
     @Override

@@ -34,7 +34,7 @@ public class SharedPreference {
     public void setPreferencePassword(String password) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(PREF_PASSWORD, password);
-        editor.commit();
+        editor.apply();
     }
 
     public String getPreferencePassword(String defaultPassword) {
@@ -48,7 +48,7 @@ public class SharedPreference {
     public void setPreferencePushTime(String pushTime) {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.putString(PREF_PUSH_TIME, pushTime);
-        editor.commit();
+        editor.apply();
     }
 
     public String getPreferencePushTime(String defaultPushTime) {
@@ -59,10 +59,16 @@ public class SharedPreference {
         return getPreferencePushTime(null);
     }
 
+    public void removePreferencePushTime(){
+        SharedPreferences.Editor editor = mPreferences.edit();
+        editor.remove(PREF_PUSH_TIME);
+        editor.apply();
+    }
+
     public void removeAllData() {
         SharedPreferences.Editor editor = mPreferences.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
     }
 
     // LazyHolder 클래스 - 싱글톤
