@@ -62,9 +62,6 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
 
         binding.setFragment(this);
 
-        // 샘플 데이터 생성
-        // presenter.createSampleData();
-
         // 저장된 아이템 3개만 들고오기
         presenter.loadMoreDiaryItems();
         compositeDisposable = new CompositeDisposable();

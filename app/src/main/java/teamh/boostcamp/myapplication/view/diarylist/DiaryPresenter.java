@@ -6,11 +6,7 @@ import android.util.Log;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
 import androidx.annotation.NonNull;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -168,48 +164,6 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         }
     }
 
-    @Override
-    public void createSampleData() {
-        String filePath = "/storage/emulated/0/2019-02-08.acc";
-        File file = new File("/storage/emulated/0/2019-02-08.acc");
-
-        if (!file.exists()) {
-            try {
-                boolean isCreated = file.createNewFile();
-                if (!isCreated) {
-                    Log.e(TAG, "파일 생성 실패");
-                } else {
-                    Log.e(TAG, "파일 생성 성공");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Random random = new Random();
-
-        List<Diary> samples = new ArrayList<>();
-
-        for (int i = 1; i <= 20; ++i) {
-            samples.add(new Diary(
-                    i,
-                    String.format(Locale.getDefault(), "2019-01-%2d", i),
-                    filePath,
-                    String.format(Locale.getDefault(), "#%d번", i),
-                    Math.abs(random.nextInt() % 5),
-                    Math.abs(random.nextInt() % 5),
-                    new Date().getTime() / 1000 + i * 10
-            ));
-        }
-
-        Diary[] temp = new Diary[samples.size()];
-
-        compositeDisposable.add(diaryRepository.insertRecordItems(samples.toArray(temp))
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> view.showDiaryItemSaved(),
-                        throwable -> view.showDiaryItemSaveFail()
-                ));
-    }
 
     @Override
     public void setSelectedEmotion(int emotion) {

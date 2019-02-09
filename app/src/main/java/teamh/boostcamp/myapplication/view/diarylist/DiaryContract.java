@@ -57,8 +57,5 @@ public interface DiaryContract {
 
         /* 감정 선택 */
         void setSelectedEmotion(int emotion);
-
-        /* 샘플 데이터 생성 */
-        void createSampleData();
     }
 }
