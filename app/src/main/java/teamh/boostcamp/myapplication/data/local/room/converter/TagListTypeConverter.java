@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.local.room.typeConverter;
+package teamh.boostcamp.myapplication.data.local.room.converter;
 
 import java.util.Arrays;
 import java.util.List;

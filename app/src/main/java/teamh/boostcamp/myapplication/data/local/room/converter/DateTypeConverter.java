@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.local.room.typeConverter;
+package teamh.boostcamp.myapplication.data.local.room.converter;
 
 import java.util.Date;
 
@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.room.TypeConverter;
 
 public class DateTypeConverter {
-    
+
     @TypeConverter
     @NonNull
     public static Long dateToLong(@NonNull Date date) {

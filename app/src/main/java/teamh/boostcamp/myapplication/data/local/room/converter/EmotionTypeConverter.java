@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.local.room.typeConverter;
+package teamh.boostcamp.myapplication.data.local.room.converter;
 
 import androidx.annotation.NonNull;
 import androidx.room.TypeConverter;

@@ -11,9 +11,9 @@ import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
-import teamh.boostcamp.myapplication.data.local.room.typeConverter.DateTypeConverter;
-import teamh.boostcamp.myapplication.data.local.room.typeConverter.EmotionTypeConverter;
-import teamh.boostcamp.myapplication.data.local.room.typeConverter.TagListTypeConverter;
+import teamh.boostcamp.myapplication.data.local.room.converter.DateTypeConverter;
+import teamh.boostcamp.myapplication.data.local.room.converter.EmotionTypeConverter;
+import teamh.boostcamp.myapplication.data.local.room.converter.TagListTypeConverter;
 
 @Database(entities = {DiaryEntity.class}, version = 1, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, TagListTypeConverter.class})
