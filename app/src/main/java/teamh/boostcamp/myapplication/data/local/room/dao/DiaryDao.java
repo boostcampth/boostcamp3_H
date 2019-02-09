@@ -7,13 +7,13 @@ import androidx.annotation.NonNull;
 import androidx.room.Dao;
 import androidx.room.Query;
 import io.reactivex.Single;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
 @Dao
 public interface DiaryDao {
 
     @Query("SELECT * FROM diary WHERE recordDate < :lastItemSavedTime ORDER BY recordDate LIMIT :pageSize")
-    Single<List<Diary>> loadDiaryList(@NonNull final Date lastItemSavedTime,
-                                      final int pageSize);
+    Single<List<DiaryEntity>> loadDiaryList(@NonNull final Date lastItemSavedTime,
+                                            final int pageSize);
 
 }
