@@ -11,12 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.databinding.ItemRecordDiaryBinding;
-import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.DiaryHolder> {
 
-    private List<Diary> diaryList;
+    private List<LegacyDiary> diaryList;
     private Context context;
     private OnRecordItemClickListener onRecordItemClickListener;
 
@@ -45,7 +45,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     @Override
     public void onBindViewHolder(@NonNull DiaryHolder holder, int position) {
 
-        final Diary diary = diaryList.get(position);
+        final LegacyDiary diary = diaryList.get(position);
 
         if(onRecordItemClickListener != null) {
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setOnClickListener(
@@ -61,13 +61,13 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
         return diaryList.size();
     }
 
-/*    void addDiaryItem(@NonNull Diary diary) {
+/*    void addDiaryItem(@NonNull LegacyDiary diary) {
         int position = diaryList.size();
         diaryList.add(diary);
         notifyItemInserted(position);
     }*/
 
-    void addDiaryItems(@NonNull List<Diary> diaries) {
+    void addDiaryItems(@NonNull List<LegacyDiary> diaries) {
         int from = diaryList.size();
         diaryList.addAll(diaries);
         notifyItemMoved(from, diaryList.size());

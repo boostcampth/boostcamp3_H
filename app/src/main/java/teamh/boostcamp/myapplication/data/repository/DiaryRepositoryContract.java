@@ -7,12 +7,12 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 
 public interface DiaryRepositoryContract {
 
     @NonNull
-    Single<List<Diary>> loadMoreDiaryItems(final int idx);
+    Single<List<LegacyDiary>> loadMoreDiaryItems(final int idx);
 
     @NonNull
     Single<Integer> analyzeVoiceEmotion(@NonNull EmotionAnalyzeRequest request);

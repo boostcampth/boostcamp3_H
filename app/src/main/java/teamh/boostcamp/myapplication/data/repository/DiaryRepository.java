@@ -8,7 +8,7 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 
@@ -41,7 +41,7 @@ public class DiaryRepository implements DiaryRepositoryContract {
 
     @NonNull
     @Override
-    public Single<List<Diary>> loadMoreDiaryItems(final int idx) {
+    public Single<List<LegacyDiary>> loadMoreDiaryItems(final int idx) {
         return diaryDao.loadMoreDiary(idx)
                 .map(DiaryEntityMapper::toDiaryList)
                 .subscribeOn(Schedulers.io());

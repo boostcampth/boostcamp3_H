@@ -9,13 +9,13 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.databinding.ItemDiaryBinding;
-import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class PlayDiaryAdapter extends RecyclerView.Adapter<PlayDiaryAdapter.ViewHolder> {
 
     private Context context;
-    private List<Diary> itemList;
+    private List<LegacyDiary> itemList;
 
     PlayDiaryAdapter(Context context) {
         this.context = context;
@@ -34,7 +34,7 @@ public class PlayDiaryAdapter extends RecyclerView.Adapter<PlayDiaryAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Diary diary = itemList.get(position);
+        LegacyDiary diary = itemList.get(position);
         holder.binding.tvEmoji.setText(diary.getSelectedEmotion()+"");
         holder.binding.tvDiaryTitle.setText(diary.getRecordDate());
     }
@@ -58,7 +58,7 @@ public class PlayDiaryAdapter extends RecyclerView.Adapter<PlayDiaryAdapter.View
         }
     }
 
-    void addItems(List<Diary> items) {
+    void addItems(List<LegacyDiary> items) {
         if( this.itemList == null){
             this.itemList = items;
             notifyDataSetChanged();

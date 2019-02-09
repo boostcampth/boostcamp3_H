@@ -16,7 +16,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /*
- * Diary Entity 분리 */
+ * LegacyDiary Entity 분리 */
 @Entity(tableName = "diary")
 public class DiaryEntity {
 

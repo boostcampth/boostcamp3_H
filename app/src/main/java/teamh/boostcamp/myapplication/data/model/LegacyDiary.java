@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 /*
  * 일기 아이템 데이터를 가지는 DataClass */
-public class Diary {
+public class LegacyDiary {
 
     private final int id;
     private final String recordDate;
@@ -12,11 +12,11 @@ public class Diary {
     private final String tags;
     private final int selectedEmotion;
 
-    public Diary(int id,
-                 @NonNull String recordDate,
-                 @NonNull String recordFilePath,
-                 @NonNull String tags,
-                 final int selectedEmotion) {
+    public LegacyDiary(int id,
+                       @NonNull String recordDate,
+                       @NonNull String recordFilePath,
+                       @NonNull String tags,
+                       final int selectedEmotion) {
         this.id = id;
         this.recordDate = recordDate;
         this.recordFilePath = recordFilePath;

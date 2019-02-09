@@ -12,7 +12,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 
@@ -20,9 +20,9 @@ import teamh.boostcamp.myapplication.data.model.Recommendation;
 @Dao
 public interface AppDao {
 
-    // Diary 관련
+    // LegacyDiary 관련
     @Query("SELECT * FROM diary WHERE id > :idx ORDER BY recordDate DESC LIMIT 10")
-    Single<List<Diary>> loadMoreDiary(final int idx);
+    Single<List<LegacyDiary>> loadMoreDiary(final int idx);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertDiary(DiaryEntity...diaries);
@@ -31,7 +31,7 @@ public interface AppDao {
     void deleteDiary(DiaryEntity diary);
 
     @Query("SELECT * FROM diary WHERE diary.recordDate > :start AND diary.recordDate < :end AND diary.selectedEmotion = :emotion LIMIT 5")
-    Flowable<List<Diary>> getSelectedRecord(String start, String end, int emotion);
+    Flowable<List<LegacyDiary>> getSelectedRecord(String start, String end, int emotion);
 
     // Memory 기능 관련
     @Query("SELECT * FROM memory ORDER BY id DESC LIMIT 1")
@@ -53,10 +53,10 @@ public interface AppDao {
     Single<List<Recommendation>> loadSelectedDiaryList(int memoryId);
 
     @Query("SELECT * FROM diary WHERE id=:diaryId")
-    Single<Diary> loadSelectedDiary(int diaryId);
+    Single<LegacyDiary> loadSelectedDiary(int diaryId);
 
     @Query("SELECT diary.* FROM diary, recommended WHERE recommended.memoryId=:memoryId AND recommended.diaryId == diary.id")
-    Single<List<Diary>> loadSelectedDiaryLista(int memoryId);
+    Single<List<LegacyDiary>> loadSelectedDiaryLista(int memoryId);
 
     // Graph 관련
     @Query("SELECT diary.tags, diary.selectedEmotion, diary.analyzedEmotion " +

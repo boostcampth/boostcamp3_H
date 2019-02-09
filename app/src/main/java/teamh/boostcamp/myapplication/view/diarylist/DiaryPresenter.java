@@ -150,7 +150,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
                                 view.showMoreDiaryItems(diaryList);
                             }
                             , throwable -> {
-                                Log.e(TAG, "Diary Fragment Load 에서 발생");
+                                Log.e(TAG, "LegacyDiary Fragment Load 에서 발생");
                                 throwable.printStackTrace();
                                 isLoadingItem = false;
                             }));
