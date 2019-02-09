@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.data.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -9,5 +10,6 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 public interface DiaryRepository {
 
     @NonNull
-    Single<List<Diary>> loadDiaryList(final int lastItemId, final int pageSize);
+    Single<List<Diary>> loadDiaryList(@NonNull final Date lastItemSavedTime,
+                                      final int pageSize);
 }
