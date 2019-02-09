@@ -24,14 +24,17 @@ import teamh.boostcamp.myapplication.data.local.room.converter.EmotionTypeConver
 import teamh.boostcamp.myapplication.data.local.room.converter.StringListTypeConverter;
 import teamh.boostcamp.myapplication.data.local.room.dao.AppDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
+
 import teamh.boostcamp.myapplication.data.local.room.dao.LegacyDiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Emotion;
+import teamh.boostcamp.myapplication.data.local.room.dao.RecallDao;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
+import teamh.boostcamp.myapplication.data.model.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 
-@Database(entities = {LegacyDiary.class, Recommendation.class, Memory.class, DiaryEntity.class}, version = 5, exportSchema = false)
+@Database(entities = {LegacyDiary.class, Recommendation.class, Memory.class, DiaryEntity.class, RecallEntity.class}, version = 5, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -104,4 +107,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DiaryDao diaryDao();
 
     public abstract LegacyDiaryDao legacyDiaryDao();
+
+    public abstract RecallDao recallDao();
 }
