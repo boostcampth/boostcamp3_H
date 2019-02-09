@@ -8,11 +8,12 @@ public class CountedTag {
     private String tagName;
     private int count;
 
-    public CountedTag(String tagName, int count) {
+    public CountedTag(@Nullable String tagName, int count) {
         this.tagName = tagName;
         this.count = count;
     }
 
+    @Nullable
     public String getTagName() {
         return tagName;
     }
