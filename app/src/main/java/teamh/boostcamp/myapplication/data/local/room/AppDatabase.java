@@ -1,6 +1,7 @@
 package teamh.boostcamp.myapplication.data.local.room;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -35,9 +36,9 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
                             .addCallback(new Callback() {
                                 @Override
-                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                public void onOpen(@NonNull SupportSQLiteDatabase db) {
                                     super.onCreate(db);
-                                    // 임시 데이터 추가 구현
+                                    Log.e("Test", "확인");
                                 }
                             }).build();
                 }

@@ -12,8 +12,7 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 @Dao
 public interface DiaryDao {
 
-    @Query("SELECT * FROM diary_ WHERE recordDate < :lastItemSavedTime ORDER BY recordDate LIMIT :pageSize")
+    @Query("SELECT * FROM diaries WHERE recordDate < :lastItemSavedTime ORDER BY recordDate LIMIT :pageSize")
     Single<List<DiaryEntity>> loadDiaryList(@NonNull Date lastItemSavedTime,
                                             final int pageSize);
-
 }

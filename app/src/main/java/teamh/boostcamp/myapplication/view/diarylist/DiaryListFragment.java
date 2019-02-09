@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -20,7 +22,12 @@ import androidx.databinding.ObservableBoolean;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
+import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.LegacyDiaryRepository;
@@ -63,7 +70,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         binding.setFragment(this);
 
         // 저장된 아이템 3개만 들고오기
-        presenter.loadMoreDiaryItems();
+        // presenter.loadMoreDiaryItems();
         compositeDisposable = new CompositeDisposable();
 
 
