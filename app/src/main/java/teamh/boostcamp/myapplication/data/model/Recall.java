@@ -10,17 +10,18 @@ public class Recall {
     private String startDate;
     @NonNull
     private String endDate;
-    private int randomEmotion;
+    @NonNull
+    private Emotion emotion;
     @NonNull
     private List<Diary> diaryList;
 
     public Recall(@NonNull String startDate,
                   @NonNull String endDate,
-                  int randomEmotion,
+                  @NonNull Emotion emotion,
                   @NonNull List<Diary> diaryList) {
         this.startDate = startDate;
         this.endDate = endDate;
-        this.randomEmotion = randomEmotion;
+        this.emotion = emotion;
         this.diaryList = diaryList;
     }
 
@@ -34,8 +35,9 @@ public class Recall {
         return endDate;
     }
 
-    public int getRandomEmotion() {
-        return randomEmotion;
+    @NonNull
+    public Emotion getEmotion() {
+        return emotion;
     }
 
     @NonNull
