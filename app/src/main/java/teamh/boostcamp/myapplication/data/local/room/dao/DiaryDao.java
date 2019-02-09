@@ -16,10 +16,10 @@ import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 @Dao
 public interface DiaryDao {
 
-    @Query("SELECT * FROM LegacyDiary WHERE timeStamp < :timeStamp ORDER BY timeStamp DESC LIMIT 3")
+    @Query("SELECT * FROM diary WHERE timeStamp < :timeStamp ORDER BY timeStamp DESC LIMIT 3")
     Single<List<LegacyDiary>> loadMoreDiary(final long timeStamp);
 
-    @Query("DELETE FROM LegacyDiary")
+    @Query("DELETE FROM diary")
     void deleteAll();
 
     @Delete
