@@ -8,10 +8,11 @@ public class EmotionHistory {
 
     @NonNull
     private Date date; // 날짜
-    private float emotion; // 감정x
+    @NonNull
+    private Emotion emotion; // 감정
 
     // 생성자를 통한 주입
-    public EmotionHistory(@NonNull Date date, float emotion) {
+    public EmotionHistory(@NonNull Date date, @NonNull Emotion emotion) {
         this.date = date;
         this.emotion = emotion;
     }
@@ -21,7 +22,8 @@ public class EmotionHistory {
         return date;
     }
 
-    public float getEmotion() {
+    @NonNull
+    public Emotion getEmotion() {
         return emotion;
     }
 
