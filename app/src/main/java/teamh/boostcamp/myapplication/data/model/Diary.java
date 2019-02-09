@@ -19,7 +19,7 @@ public class Diary {
     public Diary(int id,
                  @NonNull String recordDate,
                  @NonNull String recordFilePath,
-                 @NonNull List<String> tags,
+                 @Nullable List<String> tags,
                  final int selectedEmotion) {
         this.id = id;
         this.recordDate = recordDate;
