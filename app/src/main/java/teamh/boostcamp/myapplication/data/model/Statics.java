@@ -7,23 +7,21 @@ import java.util.List;
 
 public class Statics {
 
-    private float week; // 요일
-    private float emotion; // 감정
-    private List<Entry> weekEmotionData; // 요일과 감정으로 만든 하나의 좌표 데이터
+    private int dayOfWeek; // 요일
+    private float emotionScore; // 감정
 
     // 생성자를 통한 주입
-    public Statics(float week, float emotion) {
-        weekEmotionData = new ArrayList<>();
-        this.week = week;
-        this.emotion = emotion;
+    public Statics(int dayOfWeek, float emotionScore) {
+        this.dayOfWeek = dayOfWeek;
+        this.emotionScore = emotionScore;
     }
 
-    public void createCoordinates(){
-        weekEmotionData.add(new Entry(week, emotion));
+    public int getDayOfWeek(){
+        return dayOfWeek;
     }
 
-    public List<Entry> getThisWeekEmotions() {
-        return this.weekEmotionData;
+    public float getEmotionScore(){
+        return emotionScore;
     }
 
 }

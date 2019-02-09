@@ -4,25 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class HashTag {
 
+    @Nullable
     private String text;
+    @Nullable
     private int count;
-    private ArrayList<String> hashTagList;
 
     HashTag(String text) {
         this.text = text;
-        hashTagList = new ArrayList<>();
-    }
-
-    public List<String> getHashTagList() {
-        return this.hashTagList;
-    }
-
-    public void addItem(@NonNull String word) {
-        hashTagList.add(word);
         count++;
+    }
+
+    public String getText(){
+
+        return text;
     }
 
     public int getCount(){
