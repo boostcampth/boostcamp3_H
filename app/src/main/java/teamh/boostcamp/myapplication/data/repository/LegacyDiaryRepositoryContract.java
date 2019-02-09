@@ -8,7 +8,7 @@ import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 
-public interface DiaryRepositoryContract {
+public interface LegacyDiaryRepositoryContract {
 
     @NonNull
     Single<List<LegacyDiary>> loadMoreDiaryItems(final long idx);

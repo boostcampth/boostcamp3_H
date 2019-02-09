@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.data.model;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -8,7 +9,7 @@ import androidx.annotation.Nullable;
 public class Diary {
 
     @NonNull
-    private final String recordDate;
+    private final Date recordDate;
     @NonNull
     private final String recordFilePath;
     @Nullable
@@ -18,7 +19,7 @@ public class Diary {
     private final int id;
 
     public Diary(int id,
-                 @NonNull final String recordDate,
+                 @NonNull final Date recordDate,
                  @NonNull final String recordFilePath,
                  @Nullable final List<String> tags,
                  @NonNull final Emotion selectedEmotion) {
@@ -34,7 +35,7 @@ public class Diary {
     }
 
     @NonNull
-    public String getRecordDate() {
+    public Date getRecordDate() {
         return recordDate;
     }
 
