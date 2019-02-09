@@ -7,7 +7,7 @@ import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
 import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 
-public interface StaticsRepository {
+public interface StatisticsRepository {
 
     @NonNull
     Single<List<EmotionHistory>> loadEmotionHistoryList();
