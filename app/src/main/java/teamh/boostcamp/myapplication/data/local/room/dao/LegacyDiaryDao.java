@@ -12,9 +12,9 @@ import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 
 /*
- * DiaryDao 관련 */
+ * LegacyDiaryDao 관련 */
 @Dao
-public interface DiaryDao {
+public interface LegacyDiaryDao {
 
     @Query("SELECT * FROM diary WHERE timeStamp < :timeStamp ORDER BY timeStamp DESC LIMIT 3")
     Single<List<LegacyDiary>> loadMoreDiary(final long timeStamp);

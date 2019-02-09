@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
+import teamh.boostcamp.myapplication.data.local.room.dao.LegacyDiaryDao;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
-import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 
 
 /*
@@ -18,16 +18,16 @@ public class LegacyDiaryRepository implements LegacyDiaryRepositoryContract {
 
     private static LegacyDiaryRepository INSTANCE;
     private DeepAffectApiClient deepAffectApiClient;
-    private DiaryDao diaryDao;
+    private LegacyDiaryDao diaryDao;
 
     private LegacyDiaryRepository(@NonNull DeepAffectApiClient deepAffectApiClient,
-                                  @NonNull DiaryDao diaryDao) {
+                                  @NonNull LegacyDiaryDao diaryDao) {
         this.deepAffectApiClient = deepAffectApiClient;
         this.diaryDao = diaryDao;
     }
 
     public static LegacyDiaryRepository getInstance(@NonNull DeepAffectApiClient deepAffectApiClient,
-                                                    @NonNull DiaryDao diaryDao) {
+                                                    @NonNull LegacyDiaryDao diaryDao) {
         if (INSTANCE == null) {
             synchronized (LegacyDiaryRepository.class) {
                 if (INSTANCE == null) {

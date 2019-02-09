@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.AppDao;
-import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
+import teamh.boostcamp.myapplication.data.local.room.dao.LegacyDiaryDao;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
@@ -52,5 +52,5 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract AppDao appDao();
 
-    public abstract DiaryDao diaryDao();
+    public abstract LegacyDiaryDao diaryDao();
 }
