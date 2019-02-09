@@ -3,7 +3,7 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 
 public interface DiaryContract {
     interface View {
@@ -30,7 +30,7 @@ public interface DiaryContract {
         void showDiaryItemSaveFail();
 
         /* 불러온 아이템 넘겨주기 */
-        void showMoreDiaryItems(@NonNull List<Diary> diaryList);
+        void showMoreDiaryItems(@NonNull List<LegacyDiary> diaryList);
 
         /* 시간 초과 메시지 출력 */
         void showTimeOutMessage();
