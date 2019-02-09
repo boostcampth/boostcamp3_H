@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
 import static androidx.room.ForeignKey.CASCADE;
 
@@ -14,7 +15,7 @@ import static androidx.room.ForeignKey.CASCADE;
 */
 
 @Entity(tableName = "recommended", foreignKeys = {
-        @ForeignKey(entity = Diary.class,
+        @ForeignKey(entity = DiaryEntity.class,
                 parentColumns = "id",
                 childColumns = "diaryId",
                 onDelete = CASCADE),

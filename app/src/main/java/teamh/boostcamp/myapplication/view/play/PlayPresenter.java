@@ -33,7 +33,7 @@ public class PlayPresenter implements PlayContractor.Presenter {
     @Override
     public void loadData(int MemoryId) {
         compositeDisposable.add(
-                appDatabase.appDao().loadSelectedDiayLista(MemoryId)
+                appDatabase.appDao().loadSelectedDiaryLista(MemoryId)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(list -> {

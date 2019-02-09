@@ -17,13 +17,15 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.AppDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 
-@Database(entities = {Diary.class, Recommendation.class, Memory.class}, version = 4, exportSchema = false)
+@Database(entities = {DiaryEntity.class, Recommendation.class, Memory.class}, version = 5, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "appDB.db";
@@ -40,10 +42,11 @@ public abstract class AppDatabase extends RoomDatabase {
                             .fallbackToDestructiveMigration()
                             .addCallback(new Callback() {
                                 @Override
-                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                public void onOpen(@NonNull SupportSQLiteDatabase db) {
                                     super.onCreate(db);
                                     // 생성 callback
-                                    getInstance(context).diaryDao().insertDiary(Diary.generateSampleDiaryData())
+                                    INSTANCE.diaryDao().insertDiary(DiaryEntity.generateSampleDiaryData())
+                                            .subscribeOn(Schedulers.io())
                                             .subscribe(
                                                     () -> Log.d("Test", "임시 파일 생성"),
                                                     throwable -> Log.d("Test", "")

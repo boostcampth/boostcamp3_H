@@ -9,22 +9,22 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import io.reactivex.Completable;
 import io.reactivex.Single;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
 /*
  * DiaryDao 관련 */
 @Dao
 public interface DiaryDao {
 
-    @Query("SELECT * FROM diary WHERE timeStamp < :timeStamp ORDER BY timeStamp DESC LIMIT 3")
-    Single<List<Diary>> loadMoreDiary(final long timeStamp);
+    @Query("SELECT * FROM diary WHERE id < :id ORDER BY timeStamp DESC LIMIT 3")
+    Single<List<DiaryEntity>> loadMoreDiary(final int id);
 
     @Query("DELETE FROM diary")
     void deleteAll();
 
     @Delete
-    Completable deleteDiary(Diary diary);
+    Completable deleteDiary(DiaryEntity diary);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertDiary(Diary ...diaries);
+    Completable insertDiary(DiaryEntity ...diaries);
 }

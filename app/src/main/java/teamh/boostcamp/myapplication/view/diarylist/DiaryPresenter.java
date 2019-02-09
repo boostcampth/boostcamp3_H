@@ -11,7 +11,7 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 
@@ -27,7 +27,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private CompositeDisposable compositeDisposable;
 
     private int selectedEmotion = -1;
-    private long currentIdx = Long.MAX_VALUE;
+    private int currentIdx = Integer.MAX_VALUE;
     private boolean isRecording = false;
     private boolean isLoadingItem = false;
 
@@ -109,7 +109,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         // 분석 후 저장
         compositeDisposable.add(diaryRepository.analyzeVoiceEmotion(request)
                 .doOnError(throwable -> view.showEmotionAnalyzeFailMessage())
-                .map(analyzedEmotion -> new Diary(0,
+                .map(analyzedEmotion -> new DiaryEntity(0,
                         file.getName().split("\\.")[0],
                         diaryRecorderImpl.getFilePath(),
                         tags,
@@ -133,13 +133,6 @@ public class DiaryPresenter implements DiaryContract.Presenter {
 
     @Override
     public void loadMoreDiaryItems() {
- /*       compositeDisposable.add(diaryRepository.clearAllData()
-                .subscribe(() -> {
-                            Log.e("Test", "성공");
-                        }, throwable -> {
-                            Log.e("Test", "실패");
-                        }
-                ));*/
 
         if (!isLoadingItem) {
             isLoadingItem = true;
@@ -149,7 +142,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
 
                                 isLoadingItem = false;
                                 if (diaryList.size() != 0) {
-                                    currentIdx = diaryList.get(diaryList.size() - 1).getTimeStamp();
+                                    currentIdx = diaryList.get(diaryList.size() - 1).getId();
                                 } else {
                                     return;
                                 }

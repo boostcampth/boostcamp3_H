@@ -11,6 +11,7 @@ import androidx.room.Query;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
@@ -24,10 +25,10 @@ public interface AppDao {
     Single<List<Diary>> loadMoreDiary(final int idx);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertDiary(Diary ...diaries);
+    Completable insertDiary(DiaryEntity...diaries);
 
     @Delete
-    void deleteDiary(Diary diary);
+    void deleteDiary(DiaryEntity diary);
 
     @Query("SELECT * FROM diary WHERE diary.recordDate > :start AND diary.recordDate < :end AND diary.selectedEmotion = :emotion LIMIT 5")
     Flowable<List<Diary>> getSelectedRecord(String start, String end, int emotion);
@@ -55,7 +56,7 @@ public interface AppDao {
     Single<Diary> loadSelectedDiary(int diaryId);
 
     @Query("SELECT diary.* FROM diary, recommended WHERE recommended.memoryId=:memoryId AND recommended.diaryId == diary.id")
-    Single<List<Diary>> loadSelectedDiayLista(int memoryId);
+    Single<List<Diary>> loadSelectedDiaryLista(int memoryId);
 
     // Graph 관련
     @Query("SELECT diary.tags, diary.selectedEmotion, diary.analyzedEmotion " +
