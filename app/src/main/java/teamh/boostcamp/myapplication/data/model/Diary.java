@@ -1,28 +1,25 @@
 package teamh.boostcamp.myapplication.data.model;
 
+import java.util.List;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-/*
- * Diary class 새로 작성
- * 기존 Diary 는 DiaryEntity 의 모습과 동일하고,
- * 화면에서 보이는 일기들이 가져야하는 속성들만 빼서 작성
- * 최대한 Immutable 하게 작성 */
 public class Diary {
-
 
     @NonNull
     private final String recordDate;
     @NonNull
     private final String recordFilePath;
-    @NonNull
-    private final String tags;
+    @Nullable
+    private final List<String> tags;
     private final int id;
     private final int selectedEmotion;
 
     public Diary(int id,
                  @NonNull String recordDate,
                  @NonNull String recordFilePath,
-                 @NonNull String tags,
+                 @NonNull List<String> tags,
                  final int selectedEmotion) {
         this.id = id;
         this.recordDate = recordDate;
@@ -41,7 +38,7 @@ public class Diary {
     }
 
     @NonNull
-    public String getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
