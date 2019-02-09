@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="team_h.boostcamp.myapplication">
+    package="teamh.boostcamp.myapplication">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -14,12 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.password.PasswordActivity"></activity>
-        <activity android:name=".view.alarm.AlarmActivity" />
-        <activity android:name=".view.setting.SettingActivity" />
-        <activity android:name=".view.play.PlayActivity" />
+        <activity android:name="teamh.boostcamp.myapplication.view.password.PasswordActivity"></activity>
+        <activity android:name="teamh.boostcamp.myapplication.view.alarm.AlarmActivity" />
+        <activity android:name="teamh.boostcamp.myapplication.view.setting.SettingActivity" />
+        <activity android:name="teamh.boostcamp.myapplication.view.play.PlayActivity" />
         <activity
-            android:name=".view.main.MainActivity"
+            android:name="teamh.boostcamp.myapplication.view.main.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".view.alarm.AlertReceiver" />
+        <receiver android:name="teamh.boostcamp.myapplication.view.alarm.AlertReceiver" />
     </application>
 
 </manifest>

@@ -7,11 +7,11 @@
 
         <variable
             name="activity"
-            type="team_h.boostcamp.myapplication.view.alarm.AlarmActivity" />
+            type="teamh.boostcamp.myapplication.view.alarm.AlarmActivity" />
 
         <variable
             name="handlers"
-            type="team_h.boostcamp.myapplication.view.Handlers" />
+            type="teamh.boostcamp.myapplication.view.Handlers" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
