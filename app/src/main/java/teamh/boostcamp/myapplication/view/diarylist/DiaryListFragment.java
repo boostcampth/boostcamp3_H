@@ -23,7 +23,7 @@ import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
-import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
+import teamh.boostcamp.myapplication.data.repository.LegacyDiaryRepository;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
@@ -156,7 +156,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
 
         // 주입
         presenter = new DiaryPresenter(this,
-                DiaryRepository.getInstance(DeepAffectApiClient.getInstance(), AppDatabase.getInstance(context).diaryDao()),
+                LegacyDiaryRepository.getInstance(DeepAffectApiClient.getInstance(), AppDatabase.getInstance(context).diaryDao()),
                 diaryRecorder);
     }
 

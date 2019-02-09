@@ -9,7 +9,7 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.model.Diary;
 
-public interface DiaryRepositoryContract {
+public interface LegacyDiaryRepositoryContract {
 
     @NonNull
     Single<List<Diary>> loadMoreDiaryItems(final int idx);

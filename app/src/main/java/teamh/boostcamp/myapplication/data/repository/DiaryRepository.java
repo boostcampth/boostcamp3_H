@@ -3,81 +3,32 @@ package teamh.boostcamp.myapplication.data.repository;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import io.reactivex.Completable;
+import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
-import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
-import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
-import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 
+/* Diary Repository 구현 */
+public interface DiaryRepository {
 
-/*
- * Repository 를 data/repository + 가공까지 ! */
-public class DiaryRepository implements DiaryRepositoryContract {
-
-    private static DiaryRepository INSTANCE;
-    private DeepAffectApiClient deepAffectApiClient;
-    private DiaryDao diaryDao;
-
-    private DiaryRepository(@NonNull DeepAffectApiClient deepAffectApiClient,
-                            @NonNull DiaryDao diaryDao) {
-        this.deepAffectApiClient = deepAffectApiClient;
-        this.diaryDao = diaryDao;
-    }
-
-    public static DiaryRepository getInstance(@NonNull DeepAffectApiClient deepAffectApiClient,
-                                              @NonNull DiaryDao diaryDao) {
-        if (INSTANCE == null) {
-            synchronized (DiaryRepository.class) {
-                if (INSTANCE == null) {
-                    INSTANCE = new DiaryRepository(deepAffectApiClient, diaryDao);
-                }
-            }
-        }
-        return INSTANCE;
-    }
-
+    /* 일기 목록을 n 개 가져오기
+     * 일기의 인덱스 번호를 통해 load 시작점을 설정 */
     @NonNull
-    @Override
-    public Single<List<Diary>> loadMoreDiaryItems(final int idx) {
-        return diaryDao.loadMoreDiary(idx)
-                .map(DiaryEntityMapper::toDiaryList)
-                .subscribeOn(Schedulers.io());
-    }
+    Single<List<Diary>> loadMoreDiaries(final int idx);
 
+    /* 일기 집어넣기
+     * Completable Issue 때문에 Completable.fromAction 으로 처리 */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertDiaries(Diary... diaries);
+
+    /* 초기화 작업
+     * Completable Issue 떄문에 Completable.fromAction 으로 처리 */
     @NonNull
-    @Override
-    public Completable insertRecordItem(@NonNull DiaryEntity diaryItem) {
-        return diaryDao.insertDiary(diaryItem).subscribeOn(Schedulers.io());
-    }
+    void truncateDiaries();
 
+    /* 음성 분석 결과 가져오기
+     * 분석된 List<String> 결과를 Mapper 를  통해 Integer 변경*/
     @NonNull
-    @Override
-    public Single<Integer> analyzeVoiceEmotion(@NonNull EmotionAnalyzeRequest request) {
-        return deepAffectApiClient.analyzeVoiceEmotion(request)
-                .map(AnalyzedEmotionMapper::parseAnalyzedEmotion)
-                .subscribeOn(Schedulers.io());
-    }
-
-    /*@NonNull
-    @Override
-    public Completable clearAllData() {
-        return Completable.fromAction(() -> diaryDao.deleteAll())
-                .subscribeOn(Schedulers.io());
-    }
-
-    @NonNull
-    @Override
-    public Completable insertRecordItems(@NonNull DiaryEntity... diaries) {
-        return diaryDao.insertDiary(diaries)
-                .subscribeOn(Schedulers.io());
-    }
-
-    @NonNull
-    @Override
-    public Completable deleteRecordItem(@NonNull DiaryEntity diary) {
-        return diaryDao.deleteDiary(diary).subscribeOn(Schedulers.io());
-    }*/
+    Single<Integer> anlayzeVoiceEmotion(@NonNull EmotionAnalyzeRequest emotionAnalyzeRequest);
 }
