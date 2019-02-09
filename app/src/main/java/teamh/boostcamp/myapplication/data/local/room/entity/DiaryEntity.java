@@ -8,6 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import teamh.boostcamp.myapplication.data.local.room.typeConverter.DateTypeConverter;
+import teamh.boostcamp.myapplication.data.local.room.typeConverter.EmotionTypeConverter;
+import teamh.boostcamp.myapplication.data.local.room.typeConverter.TagListTypeConverter;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 
 /* Legacy 와 table 이름 충돌때문에 임시로 _ 설정 */
