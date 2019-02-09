@@ -14,13 +14,13 @@ public class Diary {
     @Nullable
     private final List<String> tags;
     private final int id;
-    private final int selectedEmotion;
+    private final Emotion selectedEmotion;
 
     public Diary(int id,
-                 @NonNull String recordDate,
-                 @NonNull String recordFilePath,
-                 @Nullable List<String> tags,
-                 final int selectedEmotion) {
+                 @NonNull final String recordDate,
+                 @NonNull final String recordFilePath,
+                 @Nullable final List<String> tags,
+                 @NonNull final Emotion selectedEmotion) {
         this.id = id;
         this.recordDate = recordDate;
         this.recordFilePath = recordFilePath;
@@ -47,7 +47,8 @@ public class Diary {
         return recordFilePath;
     }
 
-    public int getSelectedEmotion() {
+    @NonNull
+    public Emotion getSelectedEmotion() {
         return selectedEmotion;
     }
 }
