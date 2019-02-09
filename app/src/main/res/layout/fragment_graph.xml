@@ -8,7 +8,7 @@
 
         <variable
             name="presenter"
-            type="team_h.boostcamp.myapplication.view.graph.GraphPresenter" />
+            type="teamh.boostcamp.myapplication.view.graph.GraphPresenter" />
 
     </data>
 
@@ -55,7 +55,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lc_emotion_graph" />
 
-            <team_h.boostcamp.myapplication.view.graph.HashTagCustomLayout
+            <teamh.boostcamp.myapplication.view.graph.HashTagCustomLayout
                 android:id="@+id/hash_tag_custom_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

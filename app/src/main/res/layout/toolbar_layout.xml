@@ -7,7 +7,7 @@
             type="String"/>
         <variable
             name="handlers"
-            type="team_h.boostcamp.myapplication.view.Handlers"/>
+            type="teamh.boostcamp.myapplication.view.Handlers"/>
     </data>
 
     <RelativeLayout
