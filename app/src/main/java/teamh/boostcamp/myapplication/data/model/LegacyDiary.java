@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey;
 /*
  * 일기 아이템 데이터를 가지는 DataClass */
 @Entity(tableName = "diary")
-public class Diary {
+public class LegacyDiary {
 
     // DB 에서 인식하기 위한 PK
     @PrimaryKey(autoGenerate = true)
@@ -51,13 +51,13 @@ public class Diary {
     @ColumnInfo(name = "timeStamp")
     private final long timeStamp;
 
-    public Diary(int id,
-                 @NonNull String recordDate,
-                 @NonNull String recordFilePath,
-                 @NonNull String tags,
-                 final int selectedEmotion,
-                 final int analyzedEmotion,
-                 final long timeStamp) {
+    public LegacyDiary(int id,
+                       @NonNull String recordDate,
+                       @NonNull String recordFilePath,
+                       @NonNull String tags,
+                       final int selectedEmotion,
+                       final int analyzedEmotion,
+                       final long timeStamp) {
         this.id = id;
         this.recordDate = recordDate;
         this.recordFilePath = recordFilePath;
@@ -99,7 +99,7 @@ public class Diary {
         return timeStamp;
     }
 
-    public static Diary[] generateSampleDiaryData() {
+    public static LegacyDiary[] generateSampleDiaryData() {
         String filePath = "/storage/emulated/0/2019-02-08.acc";
         File file = new File("/storage/emulated/0/2019-02-08.acc");
 
@@ -118,10 +118,10 @@ public class Diary {
 
         Random random = new Random();
 
-        List<Diary> samples = new ArrayList<>();
+        List<LegacyDiary> samples = new ArrayList<>();
 
         for (int i = 1; i <= 20; ++i) {
-            samples.add(new Diary(
+            samples.add(new LegacyDiary(
                     i,
                     String.format(Locale.getDefault(), "2019-01-%2d", i),
                     filePath,
@@ -132,7 +132,7 @@ public class Diary {
             ));
         }
 
-        Diary[] temp = new Diary[samples.size()];
+        LegacyDiary[] temp = new LegacyDiary[samples.size()];
         return temp;
     }
 }

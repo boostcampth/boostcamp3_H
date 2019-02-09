@@ -11,7 +11,7 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 
@@ -109,7 +109,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
         // 분석 후 저장
         compositeDisposable.add(diaryRepository.analyzeVoiceEmotion(request)
                 .doOnError(throwable -> view.showEmotionAnalyzeFailMessage())
-                .map(analyzedEmotion -> new Diary(0,
+                .map(analyzedEmotion -> new LegacyDiary(0,
                         file.getName().split("\\.")[0],
                         diaryRecorderImpl.getFilePath(),
                         tags,
@@ -157,7 +157,7 @@ public class DiaryPresenter implements DiaryContract.Presenter {
                                 view.showMoreDiaryItems(diaryList);
                             }
                             , throwable -> {
-                                Log.e(TAG, "Diary Fragment Load 에서 발생");
+                                Log.e(TAG, "LegacyDiary Fragment Load 에서 발생");
                                 throwable.printStackTrace();
                                 isLoadingItem = false;
                             }));

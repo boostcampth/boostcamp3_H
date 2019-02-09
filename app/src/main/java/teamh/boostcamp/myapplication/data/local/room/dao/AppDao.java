@@ -11,7 +11,7 @@ import androidx.room.Query;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 
@@ -19,18 +19,18 @@ import teamh.boostcamp.myapplication.data.model.Recommendation;
 @Dao
 public interface AppDao {
 
-    // Diary 관련
-    @Query("SELECT * FROM diary WHERE id > :idx ORDER BY recordDate DESC LIMIT 10")
-    Single<List<Diary>> loadMoreDiary(final int idx);
+    // LegacyDiary 관련
+    @Query("SELECT * FROM LegacyDiary WHERE id > :idx ORDER BY recordDate DESC LIMIT 10")
+    Single<List<LegacyDiary>> loadMoreDiary(final int idx);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertDiary(Diary ...diaries);
+    Completable insertDiary(LegacyDiary...diaries);
 
     @Delete
-    void deleteDiary(Diary diary);
+    void deleteDiary(LegacyDiary diary);
 
-    @Query("SELECT * FROM diary WHERE diary.recordDate > :start AND diary.recordDate < :end AND diary.selectedEmotion = :emotion LIMIT 5")
-    Flowable<List<Diary>> getSelectedRecord(String start, String end, int emotion);
+    @Query("SELECT * FROM LegacyDiary WHERE LegacyDiary.recordDate > :start AND LegacyDiary.recordDate < :end AND LegacyDiary.selectedEmotion = :emotion LIMIT 5")
+    Flowable<List<LegacyDiary>> getSelectedRecord(String start, String end, int emotion);
 
     // Memory 기능 관련
     @Query("SELECT * FROM memory ORDER BY id DESC LIMIT 1")
@@ -51,15 +51,15 @@ public interface AppDao {
     @Query("SELECT * FROM recommended WHERE memoryId=:memoryId")
     Single<List<Recommendation>> loadSelectedDiaryList(int memoryId);
 
-    @Query("SELECT * FROM diary WHERE id=:diaryId")
-    Single<Diary> loadSelectedDiary(int diaryId);
+    @Query("SELECT * FROM LegacyDiary WHERE id=:diaryId")
+    Single<LegacyDiary> loadSelectedDiary(int diaryId);
 
-    @Query("SELECT diary.* FROM diary, recommended WHERE recommended.memoryId=:memoryId AND recommended.diaryId == diary.id")
-    Single<List<Diary>> loadSelectedDiayLista(int memoryId);
+    @Query("SELECT LegacyDiary.* FROM LegacyDiary, recommended WHERE recommended.memoryId=:memoryId AND recommended.diaryId == LegacyDiary.id")
+    Single<List<LegacyDiary>> loadSelectedDiayLista(int memoryId);
 
     // Graph 관련
-    @Query("SELECT diary.tags, diary.selectedEmotion, diary.analyzedEmotion " +
-            "FROM diary WHERE diary.recordDate > :start AND diary.recordDate < :end")
+    @Query("SELECT LegacyDiary.tags, LegacyDiary.selectedEmotion, LegacyDiary.analyzedEmotion " +
+            "FROM LegacyDiary WHERE LegacyDiary.recordDate > :start AND LegacyDiary.recordDate < :end")
     List<GraphData> getGraphData(String start, String end);
 
 

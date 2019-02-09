@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.databinding.ItemMemoryCardBinding;
-import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.view.adapter.BaseRecyclerViewAdapter;
@@ -63,7 +63,7 @@ public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, Memorie
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(recommendations -> {
 
-                    List<Diary> list = new ArrayList<>();
+                    List<LegacyDiary> list = new ArrayList<>();
                     for (int i = 0; i < recommendations.size(); i++) {
                         appDatabase.appDao().loadSelectedDiary(recommendations.get(i).getDiaryId())
                                 .subscribeOn(Schedulers.io())
