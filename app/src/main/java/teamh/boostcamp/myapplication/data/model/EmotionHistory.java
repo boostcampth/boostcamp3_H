@@ -1,26 +1,26 @@
 package teamh.boostcamp.myapplication.data.model;
 
-import com.github.mikephil.charting.data.Entry;
+import java.util.Date;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidx.annotation.NonNull;
 
 public class EmotionHistory {
 
-    private int dayOfWeek; // 요일
+    @NonNull
+    private Date date; // 요일
     private float emotionScore; // 감정
 
     // 생성자를 통한 주입
-    public EmotionHistory(int dayOfWeek, float emotionScore) {
-        this.dayOfWeek = dayOfWeek;
+    public EmotionHistory(Date date, float emotionScore) {
+        this.date = date;
         this.emotionScore = emotionScore;
     }
 
-    public int getDayOfWeek(){
-        return dayOfWeek;
+    public Date getDayOfWeek() {
+        return date;
     }
 
-    public float getEmotionScore(){
+    public float getEmotionScore() {
         return emotionScore;
     }
 
