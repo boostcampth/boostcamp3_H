@@ -7,7 +7,7 @@
 
         <variable
             name="activity"
-            type="team_h.boostcamp.myapplication.view.main.MainActivity" />
+            type="teamh.boostcamp.myapplication.view.main.MainActivity" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -6,7 +6,7 @@
 
         <variable
             name="diary"
-            type="team_h.boostcamp.myapplication.model.Diary" />
+            type="teamh.boostcamp.myapplication.model.Diary" />
     </data>
 
 
