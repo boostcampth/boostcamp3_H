@@ -37,7 +37,7 @@ public class Diary {
         return recordDate;
     }
 
-    @NonNull
+    @Nullable
     public List<String> getTags() {
         return tags;
     }
