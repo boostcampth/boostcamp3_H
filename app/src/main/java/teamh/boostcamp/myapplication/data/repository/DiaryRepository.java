@@ -9,5 +9,5 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 public interface DiaryRepository {
 
     @NonNull
-    Single<List<Diary>> loadDiaryList(final int lastItemIndex, final int pageSize);
+    Single<List<Diary>> loadDiaryList(final int lastItemId, final int pageSize);
 }
