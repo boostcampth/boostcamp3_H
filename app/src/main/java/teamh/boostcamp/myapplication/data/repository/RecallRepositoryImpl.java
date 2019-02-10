@@ -1,53 +1,59 @@
 package teamh.boostcamp.myapplication.data.repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import androidx.annotation.NonNull;
-import io.reactivex.Observable;
 import io.reactivex.Single;
-import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import io.reactivex.schedulers.Schedulers;
+import teamh.boostcamp.myapplication.data.local.room.dao.RecallDao;
 import teamh.boostcamp.myapplication.data.model.Recall;
+import teamh.boostcamp.myapplication.data.model.RecallEntity;
 
 public class RecallRepositoryImpl implements RecallRepository {
 
-    private volatile static RecallRepositoryImpl INSTANCE;
-    @NonNull
-    final private AppDatabase appDatabase;
+    private static RecallRepositoryImpl INSTANCE;
+    private RecallDao recallDao;
 
-    private RecallRepositoryImpl(@NonNull AppDatabase appDatabase) {
-        this.appDatabase = appDatabase;
+    private RecallRepositoryImpl(RecallDao recallDao) {
+        this.recallDao = recallDao;
     }
 
-    public static RecallRepositoryImpl getInstance(AppDatabase appDatabase) {
+    public static RecallRepositoryImpl getInstance(RecallDao recallDao) {
         if (INSTANCE == null) {
             synchronized (RecallRepositoryImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new RecallRepositoryImpl(appDatabase);
+                    INSTANCE = new RecallRepositoryImpl(recallDao);
                 }
             }
         }
         return INSTANCE;
     }
 
-    @Override
-    @NonNull
     public Single<List<Recall>> loadRecallList() {
+        return recallDao.loadRecallEntity()
+                .map(recallEntities -> {
 
-        return appDatabase.recallDao().loadRecallEntities()
-                .flatMapObservable(Observable::fromIterable)
-                .flatMapSingle(recallEntity -> {
-                    final Date endDate = recallEntity.getCreatedDate();
-                    final Date startDate = generateStartDate(endDate);
-                    return appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(),
-                            startDate, endDate, 5)
-                            .map(diaries -> new Recall(startDate, endDate, recallEntity.getEmotion(), diaries));
-                })
-                .toList();
+                    List<Recall> recallList = new ArrayList<>();
+                    for (int i = 0; i < recallEntities.size(); i++) {
+
+                        RecallEntity recallEntity = recallEntities.get(i);
+
+                        Date endDate = recallEntity.getCreatedDate();
+                        Date startDate = generateStartDate(endDate);
+
+                        Recall recall = new Recall(startDate,
+                                recallEntity.getCreatedDate(),
+                                recallEntity.getEmotion(),
+                                recallDao.selectDiary(recallEntity.getEmotion(), startDate, endDate));
+                        recallList.add(recall);
+                    }
+
+                    return recallList;
+                }).subscribeOn(Schedulers.io());
     }
 
-    private Date generateStartDate(@NonNull Date endDate){
-        return new Date(endDate.getTime() - TimeUnit.DAYS.toMillis(14));
+    private Date generateStartDate(Date endDate){
+        return new Date(endDate.getTime() - 14 * 24 * 60 * 60 * 1000);
     }
 }
