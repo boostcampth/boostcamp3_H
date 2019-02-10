@@ -34,7 +34,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     @Override
     public Single<List<CountedTag>> loadRecentCountedTagList() {
         return appDatabase.statisticsDao().loadRecentCountedTagList(14)
-                .map(CountedTagMappter::tagToCountedTagMapper)
+                .map(CountedTagMapper::tagToCountedTagList)
                 .subscribeOn(Schedulers.io());
     }
 
