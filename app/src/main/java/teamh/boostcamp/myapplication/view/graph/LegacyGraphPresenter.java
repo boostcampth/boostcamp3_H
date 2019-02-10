@@ -8,7 +8,7 @@ import java.util.List;
 import androidx.databinding.ObservableField;
 import teamh.boostcamp.myapplication.data.repository.DataRepository;
 
-public class GraphPresenter implements GraphContractor.Presenter {
+public class LegacyGraphPresenter implements GraphContractor.Presenter {
     public static final ObservableField<String> OBSERVER = new ObservableField<>("Statics");
     public static final ObservableField<String> HASHTAG_OBSERVER = new ObservableField<>("#HashTags");
     private List<Entry> thisWeekEntries = new ArrayList<>();
@@ -16,7 +16,7 @@ public class GraphPresenter implements GraphContractor.Presenter {
     private GraphContractor.View view;
     private DataRepository dataRepository;
 
-    GraphPresenter(GraphContractor.View view, DataRepository dataRepository) {
+    LegacyGraphPresenter(GraphContractor.View view, DataRepository dataRepository) {
         this.view = view;
         this.dataRepository = dataRepository;
     }
