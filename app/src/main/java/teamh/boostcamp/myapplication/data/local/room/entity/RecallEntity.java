@@ -8,7 +8,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 
-@Entity(tableName = "recall")
+@Entity(tableName = "recalls")
 public class RecallEntity {
 
     @PrimaryKey(autoGenerate = true)

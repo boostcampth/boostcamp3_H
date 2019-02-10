@@ -8,12 +8,11 @@ import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
-import teamh.boostcamp.myapplication.data.local.room.dao.RecallDao;
 import teamh.boostcamp.myapplication.data.model.Recall;
 
 public class RecallRepositoryImpl implements RecallRepository {
 
-    volatile private static RecallRepositoryImpl INSTANCE;
+    private volatile static RecallRepositoryImpl INSTANCE;
     @NonNull
     final private AppDatabase appDatabase;
 
@@ -41,12 +40,12 @@ public class RecallRepositoryImpl implements RecallRepository {
                     Date endDate = recallEntity.getCreatedDate();
                     Date startDate = generateStartDate(endDate);
 
-                    return Observable.just(appDatabase.diaryDao().selectDiary(recallEntity.getEmotion(), startDate, endDate, 5))
+                    return Observable.just(appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(), startDate, endDate, 5))
                             .map(listSingle -> new Recall(startDate, endDate, recallEntity.getEmotion(), listSingle));
                 }).toList();
     }
 
-    private Date generateStartDate(Date endDate){
+    private Date generateStartDate(@NonNull Date endDate){
         return new Date(endDate.getTime() - TimeUnit.DAYS.toMillis(14));
     }
 }
