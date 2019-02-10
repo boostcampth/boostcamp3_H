@@ -36,7 +36,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
     public final ObservableBoolean isSaving = new ObservableBoolean(false);
 
     private Context context;
-    private DiaryPresenter presenter;
+    private LegacyDiaryPresenter presenter;
 
     private HashTagListAdapter hashTagListAdapter;
     private DiaryListAdapter diaryListAdapter;
@@ -154,7 +154,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         final DiaryRecorder diaryRecorder = new DiaryRecorderImpl();
 
         // 주입
-        presenter = new DiaryPresenter(this,
+        presenter = new LegacyDiaryPresenter(this,
                 LegacyDiaryRepository.getInstance(DeepAffectApiClient.getInstance(), AppDatabase.getInstance(context).legacyDiaryDao()),
                 diaryRecorder);
     }

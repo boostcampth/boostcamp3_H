@@ -15,9 +15,9 @@ import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.LegacyDiaryRepository;
 
-public class DiaryPresenter implements DiaryContract.Presenter {
+public class LegacyDiaryPresenter implements DiaryContract.Presenter {
 
-    private static final String TAG = "DiaryPresenter";
+    private static final String TAG = "LegacyDiaryPresenter";
 
     private DiaryContract.View view;
 
@@ -31,9 +31,9 @@ public class DiaryPresenter implements DiaryContract.Presenter {
     private boolean isRecording = false;
     private boolean isLoadingItem = false;
 
-    DiaryPresenter(@NonNull DiaryContract.View view,
-                   @NonNull LegacyDiaryRepository diaryRepository,
-                   @NonNull DiaryRecorder diaryRecorderImpl) {
+    LegacyDiaryPresenter(@NonNull DiaryContract.View view,
+                         @NonNull LegacyDiaryRepository diaryRepository,
+                         @NonNull DiaryRecorder diaryRecorderImpl) {
         this.view = view;
         this.diaryRepository = diaryRepository;
         this.diaryRecorderImpl = diaryRecorderImpl;
