@@ -35,14 +35,16 @@ public class RecallRepositoryImpl implements RecallRepository {
     @NonNull
     public Single<List<Recall>> loadRecallList() {
 
-        return appDatabase.recallDao().loadRecallEntities().flatMapObservable(recallEntities -> Observable.fromIterable(recallEntities))
-                .flatMap(recallEntity -> {
-                    Date endDate = recallEntity.getCreatedDate();
-                    Date startDate = generateStartDate(endDate);
-
-                    return Observable.just(appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(), startDate, endDate, 5))
-                            .map(listSingle -> new Recall(startDate, endDate, recallEntity.getEmotion(), listSingle));
-                }).toList();
+        return appDatabase.recallDao().loadRecallEntities()
+                .flatMapObservable(Observable::fromIterable)
+                .flatMapSingle(recallEntity -> {
+                    final Date endDate = recallEntity.getCreatedDate();
+                    final Date startDate = generateStartDate(endDate);
+                    return appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(),
+                            startDate, endDate, 5)
+                            .map(diaries -> new Recall(startDate, endDate, recallEntity.getEmotion(), diaries));
+                })
+                .toList();
     }
 
     private Date generateStartDate(@NonNull Date endDate){
