@@ -20,9 +20,9 @@ public class RecallEntity {
 
     @ColumnInfo(name = "emotion")
     @NonNull
-    private int emotion;
+    private Emotion emotion;
 
-    public RecallEntity(int id, @NonNull Date createdDate, int emotion) {
+    public RecallEntity(int id, @NonNull Date createdDate, Emotion emotion) {
         this.id = id;
         this.createdDate = createdDate;
         this.emotion = emotion;
@@ -37,7 +37,7 @@ public class RecallEntity {
         return createdDate;
     }
 
-    public int getEmotion() {
+    public Emotion getEmotion() {
         return emotion;
     }
 }
