@@ -36,7 +36,7 @@ public class RecallRepositoryImpl implements RecallRepository {
         return appDatabase.recallDao().loadRecallEntities()
                 .flatMapObservable(Observable::fromIterable)
                 .flatMapSingle(recallEntity -> {
-                    final Date endDate = recallEntity.getCreatedDate();
+                    final Date endDate = generateEndDate(recallEntity.getCreatedDate());
                     final Date startDate = generateStartDate(endDate);
                     return appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(),
                             startDate, endDate, 5)
@@ -45,7 +45,16 @@ public class RecallRepositoryImpl implements RecallRepository {
                 .toList();
     }
 
-    private Date generateStartDate(@NonNull Date endDate){
-        return new Date(endDate.getTime() - TimeUnit.DAYS.toMillis(14));
+    private Date generateStartDate(@NonNull Date endDate) {
+        return new Date(endDate.getTime()
+                - TimeUnit.DAYS.toMillis(14)
+                - 1000);
+    }
+
+    private Date generateEndDate(@NonNull Date createDate) {
+        return new Date(createDate.getTime()
+                - (createDate.getTime() % TimeUnit.DAYS.toMillis(1))
+                - TimeUnit.HOURS.toMillis(9)
+                - 1000);
     }
 }
