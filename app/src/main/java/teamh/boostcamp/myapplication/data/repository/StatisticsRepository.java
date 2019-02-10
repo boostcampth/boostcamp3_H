@@ -17,9 +17,6 @@ import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 public interface StatisticsRepository {
 
     @NonNull
-    Single<List<EmotionHistory>> loadRecentEmotionHistoryList();
-
-    @NonNull
     Single<List<CountedTag>> loadRecentCountedTagList();
 
 }

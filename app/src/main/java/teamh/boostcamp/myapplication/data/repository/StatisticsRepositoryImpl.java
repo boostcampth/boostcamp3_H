@@ -32,12 +32,6 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
 
     @NonNull
     @Override
-    public Single<List<EmotionHistory>> loadRecentEmotionHistoryList() {
-        return null;
-    }
-
-    @NonNull
-    @Override
     public Single<List<CountedTag>> loadRecentCountedTagList() {
         return statisticsDao.loadRecentCountedTagList()
                 .map(CountedTagMappter::tagToCountedTagMapper)
