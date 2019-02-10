@@ -9,7 +9,8 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class DiaryEntityMapper {
 
-    public static List<Diary> toDiary(@NonNull List<DiaryEntity> diaryEntities) {
+    @NonNull
+    public static List<Diary> toDiaryList(@NonNull List<DiaryEntity> diaryEntities) {
 
         int size = diaryEntities.size();
 

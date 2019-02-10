@@ -7,12 +7,12 @@ import teamh.boostcamp.myapplication.data.model.Emotion;
 public class EmotionTypeConverter {
 
     @TypeConverter
-    public static int emotionToInteger(@NonNull Emotion emotion) {
+    public static int fromEmotion(@NonNull Emotion emotion) {
         return emotion.getEmotion();
     }
 
     @TypeConverter
-    public static Emotion IntegerToEmotion(final int emotion) {
+    public static Emotion fromValue(final int emotion) {
         return Emotion.fromInteger(emotion);
     }
 }

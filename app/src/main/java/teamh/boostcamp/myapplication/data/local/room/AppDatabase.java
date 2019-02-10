@@ -23,7 +23,7 @@ public abstract class AppDatabase extends RoomDatabase {
     private static final String DB_NAME = "applicationDB.db";
 
     @NonNull
-    private static AppDatabase INSTANCE;
+    private static volatile AppDatabase INSTANCE;
 
     public AppDatabase() {
     }
@@ -47,5 +47,6 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
+    @NonNull
     public abstract DiaryDao diaryDao();
 }
