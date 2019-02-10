@@ -39,12 +39,13 @@ public class RecallRepositoryImpl implements RecallRepository {
 
                         RecallEntity recallEntity = recallEntities.get(i);
 
-                        Date startDate = generateStartDate(recallEntity.getCreatedDate());
+                        Date endDate = recallEntity.getCreatedDate();
+                        Date startDate = generateStartDate(endDate);
 
                         Recall recall = new Recall(startDate,
                                 recallEntity.getCreatedDate(),
                                 recallEntity.getEmotion(),
-                                recallDao.selectDiary(recallEntity.getEmotion()));
+                                recallDao.selectDiary(recallEntity.getEmotion(), startDate, endDate));
                         recallList.add(recall);
                     }
 

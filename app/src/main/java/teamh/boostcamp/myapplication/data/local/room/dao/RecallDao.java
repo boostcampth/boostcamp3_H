@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.data.local.room.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.room.Dao;
@@ -15,6 +16,6 @@ public interface RecallDao {
     @Query("Select * FROM recall ORDER BY createdDate")
     Single<List<RecallEntity>> loadRecallEntity();
 
-    @Query("Select * FROM diary WHERE selectedEmotion = :emotion ORDER BY recordDate LIMIT 5")
-    List<Diary> selectDiary(Emotion emotion);
+    @Query("Select * FROM diary WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT 5")
+    List<Diary> selectDiary(Emotion emotion, Date startDate, Date endDate);
 }
