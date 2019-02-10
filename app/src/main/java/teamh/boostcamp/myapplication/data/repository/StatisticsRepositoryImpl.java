@@ -37,4 +37,5 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
                 .map(CountedTagMappter::tagToCountedTagMapper)
                 .subscribeOn(Schedulers.io());
     }
+
 }
