@@ -26,4 +26,8 @@ public interface DiaryDao {
     @Query("SELECT * FROM diaries ORDER By diaries.recordDate ASC LIMIT :term")
     Single<List<DiaryEntity>> loadRecentEmotionHistoryList(int term);
 
+    @NonNull
+    @Query("SELECT diaries.tags FROM diaries ORDER By recordDate DESC LIMIT :term")
+    Single<List<String>> loadRecentCountedTagList(int term);
+
 }

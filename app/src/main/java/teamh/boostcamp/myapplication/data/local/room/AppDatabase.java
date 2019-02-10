@@ -25,7 +25,6 @@ import teamh.boostcamp.myapplication.data.local.room.converter.StringListTypeCon
 import teamh.boostcamp.myapplication.data.local.room.dao.AppDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.LegacyDiaryDao;
-import teamh.boostcamp.myapplication.data.local.room.dao.StatisticsDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
@@ -106,5 +105,4 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract LegacyDiaryDao legacyDiaryDao();
 
-    public abstract StatisticsDao statisticsDao();
 }
