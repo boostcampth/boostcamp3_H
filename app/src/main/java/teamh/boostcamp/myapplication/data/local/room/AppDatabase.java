@@ -105,4 +105,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DiaryDao diaryDao();
 
     public abstract LegacyDiaryDao legacyDiaryDao();
+
 }
