@@ -58,7 +58,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
 
             for (int j = 0; j < tags.size(); j++) {
                 if (map.containsKey(tags.get(j))) {
-                    int count = map.get(tags.get(j)).intValue();
+                    int count = map.get(tags.get(j));
                     map.put(tags.get(j), count + 1);
                 } else {
                     map.put(tags.get(j), 1);
