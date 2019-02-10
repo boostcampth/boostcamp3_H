@@ -31,7 +31,7 @@ public class RecallRepositoryImpl implements RecallRepository {
     }
 
     public Single<List<Recall>> loadRecallList() {
-        return recallDao.loadRecallEntity()
+        return recallDao.loadRecallEntities()
                 .map(recallEntities -> {
 
                     List<Recall> recallList = new ArrayList<>();
@@ -45,7 +45,7 @@ public class RecallRepositoryImpl implements RecallRepository {
                         Recall recall = new Recall(startDate,
                                 recallEntity.getCreatedDate(),
                                 recallEntity.getEmotion(),
-                                recallDao.selectDiary(recallEntity.getEmotion(), startDate, endDate));
+                                recallDao.selectDiary(recallEntity.getEmotion(), startDate, endDate, 5));
                         recallList.add(recall);
                     }
 

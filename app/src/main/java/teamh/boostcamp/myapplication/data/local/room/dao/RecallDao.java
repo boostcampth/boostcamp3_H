@@ -14,8 +14,8 @@ import teamh.boostcamp.myapplication.data.model.RecallEntity;
 public interface RecallDao {
 
     @Query("Select * FROM recall ORDER BY createdDate")
-    Single<List<RecallEntity>> loadRecallEntity();
+    Single<List<RecallEntity>> loadRecallEntities();
 
-    @Query("Select * FROM diary WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT 5")
-    List<Diary> selectDiary(Emotion emotion, Date startDate, Date endDate);
+    @Query("Select * FROM diary WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT :limitCount")
+    List<Diary> selectDiary(Emotion emotion, Date startDate, Date endDate, int limitCount);
 }
