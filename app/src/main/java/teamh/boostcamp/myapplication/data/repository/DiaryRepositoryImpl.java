@@ -11,13 +11,16 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class DiaryRepositoryImpl implements DiaryRepository {
 
-    private static DiaryRepositoryImpl INSTANCE;
-    private DiaryDao diaryDao;
+    @NonNull
+    private static volatile DiaryRepositoryImpl INSTANCE;
+    @NonNull
+    private final DiaryDao diaryDao;
 
     public DiaryRepositoryImpl(@NonNull final DiaryDao diaryDao) {
         this.diaryDao = diaryDao;
     }
 
+    @NonNull
     public static DiaryRepositoryImpl getInstance(@NonNull final DiaryDao diaryDao) {
         if(INSTANCE == null) {
             synchronized (DiaryRepositoryImpl.class) {
@@ -31,8 +34,9 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Single<List<Diary>> loadDiaryList(@NonNull Date recordDate, int pageSize) {
-        return diaryDao.loadDiaryList(recordDate, pageSize)
+    public Single<List<Diary>> loadDiaryList(@NonNull final Date startAfter,
+                                             final int pageSize) {
+        return diaryDao.loadDiaryList(startAfter, pageSize)
                 .map(DiaryMapper::toDiaryList)
                 .subscribeOn(Schedulers.io());
     }

@@ -9,7 +9,5 @@ public interface DiaryListView {
 
     void addDiaryList(@NonNull List<Diary> diaryList);
 
-    void showLoadDiaryListSuccessMsg();
-
     void showLoadDiaryListFailMsg();
 }

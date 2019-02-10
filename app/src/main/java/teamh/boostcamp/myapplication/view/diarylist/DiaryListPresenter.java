@@ -3,18 +3,17 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 
 public class DiaryListPresenter {
     @NonNull
-    private DiaryRepository diaryRepository;
+    final private DiaryRepository diaryRepository;
     @NonNull
-    private CompositeDisposable compositeDisposable;
+    final private CompositeDisposable compositeDisposable;
     @NonNull
-    private DiaryListView diaryListView;
+    final private DiaryListView diaryListView;
 
 
     public DiaryListPresenter(@NonNull DiaryListView diaryListView,
@@ -29,17 +28,12 @@ public class DiaryListPresenter {
 
         compositeDisposable.add(diaryRepository.loadDiaryList(recordDate, pageSize)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(diaries -> {
-                    // TODO 받아온 데이터 넘겨주기
-                    diaryListView.addDiaryList(diaries);
-                    diaryListView.showLoadDiaryListSuccessMsg();
-                }, throwable -> {
-                    // TODO 에러 처리
-                    diaryListView.showLoadDiaryListFailMsg();
-                }));
+                .subscribe(diaryListView::addDiaryList
+                        , throwable -> diaryListView.showLoadDiaryListFailMsg()
+                ));
     }
 
-    void viewOnDetach() {
+    void onViewDestroyed() {
         compositeDisposable.clear();
     }
 }
