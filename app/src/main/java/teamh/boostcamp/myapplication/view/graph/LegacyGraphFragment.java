@@ -30,11 +30,11 @@ import teamh.boostcamp.myapplication.view.BaseFragment;
  * 추상 클래스인 BaseFragment를 상속받음.
  * 추상 클래스의 추상 메소드를 구현해야 한다.
  */
-public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements GraphContractor.View {
+public class LegacyGraphFragment extends BaseFragment<FragmentGraphBinding> implements GraphContractor.View {
 
     private static final String EMOTION = "선택한 감정";
     private static final String LAST_WEEK_EMOTION = "분석된 감정";
-    private GraphPresenter presenter;
+    private LegacyGraphPresenter presenter;
     private ResourceSendUtil resourceSendUtil;
     private Context context;
     private String[] days;
@@ -68,7 +68,7 @@ public class GraphFragment extends BaseFragment<FragmentGraphBinding> implements
         days = resourceSendUtil.getStringArray(R.array.graph_days);
         emojis = resourceSendUtil.getStringArray(R.array.graph_emojis);
         // Presenter 설정
-        presenter = new GraphPresenter(GraphFragment.this, DataRepository.getInstance());
+        presenter = new LegacyGraphPresenter(LegacyGraphFragment.this, DataRepository.getInstance());
         binding.setPresenter(presenter);
         presenter.onViewAttached();
         presenter.loadHashTagWord(20);
