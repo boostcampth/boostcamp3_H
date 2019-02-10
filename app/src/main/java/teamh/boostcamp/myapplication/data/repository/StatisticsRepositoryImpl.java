@@ -33,12 +33,14 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     @NonNull
     @Override
     public Single<List<EmotionHistory>> loadRecentEmotionHistoryList() {
-        return statisticsDao.loadRecentEmotionHistoryList().subscribeOn(Schedulers.io());
+        return null;
     }
 
     @NonNull
     @Override
     public Single<List<CountedTag>> loadRecentCountedTagList() {
-        return statisticsDao.loadRecentCountedTagList().subscribeOn(Schedulers.io());
+        return statisticsDao.loadRecentCountedTagList()
+                .map(CountedTagMappter::tagToCountedTagMapper)
+                .subscribeOn(Schedulers.io());
     }
 }

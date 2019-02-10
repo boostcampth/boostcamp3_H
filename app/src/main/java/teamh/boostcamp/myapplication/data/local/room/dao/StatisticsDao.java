@@ -13,5 +13,5 @@ public interface StatisticsDao {
 
     @NonNull
     @Query("SELECT diary.tags FROM diary ORDER By timeStamp ASC LIMIT 14")
-    Single<List<CountedTag>> loadRecentCountedTagList();
+    Single<List<String>> loadRecentCountedTagList();
 }
