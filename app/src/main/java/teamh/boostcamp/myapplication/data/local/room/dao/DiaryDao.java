@@ -24,8 +24,6 @@ public interface DiaryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(@NonNull DiaryEntity... diaryEntities);
 
-    Completable insertDiary(LegacyDiary... diaries);
-
     @NonNull
     @Query("SELECT diary.timeStamp, diary.selectedEmotion, diary.selectedEmotion " +
             "FROM diary ORDER By timeStamp ASC LIMIT 14")
