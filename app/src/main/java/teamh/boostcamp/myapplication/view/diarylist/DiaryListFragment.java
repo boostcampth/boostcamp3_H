@@ -21,10 +21,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.LegacyDiaryRepository;
-import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.view.BaseFragment;
@@ -63,9 +63,8 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         binding.setFragment(this);
 
         // 저장된 아이템 3개만 들고오기
-        presenter.loadMoreDiaryItems();
+        // presenter.loadMoreDiaryItems();
         compositeDisposable = new CompositeDisposable();
-
 
         return binding.getRoot();
     }
@@ -156,7 +155,7 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
 
         // 주입
         presenter = new DiaryPresenter(this,
-                LegacyDiaryRepository.getInstance(DeepAffectApiClient.getInstance(), AppDatabase.getInstance(context).diaryDao()),
+                LegacyDiaryRepository.getInstance(DeepAffectApiClient.getInstance(), AppDatabase.getInstance(context).legacyDiaryDao()),
                 diaryRecorder);
     }
 

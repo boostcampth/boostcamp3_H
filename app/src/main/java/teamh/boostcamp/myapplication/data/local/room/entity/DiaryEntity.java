@@ -1,24 +1,18 @@
-package teamh.boostcamp.myapplication.data.model;
+package teamh.boostcamp.myapplication.data.local.room.entity;
 
-import android.util.Log;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 
-/*
- * 일기 아이템 데이터를 가지는 DataClass */
-@Entity(tableName = "diary")
-public class LegacyDiary {
+/* Legacy 와 table 이름 충돌때문에 임시로 _ 설정 */
+@Entity(tableName = "diaries")
+public class DiaryEntity {
 
     // DB 에서 인식하기 위한 PK
     @PrimaryKey(autoGenerate = true)
@@ -28,7 +22,7 @@ public class LegacyDiary {
     // 저장한 날
     @ColumnInfo(name = "recordDate")
     @NonNull
-    private final String recordDate;
+    private final Date recordDate;
 
     // 저장된 파일 경로
     @ColumnInfo(name = "recordFilePath")
@@ -37,48 +31,43 @@ public class LegacyDiary {
 
     // 설정한 태그들
     @ColumnInfo(name = "tags")
-    private final String tags;
+    @Nullable
+    private final List<String> tags;
 
     // 선택한 감정 번호
     @ColumnInfo(name = "selectedEmotion")
-    private final int selectedEmotion;
+    @NonNull
+    private final Emotion selectedEmotion;
 
     // API 를 통해 분석된 감정
     @ColumnInfo(name = "analyzedEmotion")
-    private final int analyzedEmotion;
+    @NonNull
+    private final Emotion analyzedEmotion;
 
-    // TimeStamp 추가
-    @ColumnInfo(name = "timeStamp")
-    private final long timeStamp;
-
-    public LegacyDiary(int id,
-                       @NonNull String recordDate,
+    public DiaryEntity(final int id,
+                       @NonNull Date recordDate,
                        @NonNull String recordFilePath,
-                       @NonNull String tags,
-                       final int selectedEmotion,
-                       final int analyzedEmotion,
-                       final long timeStamp) {
+                       @Nullable List<String> tags,
+                       @NonNull Emotion selectedEmotion,
+                       @NonNull Emotion analyzedEmotion) {
         this.id = id;
         this.recordDate = recordDate;
         this.recordFilePath = recordFilePath;
         this.tags = tags;
         this.selectedEmotion = selectedEmotion;
         this.analyzedEmotion = analyzedEmotion;
-        this.timeStamp = timeStamp;
     }
-
-    /*최대한 안바뀌게 -> final */
     public int getId() {
         return id;
     }
 
     @NonNull
-    public String getRecordDate() {
+    public Date getRecordDate() {
         return recordDate;
     }
 
-    @NonNull
-    public String getTags() {
+    @Nullable
+    public List<String> getTags() {
         return tags;
     }
 
@@ -87,15 +76,14 @@ public class LegacyDiary {
         return recordFilePath;
     }
 
-    public int getSelectedEmotion() {
+    @NonNull
+    public Emotion getSelectedEmotion() {
         return selectedEmotion;
     }
 
-    public int getAnalyzedEmotion() {
+    @NonNull
+    public Emotion getAnalyzedEmotion() {
         return analyzedEmotion;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
-    }
 }

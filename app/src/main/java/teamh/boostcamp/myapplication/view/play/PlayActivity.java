@@ -9,10 +9,10 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.databinding.ActivityPlayBinding;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
-import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.view.BaseActivity;
 
 public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements PlayContractor.View {
