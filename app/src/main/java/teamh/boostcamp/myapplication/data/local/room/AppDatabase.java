@@ -13,10 +13,10 @@ import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.local.room.converter.DateTypeConverter;
 import teamh.boostcamp.myapplication.data.local.room.converter.EmotionTypeConverter;
-import teamh.boostcamp.myapplication.data.local.room.converter.TagListTypeConverter;
+import teamh.boostcamp.myapplication.data.local.room.converter.StringListTypeConverter;
 
 @Database(entities = {DiaryEntity.class}, version = 1, exportSchema = false)
-@TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, TagListTypeConverter.class})
+@TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
     @NonNull
@@ -36,7 +36,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(context, AppDatabase.class, DB_NAME)
                             .addCallback(new Callback() {
                                 @Override
-                                public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
                                     super.onCreate(db);
                                     Log.e("Test", "확인");
                                 }
