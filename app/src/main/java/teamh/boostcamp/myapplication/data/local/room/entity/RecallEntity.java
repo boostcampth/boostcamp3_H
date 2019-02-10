@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.model;
+package teamh.boostcamp.myapplication.data.local.room.entity;
 
 import java.util.Date;
 
@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 
 @Entity(tableName = "recall")
 public class RecallEntity {
