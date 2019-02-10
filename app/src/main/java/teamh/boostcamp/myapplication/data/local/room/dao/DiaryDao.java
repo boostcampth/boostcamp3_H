@@ -21,5 +21,6 @@ public interface DiaryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(@NonNull DiaryEntity... diaryEntities);
-    
+
+
 }

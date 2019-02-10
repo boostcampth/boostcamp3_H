@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.data.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -16,9 +17,9 @@ import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 public interface StatisticsRepository {
 
     @NonNull
-    Single<List<CountedTag>> loadRecentCountedTagList();
+    Single<List<CountedTag>> loadRecentCountedTagList(@NonNull final Date lastItemSavedTime);
 
     @NonNull
-    Single<List<EmotionHistory>> loadRecentEmotionHistoryList();
+    Single<List<EmotionHistory>> loadRecentEmotionHistoryList(@NonNull final Date lastItemSavedTime);
 
 }
