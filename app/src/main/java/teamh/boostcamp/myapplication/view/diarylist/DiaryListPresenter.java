@@ -13,21 +13,29 @@ public class DiaryListPresenter {
     private DiaryRepository diaryRepository;
     @NonNull
     private CompositeDisposable compositeDisposable;
+    @NonNull
+    private DiaryListView diaryListView;
 
-    public DiaryListPresenter(@NonNull DiaryRepository diaryRepository) {
+
+    public DiaryListPresenter(@NonNull DiaryListView diaryListView,
+                              @NonNull DiaryRepository diaryRepository) {
+        this.diaryListView = diaryListView;
         this.diaryRepository = diaryRepository;
         this.compositeDisposable = new CompositeDisposable();
     }
 
     void loadDiaryList(@NonNull final Date recordDate,
-                       final int pageSize){
+                       final int pageSize) {
 
         compositeDisposable.add(diaryRepository.loadDiaryList(recordDate, pageSize)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(diaries -> {
                     // TODO 받아온 데이터 넘겨주기
+                    diaryListView.addDiaryList(diaries);
+                    diaryListView.showLoadDiaryListSuccessMsg();
                 }, throwable -> {
                     // TODO 에러 처리
+                    diaryListView.showLoadDiaryListFailMsg();
                 }));
     }
 
