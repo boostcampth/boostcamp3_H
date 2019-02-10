@@ -13,6 +13,6 @@ public class EmotionTypeConverter {
 
     @TypeConverter
     public static Emotion fromValue(final int emotion) {
-        return Emotion.fromInteger(emotion);
+        return Emotion.fromValue(emotion);
     }
 }

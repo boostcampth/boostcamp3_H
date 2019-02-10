@@ -14,4 +14,7 @@ public interface DiaryRepository {
     @NonNull
     Single<List<Diary>> loadDiaryList(@NonNull final Date lastItemSavedTime,
                                       final int pageSize);
+
+    @NonNull
+    Completable insertDiaryList(@NonNull DiaryEntity...diaryEntities);
 }

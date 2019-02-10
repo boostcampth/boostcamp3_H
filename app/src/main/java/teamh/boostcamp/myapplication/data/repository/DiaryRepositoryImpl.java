@@ -35,7 +35,14 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     @Override
     public Single<List<Diary>> loadDiaryList(@NonNull Date lastItemSavedTime, int pageSize) {
         return diaryDao.loadDiaryList(lastItemSavedTime, pageSize)
-                .map(DiaryEntityMapper::toDiary)
+                .map(DiaryEntityMapper::toDiaryList)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable insertDiaryList(@NonNull DiaryEntity... diaryEntities) {
+        return Completable.fromAction(() -> diaryDao.insertDiaryList(diaryEntities))
                 .subscribeOn(Schedulers.io());
     }
 }

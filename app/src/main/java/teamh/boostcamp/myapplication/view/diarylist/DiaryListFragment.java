@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -22,16 +21,13 @@ import androidx.databinding.ObservableBoolean;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
-import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
-import teamh.boostcamp.myapplication.data.model.Diary;
-import teamh.boostcamp.myapplication.data.model.Emotion;
+import teamh.boostcamp.myapplication.data.local.room.LegacyAppDatabase;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
+import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.LegacyDiaryRepository;
-import teamh.boostcamp.myapplication.data.local.room.LegacyAppDatabase;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.view.BaseFragment;
@@ -72,6 +68,16 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
         // 저장된 아이템 3개만 들고오기
         // presenter.loadMoreDiaryItems();
         compositeDisposable = new CompositeDisposable();
+
+
+        // 임시 코드
+        DiaryRepositoryImpl diaryRepository = DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao());
+        compositeDisposable.add(diaryRepository.loadDiaryList(new Date(), 3)
+                .subscribe(diaries -> {
+                    Log.d("Test", diaries.toString());
+                }, throwable -> {
+                    Log.d("Test", "에러");
+                }));
 
 
         return binding.getRoot();

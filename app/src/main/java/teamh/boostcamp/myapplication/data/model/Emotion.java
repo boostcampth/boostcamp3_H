@@ -14,7 +14,7 @@ public enum Emotion {
         return emotion;
     }
 
-    public static Emotion fromInteger(final int emotion) {
+    public static Emotion fromValue(final int emotion) {
         switch (emotion) {
             case 0:
                 return VERY_BAD;

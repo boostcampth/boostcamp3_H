@@ -9,6 +9,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import io.reactivex.Completable;
+import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.local.room.converter.DateTypeConverter;
@@ -38,7 +40,14 @@ public abstract class AppDatabase extends RoomDatabase {
                                 @Override
                                 public void onCreate(@NonNull SupportSQLiteDatabase db) {
                                     super.onCreate(db);
-                                    Log.e("Test", "확인");
+                                    Completable.fromAction(() -> INSTANCE.diaryDao().
+                                            insertDiaryList(DiaryEntity.generateSampleDiaryData()))
+                                            .subscribeOn(Schedulers.io())
+                                            .subscribe(() -> {
+                                               Log.d("Test", "데이터 저장 완료");
+                                            }, throwable -> {
+                                                Log.d("Test", "데이터 저장 실패");
+                                            });
                                 }
                             }).build();
                 }
