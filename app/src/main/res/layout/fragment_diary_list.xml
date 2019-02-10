@@ -13,7 +13,7 @@
 
         <variable
             name="presenter"
-            type="teamh.boostcamp.myapplication.view.diarylist.DiaryPresenter" />
+            type="teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryPresenter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
