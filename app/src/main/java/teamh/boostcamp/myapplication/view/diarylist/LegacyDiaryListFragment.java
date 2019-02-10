@@ -29,9 +29,9 @@ import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.view.BaseFragment;
 
-public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> implements DiaryContract.View {
+public class LegacyDiaryListFragment extends BaseFragment<FragmentDiaryListBinding> implements DiaryContract.View {
 
-    //private static final String TAG = "DiaryListFragment";
+    //private static final String TAG = "LegacyDiaryListFragment";
 
     public final ObservableBoolean isSaving = new ObservableBoolean(false);
 
@@ -43,10 +43,10 @@ public class DiaryListFragment extends BaseFragment<FragmentDiaryListBinding> im
 
     private CompositeDisposable compositeDisposable;
 
-    public DiaryListFragment() {/*Required empty public constructor*/}
+    public LegacyDiaryListFragment() {/*Required empty public constructor*/}
 
-    public static DiaryListFragment newInstance() {
-        return new DiaryListFragment();
+    public static LegacyDiaryListFragment newInstance() {
+        return new LegacyDiaryListFragment();
     }
 
     @Nullable
