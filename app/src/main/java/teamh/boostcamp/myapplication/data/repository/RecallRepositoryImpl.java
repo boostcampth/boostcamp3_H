@@ -1,16 +1,12 @@
 package teamh.boostcamp.myapplication.data.repository;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.RecallDao;
-import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.data.model.RecallEntity;
 
