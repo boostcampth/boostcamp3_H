@@ -11,6 +11,7 @@ import androidx.room.Query;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
+
 @Dao
 public interface DiaryDao {
 
@@ -24,4 +25,5 @@ public interface DiaryDao {
     @NonNull
     @Query("SELECT * FROM diaries ORDER By diaries.recordDate ASC LIMIT :term")
     Single<List<DiaryEntity>> loadRecentEmotionHistoryList(int term);
+
 }

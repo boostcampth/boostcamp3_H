@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 
 /**
  * @author 이승우
- *
+ * <p>
  * emotionType(1) - 선택한 감정
  * emotionType(2) - 분석된 감정
- * */
+ */
 public class EmotionHistory {
 
     @NonNull
@@ -17,6 +17,7 @@ public class EmotionHistory {
     @NonNull
     private Emotion emotion; // 감정
     private EmotionType emotionType; // 감정 타입
+
 
     // 생성자를 통한 주입
     public EmotionHistory(@NonNull Date date,
@@ -37,7 +38,8 @@ public class EmotionHistory {
         return emotion;
     }
 
-    public EmotionType getEmotionType(){
+
+    public EmotionType getEmotionType() {
         return emotionType;
     }
 

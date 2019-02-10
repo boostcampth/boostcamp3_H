@@ -6,9 +6,8 @@ import androidx.annotation.NonNull;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
-import teamh.boostcamp.myapplication.data.local.room.dao.StatisticsDao;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
-import teamh.boostcamp.myapplication.data.model.EmotionHistory;
+
 
 public class StatisticsRepositoryImpl implements StatisticsRepository {
 
@@ -29,12 +28,6 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
             }
         }
         return INSTANCE;
-    }
-
-    @NonNull
-    @Override
-    public Single<List<EmotionHistory>> loadRecentEmotionHistoryList() {
-        return null;
     }
 
     @NonNull

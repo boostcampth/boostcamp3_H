@@ -5,7 +5,6 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
-import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 
 /**
  * @author 이승우
@@ -14,9 +13,6 @@ import teamh.boostcamp.myapplication.data.model.EmotionHistory;
  * 최신 2주 간의 해시태그 정보를 불러온다.
  */
 public interface StatisticsRepository {
-
-    @NonNull
-    Single<List<EmotionHistory>> loadRecentEmotionHistoryList();
 
     @NonNull
     Single<List<CountedTag>> loadRecentCountedTagList();
