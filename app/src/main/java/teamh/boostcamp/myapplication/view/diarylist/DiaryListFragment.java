@@ -84,7 +84,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView{
     public void showLoadDiaryListFailMsg() {
         showToastMessage(R.string.item_record_load_diary_list_fail);
     }
-    
+
     private void showToastMessage(@StringRes final int stringId) {
         Toast.makeText(context, getString(stringId), Toast.LENGTH_SHORT).show();
     }
