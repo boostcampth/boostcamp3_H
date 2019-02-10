@@ -5,6 +5,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
+import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 
 /**
  * @author 이승우
@@ -16,5 +17,8 @@ public interface StatisticsRepository {
 
     @NonNull
     Single<List<CountedTag>> loadRecentCountedTagList();
+
+    @NonNull
+    Single<List<EmotionHistory>> loadRecentEmotionHistoryList();
 
 }

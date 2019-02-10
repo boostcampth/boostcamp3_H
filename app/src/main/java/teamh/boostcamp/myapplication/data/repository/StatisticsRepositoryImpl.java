@@ -7,10 +7,12 @@ import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
+import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 
 
 public class StatisticsRepositoryImpl implements StatisticsRepository {
 
+    private static final int RECENT_TERM = 14;
     private static volatile StatisticsRepositoryImpl INSTANCE;
     @NonNull
     final AppDatabase appDatabase;
@@ -33,9 +35,15 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     @NonNull
     @Override
     public Single<List<CountedTag>> loadRecentCountedTagList() {
-        return appDatabase.statisticsDao().loadRecentCountedTagList(14)
+        return appDatabase.diaryDao().loadRecentCountedTagList(RECENT_TERM)
                 .map(CountedTagMapper::tagToCountedTagList)
                 .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Single<List<EmotionHistory>> loadRecentEmotionHistoryList() {
+        return null;
     }
 
 }
