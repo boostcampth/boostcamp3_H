@@ -45,7 +45,6 @@ class DiaryRecorderImpl implements DiaryRecorder {
     @Override
     public void releaseRecorder() {
         if (mediaRecorder != null) {
-            mediaRecorder.stop();
             mediaRecorder.release();
             mediaRecorder = null;
         }

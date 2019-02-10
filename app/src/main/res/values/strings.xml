@@ -19,6 +19,8 @@
     <string name="item_record_save_fail">일기 저장을 실패하였습니다.</string>
     <string name="item_record_save_success">일기 저장에 성공하였습니다.</string>
     <string name="item_record_time_out">최대 녹음 시간을 초과하셨습니다 ! 자동으로 종료됩니다 !</string>
+    <string name="item_record_load_diary_list_fail">일기 불러오기를 실패했습니다 !</string>
+
 
     <string-array name="month">
         <item>January</item>

@@ -9,7 +9,7 @@
 
         <variable
             name="fragment"
-            type="teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment"/>
+            type="teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryListFragment"/>
 
         <variable
             name="presenter"
@@ -19,7 +19,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.diarylist.DiaryListFragment">
+        tools:context=".view.diarylist.LegacyDiaryListFragment">
 
         <TextView
             android:id="@+id/tv_fragment_diary_today"
