@@ -33,7 +33,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     @NonNull
     @Override
     public Single<List<CountedTag>> loadRecentCountedTagList() {
-        return statisticsDao.loadRecentCountedTagList()
+        return statisticsDao.loadRecentCountedTagList(14)
                 .map(CountedTagMappter::tagToCountedTagMapper)
                 .subscribeOn(Schedulers.io());
     }

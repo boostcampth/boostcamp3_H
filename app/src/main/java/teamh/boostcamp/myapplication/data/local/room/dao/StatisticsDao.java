@@ -12,6 +12,6 @@ import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 public interface StatisticsDao {
 
     @NonNull
-    @Query("SELECT diary.tags FROM diary ORDER By timeStamp ASC LIMIT 14")
-    Single<List<String>> loadRecentCountedTagList();
+    @Query("SELECT diaries.tags FROM diaries ORDER By recordDate ASC LIMIT :term")
+    Single<List<String>> loadRecentCountedTagList(int term);
 }

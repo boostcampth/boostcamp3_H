@@ -25,7 +25,6 @@ public interface DiaryDao {
     void insert(@NonNull DiaryEntity... diaryEntities);
 
     @NonNull
-    @Query("SELECT diary.timeStamp, diary.selectedEmotion, diary.selectedEmotion " +
-            "FROM diary ORDER By timeStamp ASC LIMIT 14")
-    Single<List<EmotionHistory>> loadRecentEmotionHistoryList();
+    @Query("SELECT * FROM diaries ORDER By diaries.recordDate ASC LIMIT :term")
+    Single<List<EmotionHistory>> loadRecentEmotionHistoryList(int term);
 }

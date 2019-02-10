@@ -16,12 +16,12 @@ public class EmotionHistory {
     private Date date; // 날짜
     @NonNull
     private Emotion emotion; // 감정
-    private int emotionType; // 감정 타입
+    private EmotionType emotionType; // 감정 타입
 
     // 생성자를 통한 주입
     public EmotionHistory(@NonNull Date date,
                           @NonNull Emotion emotion,
-                          int emotionType) {
+                          EmotionType emotionType) {
         this.date = date;
         this.emotion = emotion;
         this.emotionType = emotionType;
@@ -37,7 +37,7 @@ public class EmotionHistory {
         return emotion;
     }
 
-    public int getEmotionType(){
+    public EmotionType getEmotionType(){
         return emotionType;
     }
 
