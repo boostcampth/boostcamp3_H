@@ -1,19 +1,20 @@
 package teamh.boostcamp.myapplication.data.repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
+import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.RecallDao;
 import teamh.boostcamp.myapplication.data.model.Recall;
-import teamh.boostcamp.myapplication.data.model.RecallEntity;
 
 public class RecallRepositoryImpl implements RecallRepository {
 
-    private static RecallRepositoryImpl INSTANCE;
-    private RecallDao recallDao;
+    volatile private static RecallRepositoryImpl INSTANCE;
+    @NonNull
+    final private RecallDao recallDao;
 
     private RecallRepositoryImpl(RecallDao recallDao) {
         this.recallDao = recallDao;
@@ -30,30 +31,21 @@ public class RecallRepositoryImpl implements RecallRepository {
         return INSTANCE;
     }
 
+    @Override
+    @NonNull
     public Single<List<Recall>> loadRecallList() {
-        return recallDao.loadRecallEntities()
-                .map(recallEntities -> {
 
-                    List<Recall> recallList = new ArrayList<>();
-                    for (int i = 0; i < recallEntities.size(); i++) {
+        return recallDao.loadRecallEntities().flatMapObservable(recallEntities -> Observable.fromIterable(recallEntities))
+                .flatMap(recallEntity -> {
+                    Date endDate = recallEntity.getCreatedDate();
+                    Date startDate = generateStartDate(endDate);
 
-                        RecallEntity recallEntity = recallEntities.get(i);
-
-                        Date endDate = recallEntity.getCreatedDate();
-                        Date startDate = generateStartDate(endDate);
-
-                        Recall recall = new Recall(startDate,
-                                recallEntity.getCreatedDate(),
-                                recallEntity.getEmotion(),
-                                recallDao.selectDiary(recallEntity.getEmotion(), startDate, endDate, 5));
-                        recallList.add(recall);
-                    }
-
-                    return recallList;
-                }).subscribeOn(Schedulers.io());
+                    return Observable.just(recallDao.selectDiary(recallEntity.getEmotion(), startDate, endDate, 5))
+                            .map(listSingle -> new Recall(startDate, endDate, recallEntity.getEmotion(), listSingle));
+                }).toList();
     }
 
     private Date generateStartDate(Date endDate){
-        return new Date(endDate.getTime() - 14 * 24 * 60 * 60 * 1000);
+        return new Date(endDate.getTime() - TimeUnit.DAYS.toMillis(14));
     }
 }

@@ -37,6 +37,7 @@ public class RecallEntity {
         return createdDate;
     }
 
+    @NonNull
     public Emotion getEmotion() {
         return emotion;
     }
