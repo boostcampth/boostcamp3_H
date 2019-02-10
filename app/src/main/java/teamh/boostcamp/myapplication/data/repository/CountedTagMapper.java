@@ -6,9 +6,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
 
-public class CountedTagMappter {
+public class CountedTagMapper {
 
-    public static List<CountedTag> tagToCountedTagMapper(@NonNull List<String> tagList) {
+    public static List<CountedTag> tagToCountedTagList(@NonNull List<String> tagList) {
         int size = tagList.size();
 
         ArrayList<CountedTag> countedTagList = new ArrayList<>(size);

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
 import static androidx.room.ForeignKey.CASCADE;
 

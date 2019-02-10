@@ -15,6 +15,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     @NonNull
     private StatisticsDao statisticsDao;
 
+
     private StatisticsRepositoryImpl(@NonNull StatisticsDao statisticsDao) {
         this.statisticsDao = statisticsDao;
     }
@@ -40,7 +41,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     @Override
     public Single<List<CountedTag>> loadRecentCountedTagList() {
         return statisticsDao.loadRecentCountedTagList()
-                .map(CountedTagMappter::tagToCountedTagMapper)
+                .map(CountedTagMapper::tagToCountedTagList)
                 .subscribeOn(Schedulers.io());
     }
 }

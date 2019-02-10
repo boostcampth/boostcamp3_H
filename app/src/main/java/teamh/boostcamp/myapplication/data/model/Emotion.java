@@ -13,4 +13,21 @@ public enum Emotion {
     public int getEmotion() {
         return emotion;
     }
+
+    public static Emotion fromValue(final int emotion) {
+        switch (emotion) {
+            case 0:
+                return VERY_BAD;
+            case 1:
+                return BAD;
+            case 2:
+                return NEUTRAL;
+            case 3:
+                return GOOD;
+            case 4:
+                return VERY_GOOD;
+            default:
+                return NEUTRAL;
+        }
+    }
 }
