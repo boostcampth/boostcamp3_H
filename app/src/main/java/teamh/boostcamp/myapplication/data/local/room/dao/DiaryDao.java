@@ -14,11 +14,10 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 @Dao
 public interface DiaryDao {
 
-    @NonNull
     @Query("SELECT * FROM diaries WHERE recordDate < :recordDate ORDER BY recordDate LIMIT :pageSize")
     Single<List<DiaryEntity>> loadDiaryList(@NonNull Date recordDate,
                                             final int pageSize);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertDiaryList(@NonNull DiaryEntity...diaryEntities);
+    void insert(@NonNull DiaryEntity...diaryEntities);
 }

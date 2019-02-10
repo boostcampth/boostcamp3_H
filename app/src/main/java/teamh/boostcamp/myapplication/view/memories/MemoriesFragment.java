@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.local.room.LegacyAppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.databinding.FragmentMemoriesBinding;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
@@ -44,7 +44,7 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
 
         presenter.setMemoriesCardAdapterModel(mMemoriesCardAdapter);
         presenter.setMemoriesCardAdapterView(mMemoriesCardAdapter);
-        presenter.setDatabase(LegacyAppDatabase.getInstance(getContext()));
+        presenter.setDatabase(AppDatabase.getInstance(getContext()));
 
         return binding.getRoot();
     }

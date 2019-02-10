@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import teamh.boostcamp.myapplication.data.local.room.LegacyAppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.databinding.ItemMemoryCardBinding;
 import teamh.boostcamp.myapplication.data.model.Memory;
@@ -56,7 +56,7 @@ public class MemoriesCardAdapter extends BaseRecyclerViewAdapter<Memory, Memorie
         holder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(getContext()));
         holder.binding.rvDiary.setAdapter(adapter);
 
-        LegacyAppDatabase appDatabase = LegacyAppDatabase.getInstance(getContext());
+        AppDatabase appDatabase = AppDatabase.getInstance(getContext());
 
         appDatabase.appDao().loadSelectedDiaryList(itemList.get(position).getId())
                 .subscribeOn(Schedulers.io())

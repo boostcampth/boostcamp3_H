@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.databinding.ItemRecordDiaryBinding;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
+import teamh.boostcamp.myapplication.databinding.ItemRecordDiaryBinding;
 
 public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.DiaryHolder> {
 

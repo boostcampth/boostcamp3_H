@@ -9,7 +9,7 @@ import java.util.List;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.local.room.LegacyAppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.databinding.ActivityPlayBinding;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
@@ -76,7 +76,7 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
 
     private void initPresenter() {
         presenter = new PlayPresenter(
-                LegacyAppDatabase.getInstance(getApplicationContext()),
+                AppDatabase.getInstance(getApplicationContext()),
                 RecordPlayerImpl.getINSTANCE(),
                 this);
     }

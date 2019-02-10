@@ -98,41 +98,4 @@ public class LegacyDiary {
     public long getTimeStamp() {
         return timeStamp;
     }
-
-    public static LegacyDiary[] generateSampleDiaryData() {
-        String filePath = "/storage/emulated/0/2019-02-08.acc";
-        File file = new File("/storage/emulated/0/2019-02-08.acc");
-
-        if (!file.exists()) {
-            try {
-                boolean isCreated = file.createNewFile();
-                if (!isCreated) {
-                    Log.e("Test", "파일 생성 실패");
-                } else {
-                    Log.e("Test", "파일 생성 성공");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Random random = new Random();
-
-        List<LegacyDiary> samples = new ArrayList<>();
-
-        for (int i = 1; i <= 20; ++i) {
-            samples.add(new LegacyDiary(
-                    i,
-                    String.format(Locale.getDefault(), "2019-01-%2d", i),
-                    filePath,
-                    String.format(Locale.getDefault(), "#%d번", i),
-                    Math.abs(random.nextInt() % 5),
-                    Math.abs(random.nextInt() % 5),
-                    new Date().getTime() / 1000 + i * 10
-            ));
-        }
-
-        LegacyDiary[] temp = new LegacyDiary[samples.size()];
-        return temp;
-    }
 }

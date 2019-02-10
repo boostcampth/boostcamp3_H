@@ -5,7 +5,6 @@ import java.util.List;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import io.reactivex.Completable;
@@ -23,13 +22,7 @@ public interface AppDao {
     @Query("SELECT * FROM diary WHERE id > :idx ORDER BY recordDate DESC LIMIT 10")
     Single<List<LegacyDiary>> loadMoreDiary(final int idx);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertDiary(LegacyDiary...diaries);
-
-    @Delete
-    void deleteDiary(LegacyDiary diary);
-
-    @Query("SELECT * FROM diary WHERE diary.recordDate > :start AND diary.recordDate < :end AND diary.selectedEmotion = :emotion LIMIT 5")
+    @Query("SELECT * FROM diary WHERE recordDate > :start AND recordDate < :end AND selectedEmotion = :emotion LIMIT 5")
     Flowable<List<LegacyDiary>> getSelectedRecord(String start, String end, int emotion);
 
     // Memory 기능 관련
@@ -54,12 +47,12 @@ public interface AppDao {
     @Query("SELECT * FROM diary WHERE id=:diaryId")
     Single<LegacyDiary> loadSelectedDiary(int diaryId);
 
-    @Query("SELECT diary.* FROM diary, recommended WHERE recommended.memoryId=:memoryId AND recommended.diaryId == diary.id")
+    @Query("SELECT * FROM diary, recommended WHERE recommended.memoryId=:memoryId AND recommended.diaryId = diary.id")
     Single<List<LegacyDiary>> loadSelectedDiayLista(int memoryId);
 
     // Graph 관련
-    @Query("SELECT diary.tags, diary.selectedEmotion, diary.analyzedEmotion " +
-            "FROM diary WHERE diary.recordDate > :start AND diary.recordDate < :end")
+    @Query("SELECT tags, selectedEmotion, analyzedEmotion " +
+            "FROM diary WHERE recordDate > :start AND recordDate < :end")
     List<GraphData> getGraphData(String start, String end);
 
 

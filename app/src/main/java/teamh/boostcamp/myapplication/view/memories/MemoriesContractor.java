@@ -1,6 +1,6 @@
 package teamh.boostcamp.myapplication.view.memories;
 
-import teamh.boostcamp.myapplication.data.local.room.LegacyAppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.view.BasePresenter;
 import teamh.boostcamp.myapplication.view.BaseView;
@@ -23,7 +23,7 @@ public interface MemoriesContractor {
 
         void onPlayButtonClicked(int position);
 
-        void setDatabase(LegacyAppDatabase appDatabase);
+        void setDatabase(AppDatabase appDatabase);
 
         void setMemoriesCardAdapterView(MemoriesCardAdapter adapter);
 

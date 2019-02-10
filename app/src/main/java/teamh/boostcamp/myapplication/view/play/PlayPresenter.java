@@ -3,15 +3,15 @@ package teamh.boostcamp.myapplication.view.play;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import teamh.boostcamp.myapplication.data.local.room.LegacyAppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 
 public class PlayPresenter implements PlayContractor.Presenter {
     private PlayContractor.View view;
-    private LegacyAppDatabase appDatabase;
+    private AppDatabase appDatabase;
     private RecordPlayer recordPlayer;
     private CompositeDisposable compositeDisposable;
 
-    PlayPresenter(LegacyAppDatabase appDatabase, RecordPlayerImpl recordPlayer, PlayContractor.View view) {
+    PlayPresenter(AppDatabase appDatabase, RecordPlayerImpl recordPlayer, PlayContractor.View view) {
         this.appDatabase = appDatabase;
         this.recordPlayer = recordPlayer;
         this.view = view;

@@ -1,14 +1,7 @@
 package teamh.boostcamp.myapplication.data.local.room.entity;
 
-import android.util.Log;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,7 +9,6 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import teamh.boostcamp.myapplication.data.model.Emotion;
-import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 
 /* Legacy 와 table 이름 충돌때문에 임시로 _ 설정 */
 @Entity(tableName = "diaries")
@@ -94,44 +86,4 @@ public class DiaryEntity {
         return analyzedEmotion;
     }
 
-
-    @NonNull
-    public static DiaryEntity[] generateSampleDiaryData() {
-        final String filePath = "/storage/emulated/0/2019-02-08.acc";
-        final File file = new File("/storage/emulated/0/2019-02-08.acc");
-
-        if (!file.exists()) {
-            try {
-                boolean isCreated = file.createNewFile();
-                if (!isCreated) {
-                    Log.e("Test", "파일 생성 실패");
-                } else {
-                    Log.e("Test", "파일 생성 성공");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        Random random = new Random();
-
-        List<DiaryEntity> samples = new ArrayList<>();
-
-        final long TODAY = new Date().getTime();
-        final long DAY = 86400L;
-
-        for (int i = 1; i <= 20; ++i) {
-            samples.add(new DiaryEntity(
-                    i,
-                    new Date(TODAY - DAY * i),
-                    filePath,
-                    Arrays.asList("#%2d번"),
-                    Emotion.fromValue(Math.abs(random.nextInt() % 5)),
-                    Emotion.fromValue(Math.abs(random.nextInt() % 5))
-            ));
-        }
-
-        DiaryEntity[] temp = new DiaryEntity[samples.size()];
-        return samples.toArray(temp);
-    }
 }

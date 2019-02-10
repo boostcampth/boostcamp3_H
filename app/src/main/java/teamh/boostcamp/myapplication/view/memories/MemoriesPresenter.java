@@ -11,7 +11,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.local.room.LegacyAppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
@@ -23,7 +23,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     private MemoriesContractor.View view;
     private AdapterContract.Model<Memory> memoriesCardAdapterModel;
     private AdapterContract.View memoriesCardAdapterView;
-    private LegacyAppDatabase appDatabase;
+    private AppDatabase appDatabase;
     private CompositeDisposable compositeDisposable;
     private ResourceSendUtil resourceSendUtil;
 
@@ -129,7 +129,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     }
 
     @Override
-    public void setDatabase(LegacyAppDatabase appDatabase) {
+    public void setDatabase(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
     }
 
