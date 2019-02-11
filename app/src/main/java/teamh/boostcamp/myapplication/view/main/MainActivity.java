@@ -15,6 +15,7 @@ import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryListFragment;
 import teamh.boostcamp.myapplication.view.graph.LegacyGraphFragment;
 import teamh.boostcamp.myapplication.view.memories.MemoriesFragment;
+import teamh.boostcamp.myapplication.view.recall.RecallFragment;
 import teamh.boostcamp.myapplication.view.setting.SettingActivity;
 
 
@@ -48,7 +49,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     private void initView() {
         Log.e(TAG, "initView");
         tabAdapter = new MainTabAdapter(getSupportFragmentManager());
-        tabAdapter.addFragment(new MemoriesFragment());
+        tabAdapter.addFragment(RecallFragment.newInstance());
         tabAdapter.addFragment(LegacyDiaryListFragment.newInstance());
         tabAdapter.addFragment(new LegacyGraphFragment());
         binding.vpMain.setAdapter(tabAdapter);
