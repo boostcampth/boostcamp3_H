@@ -2,7 +2,7 @@ package teamh.boostcamp.myapplication.view.recall;
 
 import androidx.annotation.NonNull;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.repository.RecallRepository;
 
 public class RecallPresenter {
@@ -11,21 +11,23 @@ public class RecallPresenter {
     private RecallView recallView;
     @NonNull
     private RecallRepository recallRepository;
+    @NonNull
+    private CompositeDisposable compositeDisposable;
 
-    public RecallPresenter(@NonNull RecallView recallView, @NonNull RecallRepository recallRepository) {
+    RecallPresenter(@NonNull RecallView recallView, @NonNull RecallRepository recallRepository) {
         this.recallView = recallView;
         this.recallRepository = recallRepository;
+        this.compositeDisposable = new CompositeDisposable();
     }
 
-    public void loadRecallList() {
-        recallRepository
-                .loadRecallList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(recallList -> {
-                    recallView.addRecallList(recallList);
-                });
+    void loadRecallList() {
+        compositeDisposable.add(
+                recallRepository
+                        .loadRecallList()
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(recallList -> {
+                            recallView.addRecallList(recallList);
+                        })
+        );
     }
-
-
 }

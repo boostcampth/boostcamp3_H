@@ -39,13 +39,11 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.binding.tvSubTitle.setText(itemList.get(position).getStartDate()+"~"+itemList.get(position).getEndDate());
-
         holder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(context));
 
         DiaryTitleListAdapter adapter = new DiaryTitleListAdapter(context);
         adapter.addItems(itemList.get(position).getDiaryList());
         holder.binding.rvDiary.setAdapter(adapter);
-
     }
 
     @Override
@@ -65,7 +63,6 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         ViewHolder(@NonNull ItemRecallListBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
-
         }
     }
 
