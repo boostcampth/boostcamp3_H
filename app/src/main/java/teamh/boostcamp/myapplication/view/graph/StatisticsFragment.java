@@ -7,6 +7,7 @@ import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -17,7 +18,6 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -29,6 +29,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.model.CountedTag;
 import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 import teamh.boostcamp.myapplication.data.model.EmotionType;
 import teamh.boostcamp.myapplication.data.repository.StatisticsRepositoryImpl;
@@ -61,13 +62,13 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
     @Override
     public void onDetach() {
         super.onDetach();
+        statisticsPresenter.viewDestroyed();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         initPresenter();
         initData();
 
@@ -79,6 +80,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         statisticsPresenter.loadStatisticsData();
+        statisticsPresenter.loadTagList();
     }
 
 
@@ -179,13 +181,44 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
     }
 
-    void initPresenter() {
+    @Override
+    public void showLoadTagListSuccessMessage() {
+
+    }
+
+    @Override
+    public void showLoadTagListFailMessage() {
+
+    }
+
+    @Override
+    public void updateTagListData(@NonNull List<CountedTag> countedTagList) {
+        final List<CountedTag> hashTagItems;
+        hashTagItems = countedTagList;
+
+        LayoutInflater inflater = getLayoutInflater();
+
+        for (int i = 0; i < hashTagItems.size(); i++) {
+            final View tagView = inflater.inflate(R.layout.layout_graph_hash_tag, null, false);
+            final TextView tagTextView = tagView.findViewById(R.id.tv_hash_tag);
+
+            if (hashTagItems.get(i).getCount() > 3) {
+                tagTextView.setTextColor(context.getResources().getColor(R.color.graphColor));
+            }
+
+            tagTextView.setTextSize(30f);
+            tagTextView.setText(hashTagItems.get(i).getTagName());
+            binding.hashTagCustomLayout.addView(tagView);
+        }
+    }
+
+    private void initPresenter() {
         statisticsPresenter = new StatisticsPresenter(StatisticsFragment.this,
                 StatisticsRepositoryImpl.getInstance(AppDatabase.getInstance(
                         context.getApplicationContext())));
     }
 
-    void initData() {
+    private void initData() {
         emojis = context.getResources().getStringArray(R.array.graph_emojis);
     }
 

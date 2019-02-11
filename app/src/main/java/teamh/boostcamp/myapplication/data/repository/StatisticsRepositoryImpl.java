@@ -23,7 +23,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     private static final int RECENT_TERM = 14;
     private static volatile StatisticsRepositoryImpl INSTANCE;
     @NonNull
-    final AppDatabase appDatabase;
+    private final AppDatabase appDatabase;
 
 
     private StatisticsRepositoryImpl(@NonNull AppDatabase appDatabase) {
@@ -99,5 +99,8 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
                     return emotionHistoryList;
                 })
                 .subscribeOn(Schedulers.io());
+        /*
+         * 비동기 처리를 어느 스레드에서 처리할지
+         * */
     }
 }
