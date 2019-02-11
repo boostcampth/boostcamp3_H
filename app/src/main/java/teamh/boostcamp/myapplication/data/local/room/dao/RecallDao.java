@@ -11,5 +11,6 @@ import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 public interface RecallDao {
 
     @Query("Select * FROM recalls ORDER BY createdDate")
-    Single<List<RecallEntity>> loadRecallEntity();
+
+    Single<List<RecallEntity>> loadRecallEntities();
 }

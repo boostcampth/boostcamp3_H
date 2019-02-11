@@ -2,6 +2,7 @@ package teamh.boostcamp.myapplication.data.repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
@@ -10,8 +11,8 @@ import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Recall;
 public class RecallRepositoryImpl implements RecallRepository {
 
+    private volatile static RecallRepositoryImpl INSTANCE;
 
-    volatile private static RecallRepositoryImpl INSTANCE;
     @NonNull
     final private AppDatabase appDatabase;
 
@@ -32,17 +33,17 @@ public class RecallRepositoryImpl implements RecallRepository {
 
     public Single<List<Recall>> loadRecallList() {
 
-        return appDatabase.recallDao().loadRecallEntity().flatMapObservable(recallEntities -> Observable.fromIterable(recallEntities))
+        return appDatabase.recallDao().loadRecallEntities().flatMapObservable(recallEntities -> Observable.fromIterable(recallEntities))
                 .flatMap(recallEntity -> {
                     Date endDate = recallEntity.getCreatedDate();
                     Date startDate = generateStartDate(endDate);
 
-                    return Observable.just(appDatabase.diaryDao().selectDiary(recallEntity.getEmotion(), startDate, endDate, 5))
+                    return Observable.just(appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(), startDate, endDate, 5))
                             .map(listSingle -> new Recall(startDate, endDate, recallEntity.getEmotion(), listSingle));
                 }).toList();
     }
 
-    private Date generateStartDate(Date endDate){
-        return new Date(endDate.getTime() - 14 * 24 * 60 * 60 * 1000);
+    private Date generateStartDate(@NonNull Date endDate){
+        return new Date(endDate.getTime() - TimeUnit.DAYS.toMillis(14));
     }
 }

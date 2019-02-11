@@ -24,5 +24,5 @@ public interface DiaryDao {
     void insert(@NonNull DiaryEntity...diaryEntities);
 
     @Query("Select * FROM diaries WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT :limitCount")
-    List<Diary> selectDiary(Emotion emotion, Date startDate, Date endDate, int limitCount);
+    List<Diary> selectDiaryListByEmotionAndDate(Emotion emotion, Date startDate, Date endDate, int limitCount);
 }
