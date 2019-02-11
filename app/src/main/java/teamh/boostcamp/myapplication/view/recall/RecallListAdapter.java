@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.data.model.Recall;
+import teamh.boostcamp.myapplication.databinding.ItemDiarytitleLlistBinding;
 import teamh.boostcamp.myapplication.databinding.ItemRecallListBinding;
 
 public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.ViewHolder> {
@@ -38,8 +39,11 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
 
         holder.binding.tvSubTitle.setText(itemList.get(position).getStartDate()+"~"+itemList.get(position).getEndDate());
 
-        // Fixme recallItem 속의 child recyclerView init
         holder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(context));
+
+        DiaryTitleListAdapter adapter = new DiaryTitleListAdapter(context);
+        adapter.addItems(itemList.get(position).getDiaryList());
+        holder.binding.rvDiary.setAdapter(adapter);
 
     }
 
