@@ -17,14 +17,13 @@ import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
 
 public class DiaryRepositoryImpl implements DiaryRepository {
 
-    @NonNull
     private static volatile DiaryRepositoryImpl INSTANCE;
     @NonNull
     private final DiaryDao diaryDao;
     @NonNull
     private final DeepAffectApiClient deepAffectApiClient;
 
-    public DiaryRepositoryImpl(@NonNull final DiaryDao diaryDao,
+    private DiaryRepositoryImpl(@NonNull final DiaryDao diaryDao,
                                @NonNull final DeepAffectApiClient deepAffectApiClient) {
         this.diaryDao = diaryDao;
         this.deepAffectApiClient = deepAffectApiClient;

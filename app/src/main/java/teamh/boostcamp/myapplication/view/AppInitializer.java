@@ -2,9 +2,10 @@ package teamh.boostcamp.myapplication.view;
 
 import android.app.Application;
 
+import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 
-public class LeakWatcher extends Application {
+public class AppInitializer extends Application {
 
     @Override
     public void onCreate() {
@@ -13,5 +14,7 @@ public class LeakWatcher extends Application {
             return;
         }
         LeakCanary.install(this);
+
+        Stetho.initializeWithDefaults(this);
     }
 }

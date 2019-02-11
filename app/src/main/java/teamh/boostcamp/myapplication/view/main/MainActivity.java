@@ -32,8 +32,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Stetho.initializeWithDefaults(this);
-
         presenter = new MainPresenter(this);
 
         if(resourceSendUtil == null){

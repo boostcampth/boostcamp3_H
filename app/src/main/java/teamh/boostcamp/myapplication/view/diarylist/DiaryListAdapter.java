@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
@@ -22,7 +23,7 @@ public class DiaryListAdapter extends ListAdapter<Diary, DiaryListAdapter.DiaryV
     private Context context;
     @NonNull
     private List<Diary> diaryList;
-    @NonNull
+    @Nullable
     private OnRecordItemClickListener onRecordItemClickListener;
 
     DiaryListAdapter(@NonNull Context context) {
@@ -54,13 +55,13 @@ public class DiaryListAdapter extends ListAdapter<Diary, DiaryListAdapter.DiaryV
         final Diary diary = diaryList.get(position);
 
         if(onRecordItemClickListener != null) {
-            holder.itemRecordDiaryBinding.ivItemDiaryPlay.setOnClickListener(v -> {
-                onRecordItemClickListener.onDiaryItemClicked(diary.getRecordFilePath());
-            });
+            holder.itemRecordDiaryBinding.ivItemDiaryPlay.setOnClickListener(v ->
+                    onRecordItemClickListener.onDiaryItemClicked(diary.getRecordFilePath())
+            );
         }
 
-        holder.itemRecordDiaryBinding.tvItemDiaryDate.setText(diary.getRecordDate().toString());
         holder.itemRecordDiaryBinding.tvItemDiaryEmotion.setText(diary.getSelectedEmotion().getEmoji());
+        holder.itemRecordDiaryBinding.tvItemDiaryTags.setText(diary.getTags().toString());
 
         holder.itemRecordDiaryBinding.setDate(diary.getRecordDate());
     }

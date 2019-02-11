@@ -115,9 +115,8 @@
                         android:layout_marginRight="@dimen/layout_gutter"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ll_record_item_emoji">
+                        app:layout_constraintTop_toBottomOf="@id/ll_record_item_emoji"/>
 
-                    </androidx.recyclerview.widget.RecyclerView>
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_item_record_input"
@@ -176,9 +175,7 @@
                 android:layout_marginRight="@dimen/layout_gutter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cv_fragment_diary_record">
-
-            </androidx.recyclerview.widget.RecyclerView>
+                app:layout_constraintTop_toBottomOf="@id/cv_fragment_diary_record"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
