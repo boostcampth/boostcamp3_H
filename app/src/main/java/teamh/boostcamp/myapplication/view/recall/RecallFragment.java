@@ -22,6 +22,7 @@ public class RecallFragment extends Fragment implements RecallView {
 
     private RecallPresenter recallPresenter;
     private FragmentRecallBinding binding;
+    private RecallListAdapter recallListAdapter;
 
     public RecallFragment() {
     }
@@ -43,15 +44,19 @@ public class RecallFragment extends Fragment implements RecallView {
 
     @Override
     public void addRecallList(@NonNull List<Recall> recallList) {
-
+        recallListAdapter.updateItems(recallList);
     }
 
     private void initViews() {
         initPresenter();
+        initRecyclerView();
     }
 
     private void initRecyclerView() {
+        recallListAdapter = new RecallListAdapter(getContext());
         binding.rvCard.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.rvCard.setAdapter(recallListAdapter);
+
     }
 
     private void initPresenter() {
