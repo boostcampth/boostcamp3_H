@@ -1,11 +1,15 @@
 package teamh.boostcamp.myapplication.view.recall;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +18,6 @@ import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.databinding.ItemRecallListBinding;
 
 public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.ViewHolder> {
-
     @NonNull
     private Context context;
     @NonNull
@@ -37,8 +40,9 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
-        holder.binding.tvSubTitle.setText(itemList.get(position).getStartDate()+"~"+itemList.get(position).getEndDate());
+        holder.binding.tvSubTitle.setText(generateRecallTitle(itemList.get(position)));
+        holder.binding.rvDiary.setHasFixedSize(true);
+        holder.binding.rvDiary.setVerticalScrollbarPosition(0);
         holder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(context));
 
         DiaryTitleListAdapter adapter = new DiaryTitleListAdapter(context);
@@ -64,6 +68,47 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
             super(binding.getRoot());
             this.binding = binding;
         }
+    }
+
+    @NonNull
+    private String generateRecallTitle(@NonNull Recall recall) {
+        String startDateString = DateToSimpleFormat(recall.getStartDate());
+        String endDateString = DateToSimpleFormat(recall.getEndDate());
+        String emotionString = emotionToString(recall.getEmotion().getEmotion());
+        return String.format("%s 부터 %s까지의 %s 날들", startDateString, endDateString, emotionString);
+    }
+
+    @NonNull
+    private String DateToSimpleFormat(Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
+        return simpleDateFormat.format(date);
+    }
+
+    @NonNull
+    private String emotionToString(int emotion) {
+        String emotionString;
+
+        switch (emotion) {
+            case 0:
+                emotionString = "끔찍한";
+                break;
+            case 1:
+                emotionString = "나쁜";
+                break;
+            case 2:
+                emotionString = "그저그런";
+                break;
+            case 3:
+                emotionString = "즐거운";
+                break;
+            case 4:
+                emotionString = "정말 행복했던";
+                break;
+            default:
+                emotionString = "오류";
+        }
+
+        return emotionString;
     }
 
 }

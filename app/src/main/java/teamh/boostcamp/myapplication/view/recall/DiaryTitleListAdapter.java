@@ -4,8 +4,10 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,8 +37,11 @@ public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+
         Diary diary = diaryList.get(position);
-        holder.binding.tvDiaryTitle.setText(diary.getRecordDate().toString());
+        holder.binding.tvDiaryTitle.setText(simpleDateFormat.format(diary.getRecordDate()));
+        // Fixme Emotion enum 수정후 변경
         holder.binding.tvEmoji.setText(diary.getSelectedEmotion().getEmotion()+"");
     }
 
