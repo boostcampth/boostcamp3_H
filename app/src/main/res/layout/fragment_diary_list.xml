@@ -9,184 +9,176 @@
 
         <variable
             name="fragment"
-            type="teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryListFragment"/>
+            type="teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment"/>
 
         <variable
             name="presenter"
-            type="teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryPresenter" />
+            type="teamh.boostcamp.myapplication.view.diarylist.DiaryListPresenter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.diarylist.LegacyDiaryListFragment">
+        android:overScrollMode="never">
 
-        <TextView
-            android:id="@+id/tv_fragment_diary_today"
-            style="@style/SubTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/item_record_today"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cv_fragment_diary_record"
-            style="@style/DiaryListTheme"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="@dimen/diary_card_corner_radius_10dp"
-            app:cardElevation="@dimen/card_elevation"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_fragment_diary_today">
+            tools:context=".view.diarylist.DiaryListFragment">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <TextView
+                android:id="@+id/tv_fragment_diary_today"
+                style="@style/SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/item_record_today"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_fragment_diary_record"
+                style="@style/DiaryListTheme"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/diary_card_corner_radius_10dp"
+                app:cardElevation="@dimen/card_elevation"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_fragment_diary_today">
 
-                <ImageView
-                    android:id="@+id/button_record_item_record"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/layout_gutter"
-                    android:background="@drawable/bg_mic_record_btn"
-                    android:clickable="@{!fragment.isSaving}"
-                    android:minWidth="60dp"
-                    android:minHeight="60dp"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_mic_black_not_record_32dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- 이모지 이모티콘은 버튼으로 나타내기 -->
-                <LinearLayout
-                    android:id="@+id/ll_record_item_emoji"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/layout_gutter"
-                    android:layout_marginTop="@dimen/layout_gutter"
-                    android:layout_marginRight="@dimen/layout_gutter"
-                    android:orientation="horizontal"
-                    android:weightSum="1"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/button_record_item_record">
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/button_record_item_record"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/layout_gutter"
+                        android:background="@drawable/bg_mic_record_btn"
+                        android:minWidth="60dp"
+                        android:minHeight="60dp"
+                        android:scaleType="center"
+                        android:src="@drawable/ic_mic_black_not_record_32dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- 이모지 이모티콘은 버튼으로 나타내기 -->
+                    <LinearLayout
+                        android:id="@+id/ll_record_item_emoji"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/layout_gutter"
+                        android:layout_marginTop="@dimen/layout_gutter"
+                        android:layout_marginRight="@dimen/layout_gutter"
+                        android:orientation="horizontal"
+                        android:weightSum="1"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/button_record_item_record">
+
+                        <TextView
+                            android:id="@+id/tv_record_item_mad"
+                            style="@style/EmojiChoiceType"
+                            android:text="@string/mad" />
+
+                        <TextView
+                            android:id="@+id/tv_record_item_bad"
+                            style="@style/EmojiChoiceType"
+                            android:text="@string/bad" />
+
+                        <TextView
+                            android:id="@+id/tv_record_item_normal"
+                            style="@style/EmojiChoiceType"
+                            android:text="@string/normal" />
+
+                        <TextView
+                            android:id="@+id/tv_record_item_pgood"
+                            style="@style/EmojiChoiceType"
+                            android:text="@string/good" />
+
+                        <TextView
+                            android:id="@+id/tv_record_item_good"
+                            style="@style/EmojiChoiceType"
+                            android:text="@string/happy" />
+
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_view_item_record_tags"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/layout_gutter"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:layout_marginRight="@dimen/layout_gutter"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/ll_record_item_emoji"/>
+
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_item_record_input"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/layout_gutter"
+                        android:layout_marginTop="@dimen/layout_margin"
+                        android:layout_marginRight="@dimen/layout_gutter"
+                        android:background="@drawable/bg_hash_tag_edittext"
+                        android:hint="@string/item_record_hash_tag_hint"
+                        android:lines="1"
+                        android:padding="10dp"
+                        android:textSize="12dp"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/recycler_view_item_record_tags" />
+
+                    <ProgressBar
+                        android:id="@+id/pb_item_record_waiting"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginTop="@dimen/layout_gutter"
+                        android:layout_marginRight="@dimen/layout_gutter"
+                        android:layout_marginBottom="@dimen/layout_gutter"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="@id/et_item_record_input"
+                        app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
 
                     <TextView
-                        android:id="@+id/tv_record_item_mad"
-                        style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
-                        android:text="@string/mad" />
+                        android:id="@+id/button_item_record_done"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/layout_gutter"
+                        android:layout_marginRight="@dimen/layout_gutter"
+                        android:layout_marginBottom="@dimen/layout_gutter"
+                        android:text="@string/item_record_done"
+                        android:textColor="@color/list_violet"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toRightOf="@id/et_item_record_input"
+                        app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
 
-                    <TextView
-                        android:id="@+id/tv_record_item_bad"
-                        style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
-                        android:text="@string/bad" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <TextView
-                        android:id="@+id/tv_record_item_normal"
-                        style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
-                        android:text="@string/normal" />
-
-                    <TextView
-                        android:id="@+id/tv_record_item_pgood"
-                        style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
-                        android:text="@string/good" />
-
-                    <TextView
-                        android:id="@+id/tv_record_item_good"
-                        style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
-                        android:text="@string/happy" />
-
-                </LinearLayout>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler_view_item_record_tags"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/layout_gutter"
-                    android:layout_marginTop="@dimen/layout_margin"
-                    android:layout_marginRight="@dimen/layout_gutter"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/ll_record_item_emoji">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/et_item_record_input"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/layout_gutter"
-                    android:layout_marginTop="@dimen/layout_margin"
-                    android:layout_marginRight="@dimen/layout_gutter"
-                    android:background="@drawable/bg_hash_tag_edittext"
-                    android:enabled="@{!fragment.isSaving}"
-                    android:hint="@string/item_record_hash_tag_hint"
-                    android:lines="1"
-                    android:padding="10dp"
-                    android:textSize="12dp"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/recycler_view_item_record_tags" />
-
-                <ProgressBar
-                    android:id="@+id/pb_item_record_waiting"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="@dimen/layout_gutter"
-                    android:layout_marginRight="@dimen/layout_gutter"
-                    android:layout_marginBottom="@dimen/layout_gutter"
-                    android:clickable="@{!fragment.isSaving}"
-                    android:visibility="@{fragment.isSaving ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="@id/et_item_record_input"
-                    app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
-
-                <TextView
-                    android:id="@+id/button_item_record_done"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/layout_gutter"
-                    android:layout_marginRight="@dimen/layout_gutter"
-                    android:layout_marginBottom="@dimen/layout_gutter"
-                    android:clickable="@{!fragment.isSaving}"
-                    android:text="@string/item_record_done"
-                    android:textColor="@color/list_violet"
-                    android:textStyle="bold"
-                    android:visibility="@{fragment.isSaving ? View.GONE : View.VISIBLE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintRight_toRightOf="@id/et_item_record_input"
-                    app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.cardview.widget.CardView>
+            </androidx.cardview.widget.CardView>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_view_main_list"
-            style="@style/DiaryListTheme"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginLeft="@dimen/layout_gutter"
-            android:layout_marginTop="@dimen/layout_gutter"
-            android:layout_marginRight="@dimen/layout_gutter"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cv_fragment_diary_record">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view_main_list"
+                style="@style/DiaryListTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/layout_gutter"
+                android:layout_marginTop="@dimen/layout_gutter"
+                android:layout_marginRight="@dimen/layout_gutter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cv_fragment_diary_record"/>
 
-        </androidx.recyclerview.widget.RecyclerView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </layout>

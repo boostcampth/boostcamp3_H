@@ -34,7 +34,7 @@ import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 
-@Database(entities = {LegacyDiary.class, Recommendation.class, Memory.class, DiaryEntity.class, RecallEntity.class}, version = 5, exportSchema = false)
+@Database(entities = {LegacyDiary.class, Recommendation.class, Memory.class, DiaryEntity.class, RecallEntity.class}, version = 6, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -72,7 +72,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     List<DiaryEntity> samples = new ArrayList<>();
 
                                     final long TODAY = new Date().getTime();
-                                    final long DAY = 86400L;
+                                    final long DAY = 86400000L;
 
                                     for (int i = 1; i <= 20; ++i) {
                                         samples.add(new DiaryEntity(

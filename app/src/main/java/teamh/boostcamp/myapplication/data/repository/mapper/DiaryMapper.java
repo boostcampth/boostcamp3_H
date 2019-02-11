@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.repository;
+package teamh.boostcamp.myapplication.data.repository.mapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,10 +7,10 @@ import androidx.annotation.NonNull;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 
-class DiaryMapper {
+public class DiaryMapper {
 
     @NonNull
-    static List<Diary> toDiaryList(@NonNull List<DiaryEntity> diaryEntities) {
+    public static List<Diary> toDiaryList(@NonNull List<DiaryEntity> diaryEntities) {
 
         int size = diaryEntities.size();
 
