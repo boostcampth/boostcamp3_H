@@ -4,9 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class DiaryRepositoryImpl implements DiaryRepository {
@@ -38,6 +40,13 @@ public class DiaryRepositoryImpl implements DiaryRepository {
                                              final int pageSize) {
         return diaryDao.loadDiaryList(startAfter, pageSize)
                 .map(DiaryMapper::toDiaryList)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable insertDiary(@NonNull final DiaryEntity diaryEntity) {
+        return Completable.fromAction(() -> diaryDao.insert(diaryEntity))
                 .subscribeOn(Schedulers.io());
     }
 }

@@ -9,10 +9,10 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Recall;
-
 public class RecallRepositoryImpl implements RecallRepository {
 
     private volatile static RecallRepositoryImpl INSTANCE;
+
     @NonNull
     final private AppDatabase appDatabase;
 
@@ -31,8 +31,6 @@ public class RecallRepositoryImpl implements RecallRepository {
         return INSTANCE;
     }
 
-    @Override
-    @NonNull
     public Single<List<Recall>> loadRecallList() {
 
         return appDatabase.recallDao().loadRecallEntities()
