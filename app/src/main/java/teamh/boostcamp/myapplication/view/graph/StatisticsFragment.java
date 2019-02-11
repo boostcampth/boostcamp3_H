@@ -98,8 +98,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
             //SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM-dd");
             Date date = emotionHistoryList.get(i).first.getDate();
             calendar.setTime(date);
-            String dayOfWeek = String.valueOf(calendar.get(Calendar.DAY_OF_WEEK));
-            dates[i] = dayOfWeek; // x축 표현
+            int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+            dates[i] = convertToDayOfWeek(dayOfWeek); // x축 표현
 
             int selectedEmotion = p.first.getEmotion().getEmotion(); // 선택
             int analyzedEmotion = p.second.getEmotion().getEmotion(); // 분석
@@ -122,7 +122,29 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
     }
 
-    void setLineData(LineDataSet lineDataSet, EmotionType emotionType) {
+    private String convertToDayOfWeek(int dayOfWeek) {
+        switch (dayOfWeek) {
+            case 1:
+                return "일";
+            case 2:
+                return "월";
+            case 3:
+                return "화";
+            case 4:
+                return "수";
+            case 5:
+                return "목";
+            case 6:
+                return "금";
+            case 7:
+                return "일";
+            default:
+                return "일";
+        }
+    }
+
+
+    private void setLineData(LineDataSet lineDataSet, EmotionType emotionType) {
         lineDataSet.setLineWidth(2); // 곡률
         lineDataSet.setCircleRadius(5); // 원 색상 지정
 
@@ -176,7 +198,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         yRightAxis = binding.lcEmotionGraph.getAxisRight();
         // X축 설정
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setLabelCount(dates.length,true);
+        xAxis.setLabelCount(dates.length, true);
         xAxis.setTextColor(R.color.black);
         xAxis.setValueFormatter(new GraphAxisValueFormatter(dates));
         xAxis.enableGridDashedLine(14, 24, 0);

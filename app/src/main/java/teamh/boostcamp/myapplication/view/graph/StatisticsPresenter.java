@@ -43,7 +43,7 @@ public class StatisticsPresenter {
                     // TODO 에러 처리
                     statisticsView.showLoadStatisticsDataFailMessage();
                 }));
-      compositeDisposable.clear();
+      //compositeDisposable.clear();
     }
 
     void loadTagList() {
