@@ -12,13 +12,13 @@ public interface StatisticsView {
 
     void updateStatisticsData(@NonNull List<Pair<EmotionHistory,EmotionHistory>> emotionHistoryList);
 
-    void showLoadStatisticsDataSuccessMessage();
+    void checkLoadStatisticsDataSuccessMessage();
 
-    void showLoadStatisticsDataFailMessage();
+    void checkLoadStatisticsDataFailMessage();
 
     void updateTagListData(@NonNull List<CountedTag> countedTagList);
 
-    void showLoadTagListSuccessMessage();
+    void checkLoadTagListSuccessMessage();
 
-    void showLoadTagListFailMessage();
+    void checkLoadTagListFailMessage();
 }

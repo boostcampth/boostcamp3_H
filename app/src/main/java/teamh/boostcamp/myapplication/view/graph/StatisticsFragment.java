@@ -3,12 +3,12 @@ package teamh.boostcamp.myapplication.view.graph;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.XAxis;
@@ -37,6 +37,8 @@ import teamh.boostcamp.myapplication.databinding.FragmentGraphBinding;
 
 public class StatisticsFragment extends Fragment implements StatisticsView {
 
+    private static final String TAG = StatisticsFragment.class.getSimpleName();
+    @NonNull
     private StatisticsPresenter statisticsPresenter;
     private Context context;
     private FragmentGraphBinding binding;
@@ -74,6 +76,16 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_graph, container, false);
         return binding.getRoot();
+    }
+
+    private void initPresenter() {
+        statisticsPresenter = new StatisticsPresenter(StatisticsFragment.this,
+                StatisticsRepositoryImpl.getInstance(AppDatabase.getInstance(
+                        context.getApplicationContext()).diaryDao()));
+    }
+
+    private void initData() {
+        emojis = context.getResources().getStringArray(R.array.graph_emojis);
     }
 
     @Override
@@ -121,7 +133,47 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         binding.lcEmotionGraph.setData(lineData);
 
         drawGraph();
+    }
 
+    @Override
+    public void updateTagListData(@NonNull List<CountedTag> countedTagList) {
+        final List<CountedTag> hashTagItems = countedTagList;
+
+        LayoutInflater inflater = getLayoutInflater();
+
+        for (int i = 0; i < hashTagItems.size(); i++) {
+            final View tagView = inflater.inflate(R.layout.layout_graph_hash_tag, null, false);
+            final TextView tagTextView = tagView.findViewById(R.id.tv_hash_tag);
+
+            if (hashTagItems.get(i).getCount() > 3) {
+                tagTextView.setTextColor(context.getResources().getColor(R.color.graphColor));
+            }
+
+            tagTextView.setTextSize(30f);
+            tagTextView.setText(hashTagItems.get(i).getTagName());
+            binding.hashTagCustomLayout.addView(tagView);
+        }
+    }
+
+
+    @Override
+    public void checkLoadStatisticsDataSuccessMessage() {
+        Log.v(TAG, "Graph Data Load Success");
+    }
+
+    @Override
+    public void checkLoadStatisticsDataFailMessage() {
+        Log.v(TAG, "Graph Data Load Fail");
+    }
+
+    @Override
+    public void checkLoadTagListSuccessMessage() {
+        Log.v(TAG, "Tag Data Load Success");
+    }
+
+    @Override
+    public void checkLoadTagListFailMessage() {
+        Log.v(TAG, "Graph Data Load Fail");
     }
 
     private String convertToDayOfWeek(int dayOfWeek) {
@@ -169,57 +221,6 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         lineDataSet.setDrawHighlightIndicators(false);
         lineDataSet.setDrawValues(false);
         dataSets.add(lineDataSet);
-    }
-
-    @Override
-    public void showLoadStatisticsDataSuccessMessage() {
-        Toast.makeText(context, "Success", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showLoadStatisticsDataFailMessage() {
-        Toast.makeText(context, "Fail", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void showLoadTagListSuccessMessage() {
-
-    }
-
-    @Override
-    public void showLoadTagListFailMessage() {
-
-    }
-
-    @Override
-    public void updateTagListData(@NonNull List<CountedTag> countedTagList) {
-        final List<CountedTag> hashTagItems;
-        hashTagItems = countedTagList;
-
-        LayoutInflater inflater = getLayoutInflater();
-
-        for (int i = 0; i < hashTagItems.size(); i++) {
-            final View tagView = inflater.inflate(R.layout.layout_graph_hash_tag, null, false);
-            final TextView tagTextView = tagView.findViewById(R.id.tv_hash_tag);
-
-            if (hashTagItems.get(i).getCount() > 3) {
-                tagTextView.setTextColor(context.getResources().getColor(R.color.graphColor));
-            }
-
-            tagTextView.setTextSize(30f);
-            tagTextView.setText(hashTagItems.get(i).getTagName());
-            binding.hashTagCustomLayout.addView(tagView);
-        }
-    }
-
-    private void initPresenter() {
-        statisticsPresenter = new StatisticsPresenter(StatisticsFragment.this,
-                StatisticsRepositoryImpl.getInstance(AppDatabase.getInstance(
-                        context.getApplicationContext())));
-    }
-
-    private void initData() {
-        emojis = context.getResources().getStringArray(R.array.graph_emojis);
     }
 
     private void drawGraph() {

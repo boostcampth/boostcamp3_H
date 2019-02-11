@@ -53,8 +53,8 @@ public abstract class AppDatabase extends RoomDatabase {
                             .fallbackToDestructiveMigration()
                             .addCallback(new Callback() {
                                 @Override
-                                public void onOpen(@NonNull SupportSQLiteDatabase db) {
-                                    super.onOpen(db);
+                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                    super.onCreate(db);
                                     // FIXME 더미 데이터 추가
                                     final String filePath = "/storage/emulated/0/2019-02-08.acc";
                                     final File file = new File("/storage/emulated/0/2019-02-08.acc");

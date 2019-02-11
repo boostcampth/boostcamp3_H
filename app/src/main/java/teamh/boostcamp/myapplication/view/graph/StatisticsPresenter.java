@@ -37,10 +37,10 @@ class StatisticsPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(emotionHistoryList -> {
                     statisticsView.updateStatisticsData(emotionHistoryList);
-                    statisticsView.showLoadStatisticsDataSuccessMessage();
+                    statisticsView.checkLoadStatisticsDataSuccessMessage();
                 }, throwable -> {
                     // TODO 에러 처리
-                    statisticsView.showLoadStatisticsDataFailMessage();
+                    statisticsView.checkLoadStatisticsDataFailMessage();
                 }));
         //compositeDisposable.clear();
     }
@@ -51,10 +51,10 @@ class StatisticsPresenter {
                 .subscribe(countedTags -> {
                     // TODO : 뷰에 처리
                     statisticsView.updateTagListData(countedTags);
-                    statisticsView.showLoadTagListSuccessMessage();
+                    statisticsView.checkLoadTagListSuccessMessage();
                 }, throwable -> {
                     // TODO : 에러 처리
-                    statisticsView.showLoadTagListFailMessage();
+                    statisticsView.checkLoadTagListFailMessage();
                 }));
     }
 
