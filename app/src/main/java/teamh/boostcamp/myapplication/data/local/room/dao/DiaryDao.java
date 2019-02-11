@@ -10,6 +10,8 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
+import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 
 
 @Dao
@@ -20,7 +22,8 @@ public interface DiaryDao {
                                             final int pageSize);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insert(@NonNull DiaryEntity... diaryEntities);
+    void insert(@NonNull DiaryEntity...diaryEntities);
 
-
+    @Query("Select * FROM diaries WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT :limitCount")
+    Single<List<Diary>> selectDiaryListByEmotionAndDate(Emotion emotion, Date startDate, Date endDate, int limitCount);
 }

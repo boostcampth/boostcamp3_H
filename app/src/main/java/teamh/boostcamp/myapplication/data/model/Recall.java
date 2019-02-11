@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.data.model;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -7,16 +8,16 @@ import androidx.annotation.NonNull;
 public class Recall {
 
     @NonNull
-    private String startDate;
+    private Date startDate;
     @NonNull
-    private String endDate;
+    private Date endDate;
     @NonNull
     private Emotion emotion;
     @NonNull
     private List<Diary> diaryList;
 
-    public Recall(@NonNull String startDate,
-                  @NonNull String endDate,
+    public Recall(@NonNull Date startDate,
+                  @NonNull Date endDate,
                   @NonNull Emotion emotion,
                   @NonNull List<Diary> diaryList) {
         this.startDate = startDate;
@@ -26,12 +27,12 @@ public class Recall {
     }
 
     @NonNull
-    public String getStartDate() {
+    public Date getStartDate() {
         return startDate;
     }
 
     @NonNull
-    public String getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
