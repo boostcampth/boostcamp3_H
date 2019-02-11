@@ -63,15 +63,15 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
                         }
                     }
 
-                    final List<CountedTag> countedTags = new ArrayList<>();
+                    final List<CountedTag> countedTagList = new ArrayList<>();
 
                     Iterator<String> iterator = map.keySet().iterator();
                     while (iterator.hasNext()) {
                         String tagName = iterator.next();
                         int count = map.get(tagName);
-                        countedTags.add(new CountedTag(tagName, count));
+                        countedTagList.add(new CountedTag(tagName, count));
                     }
-                    return countedTags;
+                    return countedTagList;
 
                 }).subscribeOn(Schedulers.io());
     }
@@ -82,25 +82,21 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
             @NonNull Date lastItemSavedTime) {
 
         return appDatabase.diaryDao().loadDiaryList(lastItemSavedTime, RECENT_TERM).
-                map(diaryEntityList1 -> {
-                    final int size1 = diaryEntityList1.size();
-                    List<EmotionHistory> selectedEmotionHistoryArrayList = new ArrayList<>();
-                    List<EmotionHistory> analyzedEmotionHistoryArrayList = new ArrayList<>();
-                    for (int i = 0; i < size1; i++) {
-                        DiaryEntity diaryEntity = diaryEntityList1.get(i);
-                        selectedEmotionHistoryArrayList.add(new EmotionHistory(
-                                diaryEntity.getRecordDate(),
+                map(diaryEntityList -> {
+                    final int size = diaryEntityList.size();
+                    List<EmotionHistory> emotionHistoryList = new ArrayList<>();
+                    for (int i = 0; i < size; i++) {
+                        DiaryEntity diaryEntity = diaryEntityList.get(i);
+                        emotionHistoryList.add(new EmotionHistory(diaryEntity.getRecordDate(),
                                 diaryEntity.getSelectedEmotion(),
                                 EmotionType.selectedEmotion));
 
-                        analyzedEmotionHistoryArrayList.add(new EmotionHistory(
-                                diaryEntity.getRecordDate(),
-                                diaryEntity.getAnalyzedEmotion(),
+                        emotionHistoryList.add(new EmotionHistory(diaryEntity.getRecordDate(),
+                                diaryEntity.getSelectedEmotion(),
                                 EmotionType.analyzedEmotion));
-                    }
 
-                    selectedEmotionHistoryArrayList.addAll(analyzedEmotionHistoryArrayList);
-                    return selectedEmotionHistoryArrayList;
+                    }
+                    return emotionHistoryList;
                 })
                 .subscribeOn(Schedulers.io());
     }
