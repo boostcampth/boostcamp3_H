@@ -16,6 +16,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:background="@color/white"
         android:layout_height="match_parent"
         tools:context=".view.alarm.AlarmActivity">
 
@@ -24,48 +25,68 @@
             app:handlers="@{handlers}"
             app:title="@{@string/alarm_title}" />
 
-        <Switch
-            android:id="@+id/switch_alarm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:thumb="@drawable/switch_thumb"
-            android:track="@drawable/switch_track_selector"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.044"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rl_alarm_toolbar" />
-
-        <LinearLayout
-            android:id="@+id/ll_alarm_time_layout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
+        <RelativeLayout
+            android:layout_marginTop="1dp"
+            android:id="@+id/rl_alarm_switch"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            android:elevation="@dimen/card_elevation"
             app:layout_constraintTop_toBottomOf="@+id/rl_alarm_toolbar">
 
             <TextView
-                android:id="@+id/tv_alarm_time_text"
+                style="@style/AlarmTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/alarm_explain"
-                app:layout_constraintEnd_toStartOf="@+id/btn_alarm_select"
-                app:layout_constraintStart_toEndOf="@+id/switch_alarm" />
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/layout_margin"
+                android:text="@string/alarm_button_click_text" />
+
+            <Switch
+                android:id="@+id/switch_alarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="@dimen/layout_margin"
+                android:thumb="@drawable/switch_thumb"
+                android:track="@drawable/switch_track_selector" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginTop="1dp"
+            android:id="@+id/ll_alarm_time_layout"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/white"
+            android:elevation="@dimen/card_elevation"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_alarm_switch">
+
+            <TextView
+                android:id="@+id/tv_alarm_time_text"
+                style="@style/AlarmTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/layout_margin"
+                android:text="@string/alarm_explain" />
 
             <Button
                 android:id="@+id/btn_alarm_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_alignParentEnd="true"
                 android:onClick="@{v -> activity.onClickButton(v.getId())}"
-                android:text="시간 선택"
+                android:text="@string/alarm_time_select_text"
                 app:layout_constraintEnd_toEndOf="parent" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
