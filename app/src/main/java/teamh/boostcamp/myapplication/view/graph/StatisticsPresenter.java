@@ -1,6 +1,5 @@
 package teamh.boostcamp.myapplication.view.graph;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
@@ -10,9 +9,6 @@ import teamh.boostcamp.myapplication.data.repository.StatisticsRepository;
 public class StatisticsPresenter {
 
     @NonNull
-    private StatisticsPresenter statisticsPresenter;
-
-    @NonNull
     private StatisticsRepository statisticsRepository;
 
     @NonNull
@@ -20,12 +16,12 @@ public class StatisticsPresenter {
 
     // 생성자를 통한 주입.
     public StatisticsPresenter(@NonNull StatisticsRepository statisticsRepository,
-                               @NonNull StatisticsView statisticsView){
+                               @NonNull StatisticsView statisticsView) {
         this.statisticsRepository = statisticsRepository;
         this.statisticsView = statisticsView;
     }
 
-    void loadStatisticsData(){
+    void loadStatisticsData() {
         /**
          * Repository에게 데이터 요청해서 받아오는 로직.
          * 그리고 view에 갱신
@@ -40,7 +36,7 @@ public class StatisticsPresenter {
                 });
     }
 
-    void loadTagList(){
+    void loadTagList() {
         statisticsRepository.loadRecentCountedTagList(new Date())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(countedTags -> {
