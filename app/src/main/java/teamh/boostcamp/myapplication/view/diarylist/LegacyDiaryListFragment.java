@@ -56,11 +56,11 @@ public class LegacyDiaryListFragment extends BaseFragment<FragmentDiaryListBindi
 
         initPresenter();
 
-        binding.setPresenter(presenter);
+        //binding.setPresenter(presenter);
 
         initView();
 
-        binding.setFragment(this);
+        //binding.setFragment(this);
 
         // 저장된 아이템 3개만 들고오기
         // presenter.loadMoreDiaryItems();

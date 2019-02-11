@@ -12,6 +12,7 @@ import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityMainBinding;
 import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
 import teamh.boostcamp.myapplication.view.BaseActivity;
+import teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryListFragment;
 import teamh.boostcamp.myapplication.view.graph.LegacyGraphFragment;
 import teamh.boostcamp.myapplication.view.memories.MemoriesFragment;
@@ -49,7 +50,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         Log.e(TAG, "initView");
         tabAdapter = new MainTabAdapter(getSupportFragmentManager());
         tabAdapter.addFragment(new MemoriesFragment());
-        tabAdapter.addFragment(LegacyDiaryListFragment.newInstance());
+        tabAdapter.addFragment(DiaryListFragment.newInstance());
         tabAdapter.addFragment(new LegacyGraphFragment());
         binding.vpMain.setAdapter(tabAdapter);
         binding.vpMain.setOffscreenPageLimit(3);

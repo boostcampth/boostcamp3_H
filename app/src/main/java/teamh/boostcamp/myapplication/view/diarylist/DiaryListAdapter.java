@@ -58,20 +58,32 @@ public class DiaryListAdapter extends ListAdapter<Diary, DiaryListAdapter.DiaryV
                 onRecordItemClickListener.onDiaryItemClicked(diary.getRecordFilePath());
             });
         }
-        // TODO : 데이터 바인딩 수행 
+
+        holder.itemRecordDiaryBinding.setDiary(diary);
     }
 
-    public static class DiaryViewHolder extends RecyclerView.ViewHolder {
+    public void addDiary(@NonNull Diary diary) {
+        diaryList.add(diary);
+        submitList(diaryList);
+    }
+
+    public void addDiaryList(@NonNull List<Diary> diaryList) {
+        this.diaryList.addAll(diaryList);
+        submitList(this.diaryList);
+    }
+
+    static class DiaryViewHolder extends RecyclerView.ViewHolder {
 
         ItemRecordDiaryBinding itemRecordDiaryBinding;
 
-        public DiaryViewHolder(@NonNull ItemRecordDiaryBinding itemRecordDiaryBinding) {
+        DiaryViewHolder(@NonNull ItemRecordDiaryBinding itemRecordDiaryBinding) {
             super(itemRecordDiaryBinding.getRoot());
             this.itemRecordDiaryBinding = itemRecordDiaryBinding;
         }
     }
 
-    public static final DiffUtil.ItemCallback<Diary> DIARY_ITEM_CALLBACK = new DiffUtil.ItemCallback<Diary>() {
+    @NonNull
+    private static final DiffUtil.ItemCallback<Diary> DIARY_ITEM_CALLBACK = new DiffUtil.ItemCallback<Diary>() {
         @Override
         public boolean areItemsTheSame(@NonNull Diary oldItem, @NonNull Diary newItem) {
             return oldItem.getId() == newItem.getId();

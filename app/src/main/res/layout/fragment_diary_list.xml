@@ -9,11 +9,11 @@
 
         <variable
             name="fragment"
-            type="teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryListFragment"/>
+            type="teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment"/>
 
         <variable
             name="presenter"
-            type="teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryPresenter" />
+            type="teamh.boostcamp.myapplication.view.diarylist.DiaryListPresenter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,7 +52,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:background="@drawable/bg_mic_record_btn"
-                    android:clickable="@{!fragment.isSaving}"
                     android:minWidth="60dp"
                     android:minHeight="60dp"
                     android:scaleType="center"
@@ -78,31 +77,26 @@
                     <TextView
                         android:id="@+id/tv_record_item_mad"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
                         android:text="@string/mad" />
 
                     <TextView
                         android:id="@+id/tv_record_item_bad"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
                         android:text="@string/bad" />
 
                     <TextView
                         android:id="@+id/tv_record_item_normal"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
                         android:text="@string/normal" />
 
                     <TextView
                         android:id="@+id/tv_record_item_pgood"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
                         android:text="@string/good" />
 
                     <TextView
                         android:id="@+id/tv_record_item_good"
                         style="@style/EmojiChoiceType"
-                        android:clickable="@{!fragment.isSaving}"
                         android:text="@string/happy" />
 
                 </LinearLayout>
@@ -129,7 +123,6 @@
                     android:layout_marginTop="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/layout_gutter"
                     android:background="@drawable/bg_hash_tag_edittext"
-                    android:enabled="@{!fragment.isSaving}"
                     android:hint="@string/item_record_hash_tag_hint"
                     android:lines="1"
                     android:padding="10dp"
@@ -145,8 +138,6 @@
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:layout_marginRight="@dimen/layout_gutter"
                     android:layout_marginBottom="@dimen/layout_gutter"
-                    android:clickable="@{!fragment.isSaving}"
-                    android:visibility="@{fragment.isSaving ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="@id/et_item_record_input"
                     app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
@@ -158,11 +149,9 @@
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:layout_marginRight="@dimen/layout_gutter"
                     android:layout_marginBottom="@dimen/layout_gutter"
-                    android:clickable="@{!fragment.isSaving}"
                     android:text="@string/item_record_done"
                     android:textColor="@color/list_violet"
                     android:textStyle="bold"
-                    android:visibility="@{fragment.isSaving ? View.GONE : View.VISIBLE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintRight_toRightOf="@id/et_item_record_input"
                     app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />

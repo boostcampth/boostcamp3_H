@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -36,7 +38,10 @@ public class DiaryListPresenter {
 
         compositeDisposable.add(diaryRepository.loadDiaryList(recordDate, pageSize)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(diaryListView::addDiaryList
+                .subscribe(diaries -> {
+                    diaryListView.addDiaryList(diaries);
+                            Log.d("Test", "test");
+                        }
                         , throwable -> diaryListView.showLoadDiaryListFailMsg()
                 ));
     }

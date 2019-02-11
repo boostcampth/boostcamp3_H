@@ -53,7 +53,7 @@ public class LegacyDiaryListAdapter extends RecyclerView.Adapter<LegacyDiaryList
             );
         }
 
-        holder.itemRecordDiaryBinding.setDiary(diary);
+        //holder.itemRecordDiaryBinding.setDiary(diary);
     }
 
     @Override

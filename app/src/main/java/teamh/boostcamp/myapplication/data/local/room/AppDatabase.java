@@ -34,7 +34,7 @@ import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 
-@Database(entities = {LegacyDiary.class, Recommendation.class, Memory.class, DiaryEntity.class, RecallEntity.class}, version = 5, exportSchema = false)
+@Database(entities = {LegacyDiary.class, Recommendation.class, Memory.class, DiaryEntity.class, RecallEntity.class}, version = 6, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 

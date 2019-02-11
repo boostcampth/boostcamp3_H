@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
@@ -27,15 +29,14 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     @NonNull
     private Context context;
-
     @NonNull
     private DiaryListPresenter presenter;
-
     @NonNull
     private CompositeDisposable compositeDisposable;
-
     @NonNull
     private FragmentDiaryListBinding binding;
+    @NonNull
+    private DiaryListAdapter diaryListAdapter;
 
     public DiaryListFragment() { /*Empty*/}
 
@@ -65,6 +66,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         presenter = new DiaryListPresenter(this,
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao(),
                         DeepAffectApiClient.getInstance()));
+
+        diaryListAdapter = new DiaryListAdapter(context);
     }
 
     @Nullable
@@ -73,19 +76,22 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false);
 
+        binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        binding.recyclerViewMainList.setAdapter(diaryListAdapter);
+
         // TODO xml 변수 바인딩
+        presenter.loadDiaryList(new Date(), 3);
 
         return binding.getRoot();
     }
 
     @Override
     public void addDiaryList(@NonNull List<Diary> diaryList) {
-        // TODO : adapter 에 diaryList 추가
+        diaryListAdapter.addDiaryList(diaryList);
     }
 
     @Override
     public void notifyTodayDiarySaved() {
-        // TODO : 저장된 데이터 불러오기
         presenter.loadDiaryList(new Date(), 1);
     }
 
@@ -96,7 +102,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     @Override
     public void showSaveDiaryFail() {
-        // TODO : 에러메시지 출력
+        showToastMessage(R.string.item_record_save_fail);
     }
 
     private void showToastMessage(@StringRes final int stringId) {
