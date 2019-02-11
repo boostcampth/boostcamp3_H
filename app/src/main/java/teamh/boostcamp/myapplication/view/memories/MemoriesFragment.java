@@ -22,7 +22,7 @@ import teamh.boostcamp.myapplication.view.play.PlayActivity;
 public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> implements MemoriesContractor.View, MemoriesCardAdapter.ViewClickListener {
 
     private static final String EXTRA_MEMORY = "memory";
-    private MemoriesPresenter presenter;
+    private LegacyMemoriesPresenter presenter;
     private MemoriesCardAdapter mMemoriesCardAdapter;
 
     @Nullable
@@ -31,7 +31,7 @@ public class MemoriesFragment extends BaseFragment<FragmentMemoriesBinding> impl
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        presenter = new MemoriesPresenter(this, new ResourceSendUtil(getContext()));
+        presenter = new LegacyMemoriesPresenter(this, new ResourceSendUtil(getContext()));
         presenter.onViewAttached();
         binding.setView(this);
 

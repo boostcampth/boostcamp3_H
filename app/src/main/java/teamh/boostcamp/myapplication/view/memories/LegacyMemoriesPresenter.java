@@ -18,8 +18,8 @@ import teamh.boostcamp.myapplication.data.model.Recommendation;
 import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
 import teamh.boostcamp.myapplication.view.adapter.AdapterContract;
 
-public class MemoriesPresenter implements MemoriesContractor.Presenter {
-    private static final String TAG = "MemoriesPresenter";
+public class LegacyMemoriesPresenter implements MemoriesContractor.Presenter {
+    private static final String TAG = "LegacyMemoriesPresenter";
     private MemoriesContractor.View view;
     private AdapterContract.Model<Memory> memoriesCardAdapterModel;
     private AdapterContract.View memoriesCardAdapterView;
@@ -27,7 +27,7 @@ public class MemoriesPresenter implements MemoriesContractor.Presenter {
     private CompositeDisposable compositeDisposable;
     private ResourceSendUtil resourceSendUtil;
 
-    MemoriesPresenter(MemoriesContractor.View view, ResourceSendUtil resourceSendUtil) {
+    LegacyMemoriesPresenter(MemoriesContractor.View view, ResourceSendUtil resourceSendUtil) {
         this.view = view;
         this.resourceSendUtil = resourceSendUtil;
         compositeDisposable = new CompositeDisposable();
