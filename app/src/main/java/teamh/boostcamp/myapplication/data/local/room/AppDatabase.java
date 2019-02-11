@@ -24,14 +24,13 @@ import teamh.boostcamp.myapplication.data.local.room.converter.EmotionTypeConver
 import teamh.boostcamp.myapplication.data.local.room.converter.StringListTypeConverter;
 import teamh.boostcamp.myapplication.data.local.room.dao.AppDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
-
 import teamh.boostcamp.myapplication.data.local.room.dao.LegacyDiaryDao;
-import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
-import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.local.room.dao.RecallDao;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
+import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.model.Memory;
-import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Recommendation;
 
 @Database(entities = {LegacyDiary.class, Recommendation.class, Memory.class, DiaryEntity.class, RecallEntity.class}, version = 6, exportSchema = false)
@@ -79,7 +78,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                                 i,
                                                 new Date(TODAY - DAY * i),
                                                 filePath,
-                                                Arrays.asList(String.format("#%2d번",i)),
+                                                Arrays.asList(String.format("#%2d번", i)),
                                                 Emotion.fromValue(Math.abs(random.nextInt() % 5)),
                                                 Emotion.fromValue(Math.abs(random.nextInt() % 5))
                                         ));
@@ -90,10 +89,21 @@ public abstract class AppDatabase extends RoomDatabase {
                                     Completable.fromAction(() -> INSTANCE.diaryDao()
                                             .insert(samples.toArray(temp)))
                                             .subscribeOn(Schedulers.io())
-                                            .subscribe(() -> { Log.d("Test", "데이터 저장");
+                                            .subscribe(() -> {
+                                                        Log.d("Test", "데이터 저장");
                                                     },
-                                                    throwable -> {throwable.printStackTrace();
+                                                    throwable -> {
+                                                        throwable.printStackTrace();
                                                     });
+
+                                    RecallEntity[] recallList = {new RecallEntity(0, new Date(), Emotion.fromValue(0))
+                                            , new RecallEntity(0, new Date(), Emotion.fromValue(1))
+                                    , new RecallEntity(0, new Date(), Emotion.fromValue(2))
+                                    , new RecallEntity(0, new Date(), Emotion.fromValue(3))};
+
+                                    Completable.fromAction(() -> INSTANCE.recallDao().insertRecall(recallList))
+                                    .subscribeOn(Schedulers.io())
+                                    .subscribe();
                                 }
                             })
                             .build();

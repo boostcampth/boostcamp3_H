@@ -56,6 +56,8 @@ public class RecallFragment extends Fragment implements RecallView {
     }
 
     private void initRecyclerView() {
+        binding.rvCard.setHasFixedSize(true);
+        binding.rvCard.setVerticalScrollbarPosition(0);
         recallListAdapter = new RecallListAdapter(getContext());
         binding.rvCard.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvCard.setAdapter(recallListAdapter);
