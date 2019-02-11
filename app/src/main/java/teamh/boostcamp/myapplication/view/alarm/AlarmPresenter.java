@@ -1,94 +1,30 @@
 package teamh.boostcamp.myapplication.view.alarm;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.widget.Toast;
-
-import java.text.DateFormat;
 import java.util.Calendar;
 
-import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
-import teamh.boostcamp.myapplication.data.local.SharedPreference;
+import androidx.annotation.NonNull;
 
-public class AlarmPresenter implements AlarmContractor.Presenter {
+public class AlarmPresenter {
 
     private AlarmContractor.View view;
-    private Context context;
-    private ResourceSendUtil resourceSendUtil;
+    private AlarmHelper alarmHelper;
 
-    AlarmPresenter(AlarmContractor.View view, Context context) {
+    AlarmPresenter(AlarmContractor.View view, @NonNull AlarmHelper alarmHelper) {
         this.view = view;
-        this.context = context;
+        this.alarmHelper = alarmHelper;
     }
 
-    @Override
-    public void onViewAttached() {
-        SharedPreference.getInstance().loadSharedPreference(context);
-        resourceSendUtil = new ResourceSendUtil(context);
+    void setAlarm(Calendar calendar) {
+        alarmHelper.setAlarm(calendar);
     }
 
-    @Override
-    public void onViewDetached() {
-        view = null;
-        context = null;
-        resourceSendUtil = null;
+    void cancelAlarm() {
+        String text = alarmHelper.cancelAlarm();
+        view.updateTimeText(text);
     }
 
-    // 알람 설정
-    @Override
-    public void setAlarm(Calendar calendar) {
-
-        final long currentTime = System.currentTimeMillis();
-        final long INTERVAL_TIME = 1000 * 60 * 60 * 24;
-        long userAlarmTime = calendar.getTimeInMillis();
-
-        // 설정한 시간이 현재 시간보다 작다면 다음 날 울리도록 INTERVAL_TIME 을 더한다.
-        if (currentTime > userAlarmTime) {
-            userAlarmTime += INTERVAL_TIME;
-        }
-
-        // 알람 매니저가 AlertReceiver 라는 브로드 캐스트 리시버로 펜딩 인텐트로 날린다.
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
-
-        // 버전별 알람 매니저에게 시간을 설정.
-        if (Build.VERSION.SDK_INT >= 23) {
-            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, userAlarmTime, pendingIntent);
-        } else {
-            if (Build.VERSION.SDK_INT >= 19) {
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, userAlarmTime, pendingIntent);
-            } else {
-                alarmManager.set(AlarmManager.RTC_WAKEUP, userAlarmTime, pendingIntent);
-            }
-        }
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userAlarmTime, INTERVAL_TIME, pendingIntent);
-
-        // SharedPreference 저장하는 로직. String으로 저장.
-        String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        SharedPreference.getInstance().setPreferencePushTime(timeText);
-    }
-
-    // 알람 해제
-    @Override
-    public void cancelAlarm() {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, AlertReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
-
-        alarmManager.cancel(pendingIntent);
-        view.updateTimeText(resourceSendUtil.getString(R.string.alarm_explain));
-        SharedPreference.getInstance().removePreferencePushTime();
-    }
-
-    @Override
-    public void loadCalendar(Calendar calendar) {
-        String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
+    void loadCalendar(Calendar calendar) {
+        String timeText = alarmHelper.loadCalendar(calendar);
         view.updateTimeText(timeText);
     }
-
 }

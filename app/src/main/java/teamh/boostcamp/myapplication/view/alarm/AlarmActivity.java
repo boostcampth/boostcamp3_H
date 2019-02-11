@@ -9,8 +9,8 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 import teamh.boostcamp.myapplication.data.local.SharedPreference;
+import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.Handlers;
 
@@ -20,6 +20,7 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
     private AlarmPresenter presenter;
     private Calendar calendar;
     private boolean isChecked = false;
+    private AlarmHelperImpl alarmHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.onViewDetached();
+        //presenter.onViewDetached();
         calendar = null;
         presenter = null;
     }
@@ -55,8 +56,8 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
 
     private void initView() {
         SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
-        presenter = new AlarmPresenter(AlarmActivity.this, getApplicationContext());
-        presenter.onViewAttached();
+        alarmHelper = new AlarmHelperImpl(getApplicationContext());
+        presenter = new AlarmPresenter(AlarmActivity.this, alarmHelper);
         binding.setActivity(AlarmActivity.this);
         binding.setHandlers(this);
     }
