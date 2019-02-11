@@ -8,6 +8,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
@@ -43,37 +44,36 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     public Single<List<CountedTag>> loadRecentCountedTagList(
             @NonNull Date lastItemSavedTime) {
 
-        List<DiaryEntity> diaryEntityList = new ArrayList<>();
+        return appDatabase.diaryDao().loadDiaryList(lastItemSavedTime, RECENT_TERM)
+                .map(diaryEntityList -> {
+                    int size = diaryEntityList.size();
 
+                    HashMap<String, Integer> map = new HashMap<>();
 
-        diaryEntityList = (List<DiaryEntity>) appDatabase.diaryDao().loadDiaryList(lastItemSavedTime, RECENT_TERM);
+                    for (int i = 0; i < size; i++) {
+                        List<String> tags = diaryEntityList.get(i).getTags();
 
-        int size = diaryEntityList.size();
+                        for (int j = 0; j < tags.size(); j++) {
+                            if (map.containsKey(tags.get(j))) {
+                                int count = map.get(tags.get(j));
+                                map.put(tags.get(j), count + 1);
+                            } else {
+                                map.put(tags.get(j), 1);
+                            }
+                        }
+                    }
 
-        HashMap<String, Integer> map = new HashMap<>();
+                    final List<CountedTag> countedTagList = new ArrayList<>();
 
+                    Iterator<String> iterator = map.keySet().iterator();
+                    while (iterator.hasNext()) {
+                        String tagName = iterator.next();
+                        int count = map.get(tagName);
+                        countedTagList.add(new CountedTag(tagName, count));
+                    }
+                    return countedTagList;
 
-        for (int i = 0; i < size; i++) {
-            List<String> tags = diaryEntityList.get(i).getTags();
-
-            for (int j = 0; j < tags.size(); j++) {
-                if (map.containsKey(tags.get(j))) {
-                    int count = map.get(tags.get(j));
-                    map.put(tags.get(j), count + 1);
-                } else {
-                    map.put(tags.get(j), 1);
-                }
-            }
-        }
-        final List<CountedTag> countedTags = new ArrayList<>();
-
-        Iterator<String> iterator = map.keySet().iterator();
-        while (iterator.hasNext()){
-            String tagName = iterator.next();
-            int count = map.get(tagName);
-            countedTags.add(new CountedTag(tagName,count));
-        }
-        return (Single<List<CountedTag>>) countedTags;
+                }).subscribeOn(Schedulers.io());
     }
 
     @NonNull
@@ -81,24 +81,23 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     public Single<List<EmotionHistory>> loadRecentEmotionHistoryList(
             @NonNull Date lastItemSavedTime) {
 
-        List<DiaryEntity> diaryEntityList = new ArrayList<>();
-        final List<EmotionHistory> totalEmotionHistoryList = new ArrayList<>();
+        return appDatabase.diaryDao().loadDiaryList(lastItemSavedTime, RECENT_TERM).
+                map(diaryEntityList -> {
+                    final int size = diaryEntityList.size();
+                    List<EmotionHistory> emotionHistoryList = new ArrayList<>();
+                    for (int i = 0; i < size; i++) {
+                        DiaryEntity diaryEntity = diaryEntityList.get(i);
+                        emotionHistoryList.add(new EmotionHistory(diaryEntity.getRecordDate(),
+                                diaryEntity.getSelectedEmotion(),
+                                EmotionType.selectedEmotion));
 
-        diaryEntityList = (List<DiaryEntity>) appDatabase.diaryDao()
-                .loadDiaryList(lastItemSavedTime, RECENT_TERM);
-        int size = diaryEntityList.size();
+                        emotionHistoryList.add(new EmotionHistory(diaryEntity.getRecordDate(),
+                                diaryEntity.getSelectedEmotion(),
+                                EmotionType.analyzedEmotion));
 
-        ArrayList<EmotionHistory> selectedEmotionHistoryArrayList = new ArrayList<>();
-        ArrayList<EmotionHistory> analyzedEmotionHistoryArrayList = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            DiaryEntity diaryEntity = diaryEntityList.get(i);
-            selectedEmotionHistoryArrayList.add(new EmotionHistory(diaryEntity.getRecordDate(), diaryEntity.getSelectedEmotion(), EmotionType.selectedEmotion));
-            analyzedEmotionHistoryArrayList.add(new EmotionHistory(diaryEntity.getRecordDate(), diaryEntity.getAnalyzedEmotion(), EmotionType.analyzedEmotion));
-        }
-
-        totalEmotionHistoryList.addAll(selectedEmotionHistoryArrayList);
-        totalEmotionHistoryList.addAll(analyzedEmotionHistoryArrayList);
-
-        return (Single<List<EmotionHistory>>) totalEmotionHistoryList;
+                    }
+                    return emotionHistoryList;
+                })
+                .subscribeOn(Schedulers.io());
     }
 }

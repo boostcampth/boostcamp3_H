@@ -8,7 +8,7 @@
 
         <variable
             name="presenter"
-            type="teamh.boostcamp.myapplication.view.graph.GraphPresenter" />
+            type="teamh.boostcamp.myapplication.view.graph.LegacyGraphPresenter" />
 
     </data>
 
