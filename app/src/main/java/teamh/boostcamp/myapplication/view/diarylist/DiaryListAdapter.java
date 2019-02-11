@@ -25,7 +25,7 @@ public class DiaryListAdapter extends ListAdapter<Diary, DiaryListAdapter.DiaryV
     @NonNull
     private OnRecordItemClickListener onRecordItemClickListener;
 
-    public DiaryListAdapter(@NonNull Context context) {
+    DiaryListAdapter(@NonNull Context context) {
         super(DiaryListAdapter.DIARY_ITEM_CALLBACK);
         this.context = context;
         this.diaryList = new ArrayList<>();
@@ -62,12 +62,8 @@ public class DiaryListAdapter extends ListAdapter<Diary, DiaryListAdapter.DiaryV
         holder.itemRecordDiaryBinding.setDiary(diary);
     }
 
-    public void addDiary(@NonNull Diary diary) {
-        diaryList.add(diary);
-        submitList(diaryList);
-    }
-
-    public void addDiaryList(@NonNull List<Diary> diaryList) {
+    void addDiaryList(@NonNull List<Diary> diaryList) {
+        // FIXME 데이터 집어넣는 방식 수정하기
         this.diaryList.addAll(diaryList);
         submitList(this.diaryList);
     }
