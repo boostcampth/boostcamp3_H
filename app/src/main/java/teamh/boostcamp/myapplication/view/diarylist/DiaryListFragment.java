@@ -27,6 +27,9 @@ import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 
 public class DiaryListFragment extends Fragment implements DiaryListView {
 
+    private static final int LOAD_ITEM_NUM = 3;
+    private static final int NEW_ITEM_LOAD = 1;
+
     @NonNull
     private Context context;
     @NonNull
@@ -64,8 +67,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         compositeDisposable = new CompositeDisposable();
 
         presenter = new DiaryListPresenter(this,
-                DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao(),
-                        DeepAffectApiClient.getInstance()));
+                DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao(), DeepAffectApiClient.getInstance()),
+                new DiaryRecorderImpl());
 
         diaryListAdapter = new DiaryListAdapter(context);
     }
@@ -79,9 +82,18 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         binding.recyclerViewMainList.setNestedScrollingEnabled(false);
         binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.recyclerViewMainList.setAdapter(diaryListAdapter);
+        binding.recyclerViewMainList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(!recyclerView.canScrollVertically(1)) {
+                    presenter.loadDiaryList(LOAD_ITEM_NUM);
+                }
+            }
+        });
 
         // TODO xml 변수 바인딩
-        presenter.loadDiaryList(new Date(), 3);
+        presenter.loadDiaryList(LOAD_ITEM_NUM);
 
         return binding.getRoot();
     }
@@ -93,7 +105,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     @Override
     public void notifyTodayDiarySaved() {
-        presenter.loadDiaryList(new Date(), 1);
+        presenter.loadDiaryList(NEW_ITEM_LOAD);
     }
 
     @Override
@@ -104,6 +116,12 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void showSaveDiaryFail() {
         showToastMessage(R.string.item_record_save_fail);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onViewDestroyed();
     }
 
     private void showToastMessage(@StringRes final int stringId) {
