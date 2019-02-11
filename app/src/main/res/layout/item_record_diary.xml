@@ -5,8 +5,8 @@
     <data>
 
         <variable
-            name="diary"
-            type="teamh.boostcamp.myapplication.data.model.Diary" />
+            name="date"
+            type="java.util.Date" />
     </data>
 
 
@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            app:date="@{diary.recordDate}"
+            app:date="@{date}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:month="@{@stringArray/month}" />
@@ -55,8 +55,6 @@
                     android:minWidth="@dimen/diary_emoji_min"
                     android:minHeight="@dimen/diary_emoji_min"
                     android:textSize="40dp"
-                    app:emotion="@{diary.selectedEmotion}"
-                    app:entries="@{@stringArray/graph_emojis}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -106,8 +104,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toRightOf="@id/tv_item_diary_emotion"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_item_diary_emotion"
-                    app:tags="@{diary.tags}" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_item_diary_emotion" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

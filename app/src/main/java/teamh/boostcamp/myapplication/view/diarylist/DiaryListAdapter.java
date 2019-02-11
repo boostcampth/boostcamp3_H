@@ -59,7 +59,10 @@ public class DiaryListAdapter extends ListAdapter<Diary, DiaryListAdapter.DiaryV
             });
         }
 
-        holder.itemRecordDiaryBinding.setDiary(diary);
+        holder.itemRecordDiaryBinding.tvItemDiaryDate.setText(diary.getRecordDate().toString());
+        holder.itemRecordDiaryBinding.tvItemDiaryEmotion.setText(diary.getSelectedEmotion().getEmoji());
+
+        holder.itemRecordDiaryBinding.setDate(diary.getRecordDate());
     }
 
     void addDiaryList(@NonNull List<Diary> diaryList) {

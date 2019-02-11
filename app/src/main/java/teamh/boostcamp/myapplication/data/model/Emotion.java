@@ -1,17 +1,25 @@
 package teamh.boostcamp.myapplication.data.model;
 
+import androidx.annotation.NonNull;
+
 public enum Emotion {
 
-    VERY_BAD(0), BAD(1), NEUTRAL(2), GOOD(3), VERY_GOOD(4);
+    VERY_BAD(0,"\uD83D\uDE21"), BAD(1,"\uD83D\uDE1E"), NEUTRAL(2,"\uD83D\uDE10"), GOOD(3,"\uD83D\uDE0A"), VERY_GOOD(4,"\uD83D\uDE0D");
 
     private final int emotion;
+    private final String emoji;
 
-    Emotion(int emotion) {
+    Emotion(int emotion, @NonNull final String emoji) {
         this.emotion = emotion;
+        this.emoji = emoji;
     }
 
     public int getEmotion() {
         return emotion;
+    }
+
+    public String getEmoji(){
+        return emoji;
     }
 
     public static Emotion fromValue(final int emotion) {
