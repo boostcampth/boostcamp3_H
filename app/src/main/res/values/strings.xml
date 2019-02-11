@@ -101,5 +101,6 @@
 
     <!--Alarm-->
     <string name="alarm_title">알람</string>
-    <string name="alarm_explain">알람을 설정해주세요.</string>
+    <string name="alarm_explain">시간을 설정해주세요.</string>
+    <string name="alarm_button_click_text">버튼을 눌러 알람을 설정해주세요.</string>
 </resources>
