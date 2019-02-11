@@ -82,7 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:onClick="@{v -> activity.onClickButton(v.getId())}"
-                android:text="시간 선택"
+                android:text="@string/alarm_time_select_text"
                 app:layout_constraintEnd_toEndOf="parent" />
 
 
