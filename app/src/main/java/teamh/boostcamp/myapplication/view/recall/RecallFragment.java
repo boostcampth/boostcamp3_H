@@ -20,8 +20,11 @@ import teamh.boostcamp.myapplication.databinding.FragmentRecallBinding;
 
 public class RecallFragment extends Fragment implements RecallView {
 
+    @NonNull
     private RecallPresenter recallPresenter;
+    @NonNull
     private FragmentRecallBinding binding;
+    @NonNull
     private RecallListAdapter recallListAdapter;
 
     public RecallFragment() {
@@ -56,7 +59,6 @@ public class RecallFragment extends Fragment implements RecallView {
         recallListAdapter = new RecallListAdapter(getContext());
         binding.rvCard.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvCard.setAdapter(recallListAdapter);
-
     }
 
     private void initPresenter() {

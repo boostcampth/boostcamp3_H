@@ -2,7 +2,6 @@ package teamh.boostcamp.myapplication.view.recall;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
@@ -15,10 +14,12 @@ import teamh.boostcamp.myapplication.databinding.ItemDiarytitleLlistBinding;
 
 public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAdapter.ViewHolder>{
 
+    @NonNull
     private Context context;
+    @NonNull
     private List<Diary> diaryList;
 
-    public DiaryTitleListAdapter(Context context) {
+    public DiaryTitleListAdapter(@NonNull Context context) {
         this.context = context;
         this.diaryList = new ArrayList<>();
     }
@@ -53,7 +54,7 @@ public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAd
     class ViewHolder extends RecyclerView.ViewHolder{
         ItemDiarytitleLlistBinding binding;
 
-        public ViewHolder(@NonNull ItemDiarytitleLlistBinding binding) {
+        ViewHolder(@NonNull ItemDiarytitleLlistBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }

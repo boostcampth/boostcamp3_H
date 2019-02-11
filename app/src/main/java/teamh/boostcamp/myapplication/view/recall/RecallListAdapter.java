@@ -11,12 +11,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.data.model.Recall;
-import teamh.boostcamp.myapplication.databinding.ItemDiarytitleLlistBinding;
 import teamh.boostcamp.myapplication.databinding.ItemRecallListBinding;
 
 public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.ViewHolder> {
 
+    @NonNull
     private Context context;
+    @NonNull
     private List<Recall> itemList;
 
     public RecallListAdapter(Context context) {
