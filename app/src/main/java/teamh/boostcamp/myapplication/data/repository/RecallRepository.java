@@ -11,4 +11,7 @@ public interface RecallRepository {
     @NonNull
     Single<List<Recall>> loadRecallList();
 
+    @NonNull
+    void insertRecall();
+
 }

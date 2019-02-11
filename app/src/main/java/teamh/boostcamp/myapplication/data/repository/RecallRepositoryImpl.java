@@ -49,6 +49,12 @@ public class RecallRepositoryImpl implements RecallRepository {
     }
 
     @NonNull
+    @Override
+    public void insertRecall() {
+
+    }
+
+    @NonNull
     private Date generateStartDate(@NonNull Date endDate) {
         return new Date(endDate.getTime()
                 - TimeUnit.DAYS.toMillis(14)
