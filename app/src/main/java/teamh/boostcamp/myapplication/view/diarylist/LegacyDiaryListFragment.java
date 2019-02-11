@@ -39,7 +39,7 @@ public class LegacyDiaryListFragment extends BaseFragment<FragmentDiaryListBindi
     private LegacyDiaryPresenter presenter;
 
     private HashTagListAdapter hashTagListAdapter;
-    private DiaryListAdapter diaryListAdapter;
+    private LegacyDiaryListAdapter diaryListAdapter;
 
     private CompositeDisposable compositeDisposable;
 
@@ -169,7 +169,7 @@ public class LegacyDiaryListFragment extends BaseFragment<FragmentDiaryListBindi
         binding.recyclerViewItemRecordTags.setAdapter(hashTagListAdapter);
 
         // DiaryList 설정
-        diaryListAdapter = new DiaryListAdapter(context);
+        diaryListAdapter = new LegacyDiaryListAdapter(context);
         diaryListAdapter.setOnRecordItemClickListener(filePath -> { /*재생 구현*/ });
 
         binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
