@@ -22,6 +22,7 @@
                 <TextView
                     android:id="@+id/tv_sub_title"
                     style="@style/SubTitle"
+                    android:textStyle="bold"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/layout_margin"

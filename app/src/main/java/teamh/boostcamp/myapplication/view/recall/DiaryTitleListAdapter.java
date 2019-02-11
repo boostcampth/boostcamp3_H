@@ -37,8 +37,7 @@ public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Diary diary = diaryList.get(position);
         holder.binding.tvDiaryTitle.setText(simpleDateFormat.format(diary.getRecordDate()));
-        // Fixme Emotion enum 수정후 변경
-        holder.binding.tvEmoji.setText(diary.getSelectedEmotion().getEmotion()+"");
+        holder.binding.tvEmoji.setText(diary.getSelectedEmotion().getEmoji());
     }
 
     @Override
