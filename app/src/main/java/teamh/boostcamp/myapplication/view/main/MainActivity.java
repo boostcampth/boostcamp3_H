@@ -14,6 +14,7 @@ import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
 import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.diarylist.LegacyDiaryListFragment;
 import teamh.boostcamp.myapplication.view.graph.LegacyGraphFragment;
+import teamh.boostcamp.myapplication.view.graph.StatisticsFragment;
 import teamh.boostcamp.myapplication.view.memories.MemoriesFragment;
 import teamh.boostcamp.myapplication.view.recall.RecallFragment;
 import teamh.boostcamp.myapplication.view.setting.SettingActivity;
@@ -51,7 +52,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         tabAdapter = new MainTabAdapter(getSupportFragmentManager());
         tabAdapter.addFragment(RecallFragment.newInstance());
         tabAdapter.addFragment(LegacyDiaryListFragment.newInstance());
-        tabAdapter.addFragment(new LegacyGraphFragment());
+        //tabAdapter.addFragment(new LegacyGraphFragment());
+        tabAdapter.addFragment(StatisticsFragment.newInstance());
         binding.vpMain.setAdapter(tabAdapter);
         binding.vpMain.setOffscreenPageLimit(3);
         // 녹음 화면을 첫 화면으로 설정
