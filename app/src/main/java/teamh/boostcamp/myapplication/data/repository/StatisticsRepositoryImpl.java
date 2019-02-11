@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.data.repository;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,22 +80,20 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
 
     @NonNull
     @Override
-    public Single<List<EmotionHistory>> loadRecentEmotionHistoryList(
+    public Single<List<Pair<EmotionHistory,EmotionHistory>>> loadRecentEmotionHistoryList(
             @NonNull Date lastItemSavedTime) {
 
         return appDatabase.diaryDao().loadDiaryList(lastItemSavedTime, RECENT_TERM).
                 map(diaryEntityList -> {
                     final int size = diaryEntityList.size();
-                    List<EmotionHistory> emotionHistoryList = new ArrayList<>();
+                    List<Pair<EmotionHistory,EmotionHistory>> emotionHistoryList = new ArrayList<>();
                     for (int i = 0; i < size; i++) {
                         DiaryEntity diaryEntity = diaryEntityList.get(i);
-                        emotionHistoryList.add(new EmotionHistory(diaryEntity.getRecordDate(),
+                        emotionHistoryList.add(new Pair<>(new EmotionHistory(diaryEntity.getRecordDate(),
                                 diaryEntity.getSelectedEmotion(),
-                                EmotionType.selectedEmotion));
-
-                        emotionHistoryList.add(new EmotionHistory(diaryEntity.getRecordDate(),
-                                diaryEntity.getSelectedEmotion(),
-                                EmotionType.analyzedEmotion));
+                                EmotionType.selectedEmotion), new EmotionHistory(diaryEntity.getRecordDate(),
+                                diaryEntity.getAnalyzedEmotion(),
+                                EmotionType.analyzedEmotion)));
 
                     }
                     return emotionHistoryList;
