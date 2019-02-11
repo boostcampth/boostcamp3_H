@@ -9,5 +9,7 @@ public interface StatisticsView {
 
     void updateStatisticsData(@NonNull List<EmotionHistory> emotionHistoryList);
 
-    void showStatisticsDataToastMessage(String message);
+    void showLoadStatisticsDataSuccessMessage();
+
+    void showLoadStatisticsDataFailMessage();
 }
