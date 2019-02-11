@@ -86,6 +86,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void notifyTodayDiarySaved() {
         // TODO : 저장된 데이터 불러오기
+        presenter.loadDiaryList(new Date(), 1);
     }
 
     @Override

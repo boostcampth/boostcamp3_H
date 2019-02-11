@@ -43,7 +43,7 @@ public class DiaryListPresenter {
 
     void insertDiary(@NonNull final String tags) {
 
-        // FIXME : 인코딩 함수 추가
+        // FIXME : DiaryEntity 매개변수 수정하기
         final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest("encodedFile");
 
         compositeDisposable.add(diaryRepository.requestEmotionAnalyze(request).
