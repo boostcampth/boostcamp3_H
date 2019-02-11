@@ -56,8 +56,10 @@ public class DiaryListPresenter {
                 .flatMapCompletable(diaryRepository::insertDiary)
                 .subscribe(() -> {
                     // TODO : 저장 후 처리
+                    diaryListView.notifyTodayDiarySaved();
                 }, throwable -> {
                     // TODO : 에러 처리
+                    diaryListView.showSaveDiaryFail();
                 }));
     }
 

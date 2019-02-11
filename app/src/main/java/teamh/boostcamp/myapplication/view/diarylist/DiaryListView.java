@@ -11,5 +11,7 @@ public interface DiaryListView {
 
     void showLoadDiaryListFailMsg();
 
+    void showSaveDiaryFail();
+
     void notifyTodayDiarySaved();
 }

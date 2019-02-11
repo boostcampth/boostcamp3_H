@@ -85,12 +85,17 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     @Override
     public void notifyTodayDiarySaved() {
-        // TODO : 저장된 데이터 불러오기 
+        // TODO : 저장된 데이터 불러오기
     }
 
     @Override
     public void showLoadDiaryListFailMsg() {
         showToastMessage(R.string.item_record_load_diary_list_fail);
+    }
+
+    @Override
+    public void showSaveDiaryFail() {
+        // TODO : 에러메시지 출력
     }
 
     private void showToastMessage(@StringRes final int stringId) {
