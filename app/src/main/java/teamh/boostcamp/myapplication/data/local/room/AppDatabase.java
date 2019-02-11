@@ -72,7 +72,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     List<DiaryEntity> samples = new ArrayList<>();
 
                                     final long TODAY = new Date().getTime();
-                                    final long DAY = 86400L;
+                                    final long DAY = 86400000L;
 
                                     for (int i = 1; i <= 20; ++i) {
                                         samples.add(new DiaryEntity(

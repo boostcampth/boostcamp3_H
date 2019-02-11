@@ -76,6 +76,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false);
 
+        binding.recyclerViewMainList.setNestedScrollingEnabled(false);
         binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.recyclerViewMainList.setAdapter(diaryListAdapter);
 
