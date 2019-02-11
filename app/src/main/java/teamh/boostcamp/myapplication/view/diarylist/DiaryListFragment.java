@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -18,10 +19,11 @@ import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 
-public class DiaryListFragment extends Fragment implements DiaryListView{
+public class DiaryListFragment extends Fragment implements DiaryListView {
 
     @NonNull
     private Context context;
@@ -61,7 +63,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView{
         compositeDisposable = new CompositeDisposable();
 
         presenter = new DiaryListPresenter(this,
-                DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao()));
+                DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao(),
+                        DeepAffectApiClient.getInstance()));
     }
 
     @Nullable
@@ -77,7 +80,12 @@ public class DiaryListFragment extends Fragment implements DiaryListView{
 
     @Override
     public void addDiaryList(@NonNull List<Diary> diaryList) {
-        // TODO adapter 에 diaryList 추가
+        // TODO : adapter 에 diaryList 추가
+    }
+
+    @Override
+    public void notifyTodayDiarySaved() {
+        // TODO : 저장된 데이터 불러오기 
     }
 
     @Override

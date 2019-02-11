@@ -10,4 +10,6 @@ public interface DiaryListView {
     void addDiaryList(@NonNull List<Diary> diaryList);
 
     void showLoadDiaryListFailMsg();
+
+    void notifyTodayDiarySaved();
 }

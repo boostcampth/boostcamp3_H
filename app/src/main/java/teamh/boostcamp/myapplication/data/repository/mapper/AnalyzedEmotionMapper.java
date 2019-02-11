@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.repository;
+package teamh.boostcamp.myapplication.data.repository.mapper;
 
 import android.util.Log;
 

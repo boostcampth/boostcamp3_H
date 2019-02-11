@@ -10,6 +10,10 @@ import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
+import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
+import teamh.boostcamp.myapplication.data.repository.mapper.AnalyzedEmotionMapper;
+import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
 
 public class DiaryRepositoryImpl implements DiaryRepository {
 
@@ -17,17 +21,22 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     private static volatile DiaryRepositoryImpl INSTANCE;
     @NonNull
     private final DiaryDao diaryDao;
+    @NonNull
+    private final DeepAffectApiClient deepAffectApiClient;
 
-    public DiaryRepositoryImpl(@NonNull final DiaryDao diaryDao) {
+    public DiaryRepositoryImpl(@NonNull final DiaryDao diaryDao,
+                               @NonNull final DeepAffectApiClient deepAffectApiClient) {
         this.diaryDao = diaryDao;
+        this.deepAffectApiClient = deepAffectApiClient;
     }
 
     @NonNull
-    public static DiaryRepositoryImpl getInstance(@NonNull final DiaryDao diaryDao) {
+    public static DiaryRepositoryImpl getInstance(@NonNull final DiaryDao diaryDao,
+                                                  @NonNull final DeepAffectApiClient deepAffectApiClient) {
         if(INSTANCE == null) {
             synchronized (DiaryRepositoryImpl.class) {
                 if(INSTANCE == null) {
-                    INSTANCE = new DiaryRepositoryImpl(diaryDao);
+                    INSTANCE = new DiaryRepositoryImpl(diaryDao,deepAffectApiClient);
                 }
             }
         }
@@ -47,6 +56,14 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     @Override
     public Completable insertDiary(@NonNull final DiaryEntity diaryEntity) {
         return Completable.fromAction(() -> diaryDao.insert(diaryEntity))
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Single<Integer> requestEmotionAnalyze(@NonNull EmotionAnalyzeRequest request) {
+        return deepAffectApiClient.analyzeVoiceEmotion(request)
+                .map(AnalyzedEmotionMapper::parseAnalyzedEmotion)
                 .subscribeOn(Schedulers.io());
     }
 }

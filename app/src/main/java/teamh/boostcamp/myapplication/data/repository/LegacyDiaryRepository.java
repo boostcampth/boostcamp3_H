@@ -10,6 +10,7 @@ import teamh.boostcamp.myapplication.data.local.room.dao.LegacyDiaryDao;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
+import teamh.boostcamp.myapplication.data.repository.mapper.AnalyzedEmotionMapper;
 
 
 /*
