@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.data.repository;
 
+import android.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -9,7 +11,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
-import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
 import teamh.boostcamp.myapplication.data.model.EmotionHistory;
@@ -21,18 +23,18 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     private static final int RECENT_TERM = 14;
     private static volatile StatisticsRepositoryImpl INSTANCE;
     @NonNull
-    final AppDatabase appDatabase;
+    private final DiaryDao diaryDao;
 
 
-    private StatisticsRepositoryImpl(@NonNull AppDatabase appDatabase) {
-        this.appDatabase = appDatabase;
+    private StatisticsRepositoryImpl(@NonNull DiaryDao diaryDao) {
+        this.diaryDao = diaryDao;
     }
 
-    public static StatisticsRepositoryImpl getInstance(@NonNull AppDatabase appDatabase) {
+    public static StatisticsRepositoryImpl getInstance(@NonNull DiaryDao diaryDao) {
         if (INSTANCE == null) {
             synchronized (StatisticsRepositoryImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new StatisticsRepositoryImpl(appDatabase);
+                    INSTANCE = new StatisticsRepositoryImpl(diaryDao);
                 }
             }
         }
@@ -44,7 +46,7 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
     public Single<List<CountedTag>> loadRecentCountedTagList(
             @NonNull Date lastItemSavedTime) {
 
-        return appDatabase.diaryDao().loadDiaryList(lastItemSavedTime, RECENT_TERM)
+        return diaryDao.loadDiaryList(lastItemSavedTime, RECENT_TERM)
                 .map(diaryEntityList -> {
                     int size = diaryEntityList.size();
 
@@ -78,26 +80,27 @@ public class StatisticsRepositoryImpl implements StatisticsRepository {
 
     @NonNull
     @Override
-    public Single<List<EmotionHistory>> loadRecentEmotionHistoryList(
+    public Single<List<Pair<EmotionHistory,EmotionHistory>>> loadRecentEmotionHistoryList(
             @NonNull Date lastItemSavedTime) {
 
-        return appDatabase.diaryDao().loadDiaryList(lastItemSavedTime, RECENT_TERM).
+        return diaryDao.loadDiaryList(lastItemSavedTime, RECENT_TERM).
                 map(diaryEntityList -> {
                     final int size = diaryEntityList.size();
-                    List<EmotionHistory> emotionHistoryList = new ArrayList<>();
+                    List<Pair<EmotionHistory,EmotionHistory>> emotionHistoryList = new ArrayList<>();
                     for (int i = 0; i < size; i++) {
                         DiaryEntity diaryEntity = diaryEntityList.get(i);
-                        emotionHistoryList.add(new EmotionHistory(diaryEntity.getRecordDate(),
+                        emotionHistoryList.add(new Pair<>(new EmotionHistory(diaryEntity.getRecordDate(),
                                 diaryEntity.getSelectedEmotion(),
-                                EmotionType.selectedEmotion));
-
-                        emotionHistoryList.add(new EmotionHistory(diaryEntity.getRecordDate(),
-                                diaryEntity.getSelectedEmotion(),
-                                EmotionType.analyzedEmotion));
+                                EmotionType.selectedEmotion), new EmotionHistory(diaryEntity.getRecordDate(),
+                                diaryEntity.getAnalyzedEmotion(),
+                                EmotionType.analyzedEmotion)));
 
                     }
                     return emotionHistoryList;
                 })
                 .subscribeOn(Schedulers.io());
+        /*
+         * 비동기 처리를 어느 스레드에서 처리할지
+         * */
     }
 }

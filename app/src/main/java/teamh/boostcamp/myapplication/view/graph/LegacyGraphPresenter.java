@@ -3,6 +3,7 @@ package teamh.boostcamp.myapplication.view.graph;
 import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import androidx.databinding.ObservableField;
@@ -30,10 +31,10 @@ public class LegacyGraphPresenter implements GraphContractor.Presenter {
 
     private void initEntry() {
         // 이번주 감정 데이터
-        thisWeekEntries.add(new Entry(0, 1.0f));
+        thisWeekEntries.add(new Entry(2, 1.0f));
         thisWeekEntries.add(new Entry(1, 2.0f));
-        thisWeekEntries.add(new Entry(2, 3.0f));
-        thisWeekEntries.add(new Entry(3, 4.0f));
+        //thisWeekEntries.add(new Entry(2, 3.0f));
+        thisWeekEntries.add(new Entry(3, 2.0f));
         thisWeekEntries.add(new Entry(4, 2.0f));
         thisWeekEntries.add(new Entry(5, 4.0f));
         thisWeekEntries.add(new Entry(6, 0.0f));
