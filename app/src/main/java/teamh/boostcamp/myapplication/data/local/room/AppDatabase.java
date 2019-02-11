@@ -39,14 +39,15 @@ import teamh.boostcamp.myapplication.data.model.Recommendation;
 public abstract class AppDatabase extends RoomDatabase {
 
     private static final String DB_NAME = "appDB.db";
-    private static AppDatabase INSTANCE;
+    private static volatile AppDatabase INSTANCE;
 
-    public static AppDatabase getInstance(Context context) {
+    @NonNull
+    public static AppDatabase getInstance(@NonNull Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(
-                            context,
+                            context.getApplicationContext(),
                             AppDatabase.class,
                             DB_NAME)
                             .fallbackToDestructiveMigration()

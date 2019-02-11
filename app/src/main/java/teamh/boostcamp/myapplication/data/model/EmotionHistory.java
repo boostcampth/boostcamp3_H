@@ -4,22 +4,28 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 
+/**
+ * @author 이승우
+ * <p>
+ * emotionType(1) - 선택한 감정
+ * emotionType(2) - 분석된 감정
+ */
 public class EmotionHistory {
 
     @NonNull
     private Date date; // 날짜
     @NonNull
-    private Emotion selectedEmotion; // 사용자가 선택한 감정
-    @NonNull
-    private Emotion analyzedEmotion; // AI에 의해 분석된 감정
+    private Emotion emotion; // 감정
+    private EmotionType emotionType; // 감정 타입
+
 
     // 생성자를 통한 주입
     public EmotionHistory(@NonNull Date date,
-                          @NonNull Emotion selectedEmotion,
-                          @NonNull Emotion analyzedEmotion) {
+                          @NonNull Emotion emotion,
+                          EmotionType emotionType) {
         this.date = date;
-        this.selectedEmotion = selectedEmotion;
-        this.analyzedEmotion = analyzedEmotion;
+        this.emotion = emotion;
+        this.emotionType = emotionType;
     }
 
     @NonNull
@@ -28,13 +34,13 @@ public class EmotionHistory {
     }
 
     @NonNull
-    public Emotion getSelectedEmotion() {
-        return selectedEmotion;
+    public Emotion getEmotion() {
+        return emotion;
     }
 
-    @NonNull
-    public Emotion getAnalyzedEmotion() {
-        return analyzedEmotion;
+
+    public EmotionType getEmotionType() {
+        return emotionType;
     }
 
 }

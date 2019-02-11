@@ -13,6 +13,7 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 
+
 @Dao
 public interface DiaryDao {
 
