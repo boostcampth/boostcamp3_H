@@ -1,7 +1,6 @@
 package teamh.boostcamp.myapplication.view.recall;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -75,7 +74,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         String startDateString = DateToSimpleFormat(recall.getStartDate());
         String endDateString = DateToSimpleFormat(recall.getEndDate());
         String emotionString = emotionToString(recall.getEmotion().getEmotion());
-        return String.format("%s 부터 %s까지의 %s 날들", startDateString, endDateString, emotionString);
+        return String.format("%s 부터 %s까지의 %s", startDateString, endDateString, emotionString);
     }
 
     @NonNull
@@ -86,29 +85,20 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
 
     @NonNull
     private String emotionToString(int emotion) {
-        String emotionString;
-
         switch (emotion) {
             case 0:
-                emotionString = "끔찍한";
-                break;
+                return "불행함들";
             case 1:
-                emotionString = "나쁜";
-                break;
+                return "슬픔들";
             case 2:
-                emotionString = "그저그런";
-                break;
+                return "그저그런날들";
             case 3:
-                emotionString = "즐거운";
-                break;
+                return "즐거움들";
             case 4:
-                emotionString = "정말 행복했던";
-                break;
+                return "행복들";
             default:
-                emotionString = "오류";
+                return "행복들";
         }
-
-        return emotionString;
     }
 
 }

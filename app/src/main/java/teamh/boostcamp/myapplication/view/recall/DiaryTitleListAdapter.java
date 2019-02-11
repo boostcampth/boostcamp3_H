@@ -15,10 +15,8 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.databinding.ItemDiarytitleLlistBinding;
 
 public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAdapter.ViewHolder>{
-
-    @NonNull
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
     private Context context;
-    @NonNull
     private List<Diary> diaryList;
 
     public DiaryTitleListAdapter(@NonNull Context context) {
@@ -37,8 +35,6 @@ public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
-
         Diary diary = diaryList.get(position);
         holder.binding.tvDiaryTitle.setText(simpleDateFormat.format(diary.getRecordDate()));
         // Fixme Emotion enum 수정후 변경
