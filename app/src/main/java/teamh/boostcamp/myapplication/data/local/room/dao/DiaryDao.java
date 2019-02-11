@@ -13,7 +13,6 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 
-
 @Dao
 public interface DiaryDao {
 
@@ -25,5 +24,5 @@ public interface DiaryDao {
     void insert(@NonNull DiaryEntity...diaryEntities);
 
     @Query("Select * FROM diaries WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT :limitCount")
-    Single<List<Diary>> selectDiaryListByEmotionAndDate(Emotion emotion, Date startDate, Date endDate, int limitCount);
+    List<Diary> selectDiary(Emotion emotion, Date startDate, Date endDate, int limitCount);
 }
