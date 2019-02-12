@@ -28,7 +28,7 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding.setActivity(this);
-        memory = getIntent().getParcelableExtra(EXTRA_MEMORY);
+        String s = getIntent().getParcelableExtra("recall");
 
         initViews();
     }
@@ -57,9 +57,9 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     private void initViews() {
-        initPresenter();
-        initRecyclerView();
-        initTitleTextView();
+        //initPresenter();
+        //initRecyclerView();
+        //initTitleTextView();
     }
 
     private void initTitleTextView() {

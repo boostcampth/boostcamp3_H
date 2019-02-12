@@ -35,23 +35,28 @@ public class RecallPresenter {
         );
     }
 
-    void generateRecall(){
+    void generateRecall() {
         compositeDisposable.add(
                 recallRepository.insertRecall(new RecallEntity(
                         0,
                         new Date(),
                         Emotion.fromValue(generateRandomNumber(5))))
-                .subscribe(this::loadRecallList)
+                        .subscribe(this::loadRecallList)
         );
     }
 
-    void deleteRecall(int index){
+    void deleteRecall(int index) {
         compositeDisposable.add(
-                recallRepository.deleteRecall(index).subscribe(() -> view.showDeleteSuccessResult())
+                recallRepository.deleteRecall(index)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            view.showDeleteSuccessResult();
+                            loadRecallList();
+                        })
         );
     }
 
-    private int generateRandomNumber(int limit){
-        return (int) (Math.random() * limit) ;
+    private int generateRandomNumber(int limit) {
+        return (int) (Math.random() * limit);
     }
 }

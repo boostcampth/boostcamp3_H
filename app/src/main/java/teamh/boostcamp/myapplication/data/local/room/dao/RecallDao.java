@@ -20,7 +20,7 @@ public interface RecallDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     void insertRecall(@NonNull RecallEntity...recallEntities);
 
-    @Delete
+    @Query("DELETE FROM recalls WHERE id=:index")
     void deleteRecall(@NonNull int index);
 
 }
