@@ -60,22 +60,22 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
     @NonNull
     String getTags() {
         String result = "";
-        for(String item : itemList) {
+        for (String item : itemList) {
             result = result.concat(item + " ");
         }
         return result;
     }
 
 
-    void removeItem(int position) {
-        if (itemList != null && itemList.size() < position) {
+    public void removeItem(int position) {
+        if (itemList != null && position < itemList.size()) {
             itemList.remove(position);
             notifyItemRemoved(position);
         }
     }
 
     void clearItems() {
-        if(itemList == null) {
+        if (itemList == null) {
             itemList = new ArrayList<>();
         } else {
             itemList.clear();
@@ -83,13 +83,16 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
     }
 
     void addItem(@NonNull String item) {
+        if(item.equals("#")) {
+            return;
+        }
         if (itemList == null) {
             itemList = new ArrayList<>();
         }
-        // 태그는 최대 5개까지
-        if (itemList.size() == MAX_TAG_NUM) {
+        if (itemList.size() >= MAX_TAG_NUM) {
             removeItem(0);
         }
+
         // 아이템 뒤에 추가하기
         int size = this.itemList.size();
         this.itemList.add(item);

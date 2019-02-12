@@ -9,14 +9,12 @@
 
         <variable
             name="fragment"
-            type="teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment"/>
+            type="teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment" />
 
-        <variable
-            name="presenter"
-            type="teamh.boostcamp.myapplication.view.diarylist.DiaryListPresenter" />
     </data>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_fragment_diary_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
@@ -51,19 +49,36 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/button_record_item_record"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/layout_gutter"
-                        android:background="@drawable/bg_mic_record_btn"
-                        android:minWidth="60dp"
-                        android:minHeight="60dp"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_mic_black_not_record_32dp"
+                    <com.gauravbhola.ripplepulsebackground.RipplePulseLayout
+                        android:id="@+id/rpb_record_item_background"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:clipChildren="false"
+                        app:duration="1500"
+                        app:endRadius="50dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:rippleColor="@color/all_purple"
+                        app:rippleType="stroke"
+                        app:startRadius="30dp"
+                        app:strokeWidth="2dp">
+
+                        <ImageView
+                            android:id="@+id/button_record_item_record"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_marginTop="@dimen/layout_gutter"
+                            android:background="@drawable/bg_mic_record_btn"
+                            android:clickable="@{!fragment.isSaving}"
+                            android:minWidth="60dp"
+                            android:minHeight="60dp"
+                            android:scaleType="center"
+                            android:src="@drawable/ic_mic_black_not_record_32dp" />
+
+
+                    </com.gauravbhola.ripplepulsebackground.RipplePulseLayout>
 
                     <!-- 이모지 이모티콘은 버튼으로 나타내기 -->
                     <LinearLayout
@@ -77,7 +92,7 @@
                         android:weightSum="1"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/button_record_item_record">
+                        app:layout_constraintTop_toBottomOf="@id/rpb_record_item_background">
 
                         <TextView
                             android:id="@+id/tv_record_item_mad"
@@ -115,18 +130,18 @@
                         android:layout_marginRight="@dimen/layout_gutter"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/ll_record_item_emoji"/>
+                        app:layout_constraintTop_toBottomOf="@id/ll_record_item_emoji" />
 
 
-                    <com.google.android.material.textfield.TextInputEditText
+                    <teamh.boostcamp.myapplication.view.diarylist.HashTagInputEditText
                         android:id="@+id/et_item_record_input"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/layout_gutter"
                         android:layout_marginTop="@dimen/layout_margin"
                         android:layout_marginRight="@dimen/layout_gutter"
                         android:background="@drawable/bg_hash_tag_edittext"
+                        android:clickable="@{!fragment.isSaving}"
                         android:hint="@string/item_record_hash_tag_hint"
                         android:lines="1"
                         android:padding="10dp"
@@ -142,6 +157,8 @@
                         android:layout_marginTop="@dimen/layout_gutter"
                         android:layout_marginRight="@dimen/layout_gutter"
                         android:layout_marginBottom="@dimen/layout_gutter"
+                        android:clickable="@{!fragment.isSaving}"
+                        android:visibility="@{fragment.isSaving ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="@id/et_item_record_input"
                         app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
@@ -153,9 +170,11 @@
                         android:layout_marginTop="@dimen/layout_gutter"
                         android:layout_marginRight="@dimen/layout_gutter"
                         android:layout_marginBottom="@dimen/layout_gutter"
+                        android:clickable="@{!fragment.isSaving}"
                         android:text="@string/item_record_done"
                         android:textColor="@color/list_violet"
                         android:textStyle="bold"
+                        android:visibility="@{fragment.isSaving ? View.GONE : View.VISIBLE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="@id/et_item_record_input"
                         app:layout_constraintTop_toBottomOf="@id/et_item_record_input" />
@@ -175,7 +194,7 @@
                 android:layout_marginRight="@dimen/layout_gutter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cv_fragment_diary_record"/>
+                app:layout_constraintTop_toBottomOf="@id/cv_fragment_diary_record" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

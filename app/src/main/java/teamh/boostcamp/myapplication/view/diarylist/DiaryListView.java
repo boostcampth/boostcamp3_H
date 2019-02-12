@@ -15,4 +15,12 @@ public interface DiaryListView {
     void showSaveDiaryFail();
 
     void notifyTodayDiarySaved();
+
+    void showRecordTimeOutMsg();
+
+    void showRecordNotFinished();
+
+    void showEmotionNotSelected();
+
+    void showRecordFileNotFound();
 }

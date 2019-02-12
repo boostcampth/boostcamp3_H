@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -25,20 +26,24 @@ public class DiaryListPresenter {
 
     private Emotion selectedEmotion;
     private boolean isLoading;
-    private boolean isNetworkAvailable;
+    private boolean isRecording;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
                        @NonNull DiaryRepository diaryRepository,
-                       @NonNull DiaryRecorder diaryRecorder,
-                       final boolean isNetworkAvailable) {
+                       @NonNull DiaryRecorder diaryRecorder) {
         this.diaryListView = diaryListView;
         this.diaryRepository = diaryRepository;
         this.diaryRecorder = diaryRecorder;
         this.compositeDisposable = new CompositeDisposable();
         this.selectedEmotion = null;
         this.isLoading = false;
-        this.isNetworkAvailable = isNetworkAvailable;
+        this.isRecording = false;
         this.lastItemLoadedTime = new Date();
+
+        this.diaryRecorder.setMediaRecorderTimeOutListener(() -> {
+            diaryRecorder.finishRecord();
+            diaryListView.showRecordTimeOutMsg();
+        });
     }
 
     void loadDiaryList(final int pageSize) {
@@ -49,64 +54,82 @@ public class DiaryListPresenter {
             compositeDisposable.add(diaryRepository.loadDiaryList(lastItemLoadedTime, pageSize)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(diaries -> {
-
-                                if (diaries.size() != 0) {
-                                    lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
-                                }
-
-                                diaryListView.addDiaryList(diaries);
                                 isLoading = false;
+                                if (diaries.size() == 0) {
+                                    return;
+                                }
+                                lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
+                                diaryListView.addDiaryList(diaries);
                             }
                             , throwable -> {
-                                diaryListView.showLoadDiaryListFailMsg();
                                 isLoading = false;
+                                diaryListView.showLoadDiaryListFailMsg();
                             }
                     ));
         }
     }
 
-    void insertDiary(@NonNull final String tags) {
+    void saveDiary(@NonNull final String tags, final boolean isNetworkAvailable) {
 
-        // FIXME : DiaryEntity 매개변수 수정하기
+        if (isRecording) {
+            diaryListView.showRecordNotFinished();
+            return;
+        }
+
+        if (selectedEmotion == null) {
+            diaryListView.showEmotionNotSelected();
+            return;
+        }
+
+        File file = new File(diaryRecorder.getFilePath());
+
+        if (!file.exists()) {
+            diaryListView.showRecordFileNotFound();
+            return;
+        }
+
+        // FIXME : DiaryEntity 매개변수 수정하기, 네트워크가 없는 상황에서 나중에 분석할 데이터 지정
         if (isNetworkAvailable) {
 
-            final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest("encodedFile");
+            final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest(file.getAbsolutePath());
 
             compositeDisposable.add(diaryRepository.requestEmotionAnalyze(request).
                     map(analyzedEmotion -> new DiaryEntity(0,
                             new Date(),
-                            "/storage/emulated/0/2019-02-08.acc",
+                            file.getAbsolutePath(),
                             Arrays.asList(tags.split("#")),
-                            Emotion.fromValue(3),
+                            selectedEmotion,
                             Emotion.fromValue(analyzedEmotion)))
                     .flatMapCompletable(diaryRepository::insertDiary)
                     .subscribe(diaryListView::notifyTodayDiarySaved
                             , throwable -> diaryListView.showSaveDiaryFail()
                     ));
+        } else {
+            // TODO : 기능 구현
         }
-        // FIXME : else 구현하기
-
     }
 
     public void setSelectedEmotion(@NonNull Emotion emotion) {
         this.selectedEmotion = emotion;
     }
 
-    public void setIsNetworkAvailable(final boolean isNetworkAvailable) {
-        this.isNetworkAvailable = isNetworkAvailable;
+    void setIsRecording(final boolean isRecording) {
+        this.isRecording = isRecording;
     }
 
-    public void startRecord() {
-        diaryRecorder.prepareRecord();
+    void startRecording() {
         diaryRecorder.startRecord();
     }
 
-    public void stopRecord() {
+    void finishRecording() {
         diaryRecorder.finishRecord();
     }
 
     void onViewDestroyed() {
         compositeDisposable.clear();
+        if (isRecording) {
+            diaryRecorder.finishRecord();
+        }
         diaryRecorder.releaseRecorder();
     }
 }
