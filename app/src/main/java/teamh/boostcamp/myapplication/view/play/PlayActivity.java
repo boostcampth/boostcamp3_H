@@ -11,25 +11,28 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.databinding.ActivityPlayBinding;
-import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.recall.DiaryTitleListAdapter;
 
-public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements PlayView {
+public class PlayActivity extends AppCompatActivity implements PlayView {
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
     private static final String TAG = "PlayActivity";
     private static final String EXTRA = "recall";
 
+    private ActivityPlayBinding binding;
     private PlayPresenter presenter;
     private Recall recall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_play);
         binding.setActivity(this);
         recall = (Recall) getIntent().getSerializableExtra(EXTRA);
 
@@ -47,11 +50,6 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     protected void onDestroy() {
         super.onDestroy();
         presenter = null;
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_play;
     }
 
     private void initViews() {

@@ -21,16 +21,13 @@ import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.converter.DateTypeConverter;
 import teamh.boostcamp.myapplication.data.local.room.converter.EmotionTypeConverter;
 import teamh.boostcamp.myapplication.data.local.room.converter.StringListTypeConverter;
-import teamh.boostcamp.myapplication.data.local.room.dao.AppDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
-import teamh.boostcamp.myapplication.data.local.room.dao.LegacyDiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.RecallDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Emotion;
-import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 
-@Database(entities = {LegacyDiary.class, DiaryEntity.class, RecallEntity.class}, version = 7, exportSchema = false)
+@Database(entities = {DiaryEntity.class, RecallEntity.class}, version = 8, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 

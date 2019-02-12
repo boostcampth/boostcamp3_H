@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
+import android.util.Log;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
@@ -7,7 +9,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.databinding.ObservableBoolean;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
@@ -69,7 +70,7 @@ public class DiaryListPresenter {
                                 if (diaries.size() == 0) {
                                     return;
                                 }
-                                if(pageSize == 3) {
+                                if (pageSize == 3) {
                                     lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
                                     diaryListView.addDiaryList(diaries);
                                 } else {
@@ -111,12 +112,12 @@ public class DiaryListPresenter {
             final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest(file.getAbsolutePath());
 
             compositeDisposable.add(diaryRepository.requestEmotionAnalyze(request).
-                    map(analyzedEmotion -> new DiaryEntity(0,
+                    map(emotion -> new DiaryEntity(0,
                             new Date(),
                             file.getAbsolutePath(),
                             Arrays.asList(tags.split("#")),
                             selectedEmotion,
-                            analyzedEmotion))
+                            emotion))
                     .flatMapCompletable(diaryRepository::insertDiary)
                     .subscribe(() -> {
                                 diaryListView.notifyTodayDiarySaved();
@@ -137,7 +138,7 @@ public class DiaryListPresenter {
         recordPlayer.playList();
     }
 
-    public void setSelectedEmotion(@NonNull Emotion emotion) {
+    public void setSelectedEmotion(@Nullable Emotion emotion) {
         this.selectedEmotion = emotion;
     }
 

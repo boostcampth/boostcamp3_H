@@ -5,27 +5,25 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
-import com.facebook.stetho.Stetho;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.viewpager.widget.ViewPager;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityMainBinding;
-import teamh.boostcamp.myapplication.utils.ResourceSendUtil;
-import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment;
-import teamh.boostcamp.myapplication.view.graph.LegacyGraphFragment;
 import teamh.boostcamp.myapplication.view.graph.StatisticsFragment;
 import teamh.boostcamp.myapplication.view.recall.RecallFragment;
 import teamh.boostcamp.myapplication.view.setting.SettingActivity;
 
 
-public class MainActivity extends BaseActivity<ActivityMainBinding> implements MainContractor.View {
+public class MainActivity extends AppCompatActivity implements MainActivityView{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private MainTabAdapter tabAdapter;
-    private MainContractor.Presenter presenter;
-    private ResourceSendUtil resourceSendUtil;
+    private MainPresenter presenter;
+
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +31,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
 
         presenter = new MainPresenter(this);
 
-        if(resourceSendUtil == null){
-            resourceSendUtil = new ResourceSendUtil(MainActivity.this);
-        }
+
+        // bindingUtil 설정
+        binding = DataBindingUtil.setContentView(this, getLayoutId());
+
         initView();
     }
 
-    @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
     }
@@ -49,7 +47,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
         tabAdapter = new MainTabAdapter(getSupportFragmentManager());
         tabAdapter.addFragment(RecallFragment.newInstance());
         tabAdapter.addFragment(DiaryListFragment.newInstance());
-        //tabAdapter.addFragment(new LegacyGraphFragment());
         tabAdapter.addFragment(StatisticsFragment.newInstance());
         binding.vpMain.setAdapter(tabAdapter);
         binding.vpMain.setOffscreenPageLimit(3);
@@ -66,13 +63,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements M
             public void onPageSelected(int position) {
                 switch (position) {
                     case 0:
-                        binding.tvMainTitle.setText(resourceSendUtil.getString(R.string.Memories));
+                        binding.tvMainTitle.setText(getResources().getString(R.string.Memories));
                         break;
                     case 1:
-                        binding.tvMainTitle.setText(resourceSendUtil.getString(R.string.main_toolbar_diary_title));
+                        binding.tvMainTitle.setText(getResources().getString(R.string.main_toolbar_diary_title));
                         break;
                     case 2:
-                        binding.tvMainTitle.setText(resourceSendUtil.getString(R.string.main_toolbar_graph_title));
+                        binding.tvMainTitle.setText(getResources().getString(R.string.main_toolbar_graph_title));
                         break;
                 }
             }

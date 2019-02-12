@@ -6,11 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamh.boostcamp.myapplication.view.BasePresenter;
-import teamh.boostcamp.myapplication.view.BaseView;
 
 public interface GraphContractor {
 
-    interface View extends BaseView {
+    interface View {
 
         void updateHashTagWord(ArrayList<String> list);
 

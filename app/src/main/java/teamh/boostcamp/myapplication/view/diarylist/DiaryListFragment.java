@@ -47,7 +47,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private CompositeDisposable compositeDisposable;
     private DiaryListAdapter diaryListAdapter;
     private HashTagListAdapter hashTagListAdapter;
-    private RecordPlayer recordPlayer;
 
     private boolean isRecording = false;
 
@@ -139,6 +138,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void insertDiaryList(@NonNull Diary diary) {
         diaryListAdapter.insertDiaryItem(diary);
+        clearRecorder();
+        // view 사라지게 하기
     }
 
     @Override
@@ -224,5 +225,11 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
+    }
+
+    private void clearRecorder() {
+        binding.etItemRecordInput.setText("");
+        hashTagListAdapter.clearItems();
+        presenter.setSelectedEmotion(null);
     }
 }

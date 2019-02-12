@@ -72,7 +72,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     }
 
     void insertDiaryItem(@NonNull Diary diary) {
-        diaryList.add(diary);
+        diaryList.add(0,diary);
         notifyItemInserted(0);
     }
 
