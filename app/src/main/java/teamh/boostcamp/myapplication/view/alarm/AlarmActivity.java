@@ -23,6 +23,7 @@ public class AlarmActivity extends AppCompatActivity implements
     private Calendar calendar;
     private boolean isChecked = false;
     private AlarmHelperImpl alarmHelper;
+    private String time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +51,6 @@ public class AlarmActivity extends AppCompatActivity implements
                 setVisibility(true);
             } else {
                 this.isChecked = false;
-                calendar = null;
                 presenter.cancelAlarm();
                 setVisibility(false);
             }
@@ -97,7 +97,7 @@ public class AlarmActivity extends AppCompatActivity implements
 
     @Override
     public void checkState() {
-        String time = SharedPreference.getInstance().getPreferencePushTime(null);
+        time = SharedPreference.getInstance().getPreferencePushTime(null);
         if (time != null) {
             setVisibility(true);
             binding.tvAlarmTimeText.setText(time);
@@ -153,7 +153,12 @@ public class AlarmActivity extends AppCompatActivity implements
 
     private void isEmptyCalendar(Calendar calendar) {
         if (calendar == null) {
-            showToast(getApplicationContext().getResources().getString(R.string.alarm_explain));
+            if (!time.equals(getApplicationContext().getResources().getString(R.string.alarm_explain))) {
+                Toast.makeText(this, getApplicationContext().getResources().getString(R.string.alarm_modify_text), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getApplicationContext().getResources().getString(R.string.alarm_explain), Toast.LENGTH_SHORT).show();
+            }
+
         } else {
             presenter.setAlarm(calendar);
             showToast(getApplicationContext().getResources().getString(R.string.alarm_set_text));
