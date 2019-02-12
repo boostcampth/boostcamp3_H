@@ -9,9 +9,6 @@ public interface PlayContractor {
 
     interface View{
 
-        void setDiaryList(List<LegacyDiary> diaryList);
-        void makeToast(String string);
-
     }
 
     interface Presenter extends BasePresenter {

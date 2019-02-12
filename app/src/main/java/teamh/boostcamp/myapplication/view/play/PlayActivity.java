@@ -7,17 +7,16 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
-import teamh.boostcamp.myapplication.databinding.ActivityPlayBinding;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
+import teamh.boostcamp.myapplication.databinding.ActivityPlayBinding;
 import teamh.boostcamp.myapplication.view.BaseActivity;
 
-public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements PlayContractor.View {
+public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements PlayerView {
 
     private static final String TAG = "PlayActivity";
-    private static final String EXTRA_MEMORY = "memory";
+    private static final String EXTRA = "recall";
 
     private PlayContractor.Presenter presenter;
     private PlayDiaryAdapter playDiaryAdapter;
@@ -67,10 +66,6 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     private void initPresenter() {
-        presenter = new PlayPresenter(
-                AppDatabase.getInstance(getApplicationContext()),
-                RecordPlayerImpl.getINSTANCE(),
-                this);
     }
 
     public void onCloseButtonClicked(View view) {
