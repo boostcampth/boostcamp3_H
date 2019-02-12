@@ -96,7 +96,7 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityCreated(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityCreated");
+        Log.v(TAG, "onActivityCreated" + className);
 
         if (isIgnoreActivity(activity)) {
             return;
@@ -108,7 +108,7 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityStarted(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityStarted");
+        Log.v(TAG, "onActivityStarted" + className);
 
         if (isIgnoreActivity(activity)) {
             return;
@@ -120,7 +120,7 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityResumed(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityResumed");
+        Log.v(TAG, "onActivityResumed" + className);
 
         if (isIgnoreActivity(activity)) {
             return;
@@ -142,7 +142,7 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityPaused(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityPaused");
+        Log.v(TAG, "onActivityPaused" + className);
 
         if (isIgnoreActivity(activity)) {
             return;
@@ -152,7 +152,7 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityStopped(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityStopped");
+        Log.v(TAG, "onActivityStopped" + className);
 
         if (isIgnoreActivity(activity)) {
             return;
@@ -204,13 +204,13 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
             }
         }
 
-        // no pass code set
+        // 저장된 비밀번호가 존재하지 않을 때.
         if (!isPasswordSet()) {
-            Log.d(TAG, "lock passcode not set.");
+            Log.d(TAG, "lock password not set.");
             return false;
         }
 
-        // no enough timeout
+        // Time out의 경우
         long passedTime = System.currentTimeMillis() - lastActive;
         if (lastActive > 0 && passedTime <= lockTimeOut) {
             Log.d(TAG, "no enough timeout " + passedTime + " for "
@@ -218,7 +218,7 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
             return false;
         }
 
-        // start more than one page
+
         if (visibleCount > 1) {
             return false;
         }
