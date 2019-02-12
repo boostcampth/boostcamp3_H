@@ -50,7 +50,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
 
         if(onRecordItemClickListener != null) {
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setOnClickListener(v ->
-                    onRecordItemClickListener.onDiaryItemClicked(diary.getRecordFilePath())
+                    onRecordItemClickListener.onDiaryItemClicked(position)
             );
         }
 
@@ -74,6 +74,10 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     void insertDiaryItem(@NonNull Diary diary) {
         diaryList.add(diary);
         notifyItemInserted(0);
+    }
+
+    Diary getDiary(final int pos) {
+        return diaryList.get(pos);
     }
 
     class DiaryHolder extends RecyclerView.ViewHolder {

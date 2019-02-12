@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
+import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 public class DiaryListFragment extends Fragment implements DiaryListView {
 
@@ -44,6 +46,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private CompositeDisposable compositeDisposable;
     private DiaryListAdapter diaryListAdapter;
     private HashTagListAdapter hashTagListAdapter;
+    private RecordPlayer recordPlayer;
 
     private boolean isRecording = false;
 
@@ -213,7 +216,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter(context);
-        diaryListAdapter.setOnRecordItemClickListener(filePath -> {/*재생*/});
+        diaryListAdapter.setOnRecordItemClickListener(pos -> {
+        });
 
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
