@@ -23,13 +23,6 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     private List<Recall> itemList;
     private ButtonClickListener buttonClickListener;
 
-
-    public interface ButtonClickListener {
-        void onPlayButtonClicked(Recall recall);
-        void onDeleteButtonClicked(int index);
-
-    }
-
     public RecallListAdapter(Context context) {
         this.context = context;
         this.itemList = new ArrayList<>();
@@ -65,7 +58,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         return itemList.size();
     }
 
-    void setButtonClickListener(ButtonClickListener buttonClickListener){
+    void setButtonClickListener(ButtonClickListener buttonClickListener) {
         this.buttonClickListener = buttonClickListener;
     }
 
@@ -113,6 +106,12 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
             default:
                 return "행복들";
         }
+    }
+
+    public interface ButtonClickListener {
+        void onPlayButtonClicked(Recall recall);
+
+        void onDeleteButtonClicked(int index);
     }
 
 }
