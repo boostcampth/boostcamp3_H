@@ -79,7 +79,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     }
 
     @NonNull
-    private String DateToSimpleFormat(Date date) {
+    private String DateToSimpleFormat(@NonNull Date date) {
         return simpleDateFormat.format(date);
     }
 

@@ -10,20 +10,17 @@
 
         <TextView
             android:id="@+id/tv_emoji"
+            style="@style/ListSubTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/title_margin_left"
-            android:textSize="24dp" />
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/tv_diary_title"
+            style="@style/ListSubTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/title_margin_left"
             android:layout_marginTop="@dimen/layout_gutter"
-            android:layout_marginBottom="@dimen/layout_gutter"
-            android:textColor="@color/black"
-            android:textSize="24dp" />
+            android:layout_marginBottom="@dimen/layout_gutter" />
 
     </LinearLayout>
 
