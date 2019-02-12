@@ -17,11 +17,18 @@ import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.databinding.ItemRecallListBinding;
 
 public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.ViewHolder> {
+
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
-    @NonNull
     private Context context;
-    @NonNull
     private List<Recall> itemList;
+    private ButtonClickListener buttonClickListener;
+
+
+    public interface ButtonClickListener {
+        void onPlayButtonClicked(Recall recall);
+        void onDeleteButtonClicked(int index);
+
+    }
 
     public RecallListAdapter(Context context) {
         this.context = context;
@@ -48,11 +55,18 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         DiaryTitleListAdapter adapter = new DiaryTitleListAdapter(context);
         adapter.addItems(itemList.get(position).getDiaryList());
         holder.binding.rvDiary.setAdapter(adapter);
+
+        holder.binding.ivDelete.setOnClickListener(v -> buttonClickListener.onDeleteButtonClicked(itemList.get(position).getIndex()));
+        holder.binding.ivPlay.setOnClickListener(v -> buttonClickListener.onPlayButtonClicked(itemList.get(position)));
     }
 
     @Override
     public int getItemCount() {
         return itemList.size();
+    }
+
+    void setButtonClickListener(ButtonClickListener buttonClickListener){
+        this.buttonClickListener = buttonClickListener;
     }
 
     public void updateItems(List<Recall> items) {

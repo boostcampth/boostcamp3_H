@@ -45,7 +45,7 @@
                     app:layout_constraintTop_toTopOf="@+id/tv_sub_title"/>
 
                 <ImageView
-                    android:id="@+id/iv_close"
+                    android:id="@+id/iv_delete"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginRight="@dimen/title_margin_right"
