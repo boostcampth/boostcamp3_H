@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableBoolean;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
@@ -23,6 +24,9 @@ public class DiaryListPresenter {
     private DiaryRecorder diaryRecorder;
     @NonNull
     private Date lastItemLoadedTime;
+
+    @NonNull
+    public final ObservableBoolean isSaving = new ObservableBoolean(false);
 
     private Emotion selectedEmotion;
     private boolean isLoading;
@@ -51,15 +55,21 @@ public class DiaryListPresenter {
         if (!isLoading) {
             isLoading = true;
 
-            compositeDisposable.add(diaryRepository.loadDiaryList(lastItemLoadedTime, pageSize)
+            Date tempTime = pageSize == 1 ? new Date() : lastItemLoadedTime;
+
+            compositeDisposable.add(diaryRepository.loadDiaryList(tempTime, pageSize)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(diaries -> {
                                 isLoading = false;
                                 if (diaries.size() == 0) {
                                     return;
                                 }
-                                lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
-                                diaryListView.addDiaryList(diaries);
+                                if(pageSize == 3) {
+                                    lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
+                                    diaryListView.addDiaryList(diaries);
+                                } else {
+                                    diaryListView.insertDiaryList(diaries.get(0));
+                                }
                             }
                             , throwable -> {
                                 isLoading = false;
@@ -88,6 +98,8 @@ public class DiaryListPresenter {
             return;
         }
 
+        diaryListView.setIsSaving(true);
+
         // FIXME : DiaryEntity 매개변수 수정하기, 네트워크가 없는 상황에서 나중에 분석할 데이터 지정
         if (isNetworkAvailable) {
 
@@ -99,10 +111,16 @@ public class DiaryListPresenter {
                             file.getAbsolutePath(),
                             Arrays.asList(tags.split("#")),
                             selectedEmotion,
-                            Emotion.fromValue(analyzedEmotion)))
+                            analyzedEmotion))
                     .flatMapCompletable(diaryRepository::insertDiary)
-                    .subscribe(diaryListView::notifyTodayDiarySaved
-                            , throwable -> diaryListView.showSaveDiaryFail()
+                    .subscribe(() -> {
+                                diaryListView.notifyTodayDiarySaved();
+                                diaryListView.setIsSaving(false);
+                            }
+                            , throwable -> {
+                                diaryListView.showSaveDiaryFail();
+                                diaryListView.setIsSaving(false);
+                            }
                     ));
         } else {
             // TODO : 기능 구현

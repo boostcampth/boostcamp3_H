@@ -19,6 +19,7 @@ public class GraphAxisValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
+
         Log.v("Test",String.valueOf(value));
 
         try {

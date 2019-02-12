@@ -3,7 +3,6 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,10 +90,9 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         return binding.getRoot();
     }
 
-
     @Override
     public void addDiaryList(@NonNull List<Diary> diaryList) {
-        diaryListAdapter.addDiaryList(diaryList);
+        diaryListAdapter.addDiaryItems(diaryList);
     }
 
     @Override
@@ -135,6 +133,16 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
+    public void insertDiaryList(@NonNull Diary diary) {
+        diaryListAdapter.insertDiaryItem(diary);
+    }
+
+    @Override
+    public void setIsSaving(boolean isSaving) {
+        this.isSaving.set(isSaving);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.onViewDestroyed();
@@ -153,12 +161,11 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private void initView() {
 
         binding.recyclerViewMainList.setNestedScrollingEnabled(false);
-        binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, true));
+        binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.recyclerViewMainList.setAdapter(diaryListAdapter);
         binding.nsvFragmentDiaryContainer.setOnScrollChangeListener(
                 (NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
                     if (v.getChildAt(0).getBottom() <= (v.getHeight() + v.getScrollY())) {
-                        Log.d("Test", "마지막");
                         presenter.loadDiaryList(LOAD_ITEM_NUM);
                     }
                 });
@@ -179,44 +186,36 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
                             if (isRecording) {
                                 binding.rpbRecordItemBackground.stopRippleAnimation();
-                                presenter.setIsRecording(false);
+                                isRecording = false;
                                 presenter.finishRecording();
                             } else {
                                 binding.rpbRecordItemBackground.startRippleAnimation();
-                                presenter.setIsRecording(true);
+                                isRecording = true;
                                 presenter.startRecording();
                             }
-                            isRecording = !isRecording;
+                            presenter.setIsRecording(isRecording);
                         } else {
                             showToastMessage(R.string.item_record_permission_denied);
                         }
                     }, Throwable::printStackTrace);
         });
 
-        binding.buttonItemRecordDone.setOnClickListener(v -> {
-            binding.pbItemRecordWaiting.setVisibility(View.VISIBLE);
-            isSaving.set(true);
-            presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context));
-        });
+        binding.buttonItemRecordDone.setOnClickListener(v ->
+            presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context))
+        );
 
         binding.tvRecordItemPgood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.GOOD));
         binding.tvRecordItemGood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.VERY_GOOD));
         binding.tvRecordItemNormal.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.NEUTRAL));
         binding.tvRecordItemBad.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.BAD));
         binding.tvRecordItemMad.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.VERY_BAD));
-
-        presenter.loadDiaryList(LOAD_ITEM_NUM);
     }
 
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter(context);
+        diaryListAdapter.setOnRecordItemClickListener(filePath -> {/*재생*/});
+
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
-    }
-
-    private void clearDiary() {
-        hashTagListAdapter.clearItems();
-        binding.etItemRecordInput.setText("");
-        presenter.setSelectedEmotion(null);
     }
 }
