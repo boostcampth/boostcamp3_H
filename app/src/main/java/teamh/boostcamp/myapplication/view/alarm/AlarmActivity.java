@@ -8,41 +8,62 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 import teamh.boostcamp.myapplication.data.local.SharedPreference;
-import teamh.boostcamp.myapplication.view.BaseActivity;
+import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 import teamh.boostcamp.myapplication.view.Handlers;
 
-public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
-        AlarmContractor.View, TimePickerDialog.OnTimeSetListener, Handlers {
+public class AlarmActivity extends AppCompatActivity implements
+        AlarmView, TimePickerDialog.OnTimeSetListener, Handlers {
 
+    private ActivityAlarmBinding binding;
     private AlarmPresenter presenter;
     private Calendar calendar;
     private boolean isChecked = false;
+    private AlarmHelperImpl alarmHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initView();
-        // 람다식
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_alarm);
+        init();
+    }
+
+    private void init() {
+        SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
+        alarmHelper = new AlarmHelperImpl(getApplicationContext());
+
+        initViews();
+        initPresenter();
+    }
+
+    private void initViews() {
+        binding.setActivity(AlarmActivity.this);
+        binding.setHandlers(this);
+
         binding.switchAlarm.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
                 this.isChecked = true;
                 setVisibility(true);
             } else {
                 this.isChecked = false;
+                calendar = null;
                 presenter.cancelAlarm();
                 setVisibility(false);
             }
         });
     }
 
+    private void initPresenter() {
+        presenter = new AlarmPresenter(AlarmActivity.this, alarmHelper);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.onViewDetached();
         calendar = null;
         presenter = null;
     }
@@ -51,28 +72,6 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
     protected void onResume() {
         super.onResume();
         checkState();
-    }
-
-    private void initView() {
-        SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
-        presenter = new AlarmPresenter(AlarmActivity.this, getApplicationContext());
-        presenter.onViewAttached();
-        binding.setActivity(AlarmActivity.this);
-        binding.setHandlers(this);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_alarm;
-    }
-
-    public void onClickButton(int id) {
-        switch (id) {
-            case R.id.btn_alarm_select:
-                TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
-                timePickerFragment.show(getSupportFragmentManager(), "time picker");
-                break;
-        }
     }
 
     @Override
@@ -93,7 +92,7 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
         calendar.set(Calendar.SECOND, 0);
 
         this.calendar = calendar;
-        presenter.loadCalendar(calendar);
+        presenter.loadTimeText(calendar);
     }
 
     @Override
@@ -118,6 +117,25 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
     }
 
     @Override
+    public void onClickButton(int id) {
+        switch (id) {
+            case R.id.btn_alarm_select:
+                TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
+                timePickerFragment.show(getSupportFragmentManager(), "time picker");
+                break;
+        }
+    }
+
+    @Override
+    public void updateCancelTimeText(boolean isCanceled) {
+        if (isCanceled) {
+            binding.tvAlarmTimeText.setText(getApplicationContext().getResources().getString(R.string.alarm_explain));
+        } else {
+            binding.tvAlarmTimeText.setText(getApplicationContext().getResources().getString(R.string.alarm_error_text));
+        }
+    }
+
+    @Override
     public void onClickListener(int id) {
         switch (id) {
             case R.id.iv_back_button:
@@ -125,17 +143,21 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
                 break;
             case R.id.tv_done_button:
                 if (isChecked) {
-                    if (calendar == null) {
-                        showToast("시간을 선택해주세요.");
-                    } else {
-                        presenter.setAlarm(calendar);
-                        showToast("알람을 설정하였습니다.");
-                        finish();
-                    }
+                    isEmptyCalendar(calendar);
                 } else {
                     finish();
                 }
                 break;
+        }
+    }
+
+    private void isEmptyCalendar(Calendar calendar) {
+        if (calendar == null) {
+            showToast(getApplicationContext().getResources().getString(R.string.alarm_explain));
+        } else {
+            presenter.setAlarm(calendar);
+            showToast(getApplicationContext().getResources().getString(R.string.alarm_set_text));
+            finish();
         }
     }
 }
