@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">하루듣기</string>
 
     <!-- List Fragment String -->
     <string name="item_record_done">Done</string>
@@ -104,4 +104,8 @@
     <string name="alarm_set_text">알람을 설정하였습니다.</string>
     <string name="alarm_error_text">오류</string>
     <string name="alarm_modify_text">시간을 수정해주세요.</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

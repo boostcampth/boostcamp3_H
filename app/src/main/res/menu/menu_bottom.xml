@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/recall_menu"
+        android:id="@+id/navigation_recall"
         android:icon="@drawable/ic_memories_bottom"
         android:title="Memories"/>
 
     <item
-        android:id="@+id/diary_menu"
+        android:id="@+id/navigation_diary"
         android:icon="@drawable/ic_diary_bottom"
         android:title="Diary"/>
 
     <item
-        android:id="@+id/statistic"
+        android:id="@+id/navigation_statistics"
         android:icon="@drawable/ic_statistic_bottom"
         android:title="Statistics"/>
 
