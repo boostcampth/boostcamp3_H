@@ -26,6 +26,12 @@
         <item name="android:layout_marginTop">@dimen/layout_gutter</item>
     </style>
 
+    <style name="ListSubTitle">
+        <item name="android:textSize">@dimen/sub_title_24dp</item>
+        <item name="android:layout_marginStart">@dimen/title_margin_left</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="DiaryListTheme">
         <item name="android:layout_marginRight">@dimen/layout_margin</item>
         <item name="android:layout_marginLeft">@dimen/layout_margin</item>

@@ -13,7 +13,7 @@ import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 @Dao
 public interface RecallDao {
 
-    @Query("Select * FROM recalls ORDER BY createdDate")
+    @Query("Select * FROM recalls ORDER BY createdDate DESC")
     Single<List<RecallEntity>> loadRecallEntities();
 
     @Insert(onConflict = OnConflictStrategy.ABORT)

@@ -17,6 +17,7 @@ import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.databinding.ItemRecallListBinding;
 
 public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.ViewHolder> {
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
     @NonNull
     private Context context;
     @NonNull
@@ -78,8 +79,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     }
 
     @NonNull
-    private String DateToSimpleFormat(Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
+    private String DateToSimpleFormat(@NonNull Date date) {
         return simpleDateFormat.format(date);
     }
 

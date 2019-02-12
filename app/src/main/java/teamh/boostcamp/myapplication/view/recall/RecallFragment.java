@@ -40,6 +40,7 @@ public class RecallFragment extends Fragment implements RecallView {
         super.onCreateView(inflater, container, savedInstanceState);
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recall, container, false);
+        binding.setView(this);
         initPresenter();
         initViews();
         recallPresenter.loadRecallList();
@@ -49,6 +50,11 @@ public class RecallFragment extends Fragment implements RecallView {
     @Override
     public void addRecallList(@NonNull List<Recall> recallList) {
         recallListAdapter.updateItems(recallList);
+    }
+
+    @Override
+    public void onGenerateNewRecallButtonClicked(View view) {
+        recallPresenter.generateRecall();
     }
 
     private void initViews() {
