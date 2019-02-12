@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
@@ -28,7 +27,6 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
     private int type = -1;
     private String oldPassword = null;
     protected InputFilter[] filters = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,15 +64,10 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
 
     }
 
-
     private void initView() {
         presenter = new PasswordPresenter(PasswordActivity.this);
         binding.setActivity(PasswordActivity.this);
         binding.setHandlers(PasswordActivity.this);
-    }
-
-    private void initPresenter() {
-        presenter = new PasswordPresenter(this);
     }
 
     // back 키 눌렀을 때
@@ -90,8 +83,8 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
         } else {
             finish();
         }
-
     }
+
     @Override
     public void showToast(@NonNull String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
@@ -173,7 +166,7 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
                 + binding.etPasswordThree.getText().toString()
                 + binding.etPasswordFour.getText().toString();
 
-        Log.v("3911 pActivity",lockPassword);
+        Log.v("3911 pActivity", lockPassword);
 
         binding.etPasswordOne.setText("");
         binding.etPasswordTwo.setText("");
@@ -187,7 +180,7 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
             case LockHelper.DISABLE_PASSWORD:
                 if (LockManager.getInstance().getLockHelper().checkPassword(lockPassword)) {
                     // 비밀번호가 같으면
-                    Log.v("391 pActivity",lockPassword);
+                    Log.v("391 pActivity", lockPassword);
                     setResult(RESULT_OK);
                     LockManager.getInstance().getLockHelper().setPassword(null);
                     finish();
@@ -287,7 +280,6 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
         binding.etPasswordOne.requestFocus();
     }
 
-
     private void deletePassword() {
         if (binding.etPasswordOne.isFocused()) {
 
@@ -307,6 +299,7 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
             binding.etPasswordThree.setText("");
         }
     }
+
     protected void setupEditText(EditText editText) {
         editText.setInputType(InputType.TYPE_NULL);
         editText.setFilters(filters);
