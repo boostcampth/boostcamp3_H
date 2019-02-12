@@ -29,7 +29,7 @@
     <style name="ListSubTitle">
         <item name="android:textSize">@dimen/sub_title_24dp</item>
         <item name="android:layout_marginStart">@dimen/title_margin_left</item>
-        <itme name="android:textColor">@color/black</itme>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="DiaryListTheme">
