@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.view.graph;
 
+import android.util.Log;
+
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
@@ -17,6 +19,14 @@ public class GraphAxisValueFormatter implements IAxisValueFormatter {
 
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
-        return values[(int) value];
+        Log.v("Test",String.valueOf(value));
+
+        try {
+            int index = (int) value;
+            return values[index];
+        }catch (Exception e){
+            return "";
+        }
     }
+
 }
