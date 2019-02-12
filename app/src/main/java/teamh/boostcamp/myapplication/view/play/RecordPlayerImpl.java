@@ -9,7 +9,7 @@ import java.util.List;
 
 import teamh.boostcamp.myapplication.data.model.Diary;
 
-public class RecordPlayerImpl implements RecordPlayer{
+public class RecordPlayerImpl implements RecordPlayer {
     private static final String TAG = "RecordPlayerImpl";
     private static RecordPlayerImpl INSTANCE;
     private MediaPlayer mediaPlayer;
@@ -72,8 +72,8 @@ public class RecordPlayerImpl implements RecordPlayer{
         return playState;
     }
 
-    private void initMediaPlayer(){
-        if(mediaPlayer != null){
+    private void initMediaPlayer() {
+        if (mediaPlayer != null) {
             mediaPlayer.setOnCompletionListener(mp -> {
                 if (playList.size() - 1 > count) {
                     count++;

@@ -1,8 +1,6 @@
 package teamh.boostcamp.myapplication.view.play;
 
-import io.reactivex.disposables.CompositeDisposable;
-
-public class PlayPresenter{
+class PlayPresenter {
     private PlayView view;
     private RecordPlayer recordPlayer;
 
@@ -11,23 +9,19 @@ public class PlayPresenter{
         this.view = view;
     }
 
-    public void loadData(int MemoryId) {
-    }
-
-    public void playMemory() {
+    void playMemory() {
         if (!recordPlayer.isPlaying()) {
             recordPlayer.playList();
-            view.makeToast("일기를 재생합니다.");
+            view.showPlayingState(recordPlayer.isPlaying());
         } else {
             stopMemory();
         }
     }
 
-    public void stopMemory() {
-        if(recordPlayer.isPlaying()){
+    void stopMemory() {
+        if (recordPlayer.isPlaying()) {
             recordPlayer.stopList();
-            view.makeToast("재생을 정지합니다.");
+            view.showPlayingState(recordPlayer.isPlaying());
         }
     }
-
 }

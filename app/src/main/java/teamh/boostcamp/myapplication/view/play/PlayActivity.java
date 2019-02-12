@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.model.Recall;
@@ -24,7 +25,6 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     private static final String EXTRA = "recall";
 
     private PlayPresenter presenter;
-    private DiaryTitleListAdapter adapter;
     private Recall recall;
 
     @Override
@@ -67,7 +67,7 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
         binding.rvDiaryList.setHasFixedSize(true);
         binding.rvDiaryList.setVerticalScrollbarPosition(0);
         binding.rvDiaryList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        adapter = new DiaryTitleListAdapter(this);
+        DiaryTitleListAdapter adapter = new DiaryTitleListAdapter(this);
         binding.rvDiaryList.setAdapter(adapter);
         adapter.addItems(recall.getDiaryList());
 
@@ -92,8 +92,12 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     @Override
-    public void makeToast(String string) {
-        Toast.makeText(getApplicationContext(), string, Toast.LENGTH_LONG).show();
+    public void showPlayingState(boolean playingState) {
+        if (playingState) {
+            showToastMessage(R.string.playing_state_play_message);
+        } else {
+            showToastMessage(R.string.playing_state_stop_message);
+        }
     }
 
     @NonNull
@@ -125,5 +129,9 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
             default:
                 return "행복들";
         }
+    }
+
+    private void showToastMessage(@StringRes int id) {
+        Toast.makeText(this, getString(id), Toast.LENGTH_LONG).show();
     }
 }

@@ -37,10 +37,6 @@
         <item>December</item>
     </string-array>
 
-
-
-
-
     <string name="emojitest">&#128522;</string>
 
     <string name="mad">😡</string>
@@ -49,17 +45,13 @@
     <string name="good">😊</string>
     <string name="happy">😍</string>
 
-    <!-- Memories fragment -->
+    <!-- Recall Fragment-->
     <string name="Memories">Memories</string>
-    <string name="title_emition4">매우 행복했던 날들</string>
-    <string name="title_emition3">즐거웠던 날들</string>
-    <string name="title_emition2">적당했던 날들</string>
-    <string name="title_emition1">우울했던 날들</string>
-    <string name="title_emition0">끔직했던 날들</string>
 
     <!-- Play activity -->
     <string name="play">PLAY</string>
-    <string name="tv_progress">추억을 불러오는 중입니다.</string>
+    <string name="playing_state_stop_message">일기재생을 정지합니다.</string>
+    <string name="playing_state_play_message">일기를 재생합니다.</string>
 
     <!--Graph Days-->
     <string-array name="graph_days">

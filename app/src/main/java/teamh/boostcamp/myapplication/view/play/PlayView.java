@@ -1,10 +1,6 @@
 package teamh.boostcamp.myapplication.view.play;
 
-import java.util.List;
-
-import teamh.boostcamp.myapplication.data.model.LegacyDiary;
-
 public interface PlayView {
 
-    void makeToast(String string);
+    void showPlayingState(boolean playState);
 }
