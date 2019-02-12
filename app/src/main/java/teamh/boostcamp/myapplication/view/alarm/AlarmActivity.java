@@ -149,6 +149,11 @@ public class AlarmActivity extends AppCompatActivity implements
         }
     }
 
+    @Override
+    public void deleteNumber(int id) {
+
+    }
+
     private void isEmptyCalendar(Calendar calendar) {
         if (calendar == null) {
             if (!time.equals(getApplicationContext().getResources().getString(R.string.alarm_explain))) {
