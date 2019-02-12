@@ -21,7 +21,7 @@ import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
 import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.Handlers;
 
-public class PasswordActivity extends AppCompatActivity implements PasswordView, Handlers {
+public class PasswordActivity extends LifecycleManageActivity implements PasswordView, Handlers {
 
     private ActivityPasswordBinding binding;
     private PasswordPresenter presenter;
