@@ -12,7 +12,7 @@ public interface AlarmHelper {
     void setAlarm(@NonNull Calendar calendar);
 
     @NonNull
-    String cancelAlarm();
+    boolean cancelAlarm();
 
 
 }

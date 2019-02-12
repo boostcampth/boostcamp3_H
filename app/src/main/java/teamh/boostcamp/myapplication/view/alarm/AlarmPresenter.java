@@ -19,12 +19,13 @@ public class AlarmPresenter {
     }
 
     void cancelAlarm() {
-        String text = alarmHelper.cancelAlarm();
-        view.updateTimeText(text);
+        boolean isCanceled = alarmHelper.cancelAlarm();
+        //String text = alarmHelper.cancelAlarm();
+        view.updateCancelTimeText(isCanceled);
     }
 
-    void loadCalendar(Calendar calendar) {
-        String timeText = alarmHelper.loadCalendar(calendar);
-        view.updateTimeText(timeText);
+    void loadTimeText(Calendar calendar) {
+        String userSettingTime = alarmHelper.loadCalendar(calendar);
+        view.updateTimeText(userSettingTime);
     }
 }

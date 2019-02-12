@@ -12,4 +12,6 @@ public interface AlarmView {
 
     void onClickButton(int id);
 
+    void updateCancelTimeText(boolean isCanceled);
+
 }

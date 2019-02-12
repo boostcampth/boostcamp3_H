@@ -50,6 +50,7 @@ public class AlarmActivity extends AppCompatActivity implements
                 setVisibility(true);
             } else {
                 this.isChecked = false;
+                calendar = null;
                 presenter.cancelAlarm();
                 setVisibility(false);
             }
@@ -91,7 +92,7 @@ public class AlarmActivity extends AppCompatActivity implements
         calendar.set(Calendar.SECOND, 0);
 
         this.calendar = calendar;
-        presenter.loadCalendar(calendar);
+        presenter.loadTimeText(calendar);
     }
 
     @Override
@@ -126,6 +127,15 @@ public class AlarmActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void updateCancelTimeText(boolean isCanceled) {
+        if (isCanceled) {
+            binding.tvAlarmTimeText.setText(getApplicationContext().getResources().getString(R.string.alarm_explain));
+        } else {
+            binding.tvAlarmTimeText.setText(getApplicationContext().getResources().getString(R.string.alarm_error_text));
+        }
+    }
+
+    @Override
     public void onClickListener(int id) {
         switch (id) {
             case R.id.iv_back_button:
@@ -133,17 +143,21 @@ public class AlarmActivity extends AppCompatActivity implements
                 break;
             case R.id.tv_done_button:
                 if (isChecked) {
-                    if (calendar == null) {
-                        showToast("시간을 선택해주세요.");
-                    } else {
-                        presenter.setAlarm(calendar);
-                        showToast("알람을 설정하였습니다.");
-                        finish();
-                    }
+                    isEmptyCalendar(calendar);
                 } else {
                     finish();
                 }
                 break;
+        }
+    }
+
+    private void isEmptyCalendar(Calendar calendar) {
+        if (calendar == null) {
+            showToast(getApplicationContext().getResources().getString(R.string.alarm_explain));
+        } else {
+            presenter.setAlarm(calendar);
+            showToast(getApplicationContext().getResources().getString(R.string.alarm_set_text));
+            finish();
         }
     }
 }
