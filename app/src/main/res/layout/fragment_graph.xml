@@ -8,7 +8,7 @@
 
         <variable
             name="presenter"
-            type="teamh.boostcamp.myapplication.view.graph.LegacyGraphPresenter" />
+            type="teamh.boostcamp.myapplication.view.graph.StatisticsPresenter" />
 
     </data>
 
@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:layout_marginTop="@dimen/layout_margin"
-                android:text="@{presenter.OBSERVER}"
+                android:text="@string/statistics_title"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +50,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/layout_margin"
                 android:layout_marginTop="@dimen/layout_gutter"
-                android:text="@{presenter.HASHTAG_OBSERVER}"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lc_emotion_graph" />

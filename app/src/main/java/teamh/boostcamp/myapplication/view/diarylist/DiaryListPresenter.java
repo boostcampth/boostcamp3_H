@@ -35,6 +35,7 @@ public class DiaryListPresenter {
     private Emotion selectedEmotion;
     private boolean isLoading;
     private boolean isRecording;
+    private boolean isRecordPlaying;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
                        @NonNull DiaryRepository diaryRepository,
@@ -46,8 +47,11 @@ public class DiaryListPresenter {
         this.recordPlayer = recordPlayer;
         this.compositeDisposable = new CompositeDisposable();
         this.selectedEmotion = null;
+
         this.isLoading = false;
         this.isRecording = false;
+        this.isRecordPlaying = false;
+
         this.lastItemLoadedTime = new Date();
 
         this.diaryRecorder.setMediaRecorderTimeOutListener(() -> {
@@ -134,6 +138,10 @@ public class DiaryListPresenter {
     }
 
     public void playDiaryRecord(List<Diary> diaries) {
+        if(isRecordPlaying) {
+            recordPlayer.stopList();
+        }
+
         recordPlayer.setList(diaries);
         recordPlayer.playList();
     }
