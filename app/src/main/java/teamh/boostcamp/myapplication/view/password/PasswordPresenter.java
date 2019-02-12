@@ -1,25 +1,12 @@
 package teamh.boostcamp.myapplication.view.password;
 
-public class PasswordPresenter implements PasswordContractor.Presenter {
+public class PasswordPresenter{
 
-    PasswordContractor.View view;
+    PasswordView view;
 
-    PasswordPresenter(PasswordContractor.View view) {
+    PasswordPresenter(PasswordView view) {
         this.view = view;
     }
 
-    @Override
-    public void onViewAttached() {
 
-    }
-
-    @Override
-    public void onViewDetached() {
-        view = null;
-    }
-
-    @Override
-    public void comparePassword(String currentPassword, String changePassword, String checkPassword) {
-
-    }
 }

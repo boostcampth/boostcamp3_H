@@ -89,6 +89,7 @@
     <string name="password_current_text">현재 비밀번호</string>
     <string name="password_change_text">변경 비밀번호</string>
     <string name="password_check_text">비밀번호 확인</string>
+    <string name="password_set_text">비밀번호를 설정해주세요.</string>
 
 
     <!--Alarm-->

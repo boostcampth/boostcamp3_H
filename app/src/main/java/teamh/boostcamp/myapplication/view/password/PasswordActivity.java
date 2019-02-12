@@ -4,24 +4,34 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
 import teamh.boostcamp.myapplication.view.BaseActivity;
 
-public class PasswordActivity extends BaseActivity<ActivityPasswordBinding> implements PasswordContractor.View {
+public class PasswordActivity extends AppCompatActivity implements PasswordView {
 
     private PasswordPresenter presenter;
+    private ActivityPasswordBinding binding;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        init();
+        initPresenter();
+    }
 
-        presenter = new PasswordPresenter(PasswordActivity.this);
+    private void init(){
+        binding = DataBindingUtil.setContentView(this, getLayoutId());
         binding.setActivity(PasswordActivity.this);
     }
 
-    @Override
+    private void initPresenter(){
+        presenter = new PasswordPresenter(this);
+    }
+
     protected int getLayoutId() {
         return R.layout.activity_password;
     }
@@ -35,7 +45,7 @@ public class PasswordActivity extends BaseActivity<ActivityPasswordBinding> impl
                 String currentPassword = binding.etPasswordCurrent.getText().toString();
                 String changePassword = binding.etPasswordChange.getText().toString();
                 String checkPassword = binding.etPasswordCheck.getText().toString();
-                presenter.comparePassword(currentPassword, changePassword, checkPassword);
+                //presenter.comparePassword(currentPassword, changePassword, checkPassword);
                 showToast("done");
                 break;
         }
