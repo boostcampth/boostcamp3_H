@@ -87,9 +87,12 @@
     <!--Password-->
     <string name="password_title">비밀번호</string>
     <string name="password_current_text">현재 비밀번호</string>
-    <string name="password_change_text">변경 비밀번호</string>
+    <string name="password_change_text">비밀번호를 변경해주세요.</string>
     <string name="password_check_text">비밀번호 확인</string>
-    <string name="password_set_text">비밀번호를 설정해주세요.</string>
+    <string name="password_lock_text">비밀 번호를 설정해주세요.</string>
+    <string name="password_unlock_text">비밀 번호를 해제해주세요.</string>
+    <string name="password_lock_success_text">비밀번호 설정이 완료되었습니다.</string>
+    <string name="password_before_input_text">이전 비밀번호를 입력해주세요.</string>
 
 
     <!--Alarm-->

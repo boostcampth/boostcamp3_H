@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 /*
  * LockHelper 구현체
  * */
@@ -14,6 +16,7 @@ public class LockHelperImpl extends LockHelper {
     private static final String TEAM_H = "TEAM_H";
     private static final String PASSWORD_KEY = "password";
 
+    @NonNull
     private SharedPreferences sharedPreferences;
 
     private int liveCount;
@@ -35,7 +38,7 @@ public class LockHelperImpl extends LockHelper {
 
     }
 
-    // 비밀번호 저
+    // 비밀번호 저장.
     @Override
     public boolean setPassword(String password) {
         SharedPreferences.Editor editor = sharedPreferences.edit();

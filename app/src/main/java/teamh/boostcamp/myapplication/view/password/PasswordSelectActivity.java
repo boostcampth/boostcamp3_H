@@ -1,16 +1,14 @@
 package teamh.boostcamp.myapplication.view.password;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordSelectBinding;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.widget.Toast;
-
-import java.util.concurrent.locks.Lock;
 
 public class PasswordSelectActivity extends AppCompatActivity {
 
@@ -36,7 +34,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        //binding.tvPasswordSetButton.setText();
+
     }
 
     public void onButtonClick(int id) {
@@ -62,7 +60,10 @@ public class PasswordSelectActivity extends AppCompatActivity {
                 Intent change_password_intent = new Intent(this, PasswordActivity.class);
 
                 change_password_intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.CHANGE_PASSWORD);
-                change_password_intent.putExtra(LockHelper.EXTRA_MESSAGE, "이전 비밀번호 입력해주세요");
+                change_password_intent.putExtra(LockHelper.EXTRA_MESSAGE,
+                        getApplicationContext()
+                                .getResources()
+                                .getString(R.string.password_before_input_text));
                 startActivityForResult(change_password_intent, LockHelper.CHANGE_PASSWORD);
                 break;
         }
@@ -72,12 +73,16 @@ public class PasswordSelectActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
+        switch (requestCode) {
             case LockHelper.DISABLE_PASSWORD:
                 break;
             case LockHelper.ENABLE_PASSWORD:
             case LockHelper.CHANGE_PASSWORD:
-                if (resultCode == RESULT_OK) { Toast.makeText(this, "비밀번호 설정이 완료되었습니다.",
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(this,
+                            getApplicationContext()
+                                    .getResources()
+                                    .getString(R.string.password_lock_success_text),
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -89,14 +94,16 @@ public class PasswordSelectActivity extends AppCompatActivity {
     }
 
     // 저장된 비밀번호가 존재하는지 확인.
-    private void isExistPasswordState(){
+    private void isExistPasswordState() {
         // 설정한 비밀번호가 있을 때
         if (LockManager.getInstance().getLockHelper().isPasswordSet()) {
-            binding.tvPasswordSetButton.setText("비밀 번호를 해제해주세요.");
+            binding.tvPasswordSetButton.setText(
+                    getApplicationContext().getResources().getString(R.string.password_lock_text));
             binding.tvPasswordChangeButton.setEnabled(true);
 
-        } else { // 설정한 비밀번호가 없을 때.
-            binding.tvPasswordSetButton.setText("비밀번호를 설정해주세요.");
+        } else { // 설정한 비밀번호가 없을 때
+            binding.tvPasswordSetButton.setText(getApplicationContext()
+                    .getResources().getString(R.string.password_lock_text));
             binding.tvPasswordChangeButton.setEnabled(false);
 
         }
