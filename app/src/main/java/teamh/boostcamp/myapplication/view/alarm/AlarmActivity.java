@@ -22,7 +22,6 @@ public class AlarmActivity extends AppCompatActivity implements
     private AlarmPresenter presenter;
     private Calendar calendar;
     private boolean isChecked = false;
-    private AlarmHelperImpl alarmHelper;
     private String time;
 
     @Override
@@ -35,7 +34,6 @@ public class AlarmActivity extends AppCompatActivity implements
 
     private void init() {
         SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
-        alarmHelper = new AlarmHelperImpl(getApplicationContext());
 
         initViews();
         initPresenter();
@@ -58,7 +56,7 @@ public class AlarmActivity extends AppCompatActivity implements
     }
 
     private void initPresenter() {
-        presenter = new AlarmPresenter(AlarmActivity.this, alarmHelper);
+        presenter = new AlarmPresenter(AlarmActivity.this, new AlarmHelperImpl(getApplicationContext()));
     }
 
     @Override
