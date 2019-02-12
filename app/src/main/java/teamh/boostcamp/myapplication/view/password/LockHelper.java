@@ -28,8 +28,6 @@ public abstract class LockHelper {
 
     public abstract void enable();
 
-    public abstract void disable();
-
     public abstract boolean setPassword(String password);
 
     public abstract boolean checkPassword(String password);

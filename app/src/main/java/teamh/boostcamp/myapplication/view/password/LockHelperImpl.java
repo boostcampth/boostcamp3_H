@@ -33,11 +33,6 @@ public class LockHelperImpl extends LockHelper {
 
     }
 
-    @Override
-    public void disable() {
-
-    }
-
     // 비밀번호 저장.
     @Override
     public boolean setPassword(String password) {
