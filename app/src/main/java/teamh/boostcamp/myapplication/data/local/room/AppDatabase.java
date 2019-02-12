@@ -86,15 +86,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                     DiaryEntity[] temp = new DiaryEntity[samples.size()];
 
-                                    Completable.fromAction(() -> INSTANCE.diaryDao()
-                                            .insert(samples.toArray(temp)))
-                                            .subscribeOn(Schedulers.io())
-                                            .subscribe(() -> {
-                                                        Log.d("Test", "데이터 저장");
-                                                    },
-                                                    throwable -> {
-                                                        throwable.printStackTrace();
-                                                    });
+
 
                                     RecallEntity[] recallList = {new RecallEntity(0, new Date(), Emotion.fromValue(0))
                                             , new RecallEntity(0, new Date(), Emotion.fromValue(1))

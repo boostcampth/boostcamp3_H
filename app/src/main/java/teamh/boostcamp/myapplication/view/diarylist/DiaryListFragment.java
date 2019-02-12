@@ -100,7 +100,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void notifyTodayDiarySaved() {
         isSaving.set(false);
-        clearDiary();
         presenter.loadDiaryList(NEW_ITEM_LOAD);
     }
 

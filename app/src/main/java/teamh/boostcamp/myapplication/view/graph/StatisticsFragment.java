@@ -231,6 +231,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         yLeftAxis = binding.lcEmotionGraph.getAxisLeft();
         yRightAxis = binding.lcEmotionGraph.getAxisRight();
         // X축 설정
+        xAxis.setYOffset(15f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setLabelCount(dates.length, true);
         xAxis.setTextColor(R.color.black);
@@ -239,6 +240,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
         // y축 왼쪽 설정
         yLeftAxis.setTextColor(R.color.black);
+        yLeftAxis.setXOffset(15f);
         // y축 텍스트 사이즈 지정.
         yLeftAxis.setTextSize(20f);
         yLeftAxis.setValueFormatter(new GraphAxisValueFormatter(emojis));
@@ -255,6 +257,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         yRightAxis.setDrawLabels(false);
         yRightAxis.setDrawAxisLine(false);
         yRightAxis.setDrawGridLines(false);
+
 
         binding.lcEmotionGraph.setDescription(null);
         binding.lcEmotionGraph.setBackgroundColor(Color.TRANSPARENT);
