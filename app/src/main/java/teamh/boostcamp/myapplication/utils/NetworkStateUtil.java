@@ -16,17 +16,9 @@ public class NetworkStateUtil {
 
     private static final String TAG = "NetworkStateUtil";
 
-    @Retention(RetentionPolicy.SOURCE)
-    @IntDef({NETWORK_CONNECTED, NETWORK_NOT_CONNECTED})
-
-    @interface NetworkState {}
-
-    static final int NETWORK_CONNECTED = 1;
-    static final int NETWORK_NOT_CONNECTED = 2;
-
     private static ConnectivityManager sConnectivityManager = null;
 
-    public static @NetworkState int isNetworkConnected(Context context) {
+    public static boolean isNetworkConnected(Context context) {
 
         // 연결 확인 객체가 없는 경우에만 객체를 작성
         if(sConnectivityManager == null) {
@@ -44,7 +36,6 @@ public class NetworkStateUtil {
         }
 
         // 결과 반환
-        return networkInfo != null && networkInfo.isConnected() ?
-                NETWORK_CONNECTED : NETWORK_NOT_CONNECTED;
+        return networkInfo != null && networkInfo.isConnected();
     }
 }

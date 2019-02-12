@@ -24,7 +24,7 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     private final DeepAffectApiClient deepAffectApiClient;
 
     private DiaryRepositoryImpl(@NonNull final DiaryDao diaryDao,
-                               @NonNull final DeepAffectApiClient deepAffectApiClient) {
+                                @NonNull final DeepAffectApiClient deepAffectApiClient) {
         this.diaryDao = diaryDao;
         this.deepAffectApiClient = deepAffectApiClient;
     }
@@ -32,10 +32,10 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     @NonNull
     public static DiaryRepositoryImpl getInstance(@NonNull final DiaryDao diaryDao,
                                                   @NonNull final DeepAffectApiClient deepAffectApiClient) {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             synchronized (DiaryRepositoryImpl.class) {
-                if(INSTANCE == null) {
-                    INSTANCE = new DiaryRepositoryImpl(diaryDao,deepAffectApiClient);
+                if (INSTANCE == null) {
+                    INSTANCE = new DiaryRepositoryImpl(diaryDao, deepAffectApiClient);
                 }
             }
         }

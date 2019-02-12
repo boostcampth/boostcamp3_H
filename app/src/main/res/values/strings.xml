@@ -13,14 +13,14 @@
     <string name="item_record_hash_tag_hint">Tag 를 입력해주세요</string>
     <string name="deep_affects_base_url">https://proxy.api.deepaffects.com/audio/generic/api/v2/</string>
     <string name="item_record_no_voice_file">일기를 먼저 녹음해주세요 !</string>
-    <string name="item_record_no_emotion_selected">오늘의 기분을 선택해주세요 !</string>
+    <string name="item_record_emotion_not_selected">오늘의 기분을 선택해주세요 !</string>
     <string name="item_record_emotion_analyze_fail">감정 분석을 실패했습니다</string>
     <string name="item_record_now_recording">일기 작성을 마쳐주세요 !</string>
     <string name="item_record_save_fail">일기 저장을 실패하였습니다.</string>
     <string name="item_record_save_success">일기 저장에 성공하였습니다.</string>
     <string name="item_record_time_out">최대 녹음 시간을 초과하셨습니다 ! 자동으로 종료됩니다 !</string>
     <string name="item_record_load_diary_list_fail">일기 불러오기를 실패했습니다 !</string>
-
+    <string name="item_record_file_not_found">저장된 일기 파일을 찾을 수 없습니다 !</string>
 
     <string-array name="month">
         <item>January</item>
