@@ -12,14 +12,14 @@ import teamh.boostcamp.myapplication.data.repository.RecallRepository;
 public class RecallPresenter {
 
     @NonNull
-    private RecallView recallView;
+    private RecallView view;
     @NonNull
     private RecallRepository recallRepository;
     @NonNull
     private CompositeDisposable compositeDisposable;
 
-    RecallPresenter(@NonNull RecallView recallView, @NonNull RecallRepository recallRepository) {
-        this.recallView = recallView;
+    RecallPresenter(@NonNull RecallView view, @NonNull RecallRepository recallRepository) {
+        this.view = view;
         this.recallRepository = recallRepository;
         this.compositeDisposable = new CompositeDisposable();
     }
@@ -30,7 +30,7 @@ public class RecallPresenter {
                         .loadRecallList()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(recallList -> {
-                            recallView.addRecallList(recallList);
+                            view.addRecallList(recallList);
                         })
         );
     }
@@ -42,6 +42,12 @@ public class RecallPresenter {
                         new Date(),
                         Emotion.fromValue(generateRandomNumber(5))))
                 .subscribe(this::loadRecallList)
+        );
+    }
+
+    void deleteRecall(int index){
+        compositeDisposable.add(
+                recallRepository.deleteRecall(index).subscribe(() -> view.showDeleteSuccessResult())
         );
     }
 

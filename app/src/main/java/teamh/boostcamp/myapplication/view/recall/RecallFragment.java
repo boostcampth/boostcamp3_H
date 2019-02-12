@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -55,6 +56,11 @@ public class RecallFragment extends Fragment implements RecallView {
     @Override
     public void onGenerateNewRecallButtonClicked(View view) {
         recallPresenter.generateRecall();
+    }
+
+    @Override
+    public void showDeleteSuccessResult() {
+        Toast.makeText(getContext(), "추억을 삭제하였습니다.", Toast.LENGTH_LONG).show();
     }
 
     private void initViews() {
