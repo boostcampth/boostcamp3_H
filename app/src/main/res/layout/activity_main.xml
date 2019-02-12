@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="activity"
             type="teamh.boostcamp.myapplication.view.main.MainActivity" />
@@ -14,21 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.main.MainActivity">
-
-        <!--  <androidx.appcompat.widget.Toolbar
-              android:id="@+id/tb_main_top"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="#FFFFFF"
-              android:text="툴바"
-              android:elevation="@dimen/app_bar_elevation"
-              app:contentInsetLeft="0dp"
-              android:onClick="@{activity::startSetting}"
-              app:layout_constraintStart_toStartOf="parent"
-              app:layout_constraintEnd_toEndOf="parent"
-              app:layout_constraintTop_toTopOf="parent">
-
-          </androidx.appcompat.widget.Toolbar>-->
 
         <RelativeLayout
             android:id="@+id/tb_main_top"
@@ -60,6 +44,20 @@
 
 
         </RelativeLayout>
+
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </FrameLayout>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            app:menu="@menu/menu_bottom"/>
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_main"
