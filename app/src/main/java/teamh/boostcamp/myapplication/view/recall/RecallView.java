@@ -12,4 +12,6 @@ public interface RecallView {
     void addRecallList(@NonNull List<Recall> recallList);
 
     void onGenerateNewRecallButtonClicked(View view);
+
+    void showDeleteSuccessResult();
 }

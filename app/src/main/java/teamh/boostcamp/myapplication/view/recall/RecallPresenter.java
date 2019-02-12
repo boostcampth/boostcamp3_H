@@ -12,14 +12,14 @@ import teamh.boostcamp.myapplication.data.repository.RecallRepository;
 public class RecallPresenter {
 
     @NonNull
-    private RecallView recallView;
+    private RecallView view;
     @NonNull
     private RecallRepository recallRepository;
     @NonNull
     private CompositeDisposable compositeDisposable;
 
-    RecallPresenter(@NonNull RecallView recallView, @NonNull RecallRepository recallRepository) {
-        this.recallView = recallView;
+    RecallPresenter(@NonNull RecallView view, @NonNull RecallRepository recallRepository) {
+        this.view = view;
         this.recallRepository = recallRepository;
         this.compositeDisposable = new CompositeDisposable();
     }
@@ -30,22 +30,33 @@ public class RecallPresenter {
                         .loadRecallList()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(recallList -> {
-                            recallView.addRecallList(recallList);
+                            view.addRecallList(recallList);
                         })
         );
     }
 
-    void generateRecall(){
+    void generateRecall() {
         compositeDisposable.add(
                 recallRepository.insertRecall(new RecallEntity(
                         0,
                         new Date(),
                         Emotion.fromValue(generateRandomNumber(5))))
-                .subscribe(this::loadRecallList)
+                        .subscribe(this::loadRecallList)
         );
     }
 
-    private int generateRandomNumber(int limit){
-        return (int) (Math.random() * limit) ;
+    void deleteRecall(int id) {
+        compositeDisposable.add(
+                recallRepository.deleteRecall(id)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> {
+                            view.showDeleteSuccessResult();
+                            loadRecallList();
+                        })
+        );
+    }
+
+    private int generateRandomNumber(int limit) {
+        return (int) (Math.random() * limit);
     }
 }

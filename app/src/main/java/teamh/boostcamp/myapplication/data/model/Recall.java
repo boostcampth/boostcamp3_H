@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 public class Recall {
 
+    private int index;
     @NonNull
     private Date startDate;
     @NonNull
@@ -16,14 +17,20 @@ public class Recall {
     @NonNull
     private List<Diary> diaryList;
 
-    public Recall(@NonNull Date startDate,
+    public Recall(int index,
+                  @NonNull Date startDate,
                   @NonNull Date endDate,
                   @NonNull Emotion emotion,
                   @NonNull List<Diary> diaryList) {
+        this.index = index;
         this.startDate = startDate;
         this.endDate = endDate;
         this.emotion = emotion;
         this.diaryList = diaryList;
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     @NonNull

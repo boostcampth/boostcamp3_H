@@ -37,15 +37,15 @@
                     android:id="@+id/iv_play"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="@dimen/layout_gutter"
+                    android:layout_marginEnd="@dimen/layout_gutter"
                     android:src="@drawable/ic_memories_play"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_sub_title"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_close"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_delete"
                     app:layout_constraintTop_toTopOf="@+id/tv_sub_title"/>
 
                 <ImageView
-                    android:id="@+id/iv_close"
+                    android:id="@+id/iv_delete"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_marginRight="@dimen/title_margin_right"

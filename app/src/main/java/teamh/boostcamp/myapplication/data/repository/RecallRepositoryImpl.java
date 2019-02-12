@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
@@ -45,10 +44,17 @@ public class RecallRepositoryImpl implements RecallRepository {
                     final Date startDate = generateStartDate(endDate);
                     return appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(),
                             startDate, endDate, 5)
-                            .map(diaries -> new Recall(startDate, endDate, recallEntity.getEmotion(), diaries));
+                            .map(diaries -> new Recall(recallEntity.getId(), startDate, endDate, recallEntity.getEmotion(), diaries));
                 })
                 .subscribeOn(Schedulers.io())
                 .toList();
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteRecall(int selectedRecallId) {
+        return Completable.fromAction(() -> appDatabase.recallDao().deleteRecall(selectedRecallId))
+                .subscribeOn(Schedulers.io());
     }
 
     @NonNull
