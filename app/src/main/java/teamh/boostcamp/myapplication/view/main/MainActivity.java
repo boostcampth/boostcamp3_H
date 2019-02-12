@@ -15,7 +15,6 @@ import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import teamh.boostcamp.myapplication.view.graph.LegacyGraphFragment;
 import teamh.boostcamp.myapplication.view.graph.StatisticsFragment;
-import teamh.boostcamp.myapplication.view.memories.MemoriesFragment;
 import teamh.boostcamp.myapplication.view.recall.RecallFragment;
 import teamh.boostcamp.myapplication.view.setting.SettingActivity;
 

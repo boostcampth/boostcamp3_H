@@ -30,10 +30,8 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
-import teamh.boostcamp.myapplication.data.model.Memory;
-import teamh.boostcamp.myapplication.data.model.Recommendation;
 
-@Database(entities = {LegacyDiary.class, Recommendation.class, Memory.class, DiaryEntity.class, RecallEntity.class}, version = 6, exportSchema = false)
+@Database(entities = {LegacyDiary.class, DiaryEntity.class, RecallEntity.class}, version = 7, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -52,7 +50,7 @@ public abstract class AppDatabase extends RoomDatabase {
                             .fallbackToDestructiveMigration()
                             .addCallback(new Callback() {
                                 @Override
-                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                                public void onOpen(@NonNull SupportSQLiteDatabase db) {
                                     super.onCreate(db);
                                     // FIXME 더미 데이터 추가
                                     final String filePath = "/storage/emulated/0/2019-02-08.acc";
@@ -113,11 +111,7 @@ public abstract class AppDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract AppDao appDao();
-
     public abstract DiaryDao diaryDao();
-
-    public abstract LegacyDiaryDao legacyDiaryDao();
 
     public abstract RecallDao recallDao();
 }

@@ -82,9 +82,6 @@ public class RecallFragment extends Fragment implements RecallView {
                 intent.putExtra("recall", "recall");
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_stop);
-
-
-
             }
 
             @Override

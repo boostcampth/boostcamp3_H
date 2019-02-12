@@ -12,7 +12,6 @@ import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.databinding.ActivityPlayBinding;
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
-import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.view.BaseActivity;
 
 public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements PlayContractor.View {
@@ -21,7 +20,6 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     private static final String EXTRA_MEMORY = "memory";
 
     private PlayContractor.Presenter presenter;
-    private Memory memory;
     private PlayDiaryAdapter playDiaryAdapter;
 
     @Override
@@ -63,15 +61,9 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     private void initTitleTextView() {
-        binding.tvTitle.setText(memory.getTitle());
     }
 
     private void initRecyclerView() {
-        playDiaryAdapter = new PlayDiaryAdapter(getApplicationContext());
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        binding.recyclerView.setAdapter(playDiaryAdapter);
-
-        presenter.loadData(memory.getId());
     }
 
     private void initPresenter() {
