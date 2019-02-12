@@ -23,4 +23,9 @@
 
     <!--Alarm Color-->
     <color name="alarm_inaction_color">#9E9D9F</color>
+
+    <!--Password-->
+    <color name="light_gray">#FFE5E5E5</color>
+    <color name="gray">#FFCCCCCC</color>
+    <color name="light_blue">#FF78c8e6</color>
 </resources>
