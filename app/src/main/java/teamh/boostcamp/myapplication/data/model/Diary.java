@@ -1,12 +1,13 @@
 package teamh.boostcamp.myapplication.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class Diary {
+public class Diary implements Serializable {
 
     @NonNull
     private final Date recordDate;

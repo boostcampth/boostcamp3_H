@@ -24,10 +24,9 @@ import teamh.boostcamp.myapplication.view.play.PlayActivity;
 public class RecallFragment extends Fragment implements RecallView {
 
     @NonNull
+    private static final String EXTRA = "recall";
     private RecallPresenter recallPresenter;
-    @NonNull
     private FragmentRecallBinding binding;
-    @NonNull
     private RecallListAdapter recallListAdapter;
 
     public RecallFragment() {
@@ -79,12 +78,11 @@ public class RecallFragment extends Fragment implements RecallView {
             @Override
             public void onPlayButtonClicked(Recall recall) {
                 Intent intent = new Intent(getContext(), PlayActivity.class);
-                intent.putExtra("recall", "recall");
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(EXTRA, recall);
+                intent.putExtras(bundle);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_stop);
-
-
-
             }
 
             @Override

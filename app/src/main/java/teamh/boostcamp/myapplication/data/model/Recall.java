@@ -1,11 +1,12 @@
 package teamh.boostcamp.myapplication.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 
-public class Recall {
+public class Recall implements Serializable {
 
     private int index;
     @NonNull

@@ -45,7 +45,7 @@ public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAd
         return diaryList.size();
     }
 
-    void addItems(List<Diary> diaryList){
+    public void addItems(List<Diary> diaryList){
         this.diaryList.clear();
         this.diaryList.addAll(diaryList);
         notifyDataSetChanged();

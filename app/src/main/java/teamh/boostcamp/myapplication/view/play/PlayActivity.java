@@ -5,31 +5,35 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.databinding.ActivityPlayBinding;
-import teamh.boostcamp.myapplication.data.model.LegacyDiary;
-import teamh.boostcamp.myapplication.data.model.Memory;
 import teamh.boostcamp.myapplication.view.BaseActivity;
+import teamh.boostcamp.myapplication.view.recall.DiaryTitleListAdapter;
 
-public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements PlayContractor.View {
+public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements PlayView {
 
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
     private static final String TAG = "PlayActivity";
-    private static final String EXTRA_MEMORY = "memory";
+    private static final String EXTRA = "recall";
 
-    private PlayContractor.Presenter presenter;
-    private Memory memory;
-    private PlayDiaryAdapter playDiaryAdapter;
+    private PlayPresenter presenter;
+    private Recall recall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding.setActivity(this);
-        String s = getIntent().getParcelableExtra("recall");
+        recall = (Recall) getIntent().getSerializableExtra(EXTRA);
 
+        initPresenter();
         initViews();
     }
 
@@ -42,7 +46,6 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        presenter.onViewDetached();
         presenter = null;
     }
 
@@ -51,33 +54,30 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
         return R.layout.activity_play;
     }
 
-    @Override
-    public void setDiaryList(List<LegacyDiary> diaryList) {
-        playDiaryAdapter.addItems(diaryList);
-    }
-
     private void initViews() {
-        //initPresenter();
-        //initRecyclerView();
-        //initTitleTextView();
+        initRecyclerView();
+        initTitleTextView();
     }
 
     private void initTitleTextView() {
-        binding.tvTitle.setText(memory.getTitle());
+        binding.tvTitle.setText(generateRecallTitle(recall));
     }
 
     private void initRecyclerView() {
-        playDiaryAdapter = new PlayDiaryAdapter(getApplicationContext());
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        binding.recyclerView.setAdapter(playDiaryAdapter);
+        binding.rvDiaryList.setHasFixedSize(true);
+        binding.rvDiaryList.setVerticalScrollbarPosition(0);
+        binding.rvDiaryList.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        DiaryTitleListAdapter adapter = new DiaryTitleListAdapter(this);
+        binding.rvDiaryList.setAdapter(adapter);
+        adapter.addItems(recall.getDiaryList());
 
-        presenter.loadData(memory.getId());
     }
 
     private void initPresenter() {
+        RecordPlayer recordPlayer = RecordPlayerImpl.getINSTANCE();
+        recordPlayer.setList(recall.getDiaryList());
         presenter = new PlayPresenter(
-                AppDatabase.getInstance(getApplicationContext()),
-                RecordPlayerImpl.getINSTANCE(),
+                recordPlayer,
                 this);
     }
 
@@ -92,8 +92,46 @@ public class PlayActivity extends BaseActivity<ActivityPlayBinding> implements P
     }
 
     @Override
-    public void makeToast(String string) {
-        Toast.makeText(getApplicationContext(), string, Toast.LENGTH_LONG).show();
+    public void showPlayingState(boolean playingState) {
+        if (playingState) {
+            showToastMessage(R.string.playing_state_play_message);
+        } else {
+            showToastMessage(R.string.playing_state_stop_message);
+        }
     }
 
+    @NonNull
+    private String generateRecallTitle(@NonNull Recall recall) {
+        String startDateString = DateToSimpleFormat(recall.getStartDate());
+        String endDateString = DateToSimpleFormat(recall.getEndDate());
+        String emotionString = emotionToString(recall.getEmotion().getEmotion());
+        return String.format("%s 부터 %s까지의 %s", startDateString, endDateString, emotionString);
+    }
+
+    @NonNull
+    private String DateToSimpleFormat(@NonNull Date date) {
+        return simpleDateFormat.format(date);
+    }
+
+    @NonNull
+    private String emotionToString(int emotion) {
+        switch (emotion) {
+            case 0:
+                return "불행함들";
+            case 1:
+                return "슬픔들";
+            case 2:
+                return "그저그런날들";
+            case 3:
+                return "즐거움들";
+            case 4:
+                return "행복들";
+            default:
+                return "행복들";
+        }
+    }
+
+    private void showToastMessage(@StringRes int id) {
+        Toast.makeText(this, getString(id), Toast.LENGTH_LONG).show();
+    }
 }
