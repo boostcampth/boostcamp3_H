@@ -37,6 +37,10 @@ public class RecordPlayerImpl implements RecordPlayer {
 
     @Override
     public void setList(List<Diary> playList) {
+        if(playState) {
+            stopList();
+        }
+
         this.playList = playList;
     }
 
