@@ -3,7 +3,6 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.Toast;
 
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
+import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -32,6 +32,8 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
+import teamh.boostcamp.myapplication.view.play.RecordPlayer;
+import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
 public class DiaryListFragment extends Fragment implements DiaryListView {
 
@@ -91,10 +93,9 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         return binding.getRoot();
     }
 
-
     @Override
     public void addDiaryList(@NonNull List<Diary> diaryList) {
-        diaryListAdapter.addDiaryList(diaryList);
+        diaryListAdapter.addDiaryItems(diaryList);
     }
 
     @Override
@@ -135,6 +136,18 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
+    public void insertDiaryList(@NonNull Diary diary) {
+        diaryListAdapter.insertDiaryItem(diary);
+        clearRecorder();
+        // view 사라지게 하기
+    }
+
+    @Override
+    public void setIsSaving(boolean isSaving) {
+        this.isSaving.set(isSaving);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.onViewDestroyed();
@@ -147,18 +160,18 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private void initPresenter() {
         presenter = new DiaryListPresenter(this,
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao(), DeepAffectApiClient.getInstance()),
-                new DiaryRecorderImpl());
+                new DiaryRecorderImpl(),
+                RecordPlayerImpl.getINSTANCE());
     }
 
     private void initView() {
 
         binding.recyclerViewMainList.setNestedScrollingEnabled(false);
-        binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, true));
+        binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.recyclerViewMainList.setAdapter(diaryListAdapter);
         binding.nsvFragmentDiaryContainer.setOnScrollChangeListener(
                 (NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
                     if (v.getChildAt(0).getBottom() <= (v.getHeight() + v.getScrollY())) {
-                        Log.d("Test", "마지막");
                         presenter.loadDiaryList(LOAD_ITEM_NUM);
                     }
                 });
@@ -179,44 +192,44 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
                             if (isRecording) {
                                 binding.rpbRecordItemBackground.stopRippleAnimation();
-                                presenter.setIsRecording(false);
+                                isRecording = false;
                                 presenter.finishRecording();
                             } else {
                                 binding.rpbRecordItemBackground.startRippleAnimation();
-                                presenter.setIsRecording(true);
+                                isRecording = true;
                                 presenter.startRecording();
                             }
-                            isRecording = !isRecording;
+                            presenter.setIsRecording(isRecording);
                         } else {
                             showToastMessage(R.string.item_record_permission_denied);
                         }
                     }, Throwable::printStackTrace);
         });
 
-        binding.buttonItemRecordDone.setOnClickListener(v -> {
-            binding.pbItemRecordWaiting.setVisibility(View.VISIBLE);
-            isSaving.set(true);
-            presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context));
-        });
+        binding.buttonItemRecordDone.setOnClickListener(v ->
+            presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context))
+        );
 
         binding.tvRecordItemPgood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.GOOD));
         binding.tvRecordItemGood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.VERY_GOOD));
         binding.tvRecordItemNormal.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.NEUTRAL));
         binding.tvRecordItemBad.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.BAD));
         binding.tvRecordItemMad.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.VERY_BAD));
-
-        presenter.loadDiaryList(LOAD_ITEM_NUM);
     }
 
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter(context);
+        diaryListAdapter.setOnRecordItemClickListener(pos -> {
+            presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)));
+        });
+
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
     }
 
-    private void clearDiary() {
-        hashTagListAdapter.clearItems();
+    private void clearRecorder() {
         binding.etItemRecordInput.setText("");
+        hashTagListAdapter.clearItems();
         presenter.setSelectedEmotion(null);
     }
 }

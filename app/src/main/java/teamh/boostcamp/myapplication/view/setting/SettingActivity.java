@@ -5,26 +5,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
-import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
-public class SettingActivity extends BaseActivity<ActivitySettingBinding> {
+public class SettingActivity extends AppCompatActivity {
+
+    ActivitySettingBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
         binding.setActivity(SettingActivity.this);
 
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_setting;
     }
 
     public void onButtonClick(View view) {

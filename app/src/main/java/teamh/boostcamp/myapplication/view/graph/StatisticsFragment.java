@@ -86,6 +86,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
     private void initData() {
         emojis = context.getResources().getStringArray(R.array.graph_emojis);
+        //binding.setPresenter(statisticsPresenter);
     }
 
     @Override

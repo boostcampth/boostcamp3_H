@@ -10,6 +10,7 @@ import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.mapper.AnalyzedEmotionMapper;
@@ -60,7 +61,7 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Single<Integer> requestEmotionAnalyze(@NonNull EmotionAnalyzeRequest request) {
+    public Single<Emotion> requestEmotionAnalyze(@NonNull EmotionAnalyzeRequest request) {
         return deepAffectApiClient.analyzeVoiceEmotion(request)
                 .map(AnalyzedEmotionMapper::parseAnalyzedEmotion)
                 .subscribeOn(Schedulers.io());

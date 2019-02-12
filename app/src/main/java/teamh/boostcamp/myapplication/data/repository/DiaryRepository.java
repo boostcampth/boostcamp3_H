@@ -8,6 +8,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 
 public interface DiaryRepository {
@@ -21,5 +22,5 @@ public interface DiaryRepository {
 
 
     @NonNull
-    Single<Integer> requestEmotionAnalyze(@NonNull final EmotionAnalyzeRequest request);
+    Single<Emotion> requestEmotionAnalyze(@NonNull final EmotionAnalyzeRequest request);
 }

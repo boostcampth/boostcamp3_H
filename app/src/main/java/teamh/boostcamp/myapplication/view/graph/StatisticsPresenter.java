@@ -7,7 +7,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.repository.StatisticsRepository;
 
-class StatisticsPresenter {
+public class StatisticsPresenter {
 
     @NonNull
     private StatisticsRepository statisticsRepository;

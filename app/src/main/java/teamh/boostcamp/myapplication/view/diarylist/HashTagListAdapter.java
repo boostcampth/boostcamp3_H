@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -12,7 +13,6 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ItemHashTagBinding;
-import teamh.boostcamp.myapplication.view.adapter.OnItemClickListener;
 
 public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.TagHolder> {
 
@@ -20,7 +20,7 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
 
     private List<String> itemList;
     private Context context;
-    private OnItemClickListener itemClickListener;
+    private OnHashTagItemClickListener onHashTagItemClickListener;
 
 
     HashTagListAdapter(Context context) {
@@ -28,15 +28,15 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
         this.itemList = new ArrayList<>();
     }
 
-    void setItemClickListener(@NonNull OnItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+    void setItemClickListener(@NonNull OnHashTagItemClickListener onHashTagItemClickListener) {
+        this.onHashTagItemClickListener = onHashTagItemClickListener;
     }
 
     @Override
     public void onBindViewHolder(@NonNull TagHolder holder, final int position) {
         holder.itemHashTagBinding.textViewItemTagTitle.setText(itemList.get(position));
-        if (itemClickListener != null) {
-            holder.itemHashTagBinding.btnItemTagRemove.setOnClickListener(view -> itemClickListener.onClickItem(position));
+        if (onHashTagItemClickListener != null) {
+            holder.itemHashTagBinding.btnItemTagRemove.setOnClickListener(view -> onHashTagItemClickListener.onClick(itemList.get(position)));
         }
     }
 
@@ -60,17 +60,28 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
     @NonNull
     String getTags() {
         String result = "";
-        for (String item : itemList) {
-            result = result.concat(item + " ");
+        int size = itemList.size();
+        if (size >= 1) {
+            result = itemList.get(0).substring(1);
+        }
+        for (int i = 1; i < size; ++i) {
+            result += itemList.get(i);
         }
         return result;
     }
 
 
-    public void removeItem(int position) {
-        if (itemList != null && position < itemList.size()) {
-            itemList.remove(position);
-            notifyItemRemoved(position);
+    public void removeItem(String hashTag) {
+        Iterator<String> it = itemList.iterator();
+        int pos = 0;
+        while (it.hasNext()) {
+            String temp = it.next();
+            if (temp.equals(hashTag)) {
+                it.remove();
+                notifyDataSetChanged();
+                return;
+            }
+            pos++;
         }
     }
 
@@ -79,18 +90,25 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
             itemList = new ArrayList<>();
         } else {
             itemList.clear();
+            notifyDataSetChanged();
         }
     }
 
     void addItem(@NonNull String item) {
-        if(item.equals("#")) {
+        if (item.equals("#")) {
             return;
         }
         if (itemList == null) {
             itemList = new ArrayList<>();
         }
+        Iterator<String> it = itemList.iterator();
+        while (it.hasNext()) {
+            if (it.next().equals(item)) {
+                return;
+            }
+        }
         if (itemList.size() >= MAX_TAG_NUM) {
-            removeItem(0);
+            removeItem(itemList.get(0));
         }
 
         // 아이템 뒤에 추가하기

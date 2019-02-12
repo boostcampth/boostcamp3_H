@@ -38,6 +38,7 @@
     </string-array>
 
     <string name="emojitest">&#128522;</string>
+    <string name="statistics_title">Statistics</string>
 
     <string name="mad">😡</string>
     <string name="bad">😞</string>

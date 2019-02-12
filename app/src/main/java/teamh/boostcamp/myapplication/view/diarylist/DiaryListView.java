@@ -10,6 +10,8 @@ public interface DiaryListView {
 
     void addDiaryList(@NonNull List<Diary> diaryList);
 
+    void insertDiaryList(@NonNull Diary diary);
+
     void showLoadDiaryListFailMsg();
 
     void showSaveDiaryFail();
@@ -23,4 +25,6 @@ public interface DiaryListView {
     void showEmotionNotSelected();
 
     void showRecordFileNotFound();
+
+    void setIsSaving(boolean isSaving);
 }

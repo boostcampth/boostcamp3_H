@@ -1,7 +1,6 @@
 package teamh.boostcamp.myapplication.data.local.room;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,16 +21,13 @@ import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.converter.DateTypeConverter;
 import teamh.boostcamp.myapplication.data.local.room.converter.EmotionTypeConverter;
 import teamh.boostcamp.myapplication.data.local.room.converter.StringListTypeConverter;
-import teamh.boostcamp.myapplication.data.local.room.dao.AppDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
-import teamh.boostcamp.myapplication.data.local.room.dao.LegacyDiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.dao.RecallDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Emotion;
-import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 
-@Database(entities = {LegacyDiary.class, DiaryEntity.class, RecallEntity.class}, version = 7, exportSchema = false)
+@Database(entities = {DiaryEntity.class, RecallEntity.class}, version = 8, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -52,6 +48,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                 @Override
                                 public void onCreate(@NonNull SupportSQLiteDatabase db) {
                                     super.onCreate(db);
+
                                     // FIXME 더미 데이터 추가
                                     final String filePath = "/storage/emulated/0/2019-02-08.acc";
                                     final File file = new File("/storage/emulated/0/2019-02-08.acc");

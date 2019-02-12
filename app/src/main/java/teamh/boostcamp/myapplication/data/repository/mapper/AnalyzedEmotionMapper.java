@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.response.EmotionAnalysisResponse;
 
 public class AnalyzedEmotionMapper {
@@ -22,7 +23,7 @@ public class AnalyzedEmotionMapper {
      *  안좋은 감정 -1 점, 보통 감정 0 점, 좋은 감정 1 점으로 설정하고
      *  (각 감정 X 점수들을 합산) / 전체 시간 = -1 ~ 1 사이의 값으로 정규화하고
      *  0.4 단위로 각 구간을 0 - 4 값으로 매핑하여 돌려주는 것이다.*/
-    public static int parseAnalyzedEmotion(@NonNull List<EmotionAnalysisResponse> emotionAnalysisResponses) {
+    public static Emotion parseAnalyzedEmotion(@NonNull List<EmotionAnalysisResponse> emotionAnalysisResponses) {
 
         if (SCORE_MAP == null) {
             SCORE_MAP = new HashMap<>();
@@ -36,7 +37,7 @@ public class AnalyzedEmotionMapper {
         }
 
         // 기본 기분은 평범으로 설정
-        int result = NEUTRAL_EMOTION;
+        int result = 2;
 
         int totalTime = 0;
         int totalScore = 0;
@@ -58,7 +59,7 @@ public class AnalyzedEmotionMapper {
 
         float emotion = (float) totalScore / (float) totalTime;
 
-        Log.e("Test", emotion + " ");
+        Log.d("Test", emotion + " ");
 
         if (-1 <= emotion && emotion < -0.6) {
             result = 0;
@@ -72,6 +73,6 @@ public class AnalyzedEmotionMapper {
 
         Log.d("Test TotalScore : ", totalScore + " TotalTime : " + totalTime + " Emotion : " + result);
 
-        return result;
+        return Emotion.fromValue(result);
     }
 }

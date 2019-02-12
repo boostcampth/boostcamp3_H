@@ -8,13 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
-import teamh.boostcamp.myapplication.view.BaseActivity;
 
 public class PasswordActivity extends AppCompatActivity implements PasswordView {
 
     private PasswordPresenter presenter;
     private ActivityPasswordBinding binding;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,12 +21,12 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
         initPresenter();
     }
 
-    private void init(){
+    private void init() {
         binding = DataBindingUtil.setContentView(this, getLayoutId());
         binding.setActivity(PasswordActivity.this);
     }
 
-    private void initPresenter(){
+    private void initPresenter() {
         presenter = new PasswordPresenter(this);
     }
 
