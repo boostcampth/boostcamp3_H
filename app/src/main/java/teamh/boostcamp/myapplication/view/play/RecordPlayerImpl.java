@@ -17,7 +17,7 @@ public class RecordPlayerImpl implements RecordPlayer {
     private boolean playState = false;
     private int count = 0;
 
-    static RecordPlayerImpl getINSTANCE() {
+    public static RecordPlayerImpl getINSTANCE() {
         if (INSTANCE == null) {
             synchronized (RecordPlayerImpl.class) {
                 INSTANCE = new RecordPlayerImpl();

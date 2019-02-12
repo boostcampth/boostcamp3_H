@@ -3,15 +3,19 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.ObservableBoolean;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
+import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
+import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 public class DiaryListPresenter {
     @NonNull
@@ -24,20 +28,21 @@ public class DiaryListPresenter {
     private DiaryRecorder diaryRecorder;
     @NonNull
     private Date lastItemLoadedTime;
-
     @NonNull
-    public final ObservableBoolean isSaving = new ObservableBoolean(false);
-
+    private RecordPlayer recordPlayer;
+    @Nullable
     private Emotion selectedEmotion;
     private boolean isLoading;
     private boolean isRecording;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
                        @NonNull DiaryRepository diaryRepository,
-                       @NonNull DiaryRecorder diaryRecorder) {
+                       @NonNull DiaryRecorder diaryRecorder,
+                       @NonNull RecordPlayer recordPlayer) {
         this.diaryListView = diaryListView;
         this.diaryRepository = diaryRepository;
         this.diaryRecorder = diaryRecorder;
+        this.recordPlayer = recordPlayer;
         this.compositeDisposable = new CompositeDisposable();
         this.selectedEmotion = null;
         this.isLoading = false;
@@ -125,6 +130,11 @@ public class DiaryListPresenter {
         } else {
             // TODO : 기능 구현
         }
+    }
+
+    public void playDiaryRecord(List<Diary> diaries) {
+        recordPlayer.setList(diaries);
+        recordPlayer.playList();
     }
 
     public void setSelectedEmotion(@NonNull Emotion emotion) {

@@ -33,6 +33,7 @@ import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
+import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
 public class DiaryListFragment extends Fragment implements DiaryListView {
 
@@ -158,7 +159,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private void initPresenter() {
         presenter = new DiaryListPresenter(this,
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao(), DeepAffectApiClient.getInstance()),
-                new DiaryRecorderImpl());
+                new DiaryRecorderImpl(),
+                RecordPlayerImpl.getINSTANCE());
     }
 
     private void initView() {
@@ -217,6 +219,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter(context);
         diaryListAdapter.setOnRecordItemClickListener(pos -> {
+            presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)));
         });
 
         hashTagListAdapter = new HashTagListAdapter(context);
