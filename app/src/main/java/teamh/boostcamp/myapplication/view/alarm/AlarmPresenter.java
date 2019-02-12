@@ -6,10 +6,10 @@ import androidx.annotation.NonNull;
 
 public class AlarmPresenter {
 
-    private AlarmContractor.View view;
+    private AlarmView view;
     private AlarmHelper alarmHelper;
 
-    AlarmPresenter(AlarmContractor.View view, @NonNull AlarmHelper alarmHelper) {
+    AlarmPresenter(AlarmView view, @NonNull AlarmHelper alarmHelper) {
         this.view = view;
         this.alarmHelper = alarmHelper;
     }

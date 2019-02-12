@@ -8,15 +8,17 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreference;
 import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
-import teamh.boostcamp.myapplication.view.BaseActivity;
 import teamh.boostcamp.myapplication.view.Handlers;
 
-public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
-        AlarmContractor.View, TimePickerDialog.OnTimeSetListener, Handlers {
+public class AlarmActivity extends AppCompatActivity implements
+        AlarmView, TimePickerDialog.OnTimeSetListener, Handlers {
 
+    private ActivityAlarmBinding binding;
     private AlarmPresenter presenter;
     private Calendar calendar;
     private boolean isChecked = false;
@@ -26,8 +28,22 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        initView();
-        // 람다식
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_alarm);
+        init();
+    }
+
+    private void init() {
+        SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
+        alarmHelper = new AlarmHelperImpl(getApplicationContext());
+
+        initViews();
+        initPresenter();
+    }
+
+    private void initViews() {
+        binding.setActivity(AlarmActivity.this);
+        binding.setHandlers(this);
+
         binding.switchAlarm.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
                 this.isChecked = true;
@@ -40,10 +56,13 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
         });
     }
 
+    private void initPresenter() {
+        presenter = new AlarmPresenter(AlarmActivity.this, alarmHelper);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //presenter.onViewDetached();
         calendar = null;
         presenter = null;
     }
@@ -52,28 +71,6 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
     protected void onResume() {
         super.onResume();
         checkState();
-    }
-
-    private void initView() {
-        SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
-        alarmHelper = new AlarmHelperImpl(getApplicationContext());
-        presenter = new AlarmPresenter(AlarmActivity.this, alarmHelper);
-        binding.setActivity(AlarmActivity.this);
-        binding.setHandlers(this);
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.activity_alarm;
-    }
-
-    public void onClickButton(int id) {
-        switch (id) {
-            case R.id.btn_alarm_select:
-                TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
-                timePickerFragment.show(getSupportFragmentManager(), "time picker");
-                break;
-        }
     }
 
     @Override
@@ -115,6 +112,16 @@ public class AlarmActivity extends BaseActivity<ActivityAlarmBinding> implements
             binding.llAlarmTimeLayout.setVisibility(View.VISIBLE);
         } else {
             binding.llAlarmTimeLayout.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void onClickButton(int id) {
+        switch (id) {
+            case R.id.btn_alarm_select:
+                TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
+                timePickerFragment.show(getSupportFragmentManager(), "time picker");
+                break;
         }
     }
 
