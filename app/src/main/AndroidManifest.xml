@@ -17,12 +17,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="teamh.boostcamp.myapplication.view.password.PasswordActivity"/>
-        <activity android:name="teamh.boostcamp.myapplication.view.alarm.AlarmActivity" />
-        <activity android:name="teamh.boostcamp.myapplication.view.setting.SettingActivity" />
-        <activity android:name="teamh.boostcamp.myapplication.view.play.PlayActivity" />
+        <activity android:name=".view.password.PasswordSelectActivity"></activity>
+        <activity android:name=".view.password.PasswordActivity" />
+        <activity android:name=".view.alarm.AlarmActivity" />
+        <activity android:name=".view.setting.SettingActivity" />
+        <activity android:name=".view.play.PlayActivity" />
         <activity
-            android:name="teamh.boostcamp.myapplication.view.main.MainActivity"
+            android:name=".view.main.MainActivity"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +32,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name="teamh.boostcamp.myapplication.view.alarm.AlertReceiver" />
+        <receiver android:name=".view.alarm.AlertReceiver" />
     </application>
 
 </manifest>
