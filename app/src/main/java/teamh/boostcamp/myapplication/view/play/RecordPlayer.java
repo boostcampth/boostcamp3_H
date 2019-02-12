@@ -2,11 +2,11 @@ package teamh.boostcamp.myapplication.view.play;
 
 import java.util.List;
 
-import teamh.boostcamp.myapplication.data.model.LegacyDiary;
+import teamh.boostcamp.myapplication.data.model.Diary;
 
 public interface RecordPlayer {
 
-    void setList(List<LegacyDiary> list);
+    void setList(List<Diary> list);
 
     void playList();
 

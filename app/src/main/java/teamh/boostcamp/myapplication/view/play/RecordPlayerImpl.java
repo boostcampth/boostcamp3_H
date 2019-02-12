@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import teamh.boostcamp.myapplication.data.model.LegacyDiary;
+import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class RecordPlayerImpl implements RecordPlayer{
     private static final String TAG = "RecordPlayerImpl";
     private static RecordPlayerImpl INSTANCE;
     private MediaPlayer mediaPlayer;
-    private List<LegacyDiary> playList;
+    private List<Diary> playList;
     private boolean playState = false;
     private int count = 0;
 
@@ -36,7 +36,7 @@ public class RecordPlayerImpl implements RecordPlayer{
     }
 
     @Override
-    public void setList(List<LegacyDiary> playList) {
+    public void setList(List<Diary> playList) {
         this.playList = playList;
     }
 

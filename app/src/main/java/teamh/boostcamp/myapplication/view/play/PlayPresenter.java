@@ -1,40 +1,19 @@
 package teamh.boostcamp.myapplication.view.play;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
-import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 
-public class PlayPresenter implements PlayContractor.Presenter {
-    private PlayContractor.View view;
-    private AppDatabase appDatabase;
+public class PlayPresenter{
+    private PlayView view;
     private RecordPlayer recordPlayer;
-    private CompositeDisposable compositeDisposable;
 
-    PlayPresenter(AppDatabase appDatabase, RecordPlayerImpl recordPlayer, PlayContractor.View view) {
-        this.appDatabase = appDatabase;
+    PlayPresenter(RecordPlayer recordPlayer, PlayView view) {
         this.recordPlayer = recordPlayer;
         this.view = view;
-        compositeDisposable = new CompositeDisposable();
     }
 
-    @Override
-    public void onViewAttached() {
-
-    }
-
-    @Override
-    public void onViewDetached() {
-        recordPlayer.stopList();
-        recordPlayer = null;
-        appDatabase = null;
-    }
-
-    @Override
     public void loadData(int MemoryId) {
     }
 
-    @Override
     public void playMemory() {
         if (!recordPlayer.isPlaying()) {
             recordPlayer.playList();
@@ -44,7 +23,6 @@ public class PlayPresenter implements PlayContractor.Presenter {
         }
     }
 
-    @Override
     public void stopMemory() {
         if(recordPlayer.isPlaying()){
             recordPlayer.stopList();

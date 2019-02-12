@@ -4,8 +4,7 @@ import java.util.List;
 
 import teamh.boostcamp.myapplication.data.model.LegacyDiary;
 
-public interface PlayerView {
+public interface PlayView {
 
-    void setDiaryList(List<LegacyDiary> diaryList);
     void makeToast(String string);
 }
