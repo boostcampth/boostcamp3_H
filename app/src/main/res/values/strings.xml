@@ -5,9 +5,9 @@
     <string name="item_record_done">Done</string>
     <string name="item_record_today">Today</string>
     <string name="item_record_permission_title">권한 요구</string>
-    <string name="item_record_permission_msg">
-        일기 녹음 : 마이크
-        일기 저장 : 내부저장소 쓰기 권한
+    <string name="item_record_permission_msg"> 일기를 녹음하고 저장할 때 아래 두 권한이 필요합니다 !\n
+        - 마이크 사용 권한\n
+        - 내부저장소 쓰기 권한
     </string>
     <string name="item_record_permission_denied">권한 허용이 필요합니다 !</string>
     <string name="item_record_hash_tag_hint">Tag 를 입력해주세요</string>

@@ -58,16 +58,8 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
     }
 
     @NonNull
-    String getTags() {
-        String result = "";
-        int size = itemList.size();
-        if (size >= 1) {
-            result = itemList.get(0).substring(1);
-        }
-        for (int i = 1; i < size; ++i) {
-            result += itemList.get(i);
-        }
-        return result;
+    List<String> getTags() {
+        return itemList;
     }
 
 

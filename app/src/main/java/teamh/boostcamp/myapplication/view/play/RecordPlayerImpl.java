@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class RecordPlayerImpl implements RecordPlayer {
@@ -23,7 +24,7 @@ public class RecordPlayerImpl implements RecordPlayer {
                 INSTANCE = new RecordPlayerImpl();
             }
         }
-
+        INSTANCE.initMediaPlayer();
         return INSTANCE;
     }
 
@@ -59,7 +60,6 @@ public class RecordPlayerImpl implements RecordPlayer {
         } else {
             stopList();
         }
-
     }
 
     @Override
@@ -89,7 +89,6 @@ public class RecordPlayerImpl implements RecordPlayer {
                     } catch (IOException e) {
                         Log.d(TAG, "playList: IOException" + Arrays.toString(e.getStackTrace()));
                     }
-
                     mediaPlayer.start();
                 } else {
                     stopList();
@@ -98,4 +97,8 @@ public class RecordPlayerImpl implements RecordPlayer {
         }
     }
 
+    @Override
+    public void setOnCompletionListener(@NonNull MediaPlayer.OnCompletionListener onCompletionListener) {
+        mediaPlayer.setOnCompletionListener(onCompletionListener);
+    }
 }

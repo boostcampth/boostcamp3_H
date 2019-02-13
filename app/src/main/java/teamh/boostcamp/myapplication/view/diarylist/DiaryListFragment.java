@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
@@ -32,13 +33,11 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
-import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
 public class DiaryListFragment extends Fragment implements DiaryListView {
 
     private static final int LOAD_ITEM_NUM = 3;
-    private static final int NEW_ITEM_LOAD = 1;
     public final ObservableBoolean isSaving = new ObservableBoolean(false);
 
     private Context context;
@@ -60,7 +59,13 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context = context;
+        this.context = context.getApplicationContext();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onViewDestroyed();
     }
 
     @Override
@@ -72,11 +77,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         compositeDisposable = new CompositeDisposable();
-
-        initPresenter();
-        initAdapter();
     }
 
     @Nullable
@@ -85,7 +86,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false);
         binding.setFragment(DiaryListFragment.this);
-
+        initPresenter();
+        initAdapter();
         initView();
 
         presenter.loadDiaryList(LOAD_ITEM_NUM);
@@ -99,9 +101,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
-    public void notifyTodayDiarySaved() {
-        isSaving.set(false);
-        presenter.loadDiaryList(NEW_ITEM_LOAD);
+    public void onPlayFileChanged(final int lastPlayedIndex, final boolean isFinished) {
+        diaryListAdapter.changePlayItemIcon(lastPlayedIndex, isFinished);
     }
 
     @Override
@@ -138,8 +139,11 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void insertDiaryList(@NonNull Diary diary) {
         diaryListAdapter.insertDiaryItem(diary);
-        clearRecorder();
-        // view 사라지게 하기
+    }
+
+    @Override
+    public void setRecordCardVisibilityGone() {
+        binding.cvFragmentDiaryRecord.setVisibility(View.GONE);
     }
 
     @Override
@@ -147,11 +151,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         this.isSaving.set(isSaving);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        presenter.onViewDestroyed();
-    }
 
     private void showToastMessage(@StringRes final int stringId) {
         Toast.makeText(context, getString(stringId), Toast.LENGTH_SHORT).show();
@@ -159,13 +158,16 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     private void initPresenter() {
         presenter = new DiaryListPresenter(this,
-                DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(context).diaryDao(), DeepAffectApiClient.getInstance()),
+                DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
+                        context.getApplicationContext()).diaryDao(),
+                        DeepAffectApiClient.getInstance()),
                 new DiaryRecorderImpl(),
-                RecordPlayerImpl.getINSTANCE());
+                RecordPlayerImpl.getINSTANCE(),
+                SharedPreferenceManager.getInstance(context.getApplicationContext()));
     }
 
     private void initView() {
-
+        presenter.onViewCreated();
         binding.recyclerViewMainList.setNestedScrollingEnabled(false);
         binding.recyclerViewMainList.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         binding.recyclerViewMainList.setAdapter(diaryListAdapter);
@@ -180,34 +182,33 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         binding.recyclerViewItemRecordTags.setAdapter(hashTagListAdapter);
         binding.recyclerViewItemRecordTags.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
 
-        binding.buttonRecordItemRecord.setOnClickListener(v -> {
-            TedRx2Permission.with(context)
-                    .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
-                    .setRationaleTitle("임시 타이틀")
-                    .setRationaleMessage("임시 설명")
-                    .request()
-                    .subscribe(tedPermissionResult -> {
-                        if (tedPermissionResult.isGranted()) {
-                            KeyPadUtil.closeKeyPad(context, binding.etItemRecordInput);
-
-                            if (isRecording) {
-                                binding.rpbRecordItemBackground.stopRippleAnimation();
-                                isRecording = false;
-                                presenter.finishRecording();
+        binding.buttonRecordItemRecord.setOnClickListener(v ->
+                compositeDisposable.add(TedRx2Permission.with(context)
+                        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
+                        .setRationaleTitle(context.getString(R.string.item_record_permission_title))
+                        .setRationaleMessage(context.getString(R.string.item_record_permission_msg))
+                        .request()
+                        .subscribe(tedPermissionResult -> {
+                            if (tedPermissionResult.isGranted()) {
+                                KeyPadUtil.closeKeyPad(context, binding.etItemRecordInput);
+                                if (isRecording) {
+                                    binding.rpbRecordItemBackground.stopRippleAnimation();
+                                    isRecording = false;
+                                    presenter.finishRecording();
+                                } else {
+                                    binding.rpbRecordItemBackground.startRippleAnimation();
+                                    isRecording = true;
+                                    presenter.startRecording();
+                                }
+                                presenter.setIsRecording(isRecording);
                             } else {
-                                binding.rpbRecordItemBackground.startRippleAnimation();
-                                isRecording = true;
-                                presenter.startRecording();
+                                showToastMessage(R.string.item_record_permission_denied);
                             }
-                            presenter.setIsRecording(isRecording);
-                        } else {
-                            showToastMessage(R.string.item_record_permission_denied);
-                        }
-                    }, Throwable::printStackTrace);
-        });
+                        }, Throwable::printStackTrace))
+        );
 
         binding.buttonItemRecordDone.setOnClickListener(v ->
-            presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context))
+                presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context))
         );
 
         binding.tvRecordItemPgood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.GOOD));
@@ -219,17 +220,11 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter(context);
-        diaryListAdapter.setOnRecordItemClickListener(pos -> {
-            presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)));
-        });
+        diaryListAdapter.setOnRecordItemClickListener(pos ->
+                presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)), pos)
+        );
 
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
-    }
-
-    private void clearRecorder() {
-        binding.etItemRecordInput.setText("");
-        hashTagListAdapter.clearItems();
-        presenter.setSelectedEmotion(null);
     }
 }

@@ -16,11 +16,12 @@ public interface DiaryRepository {
     @NonNull
     Single<List<Diary>> loadDiaryList(@NonNull final Date startAfter,
                                       final int pageSize);
-
     @NonNull
     Completable insertDiary(@NonNull final DiaryEntity diaryEntity);
 
-
     @NonNull
     Single<Emotion> requestEmotionAnalyze(@NonNull final EmotionAnalyzeRequest request);
+
+    @NonNull
+    Single<Diary> loadRecentInsertedDiary();
 }
