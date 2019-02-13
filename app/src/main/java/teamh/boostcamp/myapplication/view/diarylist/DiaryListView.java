@@ -16,8 +16,6 @@ public interface DiaryListView {
 
     void showSaveDiaryFail();
 
-    void notifyTodayDiarySaved();
-
     void showRecordTimeOutMsg();
 
     void showRecordNotFinished();
@@ -27,4 +25,6 @@ public interface DiaryListView {
     void showRecordFileNotFound();
 
     void setIsSaving(boolean isSaving);
+
+    void onPlayFileChanged(final int lastPlayedIndex, final boolean isFinished);
 }

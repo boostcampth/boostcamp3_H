@@ -54,4 +54,13 @@ public class Diary implements Serializable {
     public Emotion getSelectedEmotion() {
         return selectedEmotion;
     }
+
+    @Override
+    public String toString() {
+        String result = "";
+        for(String item : tags) {
+            result = result.concat(item + " ");
+        }
+        return result;
+    }
 }

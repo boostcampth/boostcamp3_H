@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class RecordPlayerImpl implements RecordPlayer {
@@ -96,4 +97,8 @@ public class RecordPlayerImpl implements RecordPlayer {
         }
     }
 
+    @Override
+    public void setOnCompletionListener(@NonNull MediaPlayer.OnCompletionListener onCompletionListener) {
+        mediaPlayer.setOnCompletionListener(onCompletionListener);
+    }
 }

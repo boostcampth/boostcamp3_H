@@ -64,6 +64,12 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onViewDestroyed();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         compositeDisposable.clear();
@@ -72,11 +78,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         compositeDisposable = new CompositeDisposable();
-
-        initPresenter();
-        initAdapter();
     }
 
     @Nullable
@@ -85,7 +87,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false);
         binding.setFragment(DiaryListFragment.this);
-
+        initPresenter();
+        initAdapter();
         initView();
 
         presenter.loadDiaryList(LOAD_ITEM_NUM);
@@ -99,9 +102,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
-    public void notifyTodayDiarySaved() {
-        isSaving.set(false);
-        presenter.loadDiaryList(NEW_ITEM_LOAD);
+    public void onPlayFileChanged(final int lastPlayedIndex, final boolean isFinished) {
+        diaryListAdapter.changePlayItemIcon(lastPlayedIndex, isFinished);
     }
 
     @Override
@@ -138,8 +140,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void insertDiaryList(@NonNull Diary diary) {
         diaryListAdapter.insertDiaryItem(diary);
+        isSaving.set(false);
         clearRecorder();
-        // view 사라지게 하기
     }
 
     @Override
@@ -147,11 +149,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         this.isSaving.set(isSaving);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        presenter.onViewDestroyed();
-    }
 
     private void showToastMessage(@StringRes final int stringId) {
         Toast.makeText(context, getString(stringId), Toast.LENGTH_SHORT).show();
@@ -219,9 +216,10 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter(context);
-        diaryListAdapter.setOnRecordItemClickListener(pos -> {
-            presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)));
-        });
+        diaryListAdapter.setOnRecordItemClickListener(pos ->
+            presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)), pos)
+        );
+
 
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));

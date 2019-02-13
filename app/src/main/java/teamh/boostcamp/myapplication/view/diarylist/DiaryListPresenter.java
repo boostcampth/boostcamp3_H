@@ -1,14 +1,15 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
@@ -17,6 +18,9 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 class DiaryListPresenter {
+
+    private static final int NOTHING_PLAYED = -1;
+
     @NonNull
     final private DiaryRepository diaryRepository;
     @NonNull
@@ -34,7 +38,7 @@ class DiaryListPresenter {
     private Emotion selectedEmotion;
     private boolean isLoading;
     private boolean isRecording;
-    private boolean isRecordPlaying;
+    private int lastPlayedPosition;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
                        @NonNull DiaryRepository diaryRepository,
@@ -49,7 +53,7 @@ class DiaryListPresenter {
 
         this.isLoading = false;
         this.isRecording = false;
-        this.isRecordPlaying = false;
+        this.lastPlayedPosition = NOTHING_PLAYED;
         this.lastItemLoadedTime = new Date();
 
         initMediaListener();
@@ -69,12 +73,9 @@ class DiaryListPresenter {
                                 if (diaries.size() == 0) {
                                     return;
                                 }
-                                if (pageSize == 3) {
-                                    lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
-                                    diaryListView.addDiaryList(diaries);
-                                } else {
-                                    diaryListView.insertDiaryList(diaries.get(0));
-                                }
+                                lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
+                                diaryListView.addDiaryList(diaries);
+
                             }
                             , throwable -> {
                                 isLoading = false;
@@ -84,7 +85,7 @@ class DiaryListPresenter {
         }
     }
 
-    void saveDiary(@NonNull final String tags, final boolean isNetworkAvailable) {
+    void saveDiary(@NonNull final List<String> tags, final boolean isNetworkAvailable) {
 
         if (isRecording) {
             diaryListView.showRecordNotFinished();
@@ -96,7 +97,7 @@ class DiaryListPresenter {
             return;
         }
 
-        File file = new File(diaryRecorder.getFilePath());
+        final File file = new File(diaryRecorder.getFilePath());
 
         if (!file.exists()) {
             diaryListView.showRecordFileNotFound();
@@ -114,31 +115,40 @@ class DiaryListPresenter {
                     map(emotion -> new DiaryEntity(0,
                             new Date(),
                             file.getAbsolutePath(),
-                            Arrays.asList(tags.split("#")),
+                            tags,
                             selectedEmotion,
                             emotion))
                     .flatMapCompletable(diaryRepository::insertDiary)
-                    .subscribe(() -> {
-                                diaryListView.notifyTodayDiarySaved();
-                                diaryListView.setIsSaving(false);
-                            }
-                            , throwable -> {
-                                diaryListView.showSaveDiaryFail();
-                                diaryListView.setIsSaving(false);
-                            }
-                    ));
+                    .andThen(diaryRepository.loadRecentInsertedDiary())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(diary -> {
+                        diaryListView.insertDiaryList(diary);
+                        diaryListView.setIsSaving(false);
+                    }, Throwable::printStackTrace));
         } else {
             // TODO : 기능 구현
         }
     }
 
-    void playDiaryRecord(List<Diary> diaries) {
-        if(isRecordPlaying) {
+    void playDiaryRecord(@NonNull List<Diary> diaries, final int currentPlayPosition) {
+        // 재생중
+        if (lastPlayedPosition != NOTHING_PLAYED) {
             recordPlayer.stopList();
+            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
+            if (lastPlayedPosition == currentPlayPosition) {
+                lastPlayedPosition = NOTHING_PLAYED;
+            } else {
+                recordPlayer.setList(diaries);
+                recordPlayer.playList();
+                lastPlayedPosition = currentPlayPosition;
+                diaryListView.onPlayFileChanged(lastPlayedPosition, false);
+            }
+        } else {
+            lastPlayedPosition = currentPlayPosition;
+            diaryListView.onPlayFileChanged(lastPlayedPosition, false);
+            recordPlayer.setList(diaries);
+            recordPlayer.playList();
         }
-
-        recordPlayer.setList(diaries);
-        recordPlayer.playList();
     }
 
     void setSelectedEmotion(@Nullable Emotion emotion) {
@@ -161,6 +171,11 @@ class DiaryListPresenter {
         diaryRecorder.setMediaRecorderTimeOutListener(() -> {
             diaryRecorder.finishRecord();
             diaryListView.showRecordTimeOutMsg();
+        });
+
+        recordPlayer.setOnCompletionListener(mediaPlayer -> {
+            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
+            lastPlayedPosition = NOTHING_PLAYED;
         });
     }
 
