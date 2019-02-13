@@ -27,7 +27,6 @@ public class LockManager {
         if (lockHelper == null) {
             lockHelper = new LockHelperImpl(application.getApplicationContext());
         }
-        lockHelper.enable();
     }
 
 
