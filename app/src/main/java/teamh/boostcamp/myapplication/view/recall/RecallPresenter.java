@@ -44,9 +44,7 @@ public class RecallPresenter {
                         new Date(),
                         Emotion.fromValue(generateRandomNumber(5))))
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(recall -> {
-                            Log.d("!!!!!!!!", "generateRecall: !!!!!!!");
-                            view.addRecall(recall);})
+                        .subscribe(recall -> view.addRecall(recall))
         );
     }
 
