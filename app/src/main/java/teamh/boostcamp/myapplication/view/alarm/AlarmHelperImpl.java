@@ -17,10 +17,11 @@ public class AlarmHelperImpl implements AlarmHelper {
 
     private Context context;
     private AlarmManager alarmManager;
+    private SharedPreferenceManager sharedPreferenceManager;
 
     AlarmHelperImpl(@NonNull Context context) {
         this.context = context;
-        SharedPreferenceManager.getInstance(context); // 초기화 작업
+        this.sharedPreferenceManager = SharedPreferenceManager.getInstance(context); // 초기화 작업
     }
 
     @NonNull
@@ -59,7 +60,7 @@ public class AlarmHelperImpl implements AlarmHelper {
 
         // SharedPreferenceManager 저장하는 로직. String으로 저장.
         String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        SharedPreferenceManager.getInstance(context).setPreferencePushTime(timeText);
+        sharedPreferenceManager.setPreferencePushTime(timeText);
     }
 
     // 알람 해제
@@ -72,7 +73,7 @@ public class AlarmHelperImpl implements AlarmHelper {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
 
             alarmManager.cancel(pendingIntent);
-            SharedPreferenceManager.getInstance(context).removePreferencePushTime();
+            sharedPreferenceManager.removePreferencePushTime();
             return true; // 시간 설정 text
         } else {
             return false; // 오류 text

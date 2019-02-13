@@ -18,6 +18,7 @@ import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 public class AlarmActivity extends AppCompatActivity implements
         AlarmView, TimePickerDialog.OnTimeSetListener {
 
+    private SharedPreferenceManager sharedPreferenceManager;
     private ActivityAlarmBinding binding;
     private AlarmPresenter presenter;
     private Calendar calendar;
@@ -34,7 +35,7 @@ public class AlarmActivity extends AppCompatActivity implements
     }
 
     private void init() {
-        SharedPreferenceManager.getInstance(AlarmActivity.this);
+        sharedPreferenceManager = SharedPreferenceManager.getInstance(AlarmActivity.this);
 
         initViews();
         initPresenter();
@@ -95,8 +96,8 @@ public class AlarmActivity extends AppCompatActivity implements
 
     @Override
     public void checkState() {
-        time = SharedPreferenceManager.getInstance(AlarmActivity.this).getPreferencePushTime(null);
-        System.out.println("time test : " + time);
+        time = sharedPreferenceManager.getPreferencePushTime(null);
+
         if (time != null) {
             setVisibility(true);
             binding.tvAlarmTimeText.setText(time);
