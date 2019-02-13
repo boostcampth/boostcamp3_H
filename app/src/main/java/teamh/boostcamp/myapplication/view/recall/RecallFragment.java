@@ -55,6 +55,11 @@ public class RecallFragment extends Fragment implements RecallView {
     }
 
     @Override
+    public void addRecall(@NonNull Recall recall) {
+        recallListAdapter.addItem(recall);
+    }
+
+    @Override
     public void deleteRecall(int position) {
         recallListAdapter.deleteItem(position);
     }

@@ -68,10 +68,15 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         notifyDataSetChanged();
     }
 
+    void addItem(Recall recall) {
+        this.itemList.add(0, recall);
+        notifyItemInserted(0);
+        notifyItemRangeChanged(0, itemList.size());
+    }
+
     void deleteItem(int position){
         this.itemList.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(position, itemList.size());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

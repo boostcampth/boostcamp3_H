@@ -59,8 +59,17 @@ public class RecallRepositoryImpl implements RecallRepository {
 
     @NonNull
     @Override
-    public Completable insertRecall(@NonNull final RecallEntity recallEntity) {
+    public Single<Recall> insertRecall(@NonNull final RecallEntity recallEntity) {
         return Completable.fromAction(() -> appDatabase.recallDao().insertRecall(recallEntity))
+                .subscribeOn(Schedulers.io())
+                .andThen(appDatabase.recallDao().loadRecentRecallEntity())
+                .flatMap(recallEntity1 -> {
+                    final Date endDate = generateEndDate(recallEntity.getCreatedDate());
+                    final Date startDate = generateStartDate(endDate);
+                    return appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(),
+                            startDate, endDate, 5)
+                            .map(diaries -> new Recall(recallEntity.getId(), startDate, endDate, recallEntity.getEmotion(), diaries));
+                })
                 .subscribeOn(Schedulers.io());
     }
 
