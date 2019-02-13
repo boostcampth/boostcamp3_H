@@ -11,16 +11,17 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
-import teamh.boostcamp.myapplication.data.local.SharedPreference;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 
 public class AlarmHelperImpl implements AlarmHelper {
 
     private Context context;
     private AlarmManager alarmManager;
+    private SharedPreferenceManager sharedPreferenceManager;
 
     AlarmHelperImpl(@NonNull Context context) {
         this.context = context;
-        SharedPreference.getInstance().loadSharedPreference(context); // 초기화 작업
+        this.sharedPreferenceManager = SharedPreferenceManager.getInstance(context); // 초기화 작업
     }
 
     @NonNull
@@ -50,16 +51,16 @@ public class AlarmHelperImpl implements AlarmHelper {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
 
         // 버전별 알람 매니저에게 시간을 설정.
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, userSettingTime, pendingIntent);
         } else {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, userSettingTime, pendingIntent);
         }
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userSettingTime, INTERVAL_TIME, pendingIntent);
 
-        // SharedPreference 저장하는 로직. String으로 저장.
+        // SharedPreferenceManager 저장하는 로직. String으로 저장.
         String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        SharedPreference.getInstance().setPreferencePushTime(timeText);
+        sharedPreferenceManager.setPreferencePushTime(timeText);
     }
 
     // 알람 해제
@@ -72,7 +73,7 @@ public class AlarmHelperImpl implements AlarmHelper {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
 
             alarmManager.cancel(pendingIntent);
-            SharedPreference.getInstance().removePreferencePushTime();
+            sharedPreferenceManager.removePreferencePushTime();
             return true; // 시간 설정 text
         } else {
             return false; // 오류 text

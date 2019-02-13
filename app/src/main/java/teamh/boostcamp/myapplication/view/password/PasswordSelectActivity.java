@@ -5,12 +5,11 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordSelectBinding;
 
-public class PasswordSelectActivity extends AppCompatActivity {
+public class PasswordSelectActivity extends LifecycleManageActivity {
 
     private ActivityPasswordSelectBinding binding;
 

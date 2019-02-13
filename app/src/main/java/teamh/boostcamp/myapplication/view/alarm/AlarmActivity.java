@@ -8,20 +8,22 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.local.SharedPreference;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
-import teamh.boostcamp.myapplication.view.Handlers;
 
 public class AlarmActivity extends AppCompatActivity implements
-        AlarmView, TimePickerDialog.OnTimeSetListener, Handlers {
+        AlarmView, TimePickerDialog.OnTimeSetListener {
 
+    private SharedPreferenceManager sharedPreferenceManager;
     private ActivityAlarmBinding binding;
     private AlarmPresenter presenter;
     private Calendar calendar;
     private boolean isChecked = false;
+    @Nullable
     private String time;
 
     @Override
@@ -33,7 +35,7 @@ public class AlarmActivity extends AppCompatActivity implements
     }
 
     private void init() {
-        SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
+        sharedPreferenceManager = SharedPreferenceManager.getInstance(AlarmActivity.this);
 
         initViews();
         initPresenter();
@@ -41,7 +43,6 @@ public class AlarmActivity extends AppCompatActivity implements
 
     private void initViews() {
         binding.setActivity(AlarmActivity.this);
-        binding.setHandlers(this);
 
         binding.switchAlarm.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
@@ -64,6 +65,7 @@ public class AlarmActivity extends AppCompatActivity implements
         super.onDestroy();
         calendar = null;
         presenter = null;
+        sharedPreferenceManager = null;
     }
 
     @Override
@@ -95,7 +97,8 @@ public class AlarmActivity extends AppCompatActivity implements
 
     @Override
     public void checkState() {
-        time = SharedPreference.getInstance().getPreferencePushTime(null);
+        time = sharedPreferenceManager.getPreferencePushTime(null);
+
         if (time != null) {
             setVisibility(true);
             binding.tvAlarmTimeText.setText(time);
@@ -115,16 +118,6 @@ public class AlarmActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onClickButton(int id) {
-        switch (id) {
-            case R.id.btn_alarm_select:
-                TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
-                timePickerFragment.show(getSupportFragmentManager(), "time picker");
-                break;
-        }
-    }
-
-    @Override
     public void updateCancelTimeText(boolean isCanceled) {
         if (isCanceled) {
             binding.tvAlarmTimeText.setText(getApplicationContext().getResources().getString(R.string.alarm_explain));
@@ -133,8 +126,7 @@ public class AlarmActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onClickListener(int id) {
+    public void onClickAlarmButtons(int id) {
         switch (id) {
             case R.id.iv_back_button:
                 finish();
@@ -145,6 +137,10 @@ public class AlarmActivity extends AppCompatActivity implements
                 } else {
                     finish();
                 }
+                break;
+            case R.id.btn_alarm_select:
+                TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
+                timePickerFragment.show(getSupportFragmentManager(), "time picker");
                 break;
         }
     }

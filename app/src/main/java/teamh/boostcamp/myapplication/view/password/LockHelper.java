@@ -17,8 +17,8 @@ public abstract class LockHelper {
 
     static final int DEFAULT_TIMEOUT = 0; // 2000ms
 
-    private int lockTimeOut;
-    private HashSet<String> ignoredActivities;
+    public int lockTimeOut;
+    public HashSet<String> ignoredActivities;
 
     LockHelper() {
         // 무시되는 액티비티들을 모아놓음.

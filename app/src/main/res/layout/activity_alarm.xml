@@ -9,27 +9,62 @@
             name="activity"
             type="teamh.boostcamp.myapplication.view.alarm.AlarmActivity" />
 
-        <variable
-            name="handlers"
-            type="teamh.boostcamp.myapplication.view.Handlers" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:background="@color/white"
         android:layout_height="match_parent"
+        android:background="@color/white"
         tools:context=".view.alarm.AlarmActivity">
 
-        <include
-            layout="@layout/toolbar_layout"
-            app:handlers="@{handlers}"
-            app:title="@{@string/alarm_title}" />
 
         <RelativeLayout
-            android:layout_marginTop="1dp"
+            android:id="@+id/rl_alarm_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@android:color/white"
+            android:elevation="2dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_back_button"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/layout_margin"
+                android:onClick="@{v -> activity.onClickAlarmButtons(v.getId())}"
+                android:src="@drawable/back_button" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/SubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/setting_alarm" />
+
+            <TextView
+                android:id="@+id/tv_done_button"
+                style="@style/TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/layout_margin"
+                android:onClick="@{v -> activity.onClickAlarmButtons(v.getId())}"
+                android:text="Done" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
             android:id="@+id/rl_alarm_switch"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginTop="1dp"
             android:background="@color/white"
             android:elevation="@dimen/card_elevation"
             app:layout_constraintTop_toBottomOf="@+id/rl_alarm_toolbar">
@@ -56,10 +91,10 @@
 
 
         <RelativeLayout
-            android:layout_marginTop="1dp"
             android:id="@+id/ll_alarm_time_layout"
             android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginTop="1dp"
             android:background="@color/white"
             android:elevation="@dimen/card_elevation"
             android:visibility="visible"
@@ -81,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:onClick="@{v -> activity.onClickButton(v.getId())}"
+                android:onClick="@{v -> activity.onClickAlarmButtons(v.getId())}"
                 android:text="@string/alarm_time_select_text"
                 app:layout_constraintEnd_toEndOf="parent" />
 
