@@ -1,15 +1,16 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
@@ -33,6 +34,8 @@ class DiaryListPresenter {
     private Date lastItemLoadedTime;
     @NonNull
     private RecordPlayer recordPlayer;
+    @NonNull
+    private SharedPreferenceManager sharedPreferenceManager;
 
     @Nullable
     private Emotion selectedEmotion;
@@ -43,11 +46,14 @@ class DiaryListPresenter {
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
                        @NonNull DiaryRepository diaryRepository,
                        @NonNull DiaryRecorder diaryRecorder,
-                       @NonNull RecordPlayer recordPlayer) {
+                       @NonNull RecordPlayer recordPlayer,
+                       @NonNull SharedPreferenceManager sharedPreferenceManager) {
         this.diaryListView = diaryListView;
         this.diaryRepository = diaryRepository;
         this.diaryRecorder = diaryRecorder;
         this.recordPlayer = recordPlayer;
+        this.sharedPreferenceManager = sharedPreferenceManager;
+
         this.compositeDisposable = new CompositeDisposable();
         this.selectedEmotion = null;
 
@@ -64,9 +70,7 @@ class DiaryListPresenter {
         if (!isLoading) {
             isLoading = true;
 
-            Date tempTime = pageSize == 1 ? new Date() : lastItemLoadedTime;
-
-            compositeDisposable.add(diaryRepository.loadDiaryList(tempTime, pageSize)
+            compositeDisposable.add(diaryRepository.loadDiaryList(lastItemLoadedTime, pageSize)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(diaries -> {
                                 isLoading = false;
@@ -75,9 +79,7 @@ class DiaryListPresenter {
                                 }
                                 lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
                                 diaryListView.addDiaryList(diaries);
-
-                            }
-                            , throwable -> {
+                            }, throwable -> {
                                 isLoading = false;
                                 diaryListView.showLoadDiaryListFailMsg();
                             }
@@ -111,9 +113,11 @@ class DiaryListPresenter {
 
             final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest(file.getAbsolutePath());
 
+            final Date saveTime = new Date();
+
             compositeDisposable.add(diaryRepository.requestEmotionAnalyze(request).
                     map(emotion -> new DiaryEntity(0,
-                            new Date(),
+                            saveTime,
                             file.getAbsolutePath(),
                             tags,
                             selectedEmotion,
@@ -122,6 +126,8 @@ class DiaryListPresenter {
                     .andThen(diaryRepository.loadRecentInsertedDiary())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(diary -> {
+                        setLastItemSavedTime(saveTime);
+                        diaryListView.setRecordCardVisibilityGone();
                         diaryListView.insertDiaryList(diary);
                         diaryListView.setIsSaving(false);
                     }, Throwable::printStackTrace));
@@ -167,6 +173,10 @@ class DiaryListPresenter {
         diaryRecorder.finishRecord();
     }
 
+    private void setLastItemSavedTime(@NonNull Date savedTime) {
+        sharedPreferenceManager.setLastDiarySaveTime(savedTime);
+    }
+
     private void initMediaListener() {
         diaryRecorder.setMediaRecorderTimeOutListener(() -> {
             diaryRecorder.finishRecord();
@@ -178,6 +188,15 @@ class DiaryListPresenter {
             lastPlayedPosition = NOTHING_PLAYED;
         });
     }
+
+    void onViewCreated() {
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date());
+
+        if(sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
+            diaryListView.setRecordCardVisibilityGone();
+        }
+    }
+
 
     void onViewDestroyed() {
         compositeDisposable.clear();

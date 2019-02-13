@@ -26,5 +26,7 @@ public interface DiaryListView {
 
     void setIsSaving(boolean isSaving);
 
+    void setRecordCardVisibilityGone();
+
     void onPlayFileChanged(final int lastPlayedIndex, final boolean isFinished);
 }
