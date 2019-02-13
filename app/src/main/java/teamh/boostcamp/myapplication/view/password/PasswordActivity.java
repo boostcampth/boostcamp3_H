@@ -3,14 +3,10 @@ package teamh.boostcamp.myapplication.view.password;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.text.InputType;
-import android.text.Spanned;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -117,8 +113,8 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
         checkPassword(currentPassword);
     }
 
-    public void onDeleteNumberButton(int id){
-        switch (id){
+    public void onDeleteNumberButton(int id) {
+        switch (id) {
             case R.id.button_password_clear:
                 clearPassword();
                 break;
@@ -284,5 +280,5 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
     public int getType() {
         return type;
     }
-    
+
 }
