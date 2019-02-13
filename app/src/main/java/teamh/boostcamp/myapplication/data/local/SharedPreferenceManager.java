@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 
-public class SharedPreference {
+public class SharedPreferenceManager {
     private static final String TEAM_H = "TEAM_H";
     private static final String PREF_PASSWORD = "PREF_PASSWORD";
     private static final String PREF_PUSH_TIME = "PREF_PUSH_TIME";
@@ -14,12 +14,12 @@ public class SharedPreference {
     private static SharedPreferences preferences;
 
     // Constructor
-    private SharedPreference() {
+    private SharedPreferenceManager() {
 
     }
 
     // getInstance()
-    public static SharedPreference getInstance(@NonNull Context context) {
+    public static SharedPreferenceManager getInstance(@NonNull Context context) {
         if (preferences == null) {
             preferences = context.getSharedPreferences(TEAM_H, Context.MODE_PRIVATE);
         }
@@ -68,6 +68,6 @@ public class SharedPreference {
 
     // LazyHolder 클래스 - 싱글톤
     private static class LazyHolder {
-        public static final SharedPreference INSTANCE = new SharedPreference();
+        public static final SharedPreferenceManager INSTANCE = new SharedPreferenceManager();
     }
 }

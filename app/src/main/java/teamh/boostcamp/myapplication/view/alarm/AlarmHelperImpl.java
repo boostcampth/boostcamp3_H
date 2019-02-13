@@ -11,7 +11,7 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
-import teamh.boostcamp.myapplication.data.local.SharedPreference;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 
 public class AlarmHelperImpl implements AlarmHelper {
 
@@ -20,7 +20,7 @@ public class AlarmHelperImpl implements AlarmHelper {
 
     AlarmHelperImpl(@NonNull Context context) {
         this.context = context;
-        SharedPreference.getInstance(context); // 초기화 작업
+        SharedPreferenceManager.getInstance(context); // 초기화 작업
     }
 
     @NonNull
@@ -57,9 +57,9 @@ public class AlarmHelperImpl implements AlarmHelper {
         }
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userSettingTime, INTERVAL_TIME, pendingIntent);
 
-        // SharedPreference 저장하는 로직. String으로 저장.
+        // SharedPreferenceManager 저장하는 로직. String으로 저장.
         String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        SharedPreference.getInstance(context).setPreferencePushTime(timeText);
+        SharedPreferenceManager.getInstance(context).setPreferencePushTime(timeText);
     }
 
     // 알람 해제
@@ -72,7 +72,7 @@ public class AlarmHelperImpl implements AlarmHelper {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
 
             alarmManager.cancel(pendingIntent);
-            SharedPreference.getInstance(context).removePreferencePushTime();
+            SharedPreferenceManager.getInstance(context).removePreferencePushTime();
             return true; // 시간 설정 text
         } else {
             return false; // 오류 text

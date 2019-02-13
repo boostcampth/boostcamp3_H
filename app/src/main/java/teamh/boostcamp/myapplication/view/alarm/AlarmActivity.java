@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.local.SharedPreference;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 
 public class AlarmActivity extends AppCompatActivity implements
@@ -34,7 +34,7 @@ public class AlarmActivity extends AppCompatActivity implements
     }
 
     private void init() {
-        SharedPreference.getInstance(AlarmActivity.this);
+        SharedPreferenceManager.getInstance(AlarmActivity.this);
 
         initViews();
         initPresenter();
@@ -95,7 +95,7 @@ public class AlarmActivity extends AppCompatActivity implements
 
     @Override
     public void checkState() {
-        time = SharedPreference.getInstance(AlarmActivity.this).getPreferencePushTime(null);
+        time = SharedPreferenceManager.getInstance(AlarmActivity.this).getPreferencePushTime(null);
         System.out.println("time test : " + time);
         if (time != null) {
             setVisibility(true);
