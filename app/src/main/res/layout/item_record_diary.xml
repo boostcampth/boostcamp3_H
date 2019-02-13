@@ -43,13 +43,15 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/tv_item_diary_emotion"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/layout_gutter"
+                    android:layout_marginLeft="@dimen/layout_gutter"
+                    android:layout_marginTop="@dimen/layout_gutter"
+                    android:layout_marginBottom="@dimen/layout_gutter"
                     android:gravity="center"
                     android:minWidth="@dimen/diary_emoji_min"
                     android:minHeight="@dimen/diary_emoji_min"
@@ -62,7 +64,7 @@
                     android:id="@+id/iv_item_diary_play"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
-                    android:layout_marginStart="@dimen/layout_margin"
+                    android:layout_marginLeft="@dimen/layout_margin"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_play_circle_filled_black_24dp"
                     app:layout_constraintBottom_toBottomOf="@id/tv_item_diary_emotion"
@@ -73,8 +75,8 @@
                     android:id="@+id/law_item_diary_percent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/layout_gutter"
-                    android:layout_marginEnd="@dimen/layout_gutter"
+                    android:layout_marginLeft="@dimen/layout_gutter"
+                    android:layout_marginRight="@dimen/layout_gutter"
                     app:layout_constraintBottom_toBottomOf="@id/tv_item_diary_emotion"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_item_diary_play"
@@ -82,12 +84,15 @@
                     app:lottie_fileName="890-loading-animation.json"
                     app:lottie_loop="true" />
 
+
                 <TextView
                     android:id="@+id/tv_item_diary_tags"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/layout_gutter"
+                    android:layout_marginTop="@dimen/layout_gutter"
                     android:layout_marginRight="@dimen/layout_gutter"
+                    android:layout_marginBottom="@dimen/layout_gutter"
                     android:textColor="@color/all_blue"
                     android:textSize="18dp"
                     app:layout_constraintBottom_toBottomOf="parent"
