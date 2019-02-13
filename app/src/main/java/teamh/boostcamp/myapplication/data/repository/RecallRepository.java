@@ -14,7 +14,7 @@ public interface RecallRepository {
     Single<List<Recall>> loadRecallList();
 
     @NonNull
-    Completable insertRecall(RecallEntity recallEntity);
+    Single<Recall> insertRecall(RecallEntity recallEntity);
 
     @NonNull
     Completable deleteRecall(int index);
