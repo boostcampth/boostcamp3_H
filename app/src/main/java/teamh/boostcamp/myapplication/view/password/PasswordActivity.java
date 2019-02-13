@@ -17,9 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
-import teamh.boostcamp.myapplication.view.Handlers;
 
-public class PasswordActivity extends LifecycleManageActivity implements PasswordView, Handlers {
+public class PasswordActivity extends LifecycleManageActivity implements PasswordView {
 
     private ActivityPasswordBinding binding;
 
@@ -51,15 +50,6 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
             type = extras.getInt(LockHelper.EXTRA_TYPE, -1);
         }
 
-        filters = new InputFilter[2];
-        filters[0] = new InputFilter.LengthFilter(1);
-        filters[1] = numberFilter;
-
-        setupEditText(binding.etPasswordOne);
-        setupEditText(binding.etPasswordTwo);
-        setupEditText(binding.etPasswordThree);
-        setupEditText(binding.etPasswordFour);
-
         overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_stop);
 
     }
@@ -67,7 +57,6 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
     private void initView() {
         presenter = new PasswordPresenter(PasswordActivity.this);
         binding.setActivity(PasswordActivity.this);
-        binding.setHandlers(PasswordActivity.this);
     }
 
     // back 키 눌렀을 때
@@ -123,10 +112,20 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
             case R.id.button_password_zero:
                 currentPassword = binding.buttonPasswordZero.getText().toString();
                 break;
-
         }
 
         checkPassword(currentPassword);
+    }
+
+    public void onDeleteNumberButton(int id){
+        switch (id){
+            case R.id.button_password_clear:
+                clearPassword();
+                break;
+            case R.id.button_password_erase:
+                deletePassword();
+                break;
+        }
     }
 
     private void checkPassword(String currentPassword) {
@@ -253,24 +252,6 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
         runOnUiThread(thread);
     }
 
-    @Override
-    public void onClickListener(int id) {
-
-    }
-
-    @Override
-    public void deleteNumber(int id) {
-        switch (id) {
-            case R.id.button_password_clear:
-                clearPassword();
-                break;
-            case R.id.button_password_erase:
-                deletePassword();
-                break;
-
-        }
-    }
-
     private void clearPassword() {
         binding.etPasswordOne.setText("");
         binding.etPasswordTwo.setText("");
@@ -300,41 +281,8 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
         }
     }
 
-    protected void setupEditText(EditText editText) {
-        editText.setInputType(InputType.TYPE_NULL);
-        editText.setFilters(filters);
-        //editText.setOnTouchListener(touchListener);
-        editText.setTransformationMethod(PasswordTransformationMethod
-                .getInstance());
-    }
-
     public int getType() {
         return type;
     }
-
-    private InputFilter numberFilter = new InputFilter() {
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end,
-                                   Spanned dest, int dstart, int dend) {
-
-            if (source.length() > 1) {
-                return "";
-            }
-
-            if (source.length() == 0) // erase
-            {
-                return null;
-            }
-
-            try {
-                int number = Integer.parseInt(source.toString());
-                if ((number >= 0) && (number <= 9))
-                    return String.valueOf(number);
-                else
-                    return "";
-            } catch (NumberFormatException e) {
-                return "";
-            }
-        }
-    };
+    
 }

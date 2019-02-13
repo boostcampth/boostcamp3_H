@@ -18,7 +18,8 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".view.password.PasswordSelectActivity"></activity>
-        <activity android:name=".view.password.PasswordActivity" />
+        <activity android:name=".view.password.PasswordActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".view.alarm.AlarmActivity" />
         <activity android:name=".view.setting.SettingActivity" />
         <activity android:name=".view.play.PlayActivity" />

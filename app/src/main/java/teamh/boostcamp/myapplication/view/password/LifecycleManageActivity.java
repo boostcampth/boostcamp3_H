@@ -4,12 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 /*
 * LifecycleManageActivity를 상속받은 Activity는
 * 이 ManageActivity에 의해서 생명주기를 관리 받는 형식.
 * */
-public class LifecycleManageActivity extends Activity {
+public class LifecycleManageActivity extends AppCompatActivity {
 
     @NonNull
     private static LifecycleListener lifeCycleListener;

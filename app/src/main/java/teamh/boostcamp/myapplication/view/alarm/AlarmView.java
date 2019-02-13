@@ -10,8 +10,6 @@ public interface AlarmView {
 
     void setVisibility(boolean isChecked);
 
-    void onClickButton(int id);
-
     void updateCancelTimeText(boolean isCanceled);
 
 }

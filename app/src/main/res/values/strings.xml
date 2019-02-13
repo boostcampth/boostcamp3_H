@@ -94,6 +94,7 @@
     <string name="password_unlock_text">비밀 번호를 해제해주세요.</string>
     <string name="password_lock_success_text">비밀번호 설정이 완료되었습니다.</string>
     <string name="password_before_input_text">이전 비밀번호를 입력해주세요.</string>
+    <string name="password_limit_number">1234567890</string>
 
 
     <!--Alarm-->
