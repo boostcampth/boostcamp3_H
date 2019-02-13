@@ -1,8 +1,6 @@
 package teamh.boostcamp.myapplication.view.password;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 
@@ -11,33 +9,20 @@ import androidx.annotation.NonNull;
 /*
  * LockHelper 구현체
  * */
-public class LockHelperImpl extends LockHelper implements LifecycleListener {
+public class LockHelperImpl extends LockHelper {
 
-    private static final String TAG = "LockHelperImpl";
-    private static final String VIC = "Victory";
     private static final String TEAM_H = "TEAM_H";
     private static final String PASSWORD_KEY = "password";
-    private int flag = 0;
     @NonNull
     private Context context;
-
-
     @NonNull
     private SharedPreferences sharedPreferences;
 
-    private int liveCount;
-    private int visibleCount;
-    private long lastActive;
 
-    LockHelperImpl(@NonNull Context context) {
+    public LockHelperImpl(@NonNull Context context) {
         this.context = context;
         this.sharedPreferences = this.context.getApplicationContext()
                 .getSharedPreferences(TEAM_H, this.context.getApplicationContext().MODE_PRIVATE);
-    }
-
-    @Override
-    public void enable() {
-        LifecycleManageActivity.setLifeCycleListener(this);
     }
 
     // 비밀번호 저장.
@@ -69,189 +54,13 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
         }
 
         // 저장된 값과 인풋을 비교
-        if (password.equals(storedPassword)) {
-            return true;
-        } else {
-            return false;
-        }
+        return password.equals(storedPassword);
     }
 
     // 저장된 비밀번호 존재하는지 확인.
     @Override
     public boolean isPasswordSet() {
-        if (sharedPreferences.contains(PASSWORD_KEY)) {
-            return true;
-        } else {
-            return false;
-        }
+        return sharedPreferences.contains(PASSWORD_KEY);
     }
 
-    private boolean isIgnoreActivity(@NonNull Activity activity) {
-        String className = activity.getClass().getSimpleName();
-
-
-        if (ignoredActivities.contains(className)) {
-            Log.v(TAG, "ignore Activity :" + className);
-            return true;
-        }
-
-        return false;
-
-    }
-
-    @Override
-    public void onActivityCreated(Activity activity) {
-        String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityCreated :" + className);
-
-        StackTraceElement[] stackTraceElementArray = new Throwable().getStackTrace();
-
-        Log.v(VIC, "call class :" + stackTraceElementArray[1].getClass());
-        Log.v(VIC, "call className :" + stackTraceElementArray[1].getClassName());
-        Log.v(VIC, "call fileName :" + stackTraceElementArray[1].getFileName());
-        Log.v(VIC, "call method name :" + stackTraceElementArray[1].getMethodName());
-        Log.v(VIC, "call LineNumber name :" + stackTraceElementArray[1].getLineNumber());
-
-
-        if (className.equals("MainActivity")) {
-            flag++;
-        }
-        if (isIgnoreActivity(activity)) {
-            return;
-        }
-
-        liveCount++;
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) {
-        String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityStarted :" + className);
-
-
-        if (className.equals("MainActivity")) {
-            flag++;
-        }
-
-        if (isIgnoreActivity(activity)) {
-            return;
-        }
-
-        visibleCount++;
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-        String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityResumed :" + className);
-
-
-        if (className.equals("MainActivity")) {
-            flag++;
-        }
-
-        if (isIgnoreActivity(activity)) {
-            return;
-        }
-
-        // 비밀번호 입력 화면을 다시 띄운다.
-        // back으로 빠졌다가 다시 앱으로 돌아올 때 onResume이 호출되기 때문
-        if (setLockScreen(activity)) {
-            Intent intent = new Intent(activity.getApplicationContext(), PasswordActivity.class);
-            intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.getApplication().startActivity(intent);
-
-        }
-
-        // 시간 0으로 초기화
-        lastActive = 0;
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-        String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityPaused :" + className);
-
-    /*    if (isIgnoreActivity(activity)) {
-            return;
-        }*/
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-        String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityStopped :" + className);
-
-        if (isIgnoreActivity(activity)) {
-            return;
-        }
-
-        // onStop 될 때마다
-        // 화면에 보이는 액티비티는 사라지기 때문에
-        // visibleCount 감소
-        visibleCount--;
-        if (visibleCount == 0) {
-            lastActive = System.currentTimeMillis();
-            Log.v(TAG, "set last active " + lastActive);
-        }
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity) {
-        String className = activity.getClass().getSimpleName();
-        Log.d(TAG, "onActivitySaveInstanceState " + className);
-        if (isIgnoreActivity(activity)) {
-            return;
-        }
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
-        String className = activity.getClass().getSimpleName();
-        Log.d(TAG, "onActivityDestroyed :" + className);
-
-        if (isIgnoreActivity(activity)) {
-            return;
-        }
-
-        liveCount--;
-        if (liveCount == 0) {
-            lastActive = System.currentTimeMillis();
-            Log.d(TAG, "set last active " + lastActive);
-        }
-    }
-
-    private boolean setLockScreen(Activity activity) {
-
-        // already unlock(비밀번호 입력하고 열림)
-        if (activity instanceof PasswordActivity) {
-            PasswordActivity passwordActivity = (PasswordActivity) activity;
-            if (passwordActivity.getType() == LockHelper.UNLOCK_PASSWORD) {
-                Log.d(TAG, "already unlock activity");
-                return false;
-            }
-        }
-
-        // 저장된 비밀번호가 존재하지 않을 때.
-        if (!isPasswordSet()) {
-            Log.d(TAG, "lock password not set.");
-            return false;
-        }
-
-        // Time out의 경우
-        long passedTime = System.currentTimeMillis() - lastActive;
-        if (lastActive > 0 && passedTime <= lockTimeOut) {
-            Log.d(TAG, "no enough timeout " + passedTime + " for "
-                    + lockTimeOut);
-            return false;
-        }
-
-
-        if (visibleCount > 1) {
-            return false;
-        }
-
-        return true;
-    }
 }
