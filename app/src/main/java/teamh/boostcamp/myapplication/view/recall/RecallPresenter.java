@@ -1,7 +1,5 @@
 package teamh.boostcamp.myapplication.view.recall;
 
-import android.util.Log;
-
 import java.util.Date;
 
 import androidx.annotation.NonNull;
@@ -39,12 +37,11 @@ public class RecallPresenter {
 
     void generateRecall() {
         compositeDisposable.add(
-                recallRepository.insertRecall(new RecallEntity(
-                        0,
+                recallRepository.insertRecall(new RecallEntity(0,
                         new Date(),
                         Emotion.fromValue(generateRandomNumber(5))))
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(recall -> view.addRecall(recall))
+                        .subscribe(view::addRecall)
         );
     }
 

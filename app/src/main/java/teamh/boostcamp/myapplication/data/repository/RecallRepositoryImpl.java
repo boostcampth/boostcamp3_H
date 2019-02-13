@@ -6,6 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -39,10 +40,10 @@ public class RecallRepositoryImpl implements RecallRepository {
 
         return appDatabase.recallDao().loadRecallEntities()
                 .flatMapObservable(Observable::fromIterable)
-                .flatMapSingle(recallEntity -> {
+                .flatMapMaybe(recallEntity -> {
                     final Date endDate = generateEndDate(recallEntity.getCreatedDate());
                     final Date startDate = generateStartDate(endDate);
-                    return appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(),
+                    return appDatabase.diaryDao().loadDiaryListByEmotionAndDate(recallEntity.getEmotion(),
                             startDate, endDate, 5)
                             .map(diaries -> new Recall(recallEntity.getId(), startDate, endDate, recallEntity.getEmotion(), diaries));
                 })
@@ -59,16 +60,19 @@ public class RecallRepositoryImpl implements RecallRepository {
 
     @NonNull
     @Override
-    public Single<Recall> insertRecall(@NonNull final RecallEntity recallEntity) {
+    public Maybe<Recall> insertRecall(@NonNull final RecallEntity recallEntity) {
         return Completable.fromAction(() -> appDatabase.recallDao().insertRecall(recallEntity))
-                .subscribeOn(Schedulers.io())
                 .andThen(appDatabase.recallDao().loadRecentRecallEntity())
-                .flatMap(recallEntity1 -> {
+                .flatMapMaybe(recallEntity1 -> {
                     final Date endDate = generateEndDate(recallEntity.getCreatedDate());
                     final Date startDate = generateStartDate(endDate);
-                    return appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(),
-                            startDate, endDate, 5)
-                            .map(diaries -> new Recall(recallEntity.getId(), startDate, endDate, recallEntity.getEmotion(), diaries));
+                    return appDatabase.diaryDao().loadDiaryListByEmotionAndDate(recallEntity.getEmotion(),
+                            startDate, endDate, 5);
+                })
+                .map(diaries -> {
+                    final Date endDate = generateEndDate(recallEntity.getCreatedDate());
+                    final Date startDate = generateStartDate(endDate);
+                    return new Recall(recallEntity.getId(), startDate, endDate, recallEntity.getEmotion(), diaries);
                 })
                 .subscribeOn(Schedulers.io());
     }
