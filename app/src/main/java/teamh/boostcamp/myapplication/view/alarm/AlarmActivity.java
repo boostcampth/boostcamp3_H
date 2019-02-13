@@ -2,7 +2,6 @@ package teamh.boostcamp.myapplication.view.alarm;
 
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -97,7 +96,7 @@ public class AlarmActivity extends AppCompatActivity implements
     @Override
     public void checkState() {
         time = SharedPreference.getInstance().getPreferencePushTime(null);
-        System.out.println("time test : "+time);
+        System.out.println("time test : " + time);
         if (time != null) {
             setVisibility(true);
             binding.tvAlarmTimeText.setText(time);
@@ -125,7 +124,7 @@ public class AlarmActivity extends AppCompatActivity implements
         }
     }
 
-    public void onClickAlarmButtons(int id){
+    public void onClickAlarmButtons(int id) {
         switch (id) {
             case R.id.iv_back_button:
                 finish();
