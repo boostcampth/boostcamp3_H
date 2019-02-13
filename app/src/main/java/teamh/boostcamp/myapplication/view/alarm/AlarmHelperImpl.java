@@ -20,7 +20,7 @@ public class AlarmHelperImpl implements AlarmHelper {
 
     AlarmHelperImpl(@NonNull Context context) {
         this.context = context;
-        SharedPreference.getInstance().loadSharedPreference(context); // 초기화 작업
+        SharedPreference.getInstance(context); // 초기화 작업
     }
 
     @NonNull
@@ -50,7 +50,7 @@ public class AlarmHelperImpl implements AlarmHelper {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
 
         // 버전별 알람 매니저에게 시간을 설정.
-        if (Build.VERSION.SDK_INT >= 23) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, userSettingTime, pendingIntent);
         } else {
             alarmManager.setExact(AlarmManager.RTC_WAKEUP, userSettingTime, pendingIntent);
@@ -59,7 +59,7 @@ public class AlarmHelperImpl implements AlarmHelper {
 
         // SharedPreference 저장하는 로직. String으로 저장.
         String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        SharedPreference.getInstance().setPreferencePushTime(timeText);
+        SharedPreference.getInstance(context).setPreferencePushTime(timeText);
     }
 
     // 알람 해제
@@ -72,7 +72,7 @@ public class AlarmHelperImpl implements AlarmHelper {
             PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 1, intent, 0);
 
             alarmManager.cancel(pendingIntent);
-            SharedPreference.getInstance().removePreferencePushTime();
+            SharedPreference.getInstance(context).removePreferencePushTime();
             return true; // 시간 설정 text
         } else {
             return false; // 오류 text

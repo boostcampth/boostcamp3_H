@@ -34,7 +34,7 @@ public class AlarmActivity extends AppCompatActivity implements
     }
 
     private void init() {
-        SharedPreference.getInstance().loadSharedPreference(AlarmActivity.this);
+        SharedPreference.getInstance(AlarmActivity.this);
 
         initViews();
         initPresenter();
@@ -95,7 +95,7 @@ public class AlarmActivity extends AppCompatActivity implements
 
     @Override
     public void checkState() {
-        time = SharedPreference.getInstance().getPreferencePushTime(null);
+        time = SharedPreference.getInstance(AlarmActivity.this).getPreferencePushTime(null);
         System.out.println("time test : " + time);
         if (time != null) {
             setVisibility(true);

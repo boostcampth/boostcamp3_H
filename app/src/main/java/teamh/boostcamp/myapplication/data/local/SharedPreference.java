@@ -3,13 +3,15 @@ package teamh.boostcamp.myapplication.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
+
 public class SharedPreference {
     private static final String TEAM_H = "TEAM_H";
     private static final String PREF_PASSWORD = "PREF_PASSWORD";
     private static final String PREF_PUSH_TIME = "PREF_PUSH_TIME";
 
     // fields
-    private SharedPreferences mPreferences;
+    private static SharedPreferences preferences;
 
     // Constructor
     private SharedPreference() {
@@ -17,28 +19,21 @@ public class SharedPreference {
     }
 
     // getInstance()
-    public static SharedPreference getInstance() {
+    public static SharedPreference getInstance(@NonNull Context context) {
+        if (preferences == null) {
+            preferences = context.getSharedPreferences(TEAM_H, Context.MODE_PRIVATE);
+        }
         return LazyHolder.INSTANCE;
     }
 
-    public void loadSharedPreference(Context context) {
-        getPreference(context);
-    }
-
-    public void getPreference(Context context) {
-        if (mPreferences == null) {
-            mPreferences = context.getSharedPreferences(TEAM_H, Context.MODE_PRIVATE);
-        }
-    }
-
     public void setPreferencePassword(String password) {
-        SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREF_PASSWORD, password);
         editor.apply();
     }
 
     public String getPreferencePassword(String defaultPassword) {
-        return mPreferences.getString(PREF_PASSWORD, defaultPassword);
+        return preferences.getString(PREF_PASSWORD, defaultPassword);
     }
 
     public String getPreferencePassword() {
@@ -46,13 +41,13 @@ public class SharedPreference {
     }
 
     public void setPreferencePushTime(String pushTime) {
-        SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.putString(PREF_PUSH_TIME, pushTime);
         editor.apply();
     }
 
     public String getPreferencePushTime(String defaultPushTime) {
-        return mPreferences.getString(PREF_PUSH_TIME, defaultPushTime);
+        return preferences.getString(PREF_PUSH_TIME, defaultPushTime);
     }
 
     public String getPreferencePushTime() {
@@ -60,13 +55,13 @@ public class SharedPreference {
     }
 
     public void removePreferencePushTime(){
-        SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.remove(PREF_PUSH_TIME);
         editor.apply();
     }
 
     public void removeAllData() {
-        SharedPreferences.Editor editor = mPreferences.edit();
+        SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
     }
