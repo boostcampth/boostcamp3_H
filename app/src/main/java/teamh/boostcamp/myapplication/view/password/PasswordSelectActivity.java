@@ -97,7 +97,7 @@ public class PasswordSelectActivity extends LifecycleManageActivity {
         // 설정한 비밀번호가 있을 때
         if (LockManager.getInstance().getLockHelper().isPasswordSet()) {
             binding.tvPasswordSetButton.setText(
-                    getApplicationContext().getResources().getString(R.string.password_lock_text));
+                    getApplicationContext().getResources().getString(R.string.password_unlock_text));
             binding.tvPasswordChangeButton.setEnabled(true);
 
         } else { // 설정한 비밀번호가 없을 때

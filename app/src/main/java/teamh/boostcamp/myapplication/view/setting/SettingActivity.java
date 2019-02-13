@@ -47,6 +47,13 @@ public class SettingActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+    }
+
     private void showToast(String message) {
         Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
     }

@@ -46,14 +46,14 @@ public class LifecycleManageActivity extends AppCompatActivity {
         }
     }
 
-    @Override
+    /*@Override
     protected void onPause() {
         super.onPause();
 
         if (lifeCycleListener != null) {
             lifeCycleListener.onActivityPaused(this);
         }
-    }
+    }*/
 
     @Override
     protected void onStop() {

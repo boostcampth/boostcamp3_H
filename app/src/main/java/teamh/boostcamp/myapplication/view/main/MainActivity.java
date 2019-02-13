@@ -12,11 +12,13 @@ import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityMainBinding;
 import teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import teamh.boostcamp.myapplication.view.graph.StatisticsFragment;
+import teamh.boostcamp.myapplication.view.password.LifecycleManageActivity;
+import teamh.boostcamp.myapplication.view.password.LockManager;
 import teamh.boostcamp.myapplication.view.recall.RecallFragment;
 import teamh.boostcamp.myapplication.view.setting.SettingActivity;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityView{
+public class MainActivity extends LifecycleManageActivity implements MainActivityView{
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
         super.onCreate(savedInstanceState);
 
         presenter = new MainPresenter(this);
+        LockManager.getInstance().enableLock(getApplication());
 
 
         // bindingUtil 설정

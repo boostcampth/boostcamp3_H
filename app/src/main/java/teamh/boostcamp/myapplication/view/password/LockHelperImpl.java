@@ -1,7 +1,6 @@
 package teamh.boostcamp.myapplication.view.password;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,8 +14,13 @@ import androidx.annotation.NonNull;
 public class LockHelperImpl extends LockHelper implements LifecycleListener {
 
     private static final String TAG = "LockHelperImpl";
+    private static final String VIC = "Victory";
     private static final String TEAM_H = "TEAM_H";
     private static final String PASSWORD_KEY = "password";
+    private int flag = 0;
+    @NonNull
+    private Context context;
+
 
     @NonNull
     private SharedPreferences sharedPreferences;
@@ -25,9 +29,10 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     private int visibleCount;
     private long lastActive;
 
-    LockHelperImpl(Application application) {
-        this.sharedPreferences = application.getApplicationContext()
-                .getSharedPreferences(TEAM_H, Context.MODE_PRIVATE);
+    LockHelperImpl(@NonNull Context context) {
+        this.context = context;
+        this.sharedPreferences = this.context.getApplicationContext()
+                .getSharedPreferences(TEAM_H, this.context.getApplicationContext().MODE_PRIVATE);
     }
 
     @Override
@@ -84,8 +89,9 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     private boolean isIgnoreActivity(@NonNull Activity activity) {
         String className = activity.getClass().getSimpleName();
 
+
         if (ignoredActivities.contains(className)) {
-            Log.v(TAG, "ignore Activity" + className);
+            Log.v(TAG, "ignore Activity :" + className);
             return true;
         }
 
@@ -96,8 +102,20 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityCreated(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityCreated" + className);
+        Log.v(TAG, "onActivityCreated :" + className);
 
+        StackTraceElement[] stackTraceElementArray = new Throwable().getStackTrace();
+
+        Log.v(VIC, "call class :" + stackTraceElementArray[1].getClass());
+        Log.v(VIC, "call className :" + stackTraceElementArray[1].getClassName());
+        Log.v(VIC, "call fileName :" + stackTraceElementArray[1].getFileName());
+        Log.v(VIC, "call method name :" + stackTraceElementArray[1].getMethodName());
+        Log.v(VIC, "call LineNumber name :" + stackTraceElementArray[1].getLineNumber());
+
+
+        if (className.equals("MainActivity")) {
+            flag++;
+        }
         if (isIgnoreActivity(activity)) {
             return;
         }
@@ -108,7 +126,12 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityStarted(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityStarted" + className);
+        Log.v(TAG, "onActivityStarted :" + className);
+
+
+        if (className.equals("MainActivity")) {
+            flag++;
+        }
 
         if (isIgnoreActivity(activity)) {
             return;
@@ -120,7 +143,12 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityResumed(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityResumed" + className);
+        Log.v(TAG, "onActivityResumed :" + className);
+
+
+        if (className.equals("MainActivity")) {
+            flag++;
+        }
 
         if (isIgnoreActivity(activity)) {
             return;
@@ -133,6 +161,7 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
             intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             activity.getApplication().startActivity(intent);
+
         }
 
         // 시간 0으로 초기화
@@ -142,17 +171,17 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityPaused(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityPaused" + className);
+        Log.v(TAG, "onActivityPaused :" + className);
 
-        if (isIgnoreActivity(activity)) {
+    /*    if (isIgnoreActivity(activity)) {
             return;
-        }
+        }*/
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.v(TAG, "onActivityStopped" + className);
+        Log.v(TAG, "onActivityStopped :" + className);
 
         if (isIgnoreActivity(activity)) {
             return;
@@ -180,7 +209,7 @@ public class LockHelperImpl extends LockHelper implements LifecycleListener {
     @Override
     public void onActivityDestroyed(Activity activity) {
         String className = activity.getClass().getSimpleName();
-        Log.d(TAG, "onActivityDestroyed " + className);
+        Log.d(TAG, "onActivityDestroyed :" + className);
 
         if (isIgnoreActivity(activity)) {
             return;
