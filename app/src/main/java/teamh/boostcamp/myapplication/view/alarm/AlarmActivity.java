@@ -65,6 +65,7 @@ public class AlarmActivity extends AppCompatActivity implements
         super.onDestroy();
         calendar = null;
         presenter = null;
+        sharedPreferenceManager = null;
     }
 
     @Override
