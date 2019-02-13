@@ -1,16 +1,16 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
-import android.util.Log;
-
 import java.io.File;
-import java.util.Arrays;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
@@ -18,7 +18,10 @@ import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.Emotio
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
-public class DiaryListPresenter {
+class DiaryListPresenter {
+
+    private static final int NOTHING_PLAYED = -1;
+
     @NonNull
     final private DiaryRepository diaryRepository;
     @NonNull
@@ -31,33 +34,35 @@ public class DiaryListPresenter {
     private Date lastItemLoadedTime;
     @NonNull
     private RecordPlayer recordPlayer;
+    @NonNull
+    private SharedPreferenceManager sharedPreferenceManager;
+
     @Nullable
     private Emotion selectedEmotion;
     private boolean isLoading;
     private boolean isRecording;
-    private boolean isRecordPlaying;
+    private int lastPlayedPosition;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
                        @NonNull DiaryRepository diaryRepository,
                        @NonNull DiaryRecorder diaryRecorder,
-                       @NonNull RecordPlayer recordPlayer) {
+                       @NonNull RecordPlayer recordPlayer,
+                       @NonNull SharedPreferenceManager sharedPreferenceManager) {
         this.diaryListView = diaryListView;
         this.diaryRepository = diaryRepository;
         this.diaryRecorder = diaryRecorder;
         this.recordPlayer = recordPlayer;
+        this.sharedPreferenceManager = sharedPreferenceManager;
+
         this.compositeDisposable = new CompositeDisposable();
         this.selectedEmotion = null;
 
         this.isLoading = false;
         this.isRecording = false;
-        this.isRecordPlaying = false;
-
+        this.lastPlayedPosition = NOTHING_PLAYED;
         this.lastItemLoadedTime = new Date();
 
-        this.diaryRecorder.setMediaRecorderTimeOutListener(() -> {
-            diaryRecorder.finishRecord();
-            diaryListView.showRecordTimeOutMsg();
-        });
+        initMediaListener();
     }
 
     void loadDiaryList(final int pageSize) {
@@ -65,23 +70,16 @@ public class DiaryListPresenter {
         if (!isLoading) {
             isLoading = true;
 
-            Date tempTime = pageSize == 1 ? new Date() : lastItemLoadedTime;
-
-            compositeDisposable.add(diaryRepository.loadDiaryList(tempTime, pageSize)
+            compositeDisposable.add(diaryRepository.loadDiaryList(lastItemLoadedTime, pageSize)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(diaries -> {
                                 isLoading = false;
                                 if (diaries.size() == 0) {
                                     return;
                                 }
-                                if (pageSize == 3) {
-                                    lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
-                                    diaryListView.addDiaryList(diaries);
-                                } else {
-                                    diaryListView.insertDiaryList(diaries.get(0));
-                                }
-                            }
-                            , throwable -> {
+                                lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
+                                diaryListView.addDiaryList(diaries);
+                            }, throwable -> {
                                 isLoading = false;
                                 diaryListView.showLoadDiaryListFailMsg();
                             }
@@ -89,7 +87,7 @@ public class DiaryListPresenter {
         }
     }
 
-    void saveDiary(@NonNull final String tags, final boolean isNetworkAvailable) {
+    void saveDiary(@NonNull final List<String> tags, final boolean isNetworkAvailable) {
 
         if (isRecording) {
             diaryListView.showRecordNotFinished();
@@ -101,7 +99,7 @@ public class DiaryListPresenter {
             return;
         }
 
-        File file = new File(diaryRecorder.getFilePath());
+        final File file = new File(diaryRecorder.getFilePath());
 
         if (!file.exists()) {
             diaryListView.showRecordFileNotFound();
@@ -115,38 +113,51 @@ public class DiaryListPresenter {
 
             final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest(file.getAbsolutePath());
 
+            final Date saveTime = new Date();
+
             compositeDisposable.add(diaryRepository.requestEmotionAnalyze(request).
                     map(emotion -> new DiaryEntity(0,
-                            new Date(),
+                            saveTime,
                             file.getAbsolutePath(),
-                            Arrays.asList(tags.split("#")),
+                            tags,
                             selectedEmotion,
                             emotion))
                     .flatMapCompletable(diaryRepository::insertDiary)
-                    .subscribe(() -> {
-                                diaryListView.notifyTodayDiarySaved();
-                                diaryListView.setIsSaving(false);
-                            }
-                            , throwable -> {
-                                diaryListView.showSaveDiaryFail();
-                                diaryListView.setIsSaving(false);
-                            }
-                    ));
+                    .andThen(diaryRepository.loadRecentInsertedDiary())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(diary -> {
+                        setLastItemSavedTime(saveTime);
+                        diaryListView.setRecordCardVisibilityGone();
+                        diaryListView.insertDiaryList(diary);
+                        diaryListView.setIsSaving(false);
+                    }, Throwable::printStackTrace));
         } else {
             // TODO : 기능 구현
         }
     }
 
-    public void playDiaryRecord(List<Diary> diaries) {
-        if(isRecordPlaying) {
+    void playDiaryRecord(@NonNull List<Diary> diaries, final int currentPlayPosition) {
+        // 재생중
+        if (lastPlayedPosition != NOTHING_PLAYED) {
             recordPlayer.stopList();
+            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
+            if (lastPlayedPosition == currentPlayPosition) {
+                lastPlayedPosition = NOTHING_PLAYED;
+            } else {
+                recordPlayer.setList(diaries);
+                recordPlayer.playList();
+                lastPlayedPosition = currentPlayPosition;
+                diaryListView.onPlayFileChanged(lastPlayedPosition, false);
+            }
+        } else {
+            lastPlayedPosition = currentPlayPosition;
+            diaryListView.onPlayFileChanged(lastPlayedPosition, false);
+            recordPlayer.setList(diaries);
+            recordPlayer.playList();
         }
-
-        recordPlayer.setList(diaries);
-        recordPlayer.playList();
     }
 
-    public void setSelectedEmotion(@Nullable Emotion emotion) {
+    void setSelectedEmotion(@Nullable Emotion emotion) {
         this.selectedEmotion = emotion;
     }
 
@@ -161,6 +172,31 @@ public class DiaryListPresenter {
     void finishRecording() {
         diaryRecorder.finishRecord();
     }
+
+    private void setLastItemSavedTime(@NonNull Date savedTime) {
+        sharedPreferenceManager.setLastDiarySaveTime(savedTime);
+    }
+
+    private void initMediaListener() {
+        diaryRecorder.setMediaRecorderTimeOutListener(() -> {
+            diaryRecorder.finishRecord();
+            diaryListView.showRecordTimeOutMsg();
+        });
+
+        recordPlayer.setOnCompletionListener(mediaPlayer -> {
+            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
+            lastPlayedPosition = NOTHING_PLAYED;
+        });
+    }
+
+    void onViewCreated() {
+        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date());
+
+        if(sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
+            diaryListView.setRecordCardVisibilityGone();
+        }
+    }
+
 
     void onViewDestroyed() {
         compositeDisposable.clear();

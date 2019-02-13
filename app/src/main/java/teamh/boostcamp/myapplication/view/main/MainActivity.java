@@ -24,7 +24,7 @@ import teamh.boostcamp.myapplication.view.setting.SettingActivity;
 
 public class MainActivity extends LifecycleManageActivity implements MainActivityView {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    //private static final String TAG = MainActivity.class.getSimpleName();
 
     private MainPresenter presenter;
     private ActivityMainBinding binding;
@@ -32,7 +32,6 @@ public class MainActivity extends LifecycleManageActivity implements MainActivit
     private RecallFragment recallFragment;
     private DiaryListFragment diaryListFragment;
     private StatisticsFragment statisticsFragment;
-    private FragmentTransaction fragmentTransaction;
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -82,8 +81,8 @@ public class MainActivity extends LifecycleManageActivity implements MainActivit
         transaction.replace(R.id.frame_layout, diaryListFragment).commitAllowingStateLoss();
     }
 
-    private void changeFragment(Fragment fragment, String title) {
-        fragmentTransaction = fragmentManager.beginTransaction();
+    private void changeFragment(Fragment fragment, String title){
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment).commit();
         binding.tvMainTitle.setText(title);
     }
@@ -93,6 +92,5 @@ public class MainActivity extends LifecycleManageActivity implements MainActivit
         Intent intent = new Intent(this, SettingActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_stop);
-
     }
 }

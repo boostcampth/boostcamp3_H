@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.view.recall;
 
+import android.util.Log;
+
 import java.util.Date;
 
 import androidx.annotation.NonNull;
@@ -41,17 +43,18 @@ public class RecallPresenter {
                         0,
                         new Date(),
                         Emotion.fromValue(generateRandomNumber(5))))
-                        .subscribe(this::loadRecallList)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(recall -> view.addRecall(recall))
         );
     }
 
-    void deleteRecall(int id) {
+    void deleteRecall(int position, int id) {
         compositeDisposable.add(
                 recallRepository.deleteRecall(id)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                             view.showDeleteSuccessResult();
-                            loadRecallList();
+                            view.deleteRecall(position);
                         })
         );
     }

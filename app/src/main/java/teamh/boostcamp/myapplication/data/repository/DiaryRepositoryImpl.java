@@ -66,4 +66,12 @@ public class DiaryRepositoryImpl implements DiaryRepository {
                 .map(AnalyzedEmotionMapper::parseAnalyzedEmotion)
                 .subscribeOn(Schedulers.io());
     }
+
+    @NonNull
+    @Override
+    public Single<Diary> loadRecentInsertedDiary() {
+        return diaryDao.loadRecentInsertedDiary()
+                .map(DiaryMapper::toDiary)
+                .subscribeOn(Schedulers.io());
+    }
 }

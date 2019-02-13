@@ -31,4 +31,15 @@ public class DiaryMapper {
 
         return diaryList;
     }
+
+    @NonNull
+    public static Diary toDiary(@NonNull DiaryEntity diaryEntity) {
+
+            return new Diary(
+                    diaryEntity.getId(),
+                    diaryEntity.getRecordDate(),
+                    diaryEntity.getRecordFilePath(),
+                    diaryEntity.getTags(),
+                    diaryEntity.getSelectedEmotion());
+    }
 }

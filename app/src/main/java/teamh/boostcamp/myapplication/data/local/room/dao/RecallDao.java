@@ -20,6 +20,9 @@ public interface RecallDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     void insertRecall(@NonNull RecallEntity...recallEntities);
 
+    @Query("SELECT * FROM recalls ORDER BY createdDate DESC LIMIT 1")
+    Single<RecallEntity> loadRecentRecallEntity();
+
     @Query("DELETE FROM recalls WHERE id=:index")
     void deleteRecall(@NonNull int index);
 

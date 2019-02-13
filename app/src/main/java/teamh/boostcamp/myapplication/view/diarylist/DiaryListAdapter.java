@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.R;
@@ -17,9 +18,12 @@ import teamh.boostcamp.myapplication.databinding.ItemRecordDiaryBinding;
 
 public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.DiaryHolder> {
 
+    private static final int NOTHING_PLAYED = -1;
+
     private List<Diary> diaryList;
     private Context context;
     private OnRecordItemClickListener onRecordItemClickListener;
+    private int lastPlayedIndex = NOTHING_PLAYED;
 
     DiaryListAdapter(@NonNull Context context) {
         this.context = context;
@@ -50,12 +54,22 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
 
         if(onRecordItemClickListener != null) {
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setOnClickListener(v ->
-                    onRecordItemClickListener.onDiaryItemClicked(position)
-            );
+                onRecordItemClickListener.onDiaryItemClicked(position));
+        }
+
+        if(lastPlayedIndex == position) {
+            holder.itemRecordDiaryBinding.lawItemDiaryPercent.playAnimation();
+            holder.itemRecordDiaryBinding.ivItemDiaryPlay.setImageDrawable(
+                    ContextCompat.getDrawable(context, R.drawable.ic_pause_circle_filled_black_24dp));
+        } else {
+            holder.itemRecordDiaryBinding.lawItemDiaryPercent.cancelAnimation();
+            holder.itemRecordDiaryBinding.lawItemDiaryPercent.setProgress(0);
+            holder.itemRecordDiaryBinding.ivItemDiaryPlay.setImageDrawable(
+                    ContextCompat.getDrawable(context, R.drawable.ic_play_circle_filled_black_24dp));
         }
 
         holder.itemRecordDiaryBinding.tvItemDiaryEmotion.setText(diary.getSelectedEmotion().getEmoji());
-        holder.itemRecordDiaryBinding.tvItemDiaryTags.setText(diary.getTags().toString());
+        holder.itemRecordDiaryBinding.tvItemDiaryTags.setText(diary.toString());
 
         holder.itemRecordDiaryBinding.setDate(diary.getRecordDate());
     }
@@ -69,6 +83,15 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
         int from = diaryList.size();
         diaryList.addAll(diaries);
         notifyItemMoved(from, diaryList.size());
+    }
+
+    void changePlayItemIcon(final int lastPlayedIndex, final boolean isFinished) {
+        if(isFinished) {
+            this.lastPlayedIndex = NOTHING_PLAYED;
+        } else {
+            this.lastPlayedIndex = lastPlayedIndex;
+        }
+        notifyItemChanged(lastPlayedIndex);
     }
 
     void insertDiaryItem(@NonNull Diary diary) {

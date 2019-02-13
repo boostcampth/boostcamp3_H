@@ -3,12 +3,17 @@ package teamh.boostcamp.myapplication.data.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import androidx.annotation.NonNull;
 
 public class SharedPreferenceManager {
     private static final String TEAM_H = "TEAM_H";
     private static final String PREF_PASSWORD = "PREF_PASSWORD";
     private static final String PREF_PUSH_TIME = "PREF_PUSH_TIME";
+    private static final String PREF_LAST_SAVE_TIME = "PREF_LAST_SAVE_TIME";
 
     // fields
     private static SharedPreferences preferences;
@@ -64,6 +69,18 @@ public class SharedPreferenceManager {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
+    }
+
+    public void setLastDiarySaveTime(@NonNull Date lastSaveTime) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PREF_LAST_SAVE_TIME,
+                new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(lastSaveTime));
+        editor.apply();
+    }
+
+    @NonNull
+    public String getLastDiarySaveTime() {
+        return preferences.getString(PREF_LAST_SAVE_TIME, "");
     }
 
     // LazyHolder 클래스 - 싱글톤
