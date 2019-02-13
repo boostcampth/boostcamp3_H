@@ -20,7 +20,7 @@ import teamh.boostcamp.myapplication.view.recall.RecallFragment;
 import teamh.boostcamp.myapplication.view.setting.SettingActivity;
 
 
-public class MainActivity extends AppCompatActivity implements MainActivityView{
+public class MainActivity extends AppCompatActivity implements MainActivityView {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -62,7 +62,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
 
         presenter = new MainPresenter(this);
         // bindingUtil 설정
-        binding = DataBindingUtil.setContentView(this, getLayoutId());
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setActivity(this);
+
         recallFragment = RecallFragment.newInstance();
         diaryListFragment = DiaryListFragment.newInstance();
         statisticsFragment = StatisticsFragment.newInstance();
@@ -70,11 +72,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView{
         initBottomNavigation();
     }
 
-    protected int getLayoutId() {
-        return R.layout.activity_main;
-    }
-
-    private void initBottomNavigation(){
+    private void initBottomNavigation() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         binding.bottomNavigationView.setSelectedItemId(R.id.navigation_diary);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
