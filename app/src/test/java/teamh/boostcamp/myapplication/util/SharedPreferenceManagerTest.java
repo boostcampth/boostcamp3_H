@@ -2,7 +2,7 @@ package teamh.boostcamp.myapplication.util;
 
 import org.junit.Test;
 
-public class SharedPreferenceTest {
+public class SharedPreferenceManagerTest {
     @Test
     public void setPreferencePassword() {
 
