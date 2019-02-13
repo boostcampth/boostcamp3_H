@@ -10,6 +10,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import teamh.boostcamp.myapplication.R;
@@ -30,25 +31,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private RecallFragment recallFragment;
     private DiaryListFragment diaryListFragment;
     private StatisticsFragment statisticsFragment;
+    private FragmentTransaction fragmentTransaction;
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_recall:
-                    transaction.replace(R.id.frame_layout, recallFragment).commitAllowingStateLoss();
-                    binding.tvMainTitle.setText(getString(R.string.Memories));
+                    changeFragment(recallFragment, getString(R.string.Memories));
                     return true;
                 case R.id.navigation_diary:
-                    transaction.replace(R.id.frame_layout, diaryListFragment).commitAllowingStateLoss();
-                    binding.tvMainTitle.setText(getString(R.string.main_toolbar_diary_title));
+                    changeFragment(diaryListFragment, getString(R.string.main_toolbar_diary_title));
                     return true;
                 case R.id.navigation_statistics:
-                    transaction.replace(R.id.frame_layout, statisticsFragment).commitAllowingStateLoss();
-                    binding.tvMainTitle.setText(getString(R.string.main_toolbar_graph_title));
+                    changeFragment(statisticsFragment, getString(R.string.main_toolbar_graph_title));
                     return true;
             }
             return false;
@@ -77,6 +75,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         binding.bottomNavigationView.setSelectedItemId(R.id.navigation_diary);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.frame_layout, diaryListFragment).commitAllowingStateLoss();
+    }
+
+    private void changeFragment(Fragment fragment, String title){
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment).commit();
+        binding.tvMainTitle.setText(title);
     }
 
     // 상단 Toolbar 클릭 시 설정 화면으로 이동

@@ -95,7 +95,6 @@
     <string name="password_lock_success_text">비밀번호 설정이 완료되었습니다.</string>
     <string name="password_before_input_text">이전 비밀번호를 입력해주세요.</string>
 
-
     <!--Alarm-->
     <string name="alarm_title">알람</string>
     <string name="alarm_explain">시간을 설정해주세요.</string>
@@ -104,8 +103,4 @@
     <string name="alarm_set_text">알람을 설정하였습니다.</string>
     <string name="alarm_error_text">오류</string>
     <string name="alarm_modify_text">시간을 수정해주세요.</string>
-    <string name="title_activity_main2">Main2Activity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
 </resources>
