@@ -55,6 +55,11 @@ public class RecallFragment extends Fragment implements RecallView {
     }
 
     @Override
+    public void deleteRecall(int position) {
+        recallListAdapter.deleteItem(position);
+    }
+
+    @Override
     public void onGenerateNewRecallButtonClicked(View view) {
         recallPresenter.generateRecall();
     }
@@ -87,8 +92,8 @@ public class RecallFragment extends Fragment implements RecallView {
             }
 
             @Override
-            public void onDeleteButtonClicked(int position) {
-                recallPresenter.deleteRecall(position);
+            public void onDeleteButtonClicked(int position, int id) {
+                recallPresenter.deleteRecall(position, id);
             }
         });
     }

@@ -14,4 +14,6 @@ public interface RecallView {
     void onGenerateNewRecallButtonClicked(View view);
 
     void showDeleteSuccessResult();
+
+    void deleteRecall(int position);
 }

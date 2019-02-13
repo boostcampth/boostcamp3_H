@@ -45,13 +45,13 @@ public class RecallPresenter {
         );
     }
 
-    void deleteRecall(int id) {
+    void deleteRecall(int position, int id) {
         compositeDisposable.add(
                 recallRepository.deleteRecall(id)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                             view.showDeleteSuccessResult();
-                            loadRecallList();
+                            view.deleteRecall(position);
                         })
         );
     }

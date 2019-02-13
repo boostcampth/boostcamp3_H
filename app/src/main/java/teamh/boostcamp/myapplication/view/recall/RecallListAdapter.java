@@ -49,7 +49,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         adapter.addItems(itemList.get(position).getDiaryList());
         holder.binding.rvDiary.setAdapter(adapter);
 
-        holder.binding.ivDelete.setOnClickListener(v -> buttonClickListener.onDeleteButtonClicked(itemList.get(position).getIndex()));
+        holder.binding.ivDelete.setOnClickListener(v -> buttonClickListener.onDeleteButtonClicked(position, itemList.get(position).getIndex()));
         holder.binding.ivPlay.setOnClickListener(v -> buttonClickListener.onPlayButtonClicked(itemList.get(position)));
     }
 
@@ -62,10 +62,16 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         this.buttonClickListener = buttonClickListener;
     }
 
-    public void updateItems(List<Recall> items) {
+    void updateItems(List<Recall> items) {
         this.itemList.clear();
         this.itemList.addAll(items);
         notifyDataSetChanged();
+    }
+
+    void deleteItem(int position){
+        this.itemList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, itemList.size());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -111,7 +117,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     public interface ButtonClickListener {
         void onPlayButtonClicked(Recall recall);
 
-        void onDeleteButtonClicked(int index);
+        void onDeleteButtonClicked(int position, int id);
     }
 
 }
