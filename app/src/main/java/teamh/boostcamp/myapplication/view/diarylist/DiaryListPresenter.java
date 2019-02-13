@@ -1,7 +1,5 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
-import android.util.Log;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.Date;
@@ -18,7 +16,7 @@ import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.Emotio
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
-public class DiaryListPresenter {
+class DiaryListPresenter {
     @NonNull
     final private DiaryRepository diaryRepository;
     @NonNull
@@ -31,6 +29,7 @@ public class DiaryListPresenter {
     private Date lastItemLoadedTime;
     @NonNull
     private RecordPlayer recordPlayer;
+
     @Nullable
     private Emotion selectedEmotion;
     private boolean isLoading;
@@ -51,13 +50,9 @@ public class DiaryListPresenter {
         this.isLoading = false;
         this.isRecording = false;
         this.isRecordPlaying = false;
-
         this.lastItemLoadedTime = new Date();
 
-        this.diaryRecorder.setMediaRecorderTimeOutListener(() -> {
-            diaryRecorder.finishRecord();
-            diaryListView.showRecordTimeOutMsg();
-        });
+        initMediaListener();
     }
 
     void loadDiaryList(final int pageSize) {
@@ -137,7 +132,7 @@ public class DiaryListPresenter {
         }
     }
 
-    public void playDiaryRecord(List<Diary> diaries) {
+    void playDiaryRecord(List<Diary> diaries) {
         if(isRecordPlaying) {
             recordPlayer.stopList();
         }
@@ -146,7 +141,7 @@ public class DiaryListPresenter {
         recordPlayer.playList();
     }
 
-    public void setSelectedEmotion(@Nullable Emotion emotion) {
+    void setSelectedEmotion(@Nullable Emotion emotion) {
         this.selectedEmotion = emotion;
     }
 
@@ -160,6 +155,13 @@ public class DiaryListPresenter {
 
     void finishRecording() {
         diaryRecorder.finishRecord();
+    }
+
+    private void initMediaListener() {
+        diaryRecorder.setMediaRecorderTimeOutListener(() -> {
+            diaryRecorder.finishRecord();
+            diaryListView.showRecordTimeOutMsg();
+        });
     }
 
     void onViewDestroyed() {

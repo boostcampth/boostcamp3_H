@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         super.onCreate(savedInstanceState);
 
         presenter = new MainPresenter(this);
+
         // bindingUtil 설정
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setActivity(this);

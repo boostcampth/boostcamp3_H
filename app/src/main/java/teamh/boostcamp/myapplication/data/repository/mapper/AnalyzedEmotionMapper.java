@@ -48,7 +48,7 @@ public class AnalyzedEmotionMapper {
 
             try {
                 if (SCORE_MAP.containsKey(response.getEmotion())) {
-                    totalScore = SCORE_MAP.get(response.getEmotion()) * (int) (response.getEnd() - response.getStart());
+                    totalScore += SCORE_MAP.get(response.getEmotion()) * (int) (response.getEnd() - response.getStart());
                 }
             } catch (NullPointerException e) {
                 e.printStackTrace();

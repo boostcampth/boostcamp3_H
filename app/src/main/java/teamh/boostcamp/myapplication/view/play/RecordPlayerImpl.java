@@ -23,7 +23,7 @@ public class RecordPlayerImpl implements RecordPlayer {
                 INSTANCE = new RecordPlayerImpl();
             }
         }
-
+        INSTANCE.initMediaPlayer();
         return INSTANCE;
     }
 
@@ -59,7 +59,6 @@ public class RecordPlayerImpl implements RecordPlayer {
         } else {
             stopList();
         }
-
     }
 
     @Override
@@ -89,7 +88,6 @@ public class RecordPlayerImpl implements RecordPlayer {
                     } catch (IOException e) {
                         Log.d(TAG, "playList: IOException" + Arrays.toString(e.getStackTrace()));
                     }
-
                     mediaPlayer.start();
                 } else {
                     stopList();

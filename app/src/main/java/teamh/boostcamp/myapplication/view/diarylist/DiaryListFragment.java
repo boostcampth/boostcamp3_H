@@ -60,7 +60,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context = context;
+        this.context = context.getApplicationContext();
     }
 
     @Override
