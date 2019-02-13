@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">하루듣기</string>
 
     <!-- List Fragment String -->
     <string name="item_record_done">Done</string>
@@ -95,7 +95,6 @@
     <string name="password_lock_success_text">비밀번호 설정이 완료되었습니다.</string>
     <string name="password_before_input_text">이전 비밀번호를 입력해주세요.</string>
     <string name="password_limit_number">1234567890</string>
-
 
     <!--Alarm-->
     <string name="alarm_title">알람</string>
