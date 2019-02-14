@@ -52,7 +52,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
-                Log.v(TAG, "Password Not Set");
+                Log.v(TAG, getApplicationContext().getResources().getString(R.string.password_not_set_text));
             }
         }
 
