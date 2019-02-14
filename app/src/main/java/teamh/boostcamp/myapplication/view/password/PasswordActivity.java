@@ -2,7 +2,6 @@ package teamh.boostcamp.myapplication.view.password;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
@@ -10,27 +9,45 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
 
-public class PasswordActivity extends LifecycleManageActivity implements PasswordView {
+public class PasswordActivity extends AppCompatActivity implements PasswordView {
 
     private ActivityPasswordBinding binding;
 
-    private PasswordPresenter presenter;
     private int type = -1;
     private String oldPassword = null;
-    protected InputFilter[] filters = null;
+    private LockManager lockManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        init();
+        existSaveData();
+
+        overridePendingTransition(R.anim.anim_slide_bottom_to_top, R.anim.anim_stop);
+    }
+
+    void init() {
+        lockManager = LockManager.getInstance();
+        initPresenter();
+        initBinding();
+    }
+
+    void initPresenter() {
+        //presenter = new PasswordPresenter(PasswordActivity.this);
+    }
+
+    void initBinding() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_password);
+        binding.setActivity(PasswordActivity.this);
+    }
 
-        initView();
-
+    void existSaveData() {
         Bundle extras = getIntent().getExtras();
         //Log.v("231", extras.getString(AppLock.MESSAGE));
         if (extras != null) {
@@ -45,14 +62,12 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
             // 이제 SettingActivity에서 넘어온 타입을 확인할 수 있음.
             type = extras.getInt(LockHelper.EXTRA_TYPE, -1);
         }
-
-        overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_stop);
-
     }
 
-    private void initView() {
-        presenter = new PasswordPresenter(PasswordActivity.this);
-        binding.setActivity(PasswordActivity.this);
+    @Override
+    protected void onResume() {
+        super.onResume();
+
     }
 
     // back 키 눌렀을 때
@@ -161,8 +176,6 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
                 + binding.etPasswordThree.getText().toString()
                 + binding.etPasswordFour.getText().toString();
 
-        Log.v("3911 pActivity", lockPassword);
-
         binding.etPasswordOne.setText("");
         binding.etPasswordTwo.setText("");
         binding.etPasswordThree.setText("");
@@ -173,12 +186,13 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
 
             // 비밀번호를 해제하려고 들어온 경우
             case LockHelper.DISABLE_PASSWORD:
-                if (LockManager.getInstance().getLockHelper().checkPassword(lockPassword)) {
+                if (lockManager.getLockHelper().checkPassword(lockPassword)) {
                     // 비밀번호가 같으면
-                    Log.v("391 pActivity", lockPassword);
+
                     setResult(RESULT_OK);
-                    LockManager.getInstance().getLockHelper().setPassword(null);
+                    lockManager.getLockHelper().setPassword(null);
                     finish();
+                    overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
                 } else {
                     onPasswordError();
                 }
@@ -193,8 +207,9 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
                     if (lockPassword.equals(oldPassword)) {
                         setResult(RESULT_OK);
                         // 비밀번호 저장
-                        LockManager.getInstance().getLockHelper().setPassword(lockPassword);
+                        lockManager.getLockHelper().setPassword(lockPassword);
                         finish();
+                        overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
                     } else {
                         oldPassword = null;
                         binding.tvMessage.setText("비밀번호를 입력해주세요.");
@@ -204,7 +219,7 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
                 break;
 
             case LockHelper.CHANGE_PASSWORD: // 비밀번호를 변경하려고 들어온 경우
-                if (LockManager.getInstance().getLockHelper().checkPassword(lockPassword)) {
+                if (lockManager.getLockHelper().checkPassword(lockPassword)) {
                     binding.tvMessage.setText("비밀번호를 입력해주세요.");
                     type = LockHelper.ENABLE_PASSWORD;
                 } else {
@@ -212,10 +227,13 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
                 }
                 break;
 
+            // back에 빠졌다 돌아올 경우.
             case LockHelper.UNLOCK_PASSWORD: // 비밀번호를 해제??
-                if (LockManager.getInstance().getLockHelper().checkPassword(lockPassword)) {
+                if (lockManager.getLockHelper().checkPassword(lockPassword)) {
+                    Log.v("Test in", lockPassword);
                     setResult(RESULT_OK);
                     finish();
+                    overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
                 } else {
                     onPasswordError();
                 }
@@ -258,9 +276,7 @@ public class PasswordActivity extends LifecycleManageActivity implements Passwor
     }
 
     private void deletePassword() {
-        if (binding.etPasswordOne.isFocused()) {
-
-        } else if (binding.etPasswordTwo.isFocused()) {
+        if (binding.etPasswordTwo.isFocused()) {
 
             binding.etPasswordOne.requestFocus();
             binding.etPasswordOne.setText("");
