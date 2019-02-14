@@ -180,6 +180,7 @@ class DiaryListPresenter {
     private void initMediaListener() {
         diaryRecorder.setMediaRecorderTimeOutListener(() -> {
             diaryRecorder.finishRecord();
+            isRecording = false;
             diaryListView.showRecordTimeOutMsg();
         });
 
