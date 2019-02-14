@@ -23,18 +23,26 @@ public class SettingActivity extends AppCompatActivity {
     ActivitySettingBinding binding;
     private AppInitializer appInitializer;
     private LockManager lockManager;
+    private SettingPresenter settingPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
-        binding.setActivity(SettingActivity.this);
-
     }
 
     private void init() {
+        initBinding();
+        initLock();
+    }
+
+    private void initBinding(){
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
+        binding.setActivity(SettingActivity.this);
+    }
+
+    private void initLock(){
         appInitializer = new AppInitializer();
         lockManager = LockManager.getInstance();
         lockManager.enableLock(getApplication());

@@ -81,4 +81,7 @@ dependencies {
 
     // workmanager
     implementation "android.arch.work:work-runtime:1.0.0-beta05"
+    // firebase
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }
