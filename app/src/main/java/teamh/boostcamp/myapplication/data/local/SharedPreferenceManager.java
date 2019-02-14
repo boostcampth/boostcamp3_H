@@ -84,7 +84,7 @@ public class SharedPreferenceManager {
         return preferences.getString(PREF_LAST_SAVE_TIME, "");
     }
 
-    public void setWorkerState(@NonNull boolean workerState) {
+    public void setWorkerState(boolean workerState) {
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(PREF_WORKER, workerState);
         editor.apply();
