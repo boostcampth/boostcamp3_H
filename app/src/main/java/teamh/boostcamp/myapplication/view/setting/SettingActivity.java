@@ -17,24 +17,33 @@ import teamh.boostcamp.myapplication.view.password.LockManager;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity  implements SettingView{
 
     private static final String TAG = SettingActivity.class.getClass().getSimpleName();
     ActivitySettingBinding binding;
     private AppInitializer appInitializer;
     private LockManager lockManager;
+    private SettingPresenter settingPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
-        binding.setActivity(SettingActivity.this);
-
     }
 
     private void init() {
+        settingPresenter = new SettingPresenter();
+        initBinding();
+        initLock();
+    }
+
+    private void initBinding(){
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_setting);
+        binding.setActivity(SettingActivity.this);
+    }
+
+    private void initLock(){
         appInitializer = new AppInitializer();
         lockManager = LockManager.getInstance();
         lockManager.enableLock(getApplication());

@@ -78,4 +78,7 @@ dependencies {
     implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
     // lottie
     implementation 'com.airbnb.android:lottie:3.0.0-beta1'
+    // firebase
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }
