@@ -7,6 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,6 +66,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+
         application = new AppInitializer();
         presenter = new MainPresenter(this);
 
@@ -107,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         transaction.replace(R.id.frame_layout, diaryListFragment).commitAllowingStateLoss();
     }
 
-    private void changeFragment(Fragment fragment, String title){
+    private void changeFragment(Fragment fragment, String title) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment).commit();
         binding.tvMainTitle.setText(title);

@@ -105,4 +105,8 @@
     <string name="alarm_set_text">알람을 설정하였습니다.</string>
     <string name="alarm_error_text">오류</string>
     <string name="alarm_modify_text">시간을 수정해주세요.</string>
+
+    <!--login-->
+    <string name="login_success">Login</string>
+    <string name="logout_success">Logout</string>
 </resources>

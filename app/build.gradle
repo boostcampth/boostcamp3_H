@@ -78,7 +78,13 @@ dependencies {
     implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
     // lottie
     implementation 'com.airbnb.android:lottie:3.0.0-beta1'
-
     // workmanager
     implementation "android.arch.work:work-runtime:1.0.0-beta05"
+    // firebase
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-database:16.0.6'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.9.9'
 }
+apply plugin: 'com.google.gms.google-services'
