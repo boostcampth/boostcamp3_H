@@ -14,7 +14,7 @@ public interface FirebaseRepository {
     Maybe<List<String>> loadAllDiaryId();
 
     @NonNull
-    Maybe<List<Diary>> loadAllDiaryList();
+    Maybe<List<DiaryEntity>> loadAllDiaryList();
 
     @NonNull
     Completable insertDiaries(@NonNull List<DiaryEntity> diaryEntities);
