@@ -2,29 +2,37 @@ package teamh.boostcamp.myapplication.view.password;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordSelectBinding;
+import teamh.boostcamp.myapplication.view.AppInitializer;
 
-public class PasswordSelectActivity extends LifecycleManageActivity {
+public class PasswordSelectActivity extends AppCompatActivity {
 
+    private static final String TAG = PasswordSelectActivity.class.getClass().getSimpleName();
     private ActivityPasswordSelectBinding binding;
+    private LockManager lockManager;
+    private AppInitializer application;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        application = new AppInitializer();
 
         init();
         isExistPasswordState();
     }
 
     private void init() {
-        LockManager.getInstance().enableLock(getApplication());
+        lockManager = LockManager.getInstance();
+        lockManager.enableLock(getApplication());
         initBinding();
-        initViews();
     }
 
     private void initBinding() {
@@ -32,7 +40,21 @@ public class PasswordSelectActivity extends LifecycleManageActivity {
         binding.setActivity(PasswordSelectActivity.this);
     }
 
-    private void initViews() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (application.getAppInitializer(this.getApplicationContext()).getApplicationStatus()
+                == AppInitializer.ApplicationStatus.RETURNED_TO_FOREGROUND) {
+            if (lockManager.getLockHelper().isPasswordSet()) {
+                Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
+                intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {
+                Log.v(TAG, getApplicationContext().getResources().getString(R.string.password_not_set_text));
+            }
+        }
 
     }
 
@@ -95,9 +117,9 @@ public class PasswordSelectActivity extends LifecycleManageActivity {
     // 저장된 비밀번호가 존재하는지 확인.
     private void isExistPasswordState() {
         // 설정한 비밀번호가 있을 때
-        if (LockManager.getInstance().getLockHelper().isPasswordSet()) {
+        if (lockManager.getLockHelper().isPasswordSet()) {
             binding.tvPasswordSetButton.setText(
-                    getApplicationContext().getResources().getString(R.string.password_lock_text));
+                    getApplicationContext().getResources().getString(R.string.password_unlock_text));
             binding.tvPasswordChangeButton.setEnabled(true);
 
         } else { // 설정한 비밀번호가 없을 때
