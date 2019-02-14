@@ -15,9 +15,8 @@ import teamh.boostcamp.myapplication.data.model.Emotion;
 public class DiaryEntity {
 
     // DB 에서 인식하기 위한 PK
-    @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    private final int id;
+    private final String id;
 
     // 저장한 날
     @ColumnInfo(name = "recordDate")
@@ -44,7 +43,7 @@ public class DiaryEntity {
     @NonNull
     private final Emotion analyzedEmotion;
 
-    public DiaryEntity(final int id,
+    public DiaryEntity(@NonNull String id,
                        @NonNull Date recordDate,
                        @NonNull String recordFilePath,
                        @Nullable List<String> tags,
@@ -57,7 +56,8 @@ public class DiaryEntity {
         this.selectedEmotion = selectedEmotion;
         this.analyzedEmotion = analyzedEmotion;
     }
-    public int getId() {
+    @NonNull
+    public String getId() {
         return id;
     }
 
