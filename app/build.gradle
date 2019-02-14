@@ -78,7 +78,6 @@ dependencies {
     implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
     // lottie
     implementation 'com.airbnb.android:lottie:3.0.0-beta1'
-
     // workmanager
     implementation "android.arch.work:work-runtime:1.0.0-beta05"
     // firebase

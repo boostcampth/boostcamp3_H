@@ -32,7 +32,7 @@ import teamh.boostcamp.myapplication.view.password.LockManager;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private static final String TAG = SettingActivity.class.getClass().getSimpleName();
     private static final int SIGN_IN_CODE = 4899;
