@@ -144,6 +144,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void setRecordCardVisibilityGone() {
         binding.cvFragmentDiaryRecord.setVisibility(View.GONE);
+        binding.tvFragmentDiaryToday.setVisibility(View.GONE);
         diaryListAdapter.notifyDataSetChanged();
     }
 

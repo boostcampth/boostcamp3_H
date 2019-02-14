@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 public class Diary implements Serializable {
 
     @NonNull
+    private final String id;
+    @NonNull
     private final Date recordDate;
     @NonNull
     private final String recordFilePath;
@@ -17,9 +19,8 @@ public class Diary implements Serializable {
     private final List<String> tags;
     @NonNull
     private final Emotion selectedEmotion;
-    private final int id;
 
-    public Diary(int id,
+    public Diary(@NonNull final String id,
                  @NonNull final Date recordDate,
                  @NonNull final String recordFilePath,
                  @Nullable final List<String> tags,
@@ -31,7 +32,8 @@ public class Diary implements Serializable {
         this.selectedEmotion = selectedEmotion;
     }
 
-    public int getId() {
+    @NonNull
+    public String getId() {
         return id;
     }
 

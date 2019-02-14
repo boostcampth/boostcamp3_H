@@ -114,9 +114,10 @@ class DiaryListPresenter {
             final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest(file.getAbsolutePath());
 
             final Date saveTime = new Date();
+            final String newItemId = new SimpleDateFormat("yyyyMMdd",Locale.KOREA).format(saveTime);
 
             compositeDisposable.add(diaryRepository.requestEmotionAnalyze(request).
-                    map(emotion -> new DiaryEntity(0,
+                    map(emotion -> new DiaryEntity(newItemId,
                             saveTime,
                             file.getAbsolutePath(),
                             tags,

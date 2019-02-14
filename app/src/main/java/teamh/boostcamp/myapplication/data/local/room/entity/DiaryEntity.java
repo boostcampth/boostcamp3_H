@@ -15,6 +15,8 @@ import teamh.boostcamp.myapplication.data.model.Emotion;
 public class DiaryEntity {
 
     // DB 에서 인식하기 위한 PK
+    @PrimaryKey
+    @NonNull
     @ColumnInfo(name = "id")
     private final String id;
 
