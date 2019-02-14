@@ -20,7 +20,7 @@ public interface DiaryDao {
     Single<List<DiaryEntity>> loadDiaryList(@NonNull Date recordDate,
                                             final int pageSize);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insert(@NonNull DiaryEntity...diaryEntities);
 
     @Query("Select * FROM diaries WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT :limitCount")

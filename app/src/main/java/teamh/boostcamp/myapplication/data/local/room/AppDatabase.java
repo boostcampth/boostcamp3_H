@@ -4,10 +4,12 @@ import android.content.Context;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import androidx.annotation.NonNull;
@@ -27,7 +29,7 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 
-@Database(entities = {DiaryEntity.class, RecallEntity.class}, version = 8, exportSchema = false)
+@Database(entities = {DiaryEntity.class, RecallEntity.class}, version = 9, exportSchema = false)
 @TypeConverters({DateTypeConverter.class, EmotionTypeConverter.class, StringListTypeConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -67,10 +69,11 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                     final long TODAY = new Date().getTime();
                                     final long DAY = 86400000L;
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
                                     for (int i = 1; i <= 20; ++i) {
                                         samples.add(new DiaryEntity(
-                                                i,
+                                                simpleDateFormat.format(TODAY - DAY - i),
                                                 new Date(TODAY - DAY * i),
                                                 filePath,
                                                 Arrays.asList(String.format("#%2d번", i)),
