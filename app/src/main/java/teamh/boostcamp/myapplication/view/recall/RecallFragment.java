@@ -107,5 +107,4 @@ public class RecallFragment extends Fragment implements RecallView {
         recallPresenter = new RecallPresenter(this,
                 RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getContext())));
     }
-
 }

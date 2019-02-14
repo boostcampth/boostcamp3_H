@@ -28,4 +28,7 @@ public interface DiaryDao {
 
     @Query("SELECT * FROM diaries ORDER BY recordDate DESC LIMIT 1")
     Single<DiaryEntity> loadRecentInsertedDiary();
+
+    @Query("delete from diaries")
+    void truncate();
 }

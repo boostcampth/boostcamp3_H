@@ -1,7 +1,5 @@
 package teamh.boostcamp.myapplication.view.recall;
 
-import android.util.Log;
-
 import java.util.Date;
 
 import androidx.annotation.NonNull;
@@ -62,4 +60,5 @@ public class RecallPresenter {
     private int generateRandomNumber(int limit) {
         return (int) (Math.random() * limit);
     }
+
 }

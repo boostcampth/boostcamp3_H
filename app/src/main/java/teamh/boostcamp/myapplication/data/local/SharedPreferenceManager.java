@@ -14,6 +14,7 @@ public class SharedPreferenceManager {
     private static final String PREF_PASSWORD = "PREF_PASSWORD";
     private static final String PREF_PUSH_TIME = "PREF_PUSH_TIME";
     private static final String PREF_LAST_SAVE_TIME = "PREF_LAST_SAVE_TIME";
+    private static final String PREF_WORKER = "PREF_WORKER";
 
     // fields
     private static SharedPreferences preferences;
@@ -81,6 +82,16 @@ public class SharedPreferenceManager {
     @NonNull
     public String getLastDiarySaveTime() {
         return preferences.getString(PREF_LAST_SAVE_TIME, "");
+    }
+
+    public void setWorkerState(@NonNull boolean workerState) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PREF_WORKER, workerState);
+        editor.apply();
+    }
+
+    public boolean getWorkerState(){
+        return preferences.getBoolean(PREF_WORKER, false);
     }
 
     // LazyHolder 클래스 - 싱글톤
