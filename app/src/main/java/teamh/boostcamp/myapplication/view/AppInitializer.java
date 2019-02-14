@@ -56,10 +56,12 @@ public class AppInitializer extends Application {
          * */
         @Override
         public void onActivityStarted(Activity activity) {
-            Log.v("1047 onActivityStarted", String.valueOf(runningActivityCount) + activity);
+
             if (++runningActivityCount == 1) {
+                Log.v("10476 onStarted", String.valueOf(runningActivityCount) + " " +activity.getClass().getSimpleName()+"\n");
                 applicationStatus = ApplicationStatus.RETURNED_TO_FOREGROUND;
             } else if (runningActivityCount > 1) {
+                Log.v("10477 onStarted", String.valueOf(runningActivityCount) + " "+activity.getClass().getSimpleName()+"\n");
                 applicationStatus = ApplicationStatus.FOREGROUND;
             }
         }
@@ -77,12 +79,11 @@ public class AppInitializer extends Application {
 
         @Override
         public void onActivityStopped(Activity activity) {
-            Log.v("1047 onActivityPaused", String.valueOf(runningActivityCount) + activity);
             if (--runningActivityCount == 0) {
+                Log.v("10478 onStopped", String.valueOf(runningActivityCount) + " " +activity.getClass().getSimpleName()+"\n");
                 applicationStatus = ApplicationStatus.BACKGROUND;
             }
 
-            Log.v("1047 activity? ", activity.getClass().getSimpleName());
         }
 
         @Override
