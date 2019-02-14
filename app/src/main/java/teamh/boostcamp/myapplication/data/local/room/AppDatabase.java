@@ -19,6 +19,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.converter.DateTypeConverter;
 import teamh.boostcamp.myapplication.data.local.room.converter.EmotionTypeConverter;
@@ -83,7 +84,6 @@ public abstract class AppDatabase extends RoomDatabase {
                                     }
 
                                     DiaryEntity[] temp = new DiaryEntity[samples.size()];
-
 
 
                                     RecallEntity[] recallList = {new RecallEntity(0, new Date(), Emotion.fromValue(0))

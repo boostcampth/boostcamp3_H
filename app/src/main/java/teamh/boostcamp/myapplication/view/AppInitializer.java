@@ -9,8 +9,15 @@ import android.util.Log;
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 
+import java.util.concurrent.TimeUnit;
+
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
+
 public class AppInitializer extends Application {
 
+    private static final String TAG = "AppInitializer";
     public enum ApplicationStatus {
         BACKGROUND,
         RETURNED_TO_FOREGROUND,
@@ -39,6 +46,18 @@ public class AppInitializer extends Application {
         LeakCanary.install(this);
 
         Stetho.initializeWithDefaults(this);
+
+        initWorker();
+
+    }
+
+    private void initWorker(){
+        SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager.getInstance(getApplicationContext());
+        if(!sharedPreferenceManager.getWorkerState()){
+            PeriodicWorkRequest weekWorkRequest = new PeriodicWorkRequest.Builder(DataInsertWorker.class, 7, TimeUnit.DAYS).build();
+            WorkManager.getInstance().enqueue(weekWorkRequest);
+            sharedPreferenceManager.setWorkerState(true);
+        }
     }
 
 

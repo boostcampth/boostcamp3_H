@@ -23,7 +23,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     private List<Recall> itemList;
     private ButtonClickListener buttonClickListener;
 
-    public RecallListAdapter(Context context) {
+    RecallListAdapter(Context context) {
         this.context = context;
         this.itemList = new ArrayList<>();
     }
