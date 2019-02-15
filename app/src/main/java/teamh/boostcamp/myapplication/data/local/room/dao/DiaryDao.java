@@ -40,4 +40,6 @@ public interface DiaryDao {
     //    @Query("Select * FROM diaries WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT :limitCount")
 //    Maybe<List<Diary>> selectDiaryListByEmotionAndDate1(Emotion emotion, Date startDate, Date endDate, int limitCount);
 
+    @Query("SELECT * FROM diaries WHERE id NOT IN (:diaryEntityIdList)")
+    Maybe<List<DiaryEntity>> loadNotBackupDiaryList(@NonNull List<String> diaryEntityIdList);
 }

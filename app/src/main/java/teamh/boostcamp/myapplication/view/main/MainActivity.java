@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
         application = new AppInitializer();
         presenter = new MainPresenter(this);
 
@@ -103,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             } else {
                 Log.v(TAG, getApplicationContext().getResources().getString(R.string.password_not_set_text));
             }
-
         }
     }
 

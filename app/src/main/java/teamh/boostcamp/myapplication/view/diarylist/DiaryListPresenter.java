@@ -205,6 +205,7 @@ class DiaryListPresenter {
             diaryRecorder.finishRecord();
         }
         diaryRecorder.releaseRecorder();
+        recordPlayer.releasePlayer();
     }
 
     void sendDiaryToKakao(Diary diary){
