@@ -46,6 +46,9 @@ public class AnalyzedEmotionShowingDialog extends DialogFragment{
         TextView emotionView = view.findViewById(R.id.tv_emotion_dialog_analyzed);
         emotionView.setText(analyzedEmotion.getEmoji());
 
+        TextView relationView = view.findViewById(R.id.tv_emotion_dialog_relation);
+        relationView.setText(analyzedEmotion.getRelation());
+
         builder.setView(view);
         builder.setTitle(getString(R.string.popup_dialog_title));
         builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, which) -> {
