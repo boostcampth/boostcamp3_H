@@ -5,6 +5,6 @@
     android:thicknessRatio="2.0"
     android:useLevel="false">
 
-    <solid android:color="@color/all_purple" />
+    <solid android:color="@color/main_dark" />
 
 </shape>

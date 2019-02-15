@@ -25,7 +25,7 @@
     <dimen name="card_view_radius">20dp</dimen>
 
     <!-- Emoji Default -->
-    <dimen name="diary_emoji_min">60dp</dimen>
+    <dimen name="diary_emoji_min">70dp</dimen>
 
     <!-- LegacyDiary Fragment -->
     <dimen name="diary_progress_height">10dp</dimen>

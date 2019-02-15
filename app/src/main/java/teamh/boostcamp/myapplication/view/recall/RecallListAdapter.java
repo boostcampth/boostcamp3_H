@@ -18,7 +18,7 @@ import teamh.boostcamp.myapplication.databinding.ItemRecallListBinding;
 
 public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.ViewHolder> {
 
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM월 dd일", Locale.KOREA);
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM.dd", Locale.KOREA);
     private Context context;
     private List<Recall> itemList;
     private ButtonClickListener buttonClickListener;
@@ -40,7 +40,8 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.binding.tvSubTitle.setText(generateRecallTitle(itemList.get(position)));
+        holder.binding.tvSubTitleDate.setText(generateRecallTitleDate(itemList.get(position)));
+        holder.binding.tvSubTitle.setText(emotionToString(itemList.get(position).getEmotion().getEmotion()));
         holder.binding.rvDiary.setHasFixedSize(true);
         holder.binding.rvDiary.setVerticalScrollbarPosition(0);
         holder.binding.rvDiary.setLayoutManager(new LinearLayoutManager(context));
@@ -89,11 +90,10 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     }
 
     @NonNull
-    private String generateRecallTitle(@NonNull Recall recall) {
+    private String generateRecallTitleDate(Recall recall) {
         String startDateString = DateToSimpleFormat(recall.getStartDate());
         String endDateString = DateToSimpleFormat(recall.getEndDate());
-        String emotionString = emotionToString(recall.getEmotion().getEmotion());
-        return String.format("%s 부터 %s까지의 %s", startDateString, endDateString, emotionString);
+        return String.format("%s ~ %s", startDateString, endDateString);
     }
 
     @NonNull
@@ -105,15 +105,15 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     private String emotionToString(int emotion) {
         switch (emotion) {
             case 0:
-                return "불행함들";
+                return "불행했던 날들";
             case 1:
-                return "슬픔들";
+                return "슬픈 날들";
             case 2:
                 return "그저그런날들";
             case 3:
-                return "즐거움들";
+                return "즐거웠던 날들";
             case 4:
-                return "행복들";
+                return "행복했던 날들";
             default:
                 return "행복들";
         }

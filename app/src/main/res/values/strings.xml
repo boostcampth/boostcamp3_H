@@ -3,7 +3,7 @@
 
     <!-- List Fragment String -->
     <string name="item_record_done">Done</string>
-    <string name="item_record_today">오늘의 일기</string>
+    <string name="item_record_today">당신의 하루를\n들려주세요</string>
     <string name="item_record_permission_title">권한 요구</string>
     <string name="item_record_permission_msg"> 일기를 녹음하고 저장할 때 아래 두 권한이 필요합니다 !\n
         - 마이크 사용 권한\n

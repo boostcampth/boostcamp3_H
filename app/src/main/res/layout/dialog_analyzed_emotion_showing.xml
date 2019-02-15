@@ -7,7 +7,7 @@
 
     <TextView
         android:id="@id/tv_title"
-        style="@style/SubTitle"
+        style="@style/Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="32dp"
@@ -33,8 +33,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/sub_title_16dp"
         android:layout_marginBottom="32dp"
-        android:textSize="20dp"
-        android:textColor="@color/black"
+        android:textSize="@dimen/sub_title_16dp"
+        android:textColor="@color/gray"
         android:text="test"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

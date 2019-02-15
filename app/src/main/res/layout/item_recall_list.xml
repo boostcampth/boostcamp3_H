@@ -20,29 +20,41 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/tv_sub_title"
-                    style="@style/SubTitle"
-                    android:textStyle="bold"
+                    android:id="@+id/tv_sub_title_date"
+                    android:textSize="16dp"
+                    android:textColor="@color/main_text"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/layout_margin"
                     android:layout_marginTop="@dimen/layout_margin"
                     android:layout_marginEnd="@dimen/layout_margin"
-                    app:layout_constraintEnd_toStartOf="@+id/iv_play"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Happy in January" />
+
+                <TextView
+                    android:id="@+id/tv_sub_title"
+                    android:textColor="@color/main_text"
+                    android:textSize="24dp"
+                    android:textStyle="bold"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_sub_title_date"
                     tools:text="Happy in January" />
 
                 <ImageView
                     android:id="@+id/iv_play"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
-                    android:layout_marginTop="@dimen/layout_gutter"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="@dimen/layout_gutter"
                     android:src="@drawable/ic_recall_play"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_sub_title"
                     app:layout_constraintEnd_toStartOf="@+id/iv_delete"
-                    app:layout_constraintTop_toTopOf="@+id/tv_sub_title"/>
+                    app:layout_constraintTop_toTopOf="@+id/tv_sub_title_date" />
 
                 <ImageView
                     android:id="@+id/iv_delete"
@@ -59,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/title_margin_left"
-                    android:layout_marginTop="@dimen/layout_gutter"
+                    android:layout_marginTop="@dimen/layout_margin"
                     android:layout_marginRight="@dimen/title_margin_right"
                     android:layout_marginBottom="@dimen/layout_margin"
                     app:layout_constraintBottom_toBottomOf="parent"

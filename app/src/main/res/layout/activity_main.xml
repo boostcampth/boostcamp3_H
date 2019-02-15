@@ -66,6 +66,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:itemIconTint="@color/bottom_ion_selector"
+            app:itemTextColor="@color/bottom_ion_selector"
             app:menu="@menu/menu_bottom"
             android:elevation="@dimen/app_bar_elevation"/>
 
