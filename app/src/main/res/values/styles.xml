@@ -7,6 +7,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
     <style name="Title">
@@ -80,25 +81,26 @@
         <item name="android:gravity">center</item>
         <item name="android:maxLength">1</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">40dp</item>
         <item name="android:digits">@string/password_limit_number</item>
         <item name="android:background">@drawable/edittext_background</item>
         <item name="android:inputType">textPassword</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">80dp</item>
         <item name="android:layout_margin">4dp</item>
-        <item name="android:layout_weight">1</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:paddingBottom">30dp</item>
         <item name="android:singleLine">true</item>
     </style>
 
-    <style name="PasswordButtonTheme" parent="@android:style/Widget.Button">
+    <style name="PasswordNumberButtonTheme" parent="@android:style/Widget.Button">
         <item name="android:textSize">20dp</item>
         <item name="android:textColor">#FF464646</item>
         <item name="android:gravity">center</item>
         <item name="android:background">@drawable/button_background</item>
-        <item name="android:layout_margin">5dp</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:layout_width">120dp</item>
-        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_height">60dp</item>
     </style>
 
     <style name="AnalyzedEmotionShowingDialogAnimation">
@@ -120,4 +122,22 @@
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="password_subtitle_style">
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="password_explain_style">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/password_text_gray</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="setting_subtitle_style">
+        <item name="android:textSize">18dp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textStyle">normal</item>
+    </style>
 </resources>

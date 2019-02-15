@@ -28,10 +28,10 @@ import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
+import teamh.boostcamp.myapplication.view.password.LegacyPasswordSelectActivity;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
 import teamh.boostcamp.myapplication.view.password.LockManager;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
-import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
 public class SettingActivity extends AppCompatActivity implements SettingView {
 
@@ -69,15 +69,13 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     private void initActionBar() {
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar_setting);
         textView = toolbar.findViewById(R.id.setting_text);
 
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
-        textView.setText(getApplicationContext().getResources().getString(R.string.setting_title));
         actionBar.setDisplayShowTitleEnabled(false);
-
     }
 
     @Override
@@ -150,7 +148,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 startActivity(new Intent(SettingActivity.this, AlarmActivity.class));
                 break;
             case R.id.rl_setting_password:
-                startActivity(new Intent(SettingActivity.this, PasswordSelectActivity.class));
+                startActivity(new Intent(SettingActivity.this, LegacyPasswordSelectActivity.class));
                 break;
             case R.id.rl_setting_login:
                 signIn();

@@ -36,8 +36,9 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/title_margin_left"
+                style="@style/password_subtitle_style"
                 android:text="@string/setting_alarm"
-                android:textSize="@dimen/setting_body_14dp" />
+                 />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -73,7 +74,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_password"
-                android:textSize="@dimen/setting_body_14dp" />
+                style="@style/password_subtitle_style" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -111,7 +112,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_login"
-                android:textSize="@dimen/setting_body_14dp" />
+                style="@style/password_subtitle_style" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -150,7 +151,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_logout"
-                android:textSize="@dimen/setting_body_14dp" />
+                style="@style/password_subtitle_style" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -188,7 +189,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_backup"
-                android:textSize="@dimen/setting_body_14dp" />
+                style="@style/password_subtitle_style"/>
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -227,7 +228,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_restore"
-                android:textSize="@dimen/setting_body_14dp" />
+                style="@style/setting_subtitle_style" />
 
             <ImageView
                 android:layout_width="wrap_content"

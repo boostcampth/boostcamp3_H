@@ -27,5 +27,6 @@
     <!--Password-->
     <color name="light_gray">#FFE5E5E5</color>
     <color name="gray">#FFCCCCCC</color>
-    <color name="light_blue">#FF78c8e6</color>
+    <color name="light_blue">#757575</color>
+    <color name="password_text_gray">#9E9E9E</color>
 </resources>

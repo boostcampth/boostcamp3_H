@@ -4,8 +4,8 @@
 
     <stroke
         android:width="1dip"
-        android:color="@color/gray" />
+        android:color="@android:color/transparent" />
 
-    <solid android:color="@color/light_gray" />
+    <solid android:color="@color/white" />
 
 </shape>
