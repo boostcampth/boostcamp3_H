@@ -1,6 +1,7 @@
 package teamh.boostcamp.myapplication.data.local.room;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -72,9 +73,9 @@ public abstract class AppDatabase extends RoomDatabase {
                                     final long DAY = 86400000L;
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
 
-                                    for (int i = 1; i <= 20; ++i) {
+                                    for (int i = 10; i <= 20; ++i) {
                                         samples.add(new DiaryEntity(
-                                                simpleDateFormat.format(TODAY - DAY - i),
+                                                simpleDateFormat.format(TODAY - DAY * (i+2)),
                                                 new Date(TODAY - DAY * i),
                                                 filePath,
                                                 Arrays.asList(String.format("#%2d번", i)),
@@ -85,15 +86,23 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                     DiaryEntity[] temp = new DiaryEntity[samples.size()];
 
+                                    /*Completable.fromAction(() -> {
+                                        INSTANCE.diaryDao().truncate();
+                                    }).subscribeOn(Schedulers.io())
+                                            .subscribe(() -> {
+                                                Log.d("test", "Test");
+                                            }, throwable -> {
+                                                Log.d("test","error");
+                                            });*/
 
-                                    RecallEntity[] recallList = {new RecallEntity(0, new Date(), Emotion.fromValue(0))
-                                            , new RecallEntity(0, new Date(), Emotion.fromValue(1))
-                                    , new RecallEntity(0, new Date(), Emotion.fromValue(2))
-                                    , new RecallEntity(0, new Date(), Emotion.fromValue(3))};
+Completable.fromAction(() -> INSTANCE.diaryDao().insert(samples.toArray(temp)))
+        .subscribeOn(Schedulers.io())
+        .subscribe(() -> {
+            Log.d("test", "Test");
+        }, throwable -> {
+throwable.printStackTrace();
+        });
 
-                                    Completable.fromAction(() -> INSTANCE.recallDao().insertRecall(recallList))
-                                    .subscribeOn(Schedulers.io())
-                                    .subscribe();
                                 }
                             })
                             .build();
