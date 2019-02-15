@@ -24,29 +24,22 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_title"
-                style="@style/Title"
-                android:layout_width="wrap_content"
-                android:layout_height="47dp"
-                android:layout_marginStart="@dimen/layout_margin"
-                android:layout_marginTop="@dimen/layout_margin"
-                android:text="@string/Memories"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
+                android:gravity="center_horizontal"
+                android:background="@drawable/round_button"
                 android:id="@+id/btn_recommend"
                 style="@style/TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginEnd="@dimen/layout_margin"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/layout_margin"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:onClick="@{view::onGenerateNewRecallButtonClicked}"
                 android:text="추천임시"
-                android:textColor="@color/all_purple"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_title"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_title" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_card"
@@ -56,7 +49,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title"
+                app:layout_constraintTop_toBottomOf="@+id/btn_recommend"
                 tools:listitme="@layout/item_memory_card">
 
             </androidx.recyclerview.widget.RecyclerView>

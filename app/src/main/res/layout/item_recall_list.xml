@@ -12,8 +12,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/all_body_16dp"
-            app:cardCornerRadius="@dimen/card_view_radius"
-            app:cardElevation="@dimen/card_elevation">
+            android:elevation="@dimen/card_elevation"
+            app:cardCornerRadius="@dimen/card_view_radius">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -35,21 +35,21 @@
 
                 <ImageView
                     android:id="@+id/iv_play"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
                     android:layout_marginTop="@dimen/layout_gutter"
                     android:layout_marginEnd="@dimen/layout_gutter"
-                    android:src="@drawable/ic_memories_play"
+                    android:src="@drawable/ic_recall_play"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_sub_title"
                     app:layout_constraintEnd_toStartOf="@+id/iv_delete"
                     app:layout_constraintTop_toTopOf="@+id/tv_sub_title"/>
 
                 <ImageView
                     android:id="@+id/iv_delete"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="@dimen/title_margin_right"
-                    android:src="@drawable/ic_memories_close"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginEnd="@dimen/title_margin_right"
+                    android:src="@drawable/ic_recall_delete"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_play"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/iv_play" />

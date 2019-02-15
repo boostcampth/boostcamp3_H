@@ -4,17 +4,17 @@
     <item
         android:id="@+id/navigation_recall"
         android:icon="@drawable/ic_memories_bottom"
-        android:title="Memories"/>
+        android:title="@string/main_toolbar_recall_title"/>
 
     <item
         android:id="@+id/navigation_diary"
         android:icon="@drawable/ic_diary_bottom"
-        android:title="Diary"/>
+        android:title="@string/main_toolbar_diary_title"/>
 
     <item
         android:id="@+id/navigation_statistics"
         android:icon="@drawable/ic_statistic_bottom"
-        android:title="Statistics"/>
+        android:title="@string/main_toolbar_statistics_title"/>
 
 
 </menu>

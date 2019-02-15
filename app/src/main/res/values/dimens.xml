@@ -7,8 +7,8 @@
     <dimen name="layout_gutter">8dp</dimen>
 
     <!--elevation-->
-    <dimen name="card_elevation">2dp</dimen>
-    <dimen name="app_bar_elevation">4dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="app_bar_elevation">8dp</dimen>
     <dimen name="dialog_elevation">24dp</dimen>
 
     <!--textSize-->
@@ -37,5 +37,7 @@
     <dimen name="switch_track_button_height">25dp</dimen>
     <dimen name="switch_thumb_size">25dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="icon_button_padding">4dp</dimen>
 
 </resources>

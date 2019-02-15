@@ -29,4 +29,10 @@
     <color name="gray">#FFCCCCCC</color>
     <color name="light_blue">#757575</color>
     <color name="password_text_gray">#9E9E9E</color>
+
+    <!--HashTag-->
+    <color name="hashtag_light">#8FC5FF</color>
+    <color name="hashtag">#3C9AFF</color>
+    <color name="hashtag_dark">#0059FF</color>
+
 </resources>

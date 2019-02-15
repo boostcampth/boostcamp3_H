@@ -29,10 +29,10 @@
             <TextView
                 android:id="@+id/tv_main_title"
                 style="@style/SubTitle"
+                android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Todays" />
+                android:layout_centerInParent="true"/>
 
             <ImageView
                 android:id="@+id/iv_main_setting"
@@ -42,7 +42,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/layout_margin"
                 android:onClick="@{v -> activity.startSetting(v)}"
-                android:src="@drawable/settings" />
+                android:src="@drawable/ic_settings_black_24dp" />
 
 
         </RelativeLayout>
@@ -61,12 +61,13 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
+            android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/menu_bottom"
-            android:elevation="10dp"/>
+            android:elevation="@dimen/app_bar_elevation"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
