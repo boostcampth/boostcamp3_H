@@ -52,6 +52,9 @@ public class AnalyzedEmotionShowingDialog extends DialogFragment{
             dismiss();
         });
 
-        return builder.create();
+        Dialog dialog = builder.create();
+        dialog.getWindow().getAttributes().windowAnimations = R.style.AnalyzedEmotionShowingDialogAnimation;
+
+        return dialog;
     }
 }
