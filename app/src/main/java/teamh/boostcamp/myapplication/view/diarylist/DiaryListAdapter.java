@@ -23,6 +23,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     private List<Diary> diaryList;
     private Context context;
     private OnRecordItemClickListener onRecordItemClickListener;
+    private OnKakaoLinkClickListener onKakaoLinkClickListener;
     private int lastPlayedIndex = NOTHING_PLAYED;
 
     DiaryListAdapter(@NonNull Context context) {
@@ -32,6 +33,10 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
 
     void setOnRecordItemClickListener(@NonNull OnRecordItemClickListener onRecordItemClickListener) {
         this.onRecordItemClickListener = onRecordItemClickListener;
+    }
+
+    void setOnKakaoLinkClickListener(@NonNull OnKakaoLinkClickListener onKakaoLinkClickListener) {
+        this.onKakaoLinkClickListener = onKakaoLinkClickListener;
     }
 
     @NonNull
@@ -52,12 +57,12 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
 
         final Diary diary = diaryList.get(position);
 
-        if(onRecordItemClickListener != null) {
+        if (onRecordItemClickListener != null) {
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setOnClickListener(v ->
-                onRecordItemClickListener.onDiaryItemClicked(position));
+                    onRecordItemClickListener.onDiaryItemClicked(position));
         }
 
-        if(lastPlayedIndex == position) {
+        if (lastPlayedIndex == position) {
             holder.itemRecordDiaryBinding.lawItemDiaryPercent.playAnimation();
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setImageDrawable(
                     ContextCompat.getDrawable(context, R.drawable.ic_pause_circle_filled_black_24dp));
@@ -72,6 +77,8 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
         holder.itemRecordDiaryBinding.tvItemDiaryTags.setText(diary.toString());
 
         holder.itemRecordDiaryBinding.setDate(diary.getRecordDate());
+
+        holder.itemRecordDiaryBinding.ivShareDiary.setOnClickListener(v -> onKakaoLinkClickListener.onShareButtonClicked(position));
     }
 
     @Override
@@ -86,7 +93,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     }
 
     void changePlayItemIcon(final int lastPlayedIndex, final boolean isFinished) {
-        if(isFinished) {
+        if (isFinished) {
             this.lastPlayedIndex = NOTHING_PLAYED;
         } else {
             this.lastPlayedIndex = lastPlayedIndex;
@@ -95,7 +102,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     }
 
     void insertDiaryItem(@NonNull Diary diary) {
-        diaryList.add(0,diary);
+        diaryList.add(0, diary);
         notifyItemInserted(0);
     }
 

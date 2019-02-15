@@ -8,6 +8,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
@@ -31,4 +32,8 @@ public interface DiaryDao {
 
     @Query("delete from diaries")
     void truncate();
+
+//    @Query("Select * FROM diaries WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT :limitCount")
+//    Maybe<List<Diary>> selectDiaryListByEmotionAndDate1(Emotion emotion, Date startDate, Date endDate, int limitCount);
+
 }
