@@ -3,7 +3,9 @@ package teamh.boostcamp.myapplication.view.setting;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -11,17 +13,16 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
@@ -35,18 +36,59 @@ import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private static final String TAG = SettingActivity.class.getClass().getSimpleName();
-    private static final int SIGN_IN_CODE = 4899;
     private ActivitySettingBinding binding;
+    private ActionBar actionBar;
+    private Toolbar toolbar;
+    private TextView textView;
+    private static final int SIGN_IN_CODE = 4899;
     private AppInitializer appInitializer;
     private LockManager lockManager;
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_setting);
+
         init();
+    }
+
+    private void init() {
+        initBinding();
+        initActionBar();
+        initFirebaseAuth();
+        initLock();
+    }
+
+    private void initBinding() {
+        binding = DataBindingUtil.setContentView(SettingActivity.this, R.layout.activity_setting);
+        binding.setActivity(SettingActivity.this);
+    }
+
+    private void initActionBar() {
+        toolbar = findViewById(R.id.toolbar);
+        textView = toolbar.findViewById(R.id.setting_text);
+
+        setSupportActionBar(toolbar);
+        actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        textView.setText(getApplicationContext().getResources().getString(R.string.setting_title));
+        actionBar.setDisplayShowTitleEnabled(false);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                this.overridePendingTransition(R.anim.anim_left_to_right, R.anim.anim_right_to_left);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
 
     }
 
@@ -67,12 +109,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         }
     }
 
-    private void init() {
-        initFirebaseAuth();
-        initBinding();
-        initLock();
-    }
-
     private void initFirebaseAuth() {
         auth = FirebaseAuth.getInstance();
 
@@ -84,10 +120,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
-    private void initBinding() {
-        binding = DataBindingUtil.setContentView(SettingActivity.this, R.layout.activity_setting);
-        binding.setActivity(SettingActivity.this);
-    }
 
     private void initLock() {
         appInitializer = new AppInitializer();
@@ -95,14 +127,26 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         lockManager.enableLock(getApplication());
     }
 
-    // onClick
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        toolbar = null;
+        actionBar = null;
+    }
+
+    @Override
+    public void showLoginMessage() {
+        showToast(R.string.login_success);
+    }
+
+    private void showToast(@StringRes final int id) {
+        Toast.makeText(getApplicationContext(), getString(id), Toast.LENGTH_SHORT).show();
+    }
+
     public void onButtonClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_close_button:
-                finish();
-                overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
-                break;
-            case R.id.rl_setting_alarm:
+            case R.id.setting_alarm_to_alarm:
                 startActivity(new Intent(SettingActivity.this, AlarmActivity.class));
                 break;
             case R.id.rl_setting_password:
@@ -117,6 +161,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 showToastMessage(R.string.logout_success);
                 break;
         }
+
     }
 
     private void signIn() {
@@ -163,7 +208,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private void updateUI(Object object) {
         if (object != null) {
-            showToast("Success");
+            showLoginMessage();
         } else {
             showToast("Fail");
         }
@@ -173,15 +218,16 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-        overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+        // 시작 -> 처리될 애니메이션
+        this.overridePendingTransition(R.anim.anim_left_to_right, R.anim.anim_right_to_left);
     }
 
     private void showToast(String message) {
         Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
     }
 
-    private void showToastMessage(@StringRes final int stringId){
-        Toast.makeText(this,getString(stringId),Toast.LENGTH_SHORT).show();
+    private void showToastMessage(@StringRes final int stringId) {
+        Toast.makeText(this, getString(stringId), Toast.LENGTH_SHORT).show();
     }
 
 }

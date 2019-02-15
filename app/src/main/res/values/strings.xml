@@ -75,11 +75,13 @@
     </string-array>
 
     <!--Setting-->
-    <string name="setting_title">setting</string>
+    <string name="setting_title">설정</string>
     <string name="setting_alarm">알람</string>
     <string name="setting_password">비밀번호</string>
     <string name="setting_login">로그인</string>
     <string name="setting_logout">로그아웃</string>
+    <string name="setting_backup">백업하기</string>
+    <string name="setting_restore">내려받기</string>
 
     <!--Toolbar title-->
     <string name="main_toolbar_diary_title">Todays</string>
@@ -109,4 +111,5 @@
     <!--login-->
     <string name="login_success">Login</string>
     <string name="logout_success">Logout</string>
+    <string name="title_activity_setting">SettingActivity</string>
 </resources>
