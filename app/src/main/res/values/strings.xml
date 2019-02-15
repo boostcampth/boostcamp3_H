@@ -103,6 +103,7 @@
     <string name="password_before_input_text">이전 비밀번호를 입력해주세요.</string>
     <string name="password_limit_number">1234567890</string>
     <string name="password_not_set_text">Password Not Set</string>
+    <string name="password_explain_text">비밀번호를 사용하여 화면 잠금을 해제할 수 있습니다.</string>
 
     <!--Alarm-->
     <string name="alarm_title">알람</string>
@@ -117,4 +118,5 @@
     <string name="login_success">Login</string>
     <string name="logout_success">Logout</string>
     <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_password_select">PasswordSelectActivity</string>
 </resources>
