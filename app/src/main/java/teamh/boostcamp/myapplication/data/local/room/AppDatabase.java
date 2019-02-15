@@ -85,8 +85,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     }
 
                                     DiaryEntity[] temp = new DiaryEntity[samples.size()];
-
-                                    /*Completable.fromAction(() -> {
+                                 /*Completable.fromAction(() -> {
                                         INSTANCE.diaryDao().truncate();
                                     }).subscribeOn(Schedulers.io())
                                             .subscribe(() -> {
@@ -103,6 +102,22 @@ public abstract class AppDatabase extends RoomDatabase {
                                                 throwable.printStackTrace();
                                             });
 
+                                    Log.d("Test", "Test1");
+                                    Completable.fromAction(() -> INSTANCE.diaryDao().truncate())
+                                            .subscribeOn(Schedulers.io())
+                                            .subscribe(() -> {
+
+                                            }, throwable -> {
+
+                                            });
+
+                                    /*Completable.fromAction(() -> INSTANCE.diaryDao().insert(samples.toArray(temp)))
+                                            .subscribeOn(Schedulers.io())
+                                            .subscribe(() -> {
+                                                Log.d("Test", "Test2");
+                                            }, throwable -> {
+                                                throwable.printStackTrace();
+                                            });*/
                                 }
                             })
                             .build();

@@ -77,6 +77,31 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/iv_item_diary_play"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="@dimen/layout_margin"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_play_circle_filled_black_24dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_item_diary_emotion"
+                    app:layout_constraintStart_toEndOf="@id/tv_item_diary_emotion"
+                    app:layout_constraintTop_toTopOf="@id/tv_item_diary_emotion" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/law_item_diary_percent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/layout_gutter"
+                    android:layout_marginRight="@dimen/layout_gutter"
+                    android:maxHeight="40dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tv_item_diary_emotion"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/iv_item_diary_play"
+                    app:layout_constraintTop_toTopOf="@id/tv_item_diary_emotion"
+                    app:lottie_fileName="1807-side-to-side-loader.json"
+                    app:lottie_loop="true" />
+
                 <TextView
                     android:id="@+id/tv_item_diary_tags"
                     android:layout_width="0dp"
