@@ -102,7 +102,7 @@ class DiaryListPresenter {
 
         final File file = new File(diaryRecorder.getFilePath());
 
-        if (!file.exists()) {
+        if (file != null && !file.exists()) {
             diaryListView.showRecordFileNotFound();
             return;
         }
@@ -115,7 +115,7 @@ class DiaryListPresenter {
             final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest(file.getAbsolutePath());
 
             final Date saveTime = new Date();
-            final String newItemId = new SimpleDateFormat("yyyyMMdd",Locale.KOREA).format(saveTime);
+            final String newItemId = new SimpleDateFormat("yyyyMMdd", Locale.KOREA).format(saveTime);
 
             compositeDisposable.add(diaryRepository.requestEmotionAnalyze(request).
                     map(emotion -> new DiaryEntity(newItemId,
@@ -181,12 +181,6 @@ class DiaryListPresenter {
     }
 
     private void initMediaListener() {
-        diaryRecorder.setMediaRecorderTimeOutListener(() -> {
-            diaryRecorder.finishRecord();
-            isRecording = false;
-            diaryListView.showRecordTimeOutMsg();
-        });
-
         recordPlayer.setOnCompletionListener(mediaPlayer -> {
             diaryListView.onPlayFileChanged(lastPlayedPosition, true);
             lastPlayedPosition = NOTHING_PLAYED;
@@ -196,7 +190,7 @@ class DiaryListPresenter {
     void onViewCreated() {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date());
 
-        if(sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
+        if (sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
             diaryListView.setRecordCardVisibilityGone();
         }
     }

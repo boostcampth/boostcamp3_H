@@ -2,10 +2,10 @@ package teamh.boostcamp.myapplication.view.diarylist.popup.record;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -17,23 +17,16 @@ import androidx.fragment.app.DialogFragment;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.R;
 
 public class RecordingDiaryDialog extends DialogFragment {
 
+    private static final int LIMIT_TIME = 10;
     private Disposable timerDisposable;
+    private DialogInterface.OnDismissListener dismissListener;
 
     public static RecordingDiaryDialog newInstance() {
-        RecordingDiaryDialog recordingDiaryDialog = new RecordingDiaryDialog();
-
-        return recordingDiaryDialog;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+        return new RecordingDiaryDialog();
     }
 
     @NonNull
@@ -43,34 +36,41 @@ public class RecordingDiaryDialog extends DialogFragment {
 
         final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_record_diary, null);
 
-        final TextView restTime = view.findViewById(R.id.tv_record_dialog_time);
-        restTime.setText("60초");
-
-        final LottieAnimationView lottieAnimationView = view.findViewById(R.id.lav_record_dialog_anim);
+        final LottieAnimationView lottieAnimationView = view.findViewById(R.id.law_item_dialog_background);
         lottieAnimationView.playAnimation();
 
-        timerDisposable = Observable.timer(1000, TimeUnit.MILLISECONDS)
-                .repeat(1000 * 60)
-                .doOnDispose(() -> {
-                    lottieAnimationView.cancelAnimation();
-                }).doOnComplete(() -> {
-                    lottieAnimationView.cancelAnimation();
-                }).subscribeOn(Schedulers.io())
+        timerDisposable = Observable.interval(1, TimeUnit.SECONDS)
+                .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(aLong -> restTime.setText(aLong.toString())
+                .take(LIMIT_TIME)
+                .doOnDispose(lottieAnimationView::cancelAnimation)
+                .doOnComplete(this::dismiss)
+                .subscribe(aLong -> Log.d("Test", "" + (LIMIT_TIME - aLong.intValue()))
                         , Throwable::printStackTrace);
 
+        builder.setTitle(R.string.recording);
         builder.setView(view);
         builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, i) -> {
-            dialogInterface.dismiss();
+            if (dismissListener != null) {
+                dismissListener.onDismiss(dialogInterface);
+            }
         });
 
         return builder.create();
     }
 
+    public void setOnDismissListener(@NonNull DialogInterface.OnDismissListener dismissListener) {
+        this.dismissListener = dismissListener;
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        timerDisposable.dispose();
+        if (!timerDisposable.isDisposed()) {
+            timerDisposable.dispose();
+        }
+        if(dismissListener != null) {
+            dismissListener.onDismiss(null);
+        }
     }
 }
