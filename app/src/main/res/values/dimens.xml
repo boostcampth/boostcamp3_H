@@ -13,8 +13,9 @@
 
     <!--textSize-->
     <dimen name="toolbar_title_20dp">20dp</dimen>
-    <dimen name="all_title_34dp">34dp</dimen>
-    <dimen name="sub_title_24dp">24dp</dimen>
+    <dimen name="big_title_24dp">24dp</dimen>
+    <dimen name="all_title_20dp">20dp</dimen>
+    <dimen name="sub_title_16dp">16dp</dimen>
     <dimen name="all_body_16dp">16dp</dimen>
     <dimen name="all_button_14dp">14dp</dimen>
     <dimen name="setting_body_14dp">14dp</dimen>

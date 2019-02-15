@@ -9,8 +9,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        android:background="#ffffff"
+        android:background="#ffffffff"
         android:padding="2dp"
-        android:textColor="@android:color/black" />
+        android:textSize="24dp"
+        android:textColor="@color/hashtag" />
 
 </LinearLayout>
