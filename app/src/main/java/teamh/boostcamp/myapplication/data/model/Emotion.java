@@ -12,12 +12,12 @@ public enum Emotion {
 
     private final int emotion;
     private final String emoji;
-    private final String relation;
+    private final String comment;
 
-    Emotion(int emotion, @NonNull final String emoji, @NonNull final String relation) {
+    Emotion(int emotion, @NonNull final String emoji, @NonNull final String comment) {
         this.emotion = emotion;
         this.emoji = emoji;
-        this.relation = relation;
+        this.comment = comment;
     }
 
     public int getEmotion() {
@@ -28,7 +28,7 @@ public enum Emotion {
         return emoji;
     }
 
-    public String getRelation() {return relation;}
+    public String getComment() {return comment;}
 
     public static Emotion fromValue(final int emotion) {
         switch (emotion) {
