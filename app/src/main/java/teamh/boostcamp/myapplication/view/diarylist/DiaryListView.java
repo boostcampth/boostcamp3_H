@@ -28,5 +28,7 @@ public interface DiaryListView {
 
     void setRecordCardVisibilityGone();
 
+    void showAnalyzedEmotion(Emotion emotion);
+
     void onPlayFileChanged(final int lastPlayedIndex, final boolean isFinished);
 }

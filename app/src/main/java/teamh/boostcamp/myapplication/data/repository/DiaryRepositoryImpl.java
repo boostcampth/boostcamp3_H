@@ -69,9 +69,8 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Single<Diary> loadRecentInsertedDiary() {
+    public Single<DiaryEntity> loadRecentInsertedDiary() {
         return diaryDao.loadRecentInsertedDiary()
-                .map(DiaryMapper::toDiary)
                 .subscribeOn(Schedulers.io());
     }
 }

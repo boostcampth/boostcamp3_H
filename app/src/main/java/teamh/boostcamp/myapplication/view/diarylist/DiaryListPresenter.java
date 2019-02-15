@@ -16,6 +16,7 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
+import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 class DiaryListPresenter {
@@ -126,10 +127,11 @@ class DiaryListPresenter {
                     .flatMapCompletable(diaryRepository::insertDiary)
                     .andThen(diaryRepository.loadRecentInsertedDiary())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(diary -> {
+                    .subscribe(diaryEntity -> {
                         setLastItemSavedTime(saveTime);
                         diaryListView.setRecordCardVisibilityGone();
-                        diaryListView.insertDiaryList(diary);
+                        diaryListView.showAnalyzedEmotion(diaryEntity.getAnalyzedEmotion());
+                        diaryListView.insertDiaryList(DiaryMapper.toDiary(diaryEntity));
                         diaryListView.setIsSaving(false);
                     }, Throwable::printStackTrace));
         } else {

@@ -100,4 +100,9 @@
         <item name="android:layout_width">120dp</item>
         <item name="android:layout_height">48dp</item>
     </style>
+
+    <style name="AnalyzedEmotionShowingDialogAnimation">
+        <item name="android:windowEnterAnimation">@anim/anim_emotion_dialog_up</item>
+        <item name="android:windowExitAnimation">@anim/anim_emotion_dialog_down</item>
+    </style>
 </resources>
