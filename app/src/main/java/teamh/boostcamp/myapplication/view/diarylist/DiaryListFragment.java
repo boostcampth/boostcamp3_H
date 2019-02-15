@@ -33,6 +33,7 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
+import teamh.boostcamp.myapplication.view.diarylist.popup.AnalyzedEmotionShowingDialog;
 import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
 public class DiaryListFragment extends Fragment implements DiaryListView {
@@ -127,6 +128,12 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
+    public void showAnalyzedEmotion(Emotion emotion) {
+        AnalyzedEmotionShowingDialog dialog = AnalyzedEmotionShowingDialog.getInstance(emotion);
+        dialog.show(getFragmentManager(), getTag());
+    }
+
+    @Override
     public void showRecordFileNotFound() {
         showToastMessage(R.string.item_record_file_not_found);
     }
@@ -143,8 +150,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
     @Override
     public void setRecordCardVisibilityGone() {
-        binding.cvFragmentDiaryRecord.setVisibility(View.GONE);
-        binding.tvFragmentDiaryToday.setVisibility(View.GONE);
+        //binding.cvFragmentDiaryRecord.setVisibility(View.GONE);
+        //binding.tvFragmentDiaryToday.setVisibility(View.GONE);
         diaryListAdapter.notifyDataSetChanged();
     }
 

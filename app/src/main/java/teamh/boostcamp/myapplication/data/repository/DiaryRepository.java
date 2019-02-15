@@ -23,5 +23,5 @@ public interface DiaryRepository {
     Single<Emotion> requestEmotionAnalyze(@NonNull final EmotionAnalyzeRequest request);
 
     @NonNull
-    Single<Diary> loadRecentInsertedDiary();
+    Single<DiaryEntity> loadRecentInsertedDiary();
 }
