@@ -91,7 +91,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_item_diary_emotion" />
 
-
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -129,7 +128,8 @@
                             android:id="@+id/law_item_diary_percent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:lottie_fileName="890-loading-animation.json"
+                            android:maxHeight="40dp"
+                            app:lottie_fileName="play_record_wave.json"
                             app:lottie_loop="true"
                             app:lottie_scale="0.5" />
 
