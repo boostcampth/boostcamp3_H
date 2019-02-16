@@ -17,9 +17,9 @@ public interface RecallRepository {
     Single<Recall> insertRecall(RecallEntity recallEntity);
 
     @NonNull
-    Completable delete(int index);
+    Completable deleteRecall(int index);
 
     @NonNull
-    Completable deleteAdd();
+    Completable deleteAll();
 
 }

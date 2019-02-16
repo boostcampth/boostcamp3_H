@@ -56,7 +56,7 @@ public class RecallRepositoryImpl implements RecallRepository {
 
     @NonNull
     @Override
-    public Completable delete(int selectedRecallId) {
+    public Completable deleteRecall(int selectedRecallId) {
         return Completable.fromAction(() -> appDatabase.recallDao().deleteRecall(selectedRecallId))
                 .subscribeOn(Schedulers.io());
     }
@@ -78,7 +78,7 @@ public class RecallRepositoryImpl implements RecallRepository {
 
     @NonNull
     @Override
-    public Completable deleteAdd() {
+    public Completable deleteAll() {
         return Completable.fromAction(() -> appDatabase.recallDao().deleteAll())
                 .subscribeOn(Schedulers.io());
     }

@@ -2,27 +2,12 @@ package teamh.boostcamp.myapplication.view.recall;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.kakao.kakaolink.v2.KakaoLinkResponse;
-import com.kakao.kakaolink.v2.KakaoLinkService;
-import com.kakao.message.template.ButtonObject;
-import com.kakao.message.template.ContentObject;
-import com.kakao.message.template.FeedTemplate;
-import com.kakao.message.template.LinkObject;
-import com.kakao.message.template.ListTemplate;
-import com.kakao.network.ErrorResult;
-import com.kakao.network.callback.ResponseCallback;
-import com.kakao.util.KakaoParameterException;
-import com.kakao.util.helper.log.Logger;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,8 +22,6 @@ import teamh.boostcamp.myapplication.databinding.FragmentRecallBinding;
 import teamh.boostcamp.myapplication.view.play.PlayActivity;
 
 public class RecallFragment extends Fragment implements RecallView {
-
-    private static final String TAG = "RecallFragment";
 
     @NonNull
     private static final String EXTRA = "recall";

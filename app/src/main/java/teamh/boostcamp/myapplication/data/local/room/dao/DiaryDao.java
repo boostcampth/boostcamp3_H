@@ -31,11 +31,11 @@ public interface DiaryDao {
     @Query("SELECT * FROM diaries ORDER BY recordDate DESC LIMIT 1")
     Single<DiaryEntity> loadRecentInsertedDiary();
 
-    @Query("DELETE FROM diaries")
-    Completable deleteAll();
+    @Query("DELETE FROM diaries WHERE id=:id")
+    Completable delete(String id);
 
     @Query("SELECT * FROM diaries")
-    Single<List<Diary>> loadAll();
+    List<Diary> loadAll();
 
 
 

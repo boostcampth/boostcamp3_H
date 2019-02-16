@@ -48,7 +48,7 @@ public class RecallPresenter {
 
     void deleteRecall(int position, int id) {
         compositeDisposable.add(
-                recallRepository.delete(id)
+                recallRepository.deleteRecall(id)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> {
                             view.showDeleteSuccessResult();

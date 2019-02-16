@@ -25,6 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
+import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
+import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
+import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
@@ -43,6 +49,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private static final int SIGN_IN_CODE = 4899;
     private AppInitializer appInitializer;
     private LockManager lockManager;
+    private SettingPresenter presenter;
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
@@ -61,6 +68,14 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initActionBar();
         initFirebaseAuth();
         initLock();
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        presenter = new SettingPresenter(RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
+                DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
+                        getApplicationContext()).diaryDao(),
+                        DeepAffectApiClient.getInstance()));
     }
 
     private void initBinding() {
