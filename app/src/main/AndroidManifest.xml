@@ -22,7 +22,7 @@
             android:label="@string/title_activity_setting"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".view.password.LegacyPasswordSelectActivity"
+            android:name=".view.password.PasswordSelectActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".view.password.PasswordActivity"

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
@@ -18,6 +19,7 @@ public class AlarmHelperImpl implements AlarmHelper {
     private Context context;
     private AlarmManager alarmManager;
     private SharedPreferenceManager sharedPreferenceManager;
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
 
     AlarmHelperImpl(@NonNull Context context) {
         this.context = context;
@@ -34,13 +36,13 @@ public class AlarmHelperImpl implements AlarmHelper {
     @Override
     public void setAlarm(@NonNull Calendar calendar) {
         final long currentTime = System.currentTimeMillis();
-        final long INTERVAL = 1000 * 2 * 60;
-        //final long INTERVAL_TIME = TimeUnit.DAYS.toMillis(1); // 하루를 밀리초로 변환
+        //final long INTERVAL = 1000 * 60;
+        final long INTERVAL_TIME = TimeUnit.DAYS.toMillis(1); // 하루를 밀리초로 변환
         long userSettingTime = calendar.getTimeInMillis();
 
         // 설정한 시간이 현재 시간보다 작다면 다음 날 울리도록 INTERVAL_TIME 을 더한다.
         if (currentTime > userSettingTime) {
-            userSettingTime += INTERVAL;
+            userSettingTime += INTERVAL_TIME;
         }
 
         // 알람 매니저가 AlertReceiver 라는 브로드 캐스트 리시버로 펜딩 인텐트로 날린다.
@@ -53,18 +55,17 @@ public class AlarmHelperImpl implements AlarmHelper {
 
         // 버전별 알람 매니저에게 시간을 설정.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            alarmManager.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, userSettingTime, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userSettingTime, INTERVAL_TIME, pendingIntent);
         } else {
-            alarmManager.setExact(AlarmManager.RTC_WAKEUP, userSettingTime, pendingIntent);
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userSettingTime, INTERVAL_TIME, pendingIntent);
         }
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, userSettingTime, INTERVAL, pendingIntent);
 
         // SharedPreferenceManager 저장하는 로직. String으로 저장.
         String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
-        sharedPreferenceManager.setPreferencePushTime(timeText);
+        String time = simpleDateFormat.format(calendar.getTime());
+        sharedPreferenceManager.setPreferencePushTime(time);
     }
 
-    // 알람 해제
     @NonNull
     @Override
     public boolean cancelAlarm() {

@@ -1,9 +1,11 @@
 package teamh.boostcamp.myapplication.view.alarm;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.widget.TimePicker;
 
 import java.util.Calendar;
 
@@ -19,7 +21,7 @@ public class TimePickerFragment extends DialogFragment {
 
     }
 
-    static TimePickerFragment newInstance(){
+    public static TimePickerFragment newInstance(){
         return new TimePickerFragment();
     }
 
@@ -30,7 +32,7 @@ public class TimePickerFragment extends DialogFragment {
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
         int minute = calendar.get(Calendar.MINUTE);
 
-        return new TimePickerDialog(getActivity(), R.style.CustomTimePickerDialogTheme,
+        return new TimePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_DARK,
                 (TimePickerDialog.OnTimeSetListener) getActivity(), hour, minute,
                 DateFormat.is24HourFormat(getActivity()));
     }
