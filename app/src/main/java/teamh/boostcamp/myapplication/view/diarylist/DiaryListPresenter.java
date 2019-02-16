@@ -17,6 +17,7 @@ import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
+import teamh.boostcamp.myapplication.view.diarylist.kakaoLink.KakaoLinkHelper;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 class DiaryListPresenter {
@@ -37,6 +38,7 @@ class DiaryListPresenter {
     private RecordPlayer recordPlayer;
     @NonNull
     private SharedPreferenceManager sharedPreferenceManager;
+    private KakaoLinkHelper kakaoLinkHelper;
 
     @Nullable
     private Emotion selectedEmotion;
@@ -48,7 +50,8 @@ class DiaryListPresenter {
                        @NonNull DiaryRepository diaryRepository,
                        @NonNull DiaryRecorder diaryRecorder,
                        @NonNull RecordPlayer recordPlayer,
-                       @NonNull SharedPreferenceManager sharedPreferenceManager) {
+                       @NonNull SharedPreferenceManager sharedPreferenceManager,
+                       @NonNull KakaoLinkHelper kakaoLinkHelper) {
         this.diaryListView = diaryListView;
         this.diaryRepository = diaryRepository;
         this.diaryRecorder = diaryRecorder;
@@ -62,6 +65,7 @@ class DiaryListPresenter {
         this.isRecording = false;
         this.lastPlayedPosition = NOTHING_PLAYED;
         this.lastItemLoadedTime = new Date();
+        this.kakaoLinkHelper = kakaoLinkHelper;
 
         initMediaListener();
     }
@@ -195,12 +199,15 @@ class DiaryListPresenter {
         }
     }
 
-
     void onViewDestroyed() {
         compositeDisposable.clear();
         if (isRecording) {
             diaryRecorder.finishRecord();
         }
         diaryRecorder.releaseRecorder();
+    }
+
+    void sendDiaryToKakao(Diary diary){
+        kakaoLinkHelper.sendDiary(diary);
     }
 }

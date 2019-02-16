@@ -33,6 +33,7 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
+import teamh.boostcamp.myapplication.view.diarylist.kakaoLink.KakaoLinkHelperImpl;
 import teamh.boostcamp.myapplication.view.diarylist.popup.analyzeResult.AnalyzedEmotionShowingDialog;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.RecordingDiaryDialog;
 import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
@@ -171,7 +172,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
                         DeepAffectApiClient.getInstance()),
                 new DiaryRecorderImpl(),
                 RecordPlayerImpl.getINSTANCE(),
-                SharedPreferenceManager.getInstance(context.getApplicationContext()));
+                SharedPreferenceManager.getInstance(context.getApplicationContext()),
+                new KakaoLinkHelperImpl(context.getApplicationContext()));
     }
 
     private void initView() {
@@ -232,6 +234,10 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         diaryListAdapter = new DiaryListAdapter(context);
         diaryListAdapter.setOnRecordItemClickListener(pos ->
                 presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)), pos)
+        );
+
+        diaryListAdapter.setOnKakaoLinkClickListener(pos ->
+            presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))
         );
 
         hashTagListAdapter = new HashTagListAdapter(context);
