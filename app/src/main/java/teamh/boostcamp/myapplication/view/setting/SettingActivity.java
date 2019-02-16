@@ -25,6 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
+import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
+import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
+import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
@@ -43,6 +49,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private static final int SIGN_IN_CODE = 4899;
     private AppInitializer appInitializer;
     private LockManager lockManager;
+    private SettingPresenter presenter;
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
@@ -61,6 +68,14 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initActionBar();
         initFirebaseAuth();
         initLock();
+        initPresenter();
+    }
+
+    private void initPresenter() {
+        presenter = new SettingPresenter(RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
+                DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
+                        getApplicationContext()).diaryDao(),
+                        DeepAffectApiClient.getInstance()));
     }
 
     private void initBinding() {
@@ -129,6 +144,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.onDestroy();
         toolbar = null;
         actionBar = null;
     }
@@ -156,6 +172,9 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 break;
             case R.id.rl_setting_logout:
                 auth.signOut();
+                showToastMessage(R.string.logout_success);
+                break;
+            case R.id.rl_setting_initialization:
                 showToastMessage(R.string.logout_success);
                 break;
         }
@@ -227,5 +246,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private void showToastMessage(@StringRes final int stringId) {
         Toast.makeText(this, getString(stringId), Toast.LENGTH_SHORT).show();
     }
+
+
 
 }

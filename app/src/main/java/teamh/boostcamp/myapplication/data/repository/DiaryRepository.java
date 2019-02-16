@@ -5,6 +5,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
@@ -24,4 +25,10 @@ public interface DiaryRepository {
 
     @NonNull
     Single<DiaryEntity> loadRecentInsertedDiary();
+
+    @NonNull
+    Completable deleteDiary(@NonNull String id);
+
+    @NonNull
+    Observable<Diary> loadAll();
 }

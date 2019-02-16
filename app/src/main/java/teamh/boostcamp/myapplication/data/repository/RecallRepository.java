@@ -19,4 +19,7 @@ public interface RecallRepository {
     @NonNull
     Completable deleteRecall(int index);
 
+    @NonNull
+    Completable deleteAll();
+
 }

@@ -248,6 +248,44 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_setting_password" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.1dp"
+            android:background="#707070"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_setting_password" />
+
+        <RelativeLayout
+            android:id="@+id/rl_setting_initialization"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:background="@android:color/white"
+            android:elevation="@dimen/setting_elevation"
+            android:onClick="@{v-> activity.onButtonClick(v)}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_setting_login">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/title_margin_left"
+                android:text="@string/setting_initialization"
+                style="@style/password_subtitle_style"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/layout_margin"
+                android:src="@drawable/ic_setting_right" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 </layout>

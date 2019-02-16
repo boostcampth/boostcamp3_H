@@ -5,6 +5,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
@@ -71,6 +72,20 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     @Override
     public Single<DiaryEntity> loadRecentInsertedDiary() {
         return diaryDao.loadRecentInsertedDiary()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteDiary(String id) {
+        return Completable.fromAction(() -> diaryDao.delete(id))
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Observable<Diary> loadAll() {
+        return Observable.fromIterable(diaryDao.loadAll())
                 .subscribeOn(Schedulers.io());
     }
 }
