@@ -100,7 +100,7 @@
             android:elevation="@dimen/card_elevation"
             android:visibility="visible"
             android:orientation="vertical"
-            android:onClick="@{v-> activity.ll_alarm_time_layout(v.getId())}"
+            android:onClick="@{v-> activity.onShowDialogButton(v.getId())}"
             app:layout_constraintEnd_toEndOf="parent"
             android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/rl_alarm_switch">
