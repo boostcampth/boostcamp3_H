@@ -29,12 +29,18 @@ import androidx.databinding.DataBindingUtil;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
+import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
+import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepository;
+import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
@@ -59,6 +65,10 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
 
+    private DiaryRepository diaryRepository;
+    private FirebaseRepository firebaseRepository;
+
+    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,15 +83,20 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initActionBar();
         initFirebaseAuth();
         initLock();
+
         initPresenter();
     }
 
     private void initPresenter() {
-        presenter = new SettingPresenter(this, RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
+        presenter = new SettingPresenter(this,
+                RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
                         DeepAffectApiClient.getInstance()),
                         SharedPreferenceManager.getInstance(getApplicationContext()));
+
+        initRepository();
+        compositeDisposable = new CompositeDisposable();
     }
 
     private void initBinding() {
@@ -139,6 +154,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
+    private void initRepository() {
+        firebaseRepository = FirebaseRepositoryImpl.getInstance();
+        diaryRepository = DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(this).diaryDao(),
+                DeepAffectApiClient.getInstance());
+    }
 
     private void initLock() {
         appInitializer = new AppInitializer();
@@ -179,6 +199,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
             case R.id.rl_setting_logout:
                 auth.signOut();
                 showToastMessage(R.string.logout_success);
+            case R.id.rl_setting_backup:
+                backupLocalDataToFirebaseRepository();
+                break;
+            case R.id.rl_setting_restore:
+                loadDiaryListFromFirebaseRepository();
                 break;
             case R.id.rl_setting_initialization:
                 initInitialization();
@@ -256,6 +281,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        diaryRepository = null;
+        firebaseRepository = null;
         finish();
         // 시작 -> 처리될 애니메이션
         this.overridePendingTransition(R.anim.anim_left_to_right, R.anim.anim_right_to_left);
@@ -274,6 +301,30 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         Toast.makeText(this, getString(stringId), Toast.LENGTH_SHORT).show();
     }
 
+    private void backupLocalDataToFirebaseRepository() {
 
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            compositeDisposable.add(firebaseRepository.loadAllDiaryId()
+                    .flatMap(diaryRepository::loadNotBackupDiaryList)
+                    .flatMapCompletable(firebaseRepository::insertDiaries)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                        showToast(R.string.backup_success);
+                    }, Throwable::printStackTrace));
+        } else {
+            showToast(R.string.not_login);
+        }
+    }
 
+    private void loadDiaryListFromFirebaseRepository() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            compositeDisposable.add(firebaseRepository.loadAllDiaryList()
+                    .map(diaryEntities -> diaryEntities.toArray(new DiaryEntity[diaryEntities.size()]))
+                    .flatMapCompletable(diaryRepository::insertDiary)
+                    .subscribe(() -> showToast(R.string.load_success),
+                            Throwable::printStackTrace));
+        } else {
+            showToast(R.string.not_login);
+        }
+    }
 }

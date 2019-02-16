@@ -27,6 +27,9 @@
     <string name="popup_dialog_ok">확인</string>
     <string name="recording">녹음중</string>
 
+    <string name="not_login">로그인 먼저 해주세요 !</string>
+    <string name="backup_success">저장 완료 !</string>
+    <string name="load_success">불러오기 완료</string>
 
     <string-array name="month">
         <item>January</item>

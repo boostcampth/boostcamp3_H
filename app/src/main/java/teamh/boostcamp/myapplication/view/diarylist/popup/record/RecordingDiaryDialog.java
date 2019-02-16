@@ -64,13 +64,15 @@ public class RecordingDiaryDialog extends DialogFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         if (!timerDisposable.isDisposed()) {
             timerDisposable.dispose();
+            timerDisposable = null;
         }
-        if(dismissListener != null) {
+        if (dismissListener != null) {
             dismissListener.onDismiss(null);
+            dismissListener = null;
         }
     }
 }

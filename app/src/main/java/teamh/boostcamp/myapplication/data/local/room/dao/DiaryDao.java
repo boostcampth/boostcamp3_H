@@ -21,7 +21,6 @@ public interface DiaryDao {
     @Query("SELECT * FROM diaries WHERE recordDate < :recordDate ORDER BY recordDate DESC LIMIT :pageSize")
     Single<List<DiaryEntity>> loadDiaryList(@NonNull Date recordDate,
                                             final int pageSize);
-
     @Insert
     void insert(@NonNull DiaryEntity... diaryEntities);
 

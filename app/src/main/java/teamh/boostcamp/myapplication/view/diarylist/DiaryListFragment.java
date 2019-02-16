@@ -75,6 +75,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void onDetach() {
         super.onDetach();
+        recordingDiaryDialog = null;
         compositeDisposable.clear();
     }
 
