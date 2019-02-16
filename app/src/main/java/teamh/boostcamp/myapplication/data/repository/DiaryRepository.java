@@ -24,4 +24,10 @@ public interface DiaryRepository {
 
     @NonNull
     Single<DiaryEntity> loadRecentInsertedDiary();
+
+    @NonNull
+    Completable deleteAll();
+
+    @NonNull
+    Single<List<Diary>> loadAll();
 }

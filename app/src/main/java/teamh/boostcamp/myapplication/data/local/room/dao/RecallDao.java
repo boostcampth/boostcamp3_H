@@ -7,6 +7,7 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import io.reactivex.Completable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 
@@ -25,4 +26,6 @@ public interface RecallDao {
     @Query("DELETE FROM recalls WHERE id=:index")
     void deleteRecall(@NonNull int index);
 
+    @Query("DELETE FROM recalls")
+    Completable deleteAll();
 }

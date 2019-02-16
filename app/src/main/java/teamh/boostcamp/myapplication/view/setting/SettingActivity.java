@@ -158,6 +158,9 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 auth.signOut();
                 showToastMessage(R.string.logout_success);
                 break;
+            case R.id.rl_setting_initialization:
+                showToastMessage(R.string.logout_success);
+                break;
         }
 
     }

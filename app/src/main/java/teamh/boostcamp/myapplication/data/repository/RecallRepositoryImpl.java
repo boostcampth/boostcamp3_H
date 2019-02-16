@@ -56,7 +56,7 @@ public class RecallRepositoryImpl implements RecallRepository {
 
     @NonNull
     @Override
-    public Completable deleteRecall(int selectedRecallId) {
+    public Completable delete(int selectedRecallId) {
         return Completable.fromAction(() -> appDatabase.recallDao().deleteRecall(selectedRecallId))
                 .subscribeOn(Schedulers.io());
     }
@@ -65,7 +65,6 @@ public class RecallRepositoryImpl implements RecallRepository {
     @Override
     public Single<Recall> insertRecall(@NonNull final RecallEntity recallEntity) {
         return Completable.fromAction(() -> appDatabase.recallDao().insertRecall(recallEntity))
-                .subscribeOn(Schedulers.io())
                 .andThen(appDatabase.recallDao().loadRecentRecallEntity())
                 .flatMap(recallEntity1 -> {
                     final Date endDate = generateEndDate(recallEntity.getCreatedDate());
@@ -74,6 +73,13 @@ public class RecallRepositoryImpl implements RecallRepository {
                             startDate, endDate, 5)
                             .map(diaries -> new Recall(recallEntity.getId(), startDate, endDate, recallEntity.getEmotion(), diaries));
                 })
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteAdd() {
+        return Completable.fromAction(() -> appDatabase.recallDao().deleteAll())
                 .subscribeOn(Schedulers.io());
     }
 
