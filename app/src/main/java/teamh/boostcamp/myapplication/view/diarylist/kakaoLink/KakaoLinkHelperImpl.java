@@ -20,6 +20,8 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 public class KakaoLinkHelperImpl implements KakaoLinkHelper {
 
     private static final String IMAGE_URL = "https://user-images.githubusercontent.com/24218456/52896087-1ed55200-3206-11e9-8132-a7e2b5254615.png";
+    private static final String USER_ID = "user_id";
+    private static final String PRODUCT_ID = "product_id";
     private Context context;
 
     public KakaoLinkHelperImpl(Context context) {
@@ -38,9 +40,9 @@ public class KakaoLinkHelperImpl implements KakaoLinkHelper {
                         .build())
                 .build();
 
-        Map<String, String> serverCallbackArgs = new HashMap<String, String>();
-        serverCallbackArgs.put("user_id", "${current_user_id}");
-        serverCallbackArgs.put("product_id", "${shared_product_id}");
+        Map<String, String> serverCallbackArgs = new HashMap<>();
+        serverCallbackArgs.put(USER_ID, "${current_user_id}");
+        serverCallbackArgs.put(PRODUCT_ID, "${shared_product_id}");
 
         KakaoLinkService.getInstance().sendDefault(context, params, serverCallbackArgs, new ResponseCallback<KakaoLinkResponse>() {
             @Override
