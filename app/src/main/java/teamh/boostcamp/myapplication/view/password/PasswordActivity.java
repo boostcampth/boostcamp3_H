@@ -297,4 +297,10 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
         return type;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        binding = null;
+        lockManager = null;
+    }
 }

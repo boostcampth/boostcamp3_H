@@ -17,72 +17,73 @@
         android:background="@color/white"
         tools:context=".view.alarm.AlarmActivity">
 
-
-        <RelativeLayout
-            android:id="@+id/rl_alarm_toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/abl_alarm"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@android:color/white"
-            android:elevation="2dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/iv_back_button"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/layout_margin"
-                android:onClick="@{v -> activity.onClickAlarmButtons(v.getId())}"
-                android:src="@drawable/back_button" />
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_alarm"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay">
 
-            <TextView
-                android:id="@+id/tv_title"
-                style="@style/SubTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/setting_alarm" />
+                <TextView
+                    android:id="@+id/tv_alarm_title"
+                    style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="@string/setting_alarm"
+                    android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_done_button"
-                style="@style/TextButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/layout_margin"
-                android:onClick="@{v -> activity.onClickAlarmButtons(v.getId())}"
-                android:text="Done" />
+            </androidx.appcompat.widget.Toolbar>
 
-        </RelativeLayout>
+        </com.google.android.material.appbar.AppBarLayout>
 
 
         <RelativeLayout
             android:id="@+id/rl_alarm_switch"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:layout_marginTop="1dp"
+            android:layout_height="100dp"
             android:background="@color/white"
             android:elevation="@dimen/card_elevation"
-            app:layout_constraintTop_toBottomOf="@+id/rl_alarm_toolbar">
+            app:layout_constraintTop_toBottomOf="@+id/abl_alarm">
 
-            <TextView
-                style="@style/AlarmTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
                 android:layout_centerVertical="true"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/layout_margin"
-                android:text="@string/alarm_button_click_text" />
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/subtitle_style"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setting_alarm" />
+
+                <TextView
+                    style="@style/explain_style_gray"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password_explain_text" />
+
+
+
+            </LinearLayout>
 
             <Switch
                 android:id="@+id/switch_alarm"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="@dimen/layout_margin"
                 android:thumb="@drawable/switch_thumb"
                 android:track="@drawable/switch_track_selector" />
@@ -90,20 +91,23 @@
         </RelativeLayout>
 
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/ll_alarm_time_layout"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="100dp"
             android:layout_marginTop="1dp"
             android:background="@color/white"
             android:elevation="@dimen/card_elevation"
             android:visibility="visible"
+            android:orientation="vertical"
+            android:onClick="@{v-> activity.ll_alarm_time_layout(v.getId())}"
             app:layout_constraintEnd_toEndOf="parent"
+            android:gravity="center_vertical"
             app:layout_constraintTop_toBottomOf="@+id/rl_alarm_switch">
 
             <TextView
-                android:id="@+id/tv_alarm_time_text"
-                style="@style/AlarmTextStyle"
+                android:id="@+id/tv_alarm_time_set_text"
+                style="@style/explain_style_black"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -111,17 +115,42 @@
                 android:layout_marginStart="@dimen/layout_margin"
                 android:text="@string/alarm_explain" />
 
-            <Button
+            <LinearLayout
+                android:layout_marginTop="@dimen/layout_margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_alarm_time_text"
+                    style="@style/explain_style_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/layout_margin"
+                    android:text="@string/alarm_explain" />
+
+                <ImageView
+                    android:layout_marginLeft="@dimen/layout_margin"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_alarm_more_black"/>
+            </LinearLayout>
+
+
+          <!--  <Button
                 android:id="@+id/btn_alarm_select"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:onClick="@{v -> activity.onClickAlarmButtons(v.getId())}"
                 android:text="@string/alarm_time_select_text"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent" />-->
 
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

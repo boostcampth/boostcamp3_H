@@ -28,7 +28,7 @@ import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
-import teamh.boostcamp.myapplication.view.password.LegacyPasswordSelectActivity;
+import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
 import teamh.boostcamp.myapplication.view.password.LockManager;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
@@ -148,7 +148,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 startActivity(new Intent(SettingActivity.this, AlarmActivity.class));
                 break;
             case R.id.rl_setting_password:
-                startActivity(new Intent(SettingActivity.this, LegacyPasswordSelectActivity.class));
+                startActivity(new Intent(SettingActivity.this, PasswordSelectActivity.class));
                 break;
             case R.id.rl_setting_login:
                 signIn();

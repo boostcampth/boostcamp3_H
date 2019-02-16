@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.view.alarm;
 
+import java.util.Calendar;
+
 public interface AlarmView {
 
     void showToast(String message);
@@ -11,5 +13,7 @@ public interface AlarmView {
     void setVisibility(boolean isChecked);
 
     void updateCancelTimeText(boolean isCanceled);
+
+    void updateCalendar(Calendar calendar);
 
 }

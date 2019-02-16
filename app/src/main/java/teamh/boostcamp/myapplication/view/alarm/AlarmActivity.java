@@ -1,24 +1,33 @@
 package teamh.boostcamp.myapplication.view.alarm;
 
+
 import android.app.TimePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 
 public class AlarmActivity extends AppCompatActivity implements
-        AlarmView, TimePickerDialog.OnTimeSetListener {
+        AlarmView {
 
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.KOREA);
     private SharedPreferenceManager sharedPreferenceManager;
+    private static final String TIME_PICKER_TAG = "Time Picker";
     private ActivityAlarmBinding binding;
     private AlarmPresenter presenter;
     private Calendar calendar;
@@ -29,21 +38,37 @@ public class AlarmActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_alarm);
         init();
     }
 
     private void init() {
-        sharedPreferenceManager = SharedPreferenceManager.getInstance(AlarmActivity.this);
-
-        initViews();
+        sharedPreferenceManager = SharedPreferenceManager.getInstance(getApplicationContext());
+        initBinding();
+        initActionBar();
         initPresenter();
+        initViews();
+    }
+
+    private void initBinding() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_alarm);
+        binding.setActivity(AlarmActivity.this);
+    }
+
+    private void initActionBar() {
+        Toolbar toolbar = binding.toolbarAlarm;
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar !=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
+    }
+
+    private void initPresenter() {
+        presenter = new AlarmPresenter(AlarmActivity.this, new AlarmHelperImpl(getApplicationContext()));
     }
 
     private void initViews() {
-        binding.setActivity(AlarmActivity.this);
-
         binding.switchAlarm.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
                 this.isChecked = true;
@@ -56,8 +81,15 @@ public class AlarmActivity extends AppCompatActivity implements
         });
     }
 
-    private void initPresenter() {
-        presenter = new AlarmPresenter(AlarmActivity.this, new AlarmHelperImpl(getApplicationContext()));
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                this.overridePendingTransition(R.anim.anim_left_to_right, R.anim.anim_right_to_left);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -81,8 +113,9 @@ public class AlarmActivity extends AppCompatActivity implements
 
     @Override
     public void updateTimeText(String timeText) {
-        binding.tvAlarmTimeText.setText(timeText);
+
     }
+/*
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
@@ -93,12 +126,14 @@ public class AlarmActivity extends AppCompatActivity implements
 
         this.calendar = calendar;
         presenter.loadTimeText(calendar);
+        setVisibility(true);
     }
+*/
 
     @Override
     public void checkState() {
         time = sharedPreferenceManager.getPreferencePushTime(null);
-
+        //Log.v("check 21023 : ",time);
         if (time != null) {
             setVisibility(true);
             binding.tvAlarmTimeText.setText(time);
@@ -111,6 +146,12 @@ public class AlarmActivity extends AppCompatActivity implements
     @Override
     public void setVisibility(boolean isChecked) {
         if (isChecked) {
+            //String date = SIMPLE_DATE_FORMAT.format(Calendar.getInstance().getTime());
+            if(sharedPreferenceManager.getPreferencePushTime() !=null){
+                binding.tvAlarmTimeText.setText(time);
+            }else {
+                binding.tvAlarmTimeText.setText("시간을 설정해주세요.");
+            }
             binding.llAlarmTimeLayout.setVisibility(View.VISIBLE);
         } else {
             binding.llAlarmTimeLayout.setVisibility(View.GONE);
@@ -126,21 +167,25 @@ public class AlarmActivity extends AppCompatActivity implements
         }
     }
 
-    public void onClickAlarmButtons(int id) {
+    // presenter로 보내 알람 설정
+    @Override
+    public void updateCalendar(Calendar calendar) {
+        if (calendar != null) {
+            String time = simpleDateFormat.format(calendar.getTime());
+            binding.tvAlarmTimeText.setText(time);
+            Log.v("21023 : ", time);
+            Log.v("21023 : ", calendar.toString());
+            Log.v("21023 : ", String.valueOf(calendar.getTimeInMillis()));
+            presenter.setAlarm(calendar);
+        }
+    }
+
+    public void ll_alarm_time_layout(int id) {
         switch (id) {
-            case R.id.iv_back_button:
-                finish();
-                break;
-            case R.id.tv_done_button:
-                if (isChecked) {
-                    isEmptyCalendar(calendar);
-                } else {
-                    finish();
-                }
-                break;
-            case R.id.btn_alarm_select:
-                TimePickerFragment timePickerFragment = TimePickerFragment.newInstance();
-                timePickerFragment.show(getSupportFragmentManager(), "time picker");
+            // 시간을 클릭하여 numberpicker를 띄움.
+            case R.id.ll_alarm_time_layout:
+                CustomTimePicker customTimePicker = CustomTimePicker.newInstance(this);
+                customTimePicker.show(getSupportFragmentManager(), TIME_PICKER_TAG);
                 break;
         }
     }
