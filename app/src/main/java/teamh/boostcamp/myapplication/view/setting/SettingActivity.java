@@ -144,6 +144,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.onDestroy();
         toolbar = null;
         actionBar = null;
     }
@@ -245,5 +246,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private void showToastMessage(@StringRes final int stringId) {
         Toast.makeText(this, getString(stringId), Toast.LENGTH_SHORT).show();
     }
+
+
 
 }

@@ -32,7 +32,7 @@ public class SettingPresenter {
 
                           return diary;
                         })
-                        .flatMapCompletable(diary -> diaryRepository.delete(diary.getId()))
+                        .flatMapCompletable(diary -> diaryRepository.deleteDiary(diary.getId()))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
         );
@@ -47,6 +47,12 @@ public class SettingPresenter {
                         .subscribe(() -> {},throwable -> Log.d(TAG, "deleteRecall: " + throwable.getStackTrace()))
         );
 
+    }
+
+    void onDestroy(){
+        compositeDisposable.clear();
+        diaryRepository = null;
+        recallRepository = null;
     }
 
 }

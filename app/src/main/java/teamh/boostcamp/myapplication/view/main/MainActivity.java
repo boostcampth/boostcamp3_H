@@ -105,6 +105,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        statisticsFragment = null;
+        recallFragment = null;
+        diaryListFragment = null;
+    }
+
     private void initBottomNavigation() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener);
         binding.bottomNavigationView.setSelectedItemId(R.id.navigation_diary);

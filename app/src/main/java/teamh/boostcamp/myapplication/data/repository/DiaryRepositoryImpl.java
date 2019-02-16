@@ -77,7 +77,7 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Completable delete(String id) {
+    public Completable deleteDiary(String id) {
         return Completable.fromAction(() -> diaryDao.delete(id))
                 .subscribeOn(Schedulers.io());
     }
