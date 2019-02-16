@@ -19,7 +19,8 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class KakaoLinkHelperImpl implements KakaoLinkHelper {
 
-    Context context;
+    private static final String IMAGE_URL = "https://user-images.githubusercontent.com/24218456/52896087-1ed55200-3206-11e9-8132-a7e2b5254615.png";
+    private Context context;
 
     public KakaoLinkHelperImpl(Context context) {
         this.context = context;
@@ -30,7 +31,7 @@ public class KakaoLinkHelperImpl implements KakaoLinkHelper {
 
         FeedTemplate params = FeedTemplate
                 .newBuilder(ContentObject.newBuilder("오늘 하루의 목소리",
-                        "http://mud-kage.kakao.co.kr/dn/NTmhS/btqfEUdFAUf/FjKzkZsnoeE4o19klTOVI1/openlink_640x640s.jpg",
+                        IMAGE_URL,
                         LinkObject.newBuilder().setWebUrl("https://developers.kakao.com")
                                 .setMobileWebUrl("https://developers.kakao.com").build())
                         .setDescrption(String.format(context.getString(R.string.kakao_description), diary.getSelectedEmotion().getEmoji()))
