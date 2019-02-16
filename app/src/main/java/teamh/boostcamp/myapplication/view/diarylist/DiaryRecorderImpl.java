@@ -79,7 +79,6 @@ class DiaryRecorderImpl implements DiaryRecorder {
     @Override
     public void setMediaRecorderTimeOutListener(@NonNull MediaRecorderTimeOutListener mediaRecorderTimeOutListener) {
         this.mediaRecorderTimeOutListener = mediaRecorderTimeOutListener;
-        // 다른 함수로 빼기
         this.mediaRecorder.setOnInfoListener((mediaRecorder1, i, i1) ->
                 this.mediaRecorderTimeOutListener.onTimeOut()
         );

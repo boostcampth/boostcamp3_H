@@ -78,11 +78,12 @@
                     android:layout_marginLeft="@dimen/layout_gutter"
                     android:layout_marginRight="@dimen/layout_gutter"
                     android:maxHeight="40dp"
+                    app:lottie_scale="0.9"
                     app:layout_constraintBottom_toBottomOf="@id/tv_item_diary_emotion"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/iv_item_diary_play"
                     app:layout_constraintTop_toTopOf="@id/tv_item_diary_emotion"
-                    app:lottie_fileName="890-loading-animation.json"
+                    app:lottie_fileName="play_record_wave.json"
                     app:lottie_loop="true" />
 
 

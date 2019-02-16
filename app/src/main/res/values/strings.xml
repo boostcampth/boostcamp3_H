@@ -25,6 +25,7 @@
 
     <string name="popup_dialog_title">분석된 감정 결과입니다 !</string>
     <string name="popup_dialog_ok">확인</string>
+    <string name="recording">녹음중</string>
 
 
     <string-array name="month">

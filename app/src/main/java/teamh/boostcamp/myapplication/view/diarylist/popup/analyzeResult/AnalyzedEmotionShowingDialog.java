@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.view.diarylist.popup;
+package teamh.boostcamp.myapplication.view.diarylist.popup.analyzeResult;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

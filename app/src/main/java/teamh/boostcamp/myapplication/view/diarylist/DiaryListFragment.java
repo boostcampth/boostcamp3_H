@@ -33,7 +33,8 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
-import teamh.boostcamp.myapplication.view.diarylist.popup.AnalyzedEmotionShowingDialog;
+import teamh.boostcamp.myapplication.view.diarylist.popup.analyzeResult.AnalyzedEmotionShowingDialog;
+import teamh.boostcamp.myapplication.view.diarylist.popup.record.RecordingDiaryDialog;
 import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
 public class DiaryListFragment extends Fragment implements DiaryListView {
@@ -49,6 +50,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private HashTagListAdapter hashTagListAdapter;
 
     private boolean isRecording = false;
+    private RecordingDiaryDialog recordingDiaryDialog;
 
     public DiaryListFragment() { /*Empty*/}
 
@@ -90,6 +92,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         initPresenter();
         initAdapter();
         initView();
+        initDialog();
 
         presenter.loadDiaryList(LOAD_ITEM_NUM);
 
@@ -104,12 +107,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void onPlayFileChanged(final int lastPlayedIndex, final boolean isFinished) {
         diaryListAdapter.changePlayItemIcon(lastPlayedIndex, isFinished);
-    }
-
-    @Override
-    public void showRecordTimeOutMsg() {
-        showToastMessage(R.string.item_record_time_out);
-        binding.rpbRecordItemBackground.stopRippleAnimation();
     }
 
     @Override
@@ -130,7 +127,9 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void showAnalyzedEmotion(Emotion emotion) {
         AnalyzedEmotionShowingDialog dialog = AnalyzedEmotionShowingDialog.getInstance(emotion);
-        dialog.show(getFragmentManager(), getTag());
+        if (getFragmentManager() != null) {
+            dialog.show(getFragmentManager(), getTag());
+        }
     }
 
     @Override
@@ -191,6 +190,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         binding.recyclerViewItemRecordTags.setAdapter(hashTagListAdapter);
         binding.recyclerViewItemRecordTags.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
 
+        recordingDiaryDialog = RecordingDiaryDialog.newInstance();
+
         binding.buttonRecordItemRecord.setOnClickListener(v ->
                 compositeDisposable.add(TedRx2Permission.with(context)
                         .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
@@ -201,13 +202,13 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
                             if (tedPermissionResult.isGranted()) {
                                 KeyPadUtil.closeKeyPad(context, binding.etItemRecordInput);
                                 if (isRecording) {
-                                    binding.rpbRecordItemBackground.stopRippleAnimation();
-                                    isRecording = false;
-                                    presenter.finishRecording();
+                                    finishRecord();
                                 } else {
-                                    binding.rpbRecordItemBackground.startRippleAnimation();
-                                    isRecording = true;
                                     presenter.startRecording();
+                                    if (getFragmentManager() != null) {
+                                        recordingDiaryDialog.show(getFragmentManager(), getTag());
+                                    }
+                                    isRecording = true;
                                 }
                                 presenter.setIsRecording(isRecording);
                             } else {
@@ -235,5 +236,20 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
 
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
+    }
+
+    private void initDialog() {
+        recordingDiaryDialog = RecordingDiaryDialog.newInstance();
+        recordingDiaryDialog.setOnDismissListener(dialogInterface -> {
+            if (isRecording) {
+                finishRecord();
+            }
+        });
+    }
+
+    private void finishRecord() {
+        isRecording = false;
+        presenter.setIsRecording(isRecording);
+        presenter.finishRecording();
     }
 }

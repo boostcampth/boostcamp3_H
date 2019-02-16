@@ -75,7 +75,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                     for (int i = 10; i <= 20; ++i) {
                                         samples.add(new DiaryEntity(
-                                                simpleDateFormat.format(TODAY - DAY * (i+2)),
+                                                simpleDateFormat.format(TODAY - DAY * (i + 2)),
                                                 new Date(TODAY - DAY * i),
                                                 filePath,
                                                 Arrays.asList(String.format("#%2d번", i)),
@@ -95,13 +95,13 @@ public abstract class AppDatabase extends RoomDatabase {
                                                 Log.d("test","error");
                                             });*/
 
-Completable.fromAction(() -> INSTANCE.diaryDao().insert(samples.toArray(temp)))
-        .subscribeOn(Schedulers.io())
-        .subscribe(() -> {
-            Log.d("test", "Test");
-        }, throwable -> {
-throwable.printStackTrace();
-        });
+                                    Completable.fromAction(() -> INSTANCE.diaryDao().insert(samples.toArray(temp)))
+                                            .subscribeOn(Schedulers.io())
+                                            .subscribe(() -> {
+                                                Log.d("test", "Test");
+                                            }, throwable -> {
+                                                throwable.printStackTrace();
+                                            });
 
                                 }
                             })

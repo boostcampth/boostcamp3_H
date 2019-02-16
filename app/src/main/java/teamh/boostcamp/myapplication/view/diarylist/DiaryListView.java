@@ -16,8 +16,6 @@ public interface DiaryListView {
 
     void showSaveDiaryFail();
 
-    void showRecordTimeOutMsg();
-
     void showRecordNotFinished();
 
     void showEmotionNotSelected();
