@@ -321,6 +321,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
             compositeDisposable.add(firebaseRepository.loadAllDiaryList()
                     .map(diaryEntities -> diaryEntities.toArray(new DiaryEntity[diaryEntities.size()]))
                     .flatMapCompletable(diaryRepository::insertDiary)
+                    .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> showToast(R.string.load_success),
                             Throwable::printStackTrace));
         } else {

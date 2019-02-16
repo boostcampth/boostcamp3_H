@@ -67,6 +67,12 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        initPresenter();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         presenter.onViewDestroyed();

@@ -4,6 +4,7 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
+import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class FirebaseRepositoryImpl implements FirebaseRepository {
 
@@ -25,9 +27,9 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
     @NonNull
     public static FirebaseRepository getInstance() {
-        if(INSTANCE == null) {
+        if (INSTANCE == null) {
             synchronized (FirebaseRepositoryImpl.class) {
-                if(INSTANCE == null) {
+                if (INSTANCE == null) {
                     INSTANCE = new FirebaseRepositoryImpl();
                 }
             }
@@ -40,28 +42,28 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
     public Maybe<List<String>> loadAllDiaryId() {
 
         return Maybe.create(emitter -> {
+            final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
+
             final String key = FirebaseAuth.getInstance().getUid();
 
-            FirebaseDatabase.getInstance().getReference("user")
-                    .child(key)
+            firebaseDatabase.child(key)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                List<String> ids = new ArrayList<>();
-                                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                                while (iterator.hasNext()) {
-                                    ids.add(iterator.next().getValue(DiaryEntity.class).getId());
+                            List<String> ids = new ArrayList<>();
+                            Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                            while (iterator.hasNext()) {
+                                Iterator<DataSnapshot> backupList = iterator.next().getChildren().iterator();
+                                while (backupList.hasNext()) {
+                                    ids.add(backupList.next().getValue(DiaryEntity.class).getId());
                                 }
-                                emitter.onSuccess(ids);
-                            } else {
-                                emitter.onComplete();
                             }
+                            emitter.onSuccess(ids);
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            if(!emitter.isDisposed()) {
+                            if (!emitter.isDisposed()) {
                                 emitter.onError(new FirebaseException("LoadAllDiaryListError"));
                             }
                         }
@@ -74,28 +76,29 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
     public Maybe<List<DiaryEntity>> loadAllDiaryList() {
 
         return Maybe.create(emitter -> {
+
+            final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
+
             final String key = FirebaseAuth.getInstance().getUid();
 
-            FirebaseDatabase.getInstance().getReference("user")
-                    .child(key)
+            firebaseDatabase.child(key)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.exists()) {
-                                List<DiaryEntity> diaryEntityList = new ArrayList<>();
-                                Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                                while (iterator.hasNext()) {
-                                    diaryEntityList.add(iterator.next().getValue(DiaryEntity.class));
+                            List<DiaryEntity> diaryEntityList = new ArrayList<>();
+                            Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                            while (iterator.hasNext()) {
+                                Iterator<DataSnapshot> loadList = iterator.next().getChildren().iterator();
+                                while (loadList.hasNext()) {
+                                    diaryEntityList.add(loadList.next().getValue(DiaryEntity.class));
                                 }
-                                emitter.onSuccess(diaryEntityList);
-                            } else {
-                                emitter.onComplete();
                             }
+                            emitter.onSuccess(diaryEntityList);
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-                            if(!emitter.isDisposed()) {
+                            if (!emitter.isDisposed()) {
                                 emitter.onError(new FirebaseException("LoadAllDiaryListError"));
                             }
                         }
@@ -109,15 +112,18 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
         return Completable.create(emitter -> {
 
-            final String key = FirebaseAuth.getInstance().getUid();
+            final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
 
-            FirebaseDatabase.getInstance().getReference("user")
-                    .child(key)
+            final String key = FirebaseAuth.getInstance().getUid();
+            final String newPushKey = FirebaseDatabase.getInstance().getReference().child(key).push().getKey();
+
+            firebaseDatabase.child(key)
+                    .child(newPushKey)
                     .setValue(diaryEntities)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             emitter.onComplete();
-                        } else if(!emitter.isDisposed()){
+                        } else if (!emitter.isDisposed()) {
                             emitter.onError(new FirebaseException("InsertDiaries Error"));
                         }
                     });
