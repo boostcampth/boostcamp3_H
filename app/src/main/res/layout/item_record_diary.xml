@@ -21,21 +21,32 @@
             style="@style/SubTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:textStyle="bold"
             app:date="@{date}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:month="@{@stringArray/month}" />
 
+        <ImageView
+            android:id="@+id/iv_share_diary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="28dp"
+            android:src="@drawable/ic_diary_share"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_diary_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_item_diary_date" />
+
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/layout_gutter"
+            android:layout_marginStart="@dimen/layout_margin"
             android:layout_marginTop="@dimen/layout_gutter"
-            android:layout_marginRight="@dimen/layout_gutter"
-            android:layout_marginBottom="@dimen/layout_gutter"
+            android:layout_marginEnd="@dimen/layout_margin"
+            android:layout_marginBottom="20dp"
+            android:elevation="@dimen/card_elevation"
             app:cardCornerRadius="@dimen/card_view_radius"
-            app:cardElevation="@dimen/card_elevation"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -45,62 +56,86 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/bg_round_main"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
                     android:id="@+id/tv_item_diary_emotion"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/layout_gutter"
-                    android:layout_marginTop="@dimen/layout_gutter"
-                    android:layout_marginBottom="@dimen/layout_gutter"
+                    android:layout_marginStart="@dimen/layout_margin"
+                    android:layout_marginTop="@dimen/layout_margin"
                     android:gravity="center"
                     android:minWidth="@dimen/diary_emoji_min"
                     android:minHeight="@dimen/diary_emoji_min"
-                    android:textSize="40dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:textSize="45dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:id="@+id/iv_item_diary_play"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="@dimen/layout_margin"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_play_circle_filled_black_24dp"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_item_diary_emotion"
-                    app:layout_constraintStart_toEndOf="@id/tv_item_diary_emotion"
-                    app:layout_constraintTop_toTopOf="@id/tv_item_diary_emotion" />
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:id="@+id/law_item_diary_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/layout_gutter"
-                    android:layout_marginRight="@dimen/layout_gutter"
-                    android:maxHeight="40dp"
-                    app:lottie_scale="0.9"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_item_diary_emotion"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/iv_item_diary_play"
-                    app:layout_constraintTop_toTopOf="@id/tv_item_diary_emotion"
-                    app:lottie_fileName="play_record_wave.json"
-                    app:lottie_loop="true" />
-
 
                 <TextView
                     android:id="@+id/tv_item_diary_tags"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/layout_gutter"
-                    android:layout_marginTop="@dimen/layout_gutter"
-                    android:layout_marginRight="@dimen/layout_gutter"
-                    android:layout_marginBottom="@dimen/layout_gutter"
-                    android:textColor="@color/all_blue"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/hashtag"
                     android:textSize="18dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/tv_item_diary_emotion"
-                    app:layout_constraintRight_toRightOf="parent"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_item_diary_emotion" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/layout_margin"
+                    android:layout_marginTop="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
+                    android:layout_marginBottom="@dimen/layout_margin"
+                    android:background="@drawable/bg_round_gray"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tv_item_diary_tags">
+
+                    <ImageView
+                        android:id="@+id/iv_item_diary_play"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_margin="@dimen/layout_margin"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_play_circle_filled_black_24dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_lottie_wrap"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_item_diary_play"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iv_item_diary_play"
+                        app:layout_constraintTop_toTopOf="@id/iv_item_diary_play">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/law_item_diary_percent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxHeight="40dp"
+                            app:lottie_fileName="play_record_wave.json"
+                            app:lottie_loop="true"
+                            app:lottie_scale="0.5" />
+
+                    </LinearLayout>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

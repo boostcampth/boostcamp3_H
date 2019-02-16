@@ -150,7 +150,6 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
                 tagTextView.setTextColor(context.getResources().getColor(R.color.graphColor));
             }
 
-            tagTextView.setTextSize(30f);
             tagTextView.setText(hashTagItems.get(i).getTagName());
             binding.hashTagCustomLayout.addView(tagView);
         }
@@ -241,7 +240,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
         // y축 왼쪽 설정
         yLeftAxis.setTextColor(R.color.black);
-        yLeftAxis.setXOffset(15f);
+        yLeftAxis.setXOffset(20f);
         // y축 텍스트 사이즈 지정.
         yLeftAxis.setTextSize(20f);
         yLeftAxis.setValueFormatter(new GraphAxisValueFormatter(emojis));

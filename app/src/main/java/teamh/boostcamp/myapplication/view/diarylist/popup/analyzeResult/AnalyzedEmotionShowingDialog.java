@@ -50,7 +50,6 @@ public class AnalyzedEmotionShowingDialog extends DialogFragment{
         commentView.setText(analyzedEmotion.getComment());
 
         builder.setView(view);
-        builder.setTitle(getString(R.string.popup_dialog_title));
         builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, which) -> {
             dismiss();
         });

@@ -3,7 +3,7 @@
 
     <!-- List Fragment String -->
     <string name="item_record_done">Done</string>
-    <string name="item_record_today">Today</string>
+    <string name="item_record_today">당신의 하루를\n들려주세요</string>
     <string name="item_record_permission_title">권한 요구</string>
     <string name="item_record_permission_msg"> 일기를 녹음하고 저장할 때 아래 두 권한이 필요합니다 !\n
         - 마이크 사용 권한\n
@@ -23,7 +23,7 @@
     <string name="item_record_file_not_found">저장된 일기 파일을 찾을 수 없습니다 !</string>
 
 
-    <string name="popup_dialog_title">분석된 감정 결과입니다 !</string>
+    <string name="popup_dialog_title">분석된 감정 결과입니다</string>
     <string name="popup_dialog_ok">확인</string>
     <string name="recording">녹음중</string>
 
@@ -43,8 +43,9 @@
         <item>December</item>
     </string-array>
 
-    <string name="emojitest">&#128522;</string>
-    <string name="statistics_title">Statistics</string>
+    <!-- Statistics Fragment -->
+    <string name="graph_title">감정 그래프</string>
+    <string name="hash_tag_title">Hash Tag</string>
 
     <string name="mad">😡</string>
     <string name="bad">😞</string>
@@ -90,8 +91,9 @@
     <string name="setting_restore">내려받기</string>
 
     <!--Toolbar title-->
-    <string name="main_toolbar_diary_title">Todays</string>
-    <string name="main_toolbar_graph_title">Statics</string>
+    <string name="main_toolbar_diary_title">일기</string>
+    <string name="main_toolbar_statistics_title">통계</string>
+    <string name="main_toolbar_recall_title">추억</string>
 
     <!--Password-->
     <string name="password_title">비밀번호</string>

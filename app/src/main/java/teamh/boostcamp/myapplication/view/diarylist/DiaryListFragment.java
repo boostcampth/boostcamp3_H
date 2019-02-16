@@ -187,8 +187,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
                 });
 
         binding.etItemRecordInput.setHashTagListAdapter(hashTagListAdapter);
-        binding.recyclerViewItemRecordTags.setAdapter(hashTagListAdapter);
-        binding.recyclerViewItemRecordTags.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
+        binding.rvItemRecordTags.setAdapter(hashTagListAdapter);
+        binding.rvItemRecordTags.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
 
         recordingDiaryDialog = RecordingDiaryDialog.newInstance();
 

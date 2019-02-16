@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_recall:
-                    changeFragment(recallFragment, getString(R.string.Memories));
+                    changeFragment(recallFragment, getString(R.string.main_toolbar_recall_title));
                     return true;
                 case R.id.navigation_diary:
                     changeFragment(diaryListFragment, getString(R.string.main_toolbar_diary_title));
                     return true;
                 case R.id.navigation_statistics:
-                    changeFragment(statisticsFragment, getString(R.string.main_toolbar_graph_title));
+                    changeFragment(statisticsFragment, getString(R.string.main_toolbar_statistics_title));
                     return true;
             }
             return false;

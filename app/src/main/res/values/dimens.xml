@@ -7,14 +7,15 @@
     <dimen name="layout_gutter">8dp</dimen>
 
     <!--elevation-->
-    <dimen name="card_elevation">2dp</dimen>
-    <dimen name="app_bar_elevation">4dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="app_bar_elevation">8dp</dimen>
     <dimen name="dialog_elevation">24dp</dimen>
 
     <!--textSize-->
     <dimen name="toolbar_title_20dp">20dp</dimen>
-    <dimen name="all_title_34dp">34dp</dimen>
-    <dimen name="sub_title_24dp">24dp</dimen>
+    <dimen name="big_title_24dp">24dp</dimen>
+    <dimen name="all_title_20dp">20dp</dimen>
+    <dimen name="sub_title_16dp">16dp</dimen>
     <dimen name="all_body_16dp">16dp</dimen>
     <dimen name="all_button_14dp">14dp</dimen>
     <dimen name="setting_body_14dp">14dp</dimen>
@@ -24,7 +25,7 @@
     <dimen name="card_view_radius">20dp</dimen>
 
     <!-- Emoji Default -->
-    <dimen name="diary_emoji_min">60dp</dimen>
+    <dimen name="diary_emoji_min">70dp</dimen>
 
     <!-- LegacyDiary Fragment -->
     <dimen name="diary_progress_height">10dp</dimen>
@@ -37,5 +38,7 @@
     <dimen name="switch_track_button_height">25dp</dimen>
     <dimen name="switch_thumb_size">25dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="icon_button_padding">4dp</dimen>
 
 </resources>
