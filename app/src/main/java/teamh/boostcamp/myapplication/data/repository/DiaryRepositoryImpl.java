@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.data.repository;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -85,7 +86,8 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     @NonNull
     @Override
     public Observable<Diary> loadAll() {
-        return Observable.fromIterable(diaryDao.loadAll())
+        return diaryDao.loadAll()
+                .flatMapIterable(diaryList -> diaryList)
                 .subscribeOn(Schedulers.io());
     }
 }

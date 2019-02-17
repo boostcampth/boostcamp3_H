@@ -79,6 +79,12 @@ public class SharedPreferenceManager {
         editor.apply();
     }
 
+    public void removeLastDiarySaveTime() {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.remove(PREF_LAST_SAVE_TIME);
+        editor.apply();
+    }
+
     @NonNull
     public String getLastDiarySaveTime() {
         return preferences.getString(PREF_LAST_SAVE_TIME, "");

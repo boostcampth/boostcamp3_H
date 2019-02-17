@@ -274,7 +274,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/title_margin_left"
                 android:text="@string/setting_initialization"
-                style="@style/password_subtitle_style"/>
+                style="@style/explain_style_black"/>
 
             <ImageView
                 android:layout_width="wrap_content"

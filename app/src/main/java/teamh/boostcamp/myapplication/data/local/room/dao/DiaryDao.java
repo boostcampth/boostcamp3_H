@@ -10,6 +10,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
@@ -32,10 +33,10 @@ public interface DiaryDao {
     Single<DiaryEntity> loadRecentInsertedDiary();
 
     @Query("DELETE FROM diaries WHERE id=:id")
-    Completable delete(String id);
+    void delete(String id);
 
     @Query("SELECT * FROM diaries")
-    List<Diary> loadAll();
+    Observable<List<Diary>> loadAll();
 
 
 

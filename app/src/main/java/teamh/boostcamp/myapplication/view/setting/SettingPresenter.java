@@ -6,6 +6,7 @@ import java.io.File;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.RecallRepository;
 
@@ -13,43 +14,52 @@ public class SettingPresenter {
 
     private static final String TAG = "SettingPresenter";
 
+    private SettingView view;
     private RecallRepository recallRepository;
     private DiaryRepository diaryRepository;
     private CompositeDisposable compositeDisposable;
+    private SharedPreferenceManager sharedPreferenceManager;
 
-    public SettingPresenter(RecallRepository recallRepository, DiaryRepository diaryRepository) {
+    SettingPresenter(SettingView view,
+                     RecallRepository recallRepository,
+                     DiaryRepository diaryRepository,
+                     SharedPreferenceManager sharedPreferenceManager) {
+        this.view = view;
         this.recallRepository = recallRepository;
         this.diaryRepository = diaryRepository;
+        this.sharedPreferenceManager = sharedPreferenceManager;
         this.compositeDisposable = new CompositeDisposable();
     }
 
-    void deleteDiary(){
+    void deleteDiary() {
         compositeDisposable.add(
                 diaryRepository.loadAll()
                         .map(diary -> {
-                                    File file = new File(diary.getRecordFilePath());
-                                    file.delete();
+                            Log.d(TAG, "deleteDiary: " + diary.getRecordFilePath());
+                            File file = new File(diary.getRecordFilePath());
+                            file.delete();
 
-                          return diary;
+                            return diary;
                         })
                         .flatMapCompletable(diary -> diaryRepository.deleteDiary(diary.getId()))
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
         );
+
+        sharedPreferenceManager.removeLastDiarySaveTime();
     }
 
-    void deleteRecall(){
-
+    void deleteRecall() {
         compositeDisposable.add(
                 recallRepository
                         .deleteAll()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> {},throwable -> Log.d(TAG, "deleteRecall: " + throwable.getStackTrace()))
+                        .subscribe(() -> view.showInitializationMessage(), throwable -> Log.d(TAG, "deleteRecall: " + throwable.getStackTrace()))
         );
 
     }
 
-    void onDestroy(){
+    void onDestroy() {
         compositeDisposable.clear();
         diaryRepository = null;
         recallRepository = null;
