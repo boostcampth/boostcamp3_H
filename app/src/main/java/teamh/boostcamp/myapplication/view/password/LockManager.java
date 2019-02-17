@@ -1,6 +1,6 @@
 package teamh.boostcamp.myapplication.view.password;
 
-import android.app.Application;
+import android.content.Context;
 
 public class LockManager {
 
@@ -22,17 +22,10 @@ public class LockManager {
         return INSTANCE;
     }
 
-
-    public void enableLock(Application application) {
+    public LockHelper getLockHelper(Context context) {
         if (lockHelper == null) {
-            lockHelper = new LockHelperImpl(application.getApplicationContext());
+            lockHelper = new LockHelperImpl(context.getApplicationContext());
         }
-    }
-
-
-    public LockHelper getLockHelper() {
         return lockHelper;
     }
-
-
 }

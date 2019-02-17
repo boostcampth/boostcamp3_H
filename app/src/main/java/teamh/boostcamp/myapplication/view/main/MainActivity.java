@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private StatisticsFragment statisticsFragment;
     private AppInitializer application;
     private LockManager lockManager;
+    private LockHelper lockHelper;
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,7 +75,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         // 아래 초기화 하지 않으면 에러 발생
         lockManager = LockManager.getInstance();
-        lockManager.enableLock(getApplication());
+        lockHelper = lockManager.getLockHelper(getApplicationContext());
+        //lockManager.enableLock(getApplication());
 
         // bindingUtil 설정
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
@@ -93,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         if (application.getAppInitializer(this.getApplicationContext()).getApplicationStatus()
                 == AppInitializer.ApplicationStatus.RETURNED_TO_FOREGROUND) {
-            if (lockManager.getLockHelper().isPasswordSet()) {
+            if (lockHelper.isPasswordSet()) {
                 Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
                 intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

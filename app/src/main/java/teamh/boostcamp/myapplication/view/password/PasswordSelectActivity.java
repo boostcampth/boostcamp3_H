@@ -18,25 +18,24 @@ import teamh.boostcamp.myapplication.view.AppInitializer;
 public class PasswordSelectActivity extends AppCompatActivity {
 
     private static final String TAG = PasswordSelectActivity.class.getClass().getSimpleName();
+
     private ActivityPasswordSelectBinding binding;
     private LockManager lockManager;
     private AppInitializer application;
     private Toolbar toolbar;
     private ActionBar actionBar;
+    private LockHelper lockHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_password_select);
-
         init();
-        isExistPasswordState();
     }
 
     private void init() {
         application = new AppInitializer();
         lockManager = LockManager.getInstance();
-        lockManager.enableLock(getApplication());
+        lockHelper = lockManager.getLockHelper(getApplicationContext());
         initBinding();
         initSwitch();
         initActionBar();
@@ -58,20 +57,18 @@ public class PasswordSelectActivity extends AppCompatActivity {
     private void initSwitch() {
         binding.switchPasswordSelect.setOnCheckedChangeListener((button, isChecked) -> {
             if (isChecked) {
-                if (lockManager.getLockHelper().isPasswordSet()) {
-                    // 체크된 상태 + 비밀번호가 설정된 사람이면 패스워드 띄우지 말아야 함.
-                    Log.v(TAG, String.valueOf(lockManager.getLockHelper().isPasswordSet()));
-                } else {
-                    // 이 경우 스위치버튼 클릭 시 비밀번호 설정
+                if (lockHelper.isPasswordSet()) { // 체크된 상태 + 비밀번호가 설정된 사람이면 패스워드 띄우지 말아야 함.
+                    Log.v(TAG, String.valueOf(lockHelper.isPasswordSet()));
+                } else { // 이 경우 스위치버튼 클릭 시 비밀번호 설정
                     int type = LockHelper.ENABLE_PASSWORD;
 
-                    Intent intent = new Intent(this, PasswordActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
                     intent.putExtra(LockHelper.EXTRA_TYPE, type);
                     startActivityForResult(intent, type);
                 }
             } else {
                 // 저장된 비밀번호 제거.
-                lockManager.getLockHelper().setPassword(null);
+                lockHelper.savePassword(null);
                 binding.tvPasswordChangeButton.setTextColor(getApplicationContext().getResources().getColor(R.color.password_text_gray));
                 binding.tvPasswordChangeButton.setEnabled(false); // 변경 버튼 비활성화
             }
@@ -94,7 +91,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
         super.onResume();
         if (application.getAppInitializer(this.getApplicationContext()).getApplicationStatus()
                 == AppInitializer.ApplicationStatus.RETURNED_TO_FOREGROUND) {
-            if (lockManager.getLockHelper().isPasswordSet()) {
+            if (lockHelper.isPasswordSet()) {
                 Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
                 intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -102,14 +99,13 @@ public class PasswordSelectActivity extends AppCompatActivity {
                 Log.v(TAG, getApplicationContext().getResources().getString(R.string.password_not_set_text));
             }
         }
-
         isSavePassword();
     }
 
-
     private void isSavePassword() {
-        if (lockManager.getLockHelper().isPasswordSet()) {
+        if (lockHelper.isPasswordSet()) {
             // 비밀번호 설정되어 있음.
+            binding.tvPasswordChangeButton.setEnabled(true);
             binding.switchPasswordSelect.setChecked(true);
             binding.tvPasswordChangeButton.setTextColor(getApplicationContext().getResources().getColor(R.color.black));
         } else {
@@ -154,19 +150,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
             default:
                 break;
         }
-
-        isExistPasswordState();
-    }
-
-    // 저장된 비밀번호가 존재하는지 확인.
-    private void isExistPasswordState() {
-        // 설정한 비밀번호가 있을 때
-        if (lockManager.getLockHelper().isPasswordSet()) {
-            binding.tvPasswordChangeButton.setEnabled(true);
-        } else {
-            // 설정한 비밀번호가 없을 때
-            binding.tvPasswordChangeButton.setEnabled(false);
-        }
+        isSavePassword();
     }
 
     @Override
@@ -175,5 +159,6 @@ public class PasswordSelectActivity extends AppCompatActivity {
         toolbar = null;
         lockManager = null;
         binding = null;
+        application = null;
     }
 }
