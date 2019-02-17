@@ -1,7 +1,8 @@
 package teamh.boostcamp.myapplication.view.setting;
 
-import android.content.DialogInterface;
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
@@ -30,10 +32,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
@@ -171,7 +171,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     private void showToast(@StringRes final int id) {
-        Toast.makeText(getApplicationContext(), getString(id), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(id), Toast.LENGTH_SHORT).show();
     }
 
     public void onButtonClick(View view) {
@@ -187,14 +187,27 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 showToastMessage(R.string.login_success);
                 break;
             case R.id.rl_setting_logout:
-                auth.signOut();
+                //auth.signOut();
+                FirebaseAuth.getInstance().signOut();
                 showToastMessage(R.string.logout_success);
             case R.id.rl_setting_backup:
-                progressDialog.show();
+                progressDialog.setMessage(getString(R.string.do_backup));
                 presenter.backupLocalDataToFirebaseRepository();
                 break;
             case R.id.rl_setting_restore:
-                presenter.loadDiaryListFromFirebaseRepository();
+                TedRx2Permission.with(this)
+                        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .setRationaleMessage(R.string.setting_permission_load_rational_msg)
+                        .setRationaleTitle(R.string.setting_permission_load_title)
+                        .request()
+                        .subscribe(tedPermissionResult -> {
+                           if(tedPermissionResult.isGranted()) {
+                               progressDialog.setMessage(getString(R.string.do_load));
+                               presenter.downloadAllBackupFilesFromFirebase();
+                           } else {
+                               showToast(R.string.permission_denied);
+                           }
+                        }, Throwable::printStackTrace);
                 break;
             case R.id.rl_setting_initialization:
                 initInitialization();
@@ -278,9 +291,17 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if(progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
     public void showBackUpSuccessMsg() {
-        showToast(R.string.backup_success);
         progressDialog.dismiss();
+        showToast(R.string.backup_success);
     }
 
     @Override
@@ -289,20 +310,34 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     public void showBackUpFailMsg() {
-        showToast(R.string.not_login);
         progressDialog.dismiss();
+        showToast(R.string.backup_fail);
     }
 
     @Override
     public void showLoadSuccessMsg() {
-        showToast(R.string.load_success);
         progressDialog.dismiss();
+        showToast(R.string.load_success);
     }
 
     @Override
     public void showLoadFailMsg() {
-        showToast(R.string.not_login);
         progressDialog.dismiss();
+        showToast(R.string.load_fail);
+    }
+
+    @Override
+    public void dismissDialog() {
+        if(progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showDialog() {
+        if(!progressDialog.isShowing()) {
+            progressDialog.show();
+        }
     }
 
     private void showToast(String message) {

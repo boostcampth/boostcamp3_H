@@ -20,7 +20,7 @@ public class BindingUtil {
 
         textView.setText(String.format("%s %s, %s",
                 strings[0],
-                month[Integer.parseInt(strings[1])],
+                month[Integer.parseInt(strings[1]) -1],
                 strings[2]));
     }
 }

@@ -15,7 +15,7 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.RecallRepository;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepository;
 
-public class SettingPresenter {
+class SettingPresenter {
 
     private static final String TAG = "SettingPresenter";
 
@@ -28,10 +28,10 @@ public class SettingPresenter {
 
     private FirebaseRepository firebaseRepository;
 
-    public SettingPresenter(@NonNull SettingView view,
-                            @NonNull RecallRepository recallRepository,
-                            @NonNull DiaryRepository diaryRepository,
-                            @NonNull FirebaseRepository firebaseRepository) {
+    SettingPresenter(@NonNull SettingView view,
+                     @NonNull RecallRepository recallRepository,
+                     @NonNull DiaryRepository diaryRepository,
+                     @NonNull FirebaseRepository firebaseRepository) {
         this.settingView = view;
         this.recallRepository = recallRepository;
         this.diaryRepository = diaryRepository;
@@ -71,32 +71,47 @@ public class SettingPresenter {
     }
 
 
-    public void backupLocalDataToFirebaseRepository() {
+    void backupLocalDataToFirebaseRepository() {
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+            settingView.showDialog();
+
             compositeDisposable.add(firebaseRepository.loadAllDiaryId()
                     .flatMap(diaryRepository::loadNotBackupDiaryList)
                     .flatMapSingle(firebaseRepository::uploadRecordFile)
                     .flatMapCompletable(firebaseRepository::insertDiaries)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                        settingView.showBackUpSuccessMsg();
-                    }, Throwable::printStackTrace));
+                                settingView.dismissDialog();
+                                settingView.showBackUpSuccessMsg();
+                            },
+                            throwable -> {
+                                throwable.printStackTrace();
+                                settingView.dismissDialog();
+                                settingView.showBackUpFailMsg();
+                            }));
         } else {
             settingView.showBackUpFailMsg();
         }
     }
 
-    public void loadDiaryListFromFirebaseRepository() {
+    void downloadAllBackupFilesFromFirebase() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            compositeDisposable.add(firebaseRepository.loadAllDiaryList()
-                    .map(diaryEntities -> diaryEntities.toArray(new DiaryEntity[diaryEntities.size()]))
-                    .flatMapCompletable(diaryRepository::insertDiary)
+            compositeDisposable.add(diaryRepository.deleteAllDiaries()
+                    .andThen(firebaseRepository.loadAllDiaryList())
+                    .flatMapSingle(firebaseRepository::downloadRecordFile)
+                    .flatMapCompletable(diaryEntities ->
+                            diaryRepository.insertDiary(diaryEntities.toArray(new DiaryEntity[diaryEntities.size()])))
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> settingView.showLoadSuccessMsg(),
-                            Throwable::printStackTrace));
-        } else {
-            settingView.showLoadFailMsg();
+                    .subscribe(() -> {
+                        settingView.dismissDialog();
+                        settingView.showLoadSuccessMsg();
+                    }, throwable -> {
+                        settingView.dismissDialog();
+                        settingView.showLoadFailMsg();
+                    }));
         }
     }
+
 }

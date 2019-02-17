@@ -172,17 +172,13 @@ class DiaryListPresenter {
     }
 
     void startRecording() {
-        Log.d("Test", isRecording + "");
         diaryRecorder.startRecord();
         this.isRecording = true;
-        Log.d("Test", isRecording + "");
     }
 
     void finishRecording() {
-        Log.d("Test", isRecording + "");
         diaryRecorder.finishRecord();
         this.isRecording = false;
-        Log.d("Test", isRecording + "");
     }
 
     private void setLastItemSavedTime(@NonNull Date savedTime) {

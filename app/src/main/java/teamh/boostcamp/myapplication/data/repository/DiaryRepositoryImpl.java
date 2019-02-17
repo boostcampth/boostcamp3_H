@@ -98,4 +98,18 @@ public class DiaryRepositoryImpl implements DiaryRepository {
         return diaryDao.loadNotBackupDiaryList(diaryIdList)
                 .subscribeOn(Schedulers.io());
     }
+
+    @NonNull
+    @Override
+    public Completable deleteAllDiaries() {
+        return Completable.fromAction(() -> diaryDao.deleteAllDiaries())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Single<List<DiaryEntity>> loadAllDiaryEntityList() {
+        return diaryDao.loadAllDiaryEntities()
+                .subscribeOn(Schedulers.io());
+    }
 }

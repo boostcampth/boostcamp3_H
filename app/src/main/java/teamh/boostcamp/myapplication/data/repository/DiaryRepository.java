@@ -35,4 +35,10 @@ public interface DiaryRepository {
 
     @NonNull
     Maybe<List<DiaryEntity>> loadNotBackupDiaryList(@NonNull List<String> diaryIdList);
+
+    @NonNull
+    Completable deleteAllDiaries();
+
+    @NonNull
+    Single<List<DiaryEntity>> loadAllDiaryEntityList();
 }

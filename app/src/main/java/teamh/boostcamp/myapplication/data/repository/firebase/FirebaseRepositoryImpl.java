@@ -1,6 +1,7 @@
 package teamh.boostcamp.myapplication.data.repository.firebase;
 
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -16,11 +17,14 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.ObservableInt;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -121,7 +125,7 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
         return Completable.create(emitter -> {
 
-            if(diaryEntities.size() == 0) {
+            if (diaryEntities.size() == 0) {
                 emitter.onComplete();
             }
 
@@ -148,7 +152,7 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
     public Single<List<DiaryEntity>> uploadRecordFile(@NonNull List<DiaryEntity> diaryEntityList) {
         return Single.create(emitter -> {
 
-            if(diaryEntityList.size() == 0) {
+            if (diaryEntityList.size() == 0) {
                 emitter.onSuccess(diaryEntityList);
             }
 
@@ -165,19 +169,18 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
                 storageRef.putFile(uri)
                         .continueWithTask(task -> task.isSuccessful() ? storageRef.getDownloadUrl() : null)
                         .addOnSuccessListener(downloadUri -> {
-                            Log.d("Test", currentPos + "");
-                            if(downloadUri != null) {
+                            if (downloadUri != null) {
                                 downloadUrlList.add(downloadUri.toString());
                                 diaryEntityList.get(currentPos).setRecordFilePath(downloadUri.toString());
                             } else {
                                 diaryEntityList.remove(currentPos);
                             }
-                            if(downloadUrlList.size() == diaryEntityList.size()) {
+                            if (downloadUrlList.size() == diaryEntityList.size()) {
                                 emitter.onSuccess(diaryEntityList);
                             }
                         })
                         .addOnFailureListener(e -> {
-                            if(!emitter.isDisposed()) {
+                            if (!emitter.isDisposed()) {
                                 emitter.onError(e);
                             }
                         });
@@ -187,7 +190,40 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
     @NonNull
     @Override
-    public Single<List<Uri>> downloadRecordFile() {
-        return null;
+    public Single<List<DiaryEntity>> downloadRecordFile(@NonNull List<DiaryEntity> diaryEntityList) {
+        return Single.create(emitter -> {
+
+            final ObservableInt numOfDownloadFile = new ObservableInt(diaryEntityList.size());
+            final int size = diaryEntityList.size();
+            final FirebaseStorage storageRef = FirebaseStorage.getInstance();
+
+            File dir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + File.separator + "diary");
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            for (int i = 0; i < size; ++i) {
+
+                final StorageReference recordRef = storageRef.getReferenceFromUrl(diaryEntityList.get(i).getRecordFilePath());
+
+                diaryEntityList.get(i).setRecordFilePath(dir.getAbsolutePath() + File.separator + diaryEntityList.get(i).getId() + ".acc");
+
+                final File recordFile = new File(diaryEntityList.get(i).getRecordFilePath());
+
+                recordFile.getParentFile().mkdirs();
+                recordFile.createNewFile();
+
+                recordRef.getFile(recordFile).addOnSuccessListener(taskSnapshot -> {
+                    // 저장이 완료되었으면 저장 count 추가해주기
+                    numOfDownloadFile.set(numOfDownloadFile.get() - 1);
+                    if (numOfDownloadFile.get() == 0) {
+                        emitter.onSuccess(diaryEntityList);
+                    }
+                }).addOnFailureListener(e -> {
+                    Log.d("Test", "Error");
+                    e.printStackTrace();
+                });
+            }
+        });
     }
 }

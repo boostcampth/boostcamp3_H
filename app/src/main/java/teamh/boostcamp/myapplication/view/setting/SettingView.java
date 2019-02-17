@@ -9,4 +9,7 @@ public interface SettingView {
     void showBackUpFailMsg();
     void showLoadSuccessMsg();
     void showLoadFailMsg();
+
+    void dismissDialog();
+    void showDialog();
 }

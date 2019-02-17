@@ -33,18 +33,13 @@ class DiaryRecorderImpl implements DiaryRecorder {
 
     @Override
     public void startRecord() {
-        Log.d("Test", "FilePath Bf Prepare " + (filePath == null ? "" : filePath));
         prepareRecord();
-        Log.d("Test", "FilePath Bf Start " + (filePath == null ? "" : filePath));
         mediaRecorder.start();
-        Log.d("Test", "FilePath Af Start " + (filePath == null ? "" : filePath));
     }
 
     @Override
     public void finishRecord() {
-        Log.d("Test", "FilePath Bf Finishing " + (filePath == null ? "" : filePath));
         mediaRecorder.stop();
-        Log.d("Test", "FilePath Af Finishing " + (filePath == null ? "" : filePath));
     }
 
 

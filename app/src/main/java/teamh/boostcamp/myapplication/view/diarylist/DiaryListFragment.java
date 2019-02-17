@@ -204,7 +204,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                                 recordingDiaryDialog.setDismissListener(this);
                                 recordingDiaryDialog.show(getFragmentManager(), getTag());
                             } else {
-                                showToastMessage(R.string.item_record_permission_denied);
+                                showToastMessage(R.string.permission_denied);
                             }
                         }, Throwable::printStackTrace))
         );

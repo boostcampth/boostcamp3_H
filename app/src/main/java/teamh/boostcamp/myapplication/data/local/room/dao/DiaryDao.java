@@ -6,6 +6,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
@@ -21,8 +22,11 @@ public interface DiaryDao {
     @Query("SELECT * FROM diaries WHERE recordDate < :recordDate ORDER BY recordDate DESC LIMIT :pageSize")
     Single<List<DiaryEntity>> loadDiaryList(@NonNull Date recordDate,
                                             final int pageSize);
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(@NonNull DiaryEntity... diaryEntities);
+
+    @Query("DELETE FROM diaries")
+    void deleteAllDiaries();
 
     @Query("Select * FROM diaries WHERE recordDate > :startDate AND recordDate < :endDate AND selectedEmotion = :emotion ORDER BY recordDate LIMIT :limitCount")
     Single<List<Diary>> selectDiaryListByEmotionAndDate(Emotion emotion, Date startDate, Date endDate, int limitCount);
@@ -41,4 +45,7 @@ public interface DiaryDao {
 
     @Query("SELECT * FROM diaries WHERE id NOT IN (:diaryEntityIdList)")
     Maybe<List<DiaryEntity>> loadNotBackupDiaryList(@NonNull List<String> diaryEntityIdList);
+
+    @Query("SELECT * FROM diaries")
+    Single<List<DiaryEntity>> loadAllDiaryEntities();
 }
