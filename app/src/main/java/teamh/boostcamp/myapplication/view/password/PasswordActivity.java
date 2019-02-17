@@ -73,10 +73,10 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
             intent.addCategory(Intent.CATEGORY_HOME);
             this.startActivity(intent);
             finish();
-            overridePendingTransition(R.anim.anim_stop,R.anim.anim_slide_out_bottom);
+            overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
         } else {
             finish();
-            overridePendingTransition(R.anim.anim_stop,R.anim.anim_slide_out_bottom);
+            overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
         }
     }
 
@@ -260,8 +260,10 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        passwordPresenter.onDestroyView();
         binding = null;
         oldPassword = null;
+        passwordPresenter = null;
     }
 
     @Override

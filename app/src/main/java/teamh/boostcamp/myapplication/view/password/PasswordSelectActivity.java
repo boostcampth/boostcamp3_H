@@ -6,11 +6,15 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.concurrent.TimeUnit;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordSelectBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
@@ -64,7 +68,11 @@ public class PasswordSelectActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
                     intent.putExtra(LockHelper.EXTRA_TYPE, type);
-                    startActivityForResult(intent, type);
+
+                    Completable.timer(500, TimeUnit.MILLISECONDS,
+                            AndroidSchedulers.mainThread())
+                            .subscribe(() -> startActivityForResult(intent, type));
+
                 }
             } else {
                 // 저장된 비밀번호 제거.
@@ -157,8 +165,10 @@ public class PasswordSelectActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         toolbar = null;
+        actionBar = null;
         lockManager = null;
         binding = null;
         application = null;
+        lockHelper = null;
     }
 }

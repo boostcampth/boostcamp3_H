@@ -18,7 +18,7 @@ public class SharedPreferenceManager {
     private static final String PREF_WORKER = "PREF_WORKER";
 
     // fields
-    public static SharedPreferences preferences;
+    private static SharedPreferences preferences;
 
     // Constructor
     private SharedPreferenceManager() {

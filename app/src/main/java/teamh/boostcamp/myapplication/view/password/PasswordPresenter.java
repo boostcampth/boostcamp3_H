@@ -12,17 +12,23 @@ public class PasswordPresenter {
     private LockManager lockManager;
     private LockHelper lockHelper;
 
-    PasswordPresenter(@NonNull PasswordView passwordView, @NonNull Context context){
+    PasswordPresenter(@NonNull PasswordView passwordView, @NonNull Context context) {
         this.passwordView = passwordView;
         this.lockManager = LockManager.getInstance();
         this.lockHelper = lockManager.getLockHelper(context);
     }
 
-    boolean checkPassword(String password){
+    boolean checkPassword(String password) {
         return lockHelper.checkPassword(password);
     }
 
-    void savePassword(@Nullable String password){
+    void savePassword(@Nullable String password) {
         lockHelper.savePassword(password);
+    }
+
+    void onDestroyView() {
+        passwordView = null;
+        lockManager = null;
+        lockHelper = null;
     }
 }
