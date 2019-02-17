@@ -99,15 +99,18 @@
     <!--Password-->
     <string name="password_title">비밀번호</string>
     <string name="password_current_text">현재 비밀번호</string>
-    <string name="password_change_text">비밀번호를 변경해주세요.</string>
+    <string name="password_change_text">비밀 번호 변경</string>
     <string name="password_check_text">비밀번호 확인</string>
-    <string name="password_lock_text">비밀 번호를 설정해주세요.</string>
+    <string name="password_set_text">비밀 번호 설정</string>
     <string name="password_unlock_text">비밀 번호를 해제해주세요.</string>
     <string name="password_lock_success_text">비밀번호 설정이 완료되었습니다.</string>
     <string name="password_before_input_text">이전 비밀번호를 입력해주세요.</string>
     <string name="password_limit_number">1234567890</string>
     <string name="password_not_set_text">Password Not Set</string>
     <string name="password_explain_text">비밀번호를 사용하여 화면 잠금을 해제할 수 있습니다.</string>
+    <string name="password_retry_input_text">다시 입력해주세요.</string>
+    <string name="password_please_input_text">비밀번호를 입력해주세요.</string>
+    <string name="password_check_retry_text">확인을 위해 한번 더 입력해주세요.</string>
 
     <!--Alarm-->
     <string name="alarm_title">알람</string>

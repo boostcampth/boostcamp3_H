@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 public class SharedPreferenceManager {
     private static final String TEAM_H = "TEAM_H";
@@ -32,10 +33,15 @@ public class SharedPreferenceManager {
         return LazyHolder.INSTANCE;
     }
 
-    public void setPreferencePassword(String password) {
+    public void setPreferencePassword(@NonNull String password) {
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(PREF_PASSWORD, password);
-        editor.apply();
+        if (password == null) {
+            editor.remove(PREF_PASSWORD);
+            editor.apply();
+        } else {
+            editor.putString(PREF_PASSWORD, password);
+            editor.apply();
+        }
     }
 
     public String getPreferencePassword(String defaultPassword) {
@@ -44,6 +50,10 @@ public class SharedPreferenceManager {
 
     public String getPreferencePassword() {
         return getPreferencePassword("");
+    }
+
+    public boolean checkPassword(@Nullable String inputPassword) {
+        return inputPassword.equals(preferences.getString(PREF_PASSWORD, ""));
     }
 
     public void setPreferencePushTime(String pushTime) {
@@ -60,7 +70,7 @@ public class SharedPreferenceManager {
         return getPreferencePushTime(null);
     }
 
-    public void removePreferencePushTime(){
+    public void removePreferencePushTime() {
         SharedPreferences.Editor editor = preferences.edit();
         editor.remove(PREF_PUSH_TIME);
         editor.apply();
@@ -90,12 +100,20 @@ public class SharedPreferenceManager {
         editor.apply();
     }
 
-    public boolean getWorkerState(){
+    public boolean getWorkerState() {
         return preferences.getBoolean(PREF_WORKER, false);
     }
 
     // LazyHolder 클래스 - 싱글톤
     private static class LazyHolder {
         public static final SharedPreferenceManager INSTANCE = new SharedPreferenceManager();
+    }
+
+    public SharedPreferences getPreferences() {
+        return preferences;
+    }
+
+    public boolean isPasswordSaved(){
+        return preferences.contains(PREF_PASSWORD);
     }
 }

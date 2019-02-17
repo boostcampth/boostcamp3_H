@@ -49,6 +49,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private static final int SIGN_IN_CODE = 4899;
     private AppInitializer appInitializer;
     private LockManager lockManager;
+    private LockHelper lockHelper;
     private SettingPresenter presenter;
 
     private GoogleSignInClient mGoogleSignInClient;
@@ -110,7 +111,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         super.onResume();
         if (appInitializer.getAppInitializer(getApplicationContext()).getApplicationStatus()
                 == AppInitializer.ApplicationStatus.RETURNED_TO_FOREGROUND) {
-            if (lockManager.getLockHelper().isPasswordSet()) {
+            if (lockHelper.isPasswordSet()) {
                 // 저장된 비밀번호가 존재하는지 확인.
                 Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
                 intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
@@ -137,7 +138,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private void initLock() {
         appInitializer = new AppInitializer();
         lockManager = LockManager.getInstance();
-        lockManager.enableLock(getApplication());
+        lockHelper = lockManager.getLockHelper(getApplicationContext());
     }
 
 
