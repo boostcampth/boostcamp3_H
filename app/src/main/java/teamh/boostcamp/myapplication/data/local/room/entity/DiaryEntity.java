@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 
@@ -45,6 +46,7 @@ public class DiaryEntity {
     @NonNull
     private Emotion analyzedEmotion;
 
+    @Ignore
     public DiaryEntity() {
     }
 

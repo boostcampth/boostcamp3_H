@@ -1,6 +1,7 @@
 package teamh.boostcamp.myapplication.view.setting;
 
 import android.content.DialogInterface;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,12 +35,9 @@ import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
-import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
-import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
-import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepository;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
@@ -65,8 +63,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
 
-    private DiaryRepository diaryRepository;
-    private FirebaseRepository firebaseRepository;
+    private ProgressDialog progressDialog;
 
     private CompositeDisposable compositeDisposable;
 
@@ -83,8 +80,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initActionBar();
         initFirebaseAuth();
         initLock();
-
         initPresenter();
+        progressDialog = new ProgressDialog(this);
     }
 
     private void initPresenter() {
@@ -93,9 +90,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
                         DeepAffectApiClient.getInstance()),
-                        SharedPreferenceManager.getInstance(getApplicationContext()));
+                FirebaseRepositoryImpl.getInstance());
 
-        initRepository();
         compositeDisposable = new CompositeDisposable();
     }
 
@@ -154,12 +150,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
-    private void initRepository() {
-        firebaseRepository = FirebaseRepositoryImpl.getInstance();
-        diaryRepository = DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(this).diaryDao(),
-                DeepAffectApiClient.getInstance());
-    }
-
     private void initLock() {
         appInitializer = new AppInitializer();
         lockManager = LockManager.getInstance();
@@ -200,10 +190,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 auth.signOut();
                 showToastMessage(R.string.logout_success);
             case R.id.rl_setting_backup:
-                backupLocalDataToFirebaseRepository();
+                progressDialog.show();
+                presenter.backupLocalDataToFirebaseRepository();
                 break;
             case R.id.rl_setting_restore:
-                loadDiaryListFromFirebaseRepository();
+                presenter.loadDiaryListFromFirebaseRepository();
                 break;
             case R.id.rl_setting_initialization:
                 initInitialization();
@@ -212,7 +203,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     private void initInitialization() {
-        AlertDialog.Builder alertDialogBuilder =  new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
         alertDialogBuilder.setTitle("초기화")
                 .setMessage("정말로 초기화 하시겠습니까. 모든 추억들이 사라집니다.")
                 .setPositiveButton("초기화", new DialogInterface.OnClickListener() {
@@ -281,15 +272,15 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        diaryRepository = null;
-        firebaseRepository = null;
         finish();
         // 시작 -> 처리될 애니메이션
         this.overridePendingTransition(R.anim.anim_left_to_right, R.anim.anim_right_to_left);
     }
 
-    private void showToast(String message) {
-        Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+    @Override
+    public void showBackUpSuccessMsg() {
+        showToast(R.string.backup_success);
+        progressDialog.dismiss();
     }
 
     @Override
@@ -297,35 +288,28 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         showToastMessage(R.string.setting_initialization_success);
     }
 
+    public void showBackUpFailMsg() {
+        showToast(R.string.not_login);
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void showLoadSuccessMsg() {
+        showToast(R.string.load_success);
+        progressDialog.dismiss();
+    }
+
+    @Override
+    public void showLoadFailMsg() {
+        showToast(R.string.not_login);
+        progressDialog.dismiss();
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
     private void showToastMessage(@StringRes final int stringId) {
         Toast.makeText(this, getString(stringId), Toast.LENGTH_SHORT).show();
-    }
-
-    private void backupLocalDataToFirebaseRepository() {
-
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            compositeDisposable.add(firebaseRepository.loadAllDiaryId()
-                    .flatMap(diaryRepository::loadNotBackupDiaryList)
-                    .flatMapCompletable(firebaseRepository::insertDiaries)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> {
-                        showToast(R.string.backup_success);
-                    }, Throwable::printStackTrace));
-        } else {
-            showToast(R.string.not_login);
-        }
-    }
-
-    private void loadDiaryListFromFirebaseRepository() {
-        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            compositeDisposable.add(firebaseRepository.loadAllDiaryList()
-                    .map(diaryEntities -> diaryEntities.toArray(new DiaryEntity[diaryEntities.size()]))
-                    .flatMapCompletable(diaryRepository::insertDiary)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(() -> showToast(R.string.load_success),
-                            Throwable::printStackTrace));
-        } else {
-            showToast(R.string.not_login);
-        }
     }
 }

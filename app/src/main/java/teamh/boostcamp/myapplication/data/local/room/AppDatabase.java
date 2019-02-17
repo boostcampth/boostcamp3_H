@@ -92,14 +92,6 @@ public abstract class AppDatabase extends RoomDatabase {
                                             }, throwable -> {
                                                 throwable.printStackTrace();
                                             });*/
-
-                                    Completable.fromAction(() -> INSTANCE.diaryDao().truncate())
-                                            .subscribeOn(Schedulers.io())
-                                            .subscribe(() -> {
-
-                                            }, throwable -> {
-
-                                            });
                                 }
                             })
                             .build();

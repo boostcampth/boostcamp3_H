@@ -56,7 +56,7 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Completable insertDiary(@NonNull final DiaryEntity ... diaryEntities) {
+    public Completable insertDiary(@NonNull final DiaryEntity... diaryEntities) {
         return Completable.fromAction(() -> diaryDao.insert(diaryEntities))
                 .subscribeOn(Schedulers.io());
     }
@@ -78,7 +78,8 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Completable deleteDiary(String id) {
+
+    public Completable deleteDiary(@NonNull String id) {
         return Completable.fromAction(() -> diaryDao.delete(id))
                 .subscribeOn(Schedulers.io());
     }
@@ -91,6 +92,8 @@ public class DiaryRepositoryImpl implements DiaryRepository {
                 .subscribeOn(Schedulers.io());
     }
 
+    @NonNull
+    @Override
     public Maybe<List<DiaryEntity>> loadNotBackupDiaryList(@NonNull List<String> diaryIdList) {
         return diaryDao.loadNotBackupDiaryList(diaryIdList)
                 .subscribeOn(Schedulers.io());

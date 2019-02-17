@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
+import android.util.Log;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,12 +40,13 @@ class DiaryListPresenter {
     private RecordPlayer recordPlayer;
     @NonNull
     private SharedPreferenceManager sharedPreferenceManager;
+    @NonNull
     private KakaoLinkHelper kakaoLinkHelper;
 
     @Nullable
     private Emotion selectedEmotion;
     private boolean isLoading;
-    private boolean isRecording;
+    private boolean isRecording = false;
     private int lastPlayedPosition;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
@@ -168,16 +171,18 @@ class DiaryListPresenter {
         this.selectedEmotion = emotion;
     }
 
-    void setIsRecording(final boolean isRecording) {
-        this.isRecording = isRecording;
-    }
-
     void startRecording() {
+        Log.d("Test", isRecording + "");
         diaryRecorder.startRecord();
+        this.isRecording = true;
+        Log.d("Test", isRecording + "");
     }
 
     void finishRecording() {
+        Log.d("Test", isRecording + "");
         diaryRecorder.finishRecord();
+        this.isRecording = false;
+        Log.d("Test", isRecording + "");
     }
 
     private void setLastItemSavedTime(@NonNull Date savedTime) {
@@ -189,6 +194,7 @@ class DiaryListPresenter {
             diaryListView.onPlayFileChanged(lastPlayedPosition, true);
             lastPlayedPosition = NOTHING_PLAYED;
         });
+
     }
 
     void onViewCreated() {
@@ -203,12 +209,13 @@ class DiaryListPresenter {
         compositeDisposable.clear();
         if (isRecording) {
             diaryRecorder.finishRecord();
+            isRecording = false;
         }
         diaryRecorder.releaseRecorder();
         recordPlayer.releasePlayer();
     }
 
-    void sendDiaryToKakao(Diary diary){
+    void sendDiaryToKakao(Diary diary) {
         kakaoLinkHelper.sendDiary(diary);
     }
 }

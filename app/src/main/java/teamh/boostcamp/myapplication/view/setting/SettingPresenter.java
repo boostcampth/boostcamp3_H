@@ -2,32 +2,40 @@ package teamh.boostcamp.myapplication.view.setting;
 
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.io.File;
 
+import androidx.annotation.NonNull;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
+import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.RecallRepository;
+import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepository;
 
 public class SettingPresenter {
 
     private static final String TAG = "SettingPresenter";
 
     private SettingView view;
+    private SettingView settingView;
     private RecallRepository recallRepository;
     private DiaryRepository diaryRepository;
     private CompositeDisposable compositeDisposable;
     private SharedPreferenceManager sharedPreferenceManager;
 
-    SettingPresenter(SettingView view,
-                     RecallRepository recallRepository,
-                     DiaryRepository diaryRepository,
-                     SharedPreferenceManager sharedPreferenceManager) {
-        this.view = view;
+    private FirebaseRepository firebaseRepository;
+
+    public SettingPresenter(@NonNull SettingView view,
+                            @NonNull RecallRepository recallRepository,
+                            @NonNull DiaryRepository diaryRepository,
+                            @NonNull FirebaseRepository firebaseRepository) {
+        this.settingView = view;
         this.recallRepository = recallRepository;
         this.diaryRepository = diaryRepository;
-        this.sharedPreferenceManager = sharedPreferenceManager;
+        this.firebaseRepository = firebaseRepository;
         this.compositeDisposable = new CompositeDisposable();
     }
 
@@ -45,10 +53,8 @@ public class SettingPresenter {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
         );
-
         sharedPreferenceManager.removeLastDiarySaveTime();
     }
-
     void deleteRecall() {
         compositeDisposable.add(
                 recallRepository
@@ -56,7 +62,6 @@ public class SettingPresenter {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(() -> view.showInitializationMessage(), throwable -> Log.d(TAG, "deleteRecall: " + throwable.getStackTrace()))
         );
-
     }
 
     void onDestroy() {
@@ -65,4 +70,33 @@ public class SettingPresenter {
         recallRepository = null;
     }
 
+
+    public void backupLocalDataToFirebaseRepository() {
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            compositeDisposable.add(firebaseRepository.loadAllDiaryId()
+                    .flatMap(diaryRepository::loadNotBackupDiaryList)
+                    .flatMapSingle(firebaseRepository::uploadRecordFile)
+                    .flatMapCompletable(firebaseRepository::insertDiaries)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> {
+                        settingView.showBackUpSuccessMsg();
+                    }, Throwable::printStackTrace));
+        } else {
+            settingView.showBackUpFailMsg();
+        }
+    }
+
+    public void loadDiaryListFromFirebaseRepository() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            compositeDisposable.add(firebaseRepository.loadAllDiaryList()
+                    .map(diaryEntities -> diaryEntities.toArray(new DiaryEntity[diaryEntities.size()]))
+                    .flatMapCompletable(diaryRepository::insertDiary)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(() -> settingView.showLoadSuccessMsg(),
+                            Throwable::printStackTrace));
+        } else {
+            settingView.showLoadFailMsg();
+        }
+    }
 }

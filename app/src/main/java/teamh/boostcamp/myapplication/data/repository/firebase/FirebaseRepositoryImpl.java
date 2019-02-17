@@ -1,5 +1,9 @@
 package teamh.boostcamp.myapplication.data.repository.firebase;
 
+import android.net.Uri;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -7,7 +11,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -15,6 +23,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 
@@ -112,6 +121,10 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
         return Completable.create(emitter -> {
 
+            if(diaryEntities.size() == 0) {
+                emitter.onComplete();
+            }
+
             final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
 
             final String key = FirebaseAuth.getInstance().getUid();
@@ -128,5 +141,53 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
                         }
                     });
         });
+    }
+
+    @NonNull
+    @Override
+    public Single<List<DiaryEntity>> uploadRecordFile(@NonNull List<DiaryEntity> diaryEntityList) {
+        return Single.create(emitter -> {
+
+            if(diaryEntityList.size() == 0) {
+                emitter.onSuccess(diaryEntityList);
+            }
+
+            final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+            final String key = FirebaseAuth.getInstance().getUid();
+            final int size = diaryEntityList.size();
+            final List<String> downloadUrlList = new ArrayList<>();
+
+            for (int i = 0; i < size; ++i) {
+                final Uri uri = Uri.fromFile(new File(diaryEntityList.get(i).getRecordFilePath()));
+                final StorageReference storageRef = firebaseStorage.getReference().child((key + "/" + diaryEntityList.get(i).getId()));
+                final int currentPos = i;
+
+                storageRef.putFile(uri)
+                        .continueWithTask(task -> task.isSuccessful() ? storageRef.getDownloadUrl() : null)
+                        .addOnSuccessListener(downloadUri -> {
+                            Log.d("Test", currentPos + "");
+                            if(downloadUri != null) {
+                                downloadUrlList.add(downloadUri.toString());
+                                diaryEntityList.get(currentPos).setRecordFilePath(downloadUri.toString());
+                            } else {
+                                diaryEntityList.remove(currentPos);
+                            }
+                            if(downloadUrlList.size() == diaryEntityList.size()) {
+                                emitter.onSuccess(diaryEntityList);
+                            }
+                        })
+                        .addOnFailureListener(e -> {
+                            if(!emitter.isDisposed()) {
+                                emitter.onError(e);
+                            }
+                        });
+            }
+        });
+    }
+
+    @NonNull
+    @Override
+    public Single<List<Uri>> downloadRecordFile() {
+        return null;
     }
 }

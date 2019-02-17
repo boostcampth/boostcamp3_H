@@ -4,4 +4,9 @@ public interface SettingView {
     void showInitializationMessage();
     void showLoginMessage();
 
+
+    void showBackUpSuccessMsg();
+    void showBackUpFailMsg();
+    void showLoadSuccessMsg();
+    void showLoadFailMsg();
 }

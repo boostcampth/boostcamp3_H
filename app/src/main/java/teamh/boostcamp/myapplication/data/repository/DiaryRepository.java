@@ -5,11 +5,8 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
-<<<<<<< HEAD
 import io.reactivex.Observable;
-=======
 import io.reactivex.Maybe;
->>>>>>> issue-186/firebase-인터페이스구현
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
@@ -31,12 +28,11 @@ public interface DiaryRepository {
     Single<DiaryEntity> loadRecentInsertedDiary();
 
     @NonNull
-<<<<<<< HEAD
     Completable deleteDiary(@NonNull String id);
 
     @NonNull
     Observable<Diary> loadAll();
-=======
+
+    @NonNull
     Maybe<List<DiaryEntity>> loadNotBackupDiaryList(@NonNull List<String> diaryIdList);
->>>>>>> issue-186/firebase-인터페이스구현
 }

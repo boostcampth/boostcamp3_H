@@ -23,7 +23,8 @@ public class RecordingDiaryDialog extends DialogFragment {
 
     private static final int LIMIT_TIME = 10;
     private Disposable timerDisposable;
-    private DialogInterface.OnDismissListener dismissListener;
+    private OnRecordDialogDismissListener dismissListener;
+    private boolean isTimeOut = false;
 
     public static RecordingDiaryDialog newInstance() {
         return new RecordingDiaryDialog();
@@ -43,36 +44,29 @@ public class RecordingDiaryDialog extends DialogFragment {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .take(LIMIT_TIME)
-                .doOnDispose(lottieAnimationView::cancelAnimation)
-                .doOnComplete(this::dismiss)
-                .subscribe(aLong -> Log.d("Test", "" + (LIMIT_TIME - aLong.intValue()))
-                        , Throwable::printStackTrace);
+                .doOnComplete(() -> {
+                    isTimeOut = true;
+                    this.dismiss();
+                })
+                .subscribe(aLong -> Log.d("Test", aLong.toString()), Throwable::printStackTrace);
 
         builder.setTitle(R.string.recording);
         builder.setView(view);
-        builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, i) -> {
-            if (dismissListener != null) {
-                dismissListener.onDismiss(dialogInterface);
-            }
-        });
+        builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, i) -> dismiss());
 
         return builder.create();
     }
 
-    public void setOnDismissListener(@NonNull DialogInterface.OnDismissListener dismissListener) {
+    public void setDismissListener(OnRecordDialogDismissListener dismissListener) {
         this.dismissListener = dismissListener;
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDismiss(@NonNull DialogInterface dialog) {
         if (!timerDisposable.isDisposed()) {
             timerDisposable.dispose();
             timerDisposable = null;
         }
-        if (dismissListener != null) {
-            dismissListener.onDismiss(null);
-            dismissListener = null;
-        }
+        dismissListener.onDismiss(isTimeOut);
     }
 }
