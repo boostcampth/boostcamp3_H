@@ -18,6 +18,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
+            android:name=".view.alarm.AlarmActivity"
+            android:label="@string/title_activity_alarm"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".view.setting.SettingActivity"
             android:label="@string/title_activity_setting"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -27,7 +31,6 @@
         <activity
             android:name=".view.password.PasswordActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".view.alarm.AlarmActivity" />
         <activity android:name=".view.play.PlayActivity" />
         <activity
             android:name=".view.main.MainActivity"
@@ -37,19 +40,21 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-            <category android:name="android.intent.category.DEFAULT"/>
-            <category android:name="android.intent.category.BROWSABLE"/>
-            <data
-                android:scheme="@string/kakao_scheme"
-                android:value="@string/kakaolink_host"/>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="@string/kakao_scheme"
+                    android:value="@string/kakaolink_host" />
             </intent-filter>
         </activity>
+
         <meta-data
             android:name="com.kakao.sdk.AppKey"
-            android:value="@string/kakao_app_key"/>
+            android:value="@string/kakao_app_key" />
 
         <receiver android:name=".view.alarm.AlertReceiver" />
     </application>

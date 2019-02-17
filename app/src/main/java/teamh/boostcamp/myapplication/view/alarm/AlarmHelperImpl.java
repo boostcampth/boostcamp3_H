@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -64,6 +65,7 @@ public class AlarmHelperImpl implements AlarmHelper {
         String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
         String time = simpleDateFormat.format(calendar.getTime());
         sharedPreferenceManager.setPreferencePushTime(time);
+        Log.v("21023 dd?","dd?");
     }
 
     @NonNull

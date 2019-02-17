@@ -117,7 +117,7 @@
     <string name="alarm_explain">시간을 설정해주세요.</string>
     <string name="alarm_button_click_text">버튼을 눌러 알람을 설정해주세요.</string>
     <string name="alarm_time_select_text">시간 선택</string>
-    <string name="alarm_set_text">알람을 설정하였습니다.</string>
+    <string name="alarm_set_text">알람 설정이 완료되었습니다.</string>
     <string name="alarm_error_text">오류</string>
     <string name="alarm_modify_text">시간을 수정해주세요.</string>
 
@@ -129,5 +129,6 @@
 
     <!--kakao-->
     <string name="kakao_description">내가선택한 오늘의 기분은 %s입니다.</string>
+    <string name="title_activity_alarm">AlarmActivity</string>
 
 </resources>

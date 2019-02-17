@@ -26,8 +26,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
-import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
-import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;

@@ -2,18 +2,20 @@ package teamh.boostcamp.myapplication.view.alarm;
 
 import java.util.Calendar;
 
+import androidx.annotation.StringRes;
+
 public interface AlarmView {
 
-    void showToast(String message);
+    void checkState(String time);
 
-    void updateTimeText(String timeText);
-
-    void checkState();
-
-    void setVisibility(boolean isChecked);
+    void isActivate(boolean isChecked);
 
     void updateCancelTimeText(boolean isCanceled);
 
     void updateCalendar(Calendar calendar);
+
+    void showAlarmSuccessMessage();
+
+    void showToast(@StringRes final int strindId);
 
 }
