@@ -34,6 +34,7 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
@@ -53,7 +54,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private ActivitySettingBinding binding;
     private ActionBar actionBar;
     private Toolbar toolbar;
-    private TextView textView;
     private static final int SIGN_IN_CODE = 4899;
     private AppInitializer appInitializer;
     private LockManager lockManager;
@@ -90,7 +90,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
                         DeepAffectApiClient.getInstance()),
-                FirebaseRepositoryImpl.getInstance());
+                FirebaseRepositoryImpl.getInstance(),
+                SharedPreferenceManager.getInstance(getApplicationContext()));
 
         compositeDisposable = new CompositeDisposable();
     }
@@ -102,8 +103,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private void initActionBar() {
         toolbar = findViewById(R.id.toolbar_setting);
-        textView = toolbar.findViewById(R.id.setting_text);
-
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -191,8 +190,17 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 FirebaseAuth.getInstance().signOut();
                 showToastMessage(R.string.logout_success);
             case R.id.rl_setting_backup:
-                progressDialog.setMessage(getString(R.string.do_backup));
-                presenter.backupLocalDataToFirebaseRepository();
+                TedRx2Permission.with(this)
+                        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .setRationaleMessage(R.string.setting_permission_load_rational_msg)
+                        .setRationaleTitle(R.string.setting_permission_load_title)
+                        .request()
+                        .subscribe(tedPermissionResult -> {
+                            if(tedPermissionResult.isGranted()) {
+                                progressDialog.setMessage(getString(R.string.do_backup));
+                                presenter.backupLocalDataToFirebaseRepository();
+                            }
+                        }, Throwable::printStackTrace);
                 break;
             case R.id.rl_setting_restore:
                 TedRx2Permission.with(this)

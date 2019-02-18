@@ -27,7 +27,7 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
 public class FirebaseRepositoryImpl implements FirebaseRepository {
 
-    private static FirebaseRepository INSTANCE;
+    private static volatile FirebaseRepository INSTANCE;
 
     private FirebaseRepositoryImpl() {
     }

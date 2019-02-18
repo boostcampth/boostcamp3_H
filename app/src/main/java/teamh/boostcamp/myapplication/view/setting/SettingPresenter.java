@@ -7,7 +7,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.io.File;
 
 import androidx.annotation.NonNull;
-import androidx.work.WorkManager;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -22,7 +21,6 @@ class SettingPresenter {
 
     private static final String TAG = "SettingPresenter";
 
-    private SettingView view;
     private SettingView settingView;
     private RecallRepository recallRepository;
     private DiaryRepository diaryRepository;
@@ -34,11 +32,13 @@ class SettingPresenter {
     SettingPresenter(@NonNull SettingView view,
                      @NonNull RecallRepository recallRepository,
                      @NonNull DiaryRepository diaryRepository,
-                     @NonNull FirebaseRepository firebaseRepository) {
+                     @NonNull FirebaseRepository firebaseRepository,
+                     @NonNull SharedPreferenceManager sharedPreferenceManager) {
         this.settingView = view;
         this.recallRepository = recallRepository;
         this.diaryRepository = diaryRepository;
         this.firebaseRepository = firebaseRepository;
+        this.sharedPreferenceManager = sharedPreferenceManager;
         this.compositeDisposable = new CompositeDisposable();
     }
 
@@ -56,14 +56,15 @@ class SettingPresenter {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe()
         );
-        sharedPreferenceManager.removeLastDiarySaveTime();
     }
+
     void deleteRecall() {
         compositeDisposable.add(
                 recallRepository
                         .deleteAll()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(() -> view.showInitializationMessage(), throwable -> Log.d(TAG, "deleteRecall: " + throwable.getStackTrace()))
+                        .subscribe(() -> settingView.showInitializationMessage(),
+                                throwable -> Log.d(TAG, "deleteRecall: " + throwable.getStackTrace()))
         );
     }
 
