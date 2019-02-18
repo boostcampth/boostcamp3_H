@@ -52,9 +52,9 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
     @NonNull
     @Override
-    public Maybe<List<String>> loadAllDiaryId() {
+    public Single<List<String>> loadAllDiaryId() {
 
-        return Maybe.create(emitter -> {
+        return Single.create(emitter -> {
             final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
 
             final String key = FirebaseAuth.getInstance().getUid();
@@ -86,9 +86,9 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
     @NonNull
     @Override
-    public Maybe<List<DiaryEntity>> loadAllDiaryList() {
+    public Single<List<DiaryEntity>> loadAllDiaryList() {
 
-        return Maybe.create(emitter -> {
+        return Single.create(emitter -> {
 
             final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
 
@@ -192,6 +192,10 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
     @Override
     public Single<List<DiaryEntity>> downloadRecordFile(@NonNull List<DiaryEntity> diaryEntityList) {
         return Single.create(emitter -> {
+
+            if(diaryEntityList.size() ==0) {
+                emitter.onSuccess(diaryEntityList);
+            }
 
             final ObservableInt numOfDownloadFile = new ObservableInt(diaryEntityList.size());
             final int size = diaryEntityList.size();

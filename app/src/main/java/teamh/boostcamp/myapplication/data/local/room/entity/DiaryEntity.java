@@ -2,6 +2,7 @@ package teamh.boostcamp.myapplication.data.local.room.entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -115,5 +116,18 @@ public class DiaryEntity {
 
     public void setAnalyzedEmotion(@NonNull Emotion analyzedEmotion) {
         this.analyzedEmotion = analyzedEmotion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiaryEntity that = (DiaryEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

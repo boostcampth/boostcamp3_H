@@ -5,8 +5,13 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import androidx.annotation.NonNull;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
@@ -78,7 +83,7 @@ class SettingPresenter {
             settingView.showDialog();
 
             compositeDisposable.add(firebaseRepository.loadAllDiaryId()
-                    .flatMap(diaryRepository::loadNotBackupDiaryList)
+                    .flatMapMaybe(diaryRepository::loadNotBackupDiaryList)
                     .flatMapSingle(firebaseRepository::uploadRecordFile)
                     .flatMapCompletable(firebaseRepository::insertDiaries)
                     .observeOn(AndroidSchedulers.mainThread())
@@ -98,11 +103,21 @@ class SettingPresenter {
 
     void downloadAllBackupFilesFromFirebase() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            compositeDisposable.add(diaryRepository.deleteAllDiaries()
-                    .andThen(firebaseRepository.loadAllDiaryList())
-                    .flatMapSingle(firebaseRepository::downloadRecordFile)
-                    .flatMapCompletable(diaryEntities ->
-                            diaryRepository.insertDiary(diaryEntities.toArray(new DiaryEntity[diaryEntities.size()])))
+
+            settingView.showDialog();
+
+            compositeDisposable.add(Single.zip(firebaseRepository.loadAllDiaryList(), diaryRepository.loadAllDiaryEntityList(),
+                    (remoteEntityList, localEntityList) -> {
+                        final int size = localEntityList.size();
+                        for (int i = 0; i < size; ++i) {
+                            remoteEntityList.remove(localEntityList.get(i));
+                        }
+                        return remoteEntityList;
+                    }).flatMapObservable(Observable::fromIterable)
+                    .toList()
+                    .flatMap(firebaseRepository::downloadRecordFile)
+                    .flatMapCompletable(diaryEntityList ->
+                            diaryRepository.insertDiary(diaryEntityList.toArray(new DiaryEntity[diaryEntityList.size()])))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
                         settingView.dismissDialog();

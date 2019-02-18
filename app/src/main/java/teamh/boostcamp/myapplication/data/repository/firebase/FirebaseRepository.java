@@ -13,10 +13,10 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 public interface FirebaseRepository {
 
     @NonNull
-    Maybe<List<String>> loadAllDiaryId();
+    Single<List<String>> loadAllDiaryId();
 
     @NonNull
-    Maybe<List<DiaryEntity>> loadAllDiaryList();
+    Single<List<DiaryEntity>> loadAllDiaryList();
 
     @NonNull
     Completable insertDiaries(@NonNull List<DiaryEntity> diaryEntities);

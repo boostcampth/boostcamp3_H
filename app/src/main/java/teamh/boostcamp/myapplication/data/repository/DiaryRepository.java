@@ -41,4 +41,7 @@ public interface DiaryRepository {
 
     @NonNull
     Single<List<DiaryEntity>> loadAllDiaryEntityList();
+
+    @NonNull
+    Completable updateDiaryEntities(@NonNull DiaryEntity ...diaryEntities);
 }

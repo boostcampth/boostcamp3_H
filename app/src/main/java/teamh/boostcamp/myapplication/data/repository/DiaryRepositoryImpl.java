@@ -112,4 +112,11 @@ public class DiaryRepositoryImpl implements DiaryRepository {
         return diaryDao.loadAllDiaryEntities()
                 .subscribeOn(Schedulers.io());
     }
+
+    @NonNull
+    @Override
+    public Completable updateDiaryEntities(@NonNull DiaryEntity... diaryEntities) {
+        return Completable.fromAction(diaryDao::updateDiaries)
+                .subscribeOn(Schedulers.io());
+    }
 }
