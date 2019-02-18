@@ -104,18 +104,13 @@ class SettingPresenter {
         }
     }
 
-    void deleteAllDiareFile(){
-        File diary = new File(Environment.getExternalStorageDirectory()+"");
-    }
-
     void deleteAllDiary(){
-        diaryRepository.deleteAllDiaries().subscribe();
+        compositeDisposable.add(diaryRepository.deleteAllDiaries().observeOn(AndroidSchedulers.mainThread()).subscribe());
     }
 
     void deleteAllRecall(){
         compositeDisposable.add(recallRepository
-                .deleteAll()
-                .subscribe()
+                .deleteAll().observeOn(AndroidSchedulers.mainThread()).subscribe()
         );
     }
 

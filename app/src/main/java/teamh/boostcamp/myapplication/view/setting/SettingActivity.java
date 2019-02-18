@@ -29,8 +29,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
@@ -38,8 +38,6 @@ import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
-import teamh.boostcamp.myapplication.view.password.LockManager;
-
 import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
 public class SettingActivity extends AppCompatActivity implements SettingView {
@@ -141,17 +139,13 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 startActivity(new Intent(SettingActivity.this, PasswordSelectActivity.class));
                 break;
             case R.id.rl_setting_login:
-                if(!signFlag){
+                if (!signFlag) {
                     signIn();
-                }else {
+                } else {
                     signOut();
                 }
                 showToastMessage(R.string.login_success);
                 break;
-            case R.id.rl_setting_logout:
-                //auth.signOut();
-                FirebaseAuth.getInstance().signOut();
-                showToastMessage(R.string.logout_success);
             case R.id.rl_setting_backup:
                 TedRx2Permission.with(this)
                         .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -193,8 +187,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 .setPositiveButton("초기화", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(DeleteDiaryFileWorker.class).build();
+                        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
                         presenter.deleteAllRecall();
                         presenter.deleteAllDiary();
+                        SharedPreferenceManager.getInstance(getApplicationContext()).removeLastDiarySaveTime();
                     }
                 }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override

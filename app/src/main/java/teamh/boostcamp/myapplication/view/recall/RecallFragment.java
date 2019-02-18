@@ -54,6 +54,7 @@ public class RecallFragment extends Fragment implements RecallView {
     @Override
     public void addRecallList(@NonNull List<Recall> recallList) {
         recallListAdapter.updateItems(recallList);
+        binding.rvCard.scrollToPosition(0);
     }
 
     @Override
