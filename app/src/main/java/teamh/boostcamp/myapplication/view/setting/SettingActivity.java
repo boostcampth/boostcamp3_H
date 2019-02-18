@@ -300,7 +300,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     @Override
     public void showBackUpSuccessMsg() {
-        progressDialog.dismiss();
         showToast(R.string.backup_success);
     }
 
@@ -316,14 +315,17 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     @Override
     public void showLoadSuccessMsg() {
-        progressDialog.dismiss();
         showToast(R.string.load_success);
     }
 
     @Override
     public void showLoadFailMsg() {
-        progressDialog.dismiss();
         showToast(R.string.load_fail);
+    }
+
+    @Override
+    public void showNotLoginMsg() {
+        showToast(R.string.not_login);
     }
 
     @Override

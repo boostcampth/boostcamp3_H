@@ -10,6 +10,8 @@ public interface SettingView {
     void showLoadSuccessMsg();
     void showLoadFailMsg();
 
+    void showNotLoginMsg();
+
     void dismissDialog();
     void showDialog();
 }

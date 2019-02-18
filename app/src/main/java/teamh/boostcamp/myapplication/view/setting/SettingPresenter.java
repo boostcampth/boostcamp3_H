@@ -5,11 +5,9 @@ import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.File;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import androidx.annotation.NonNull;
+import androidx.work.WorkManager;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -97,12 +95,13 @@ class SettingPresenter {
                                 settingView.showBackUpFailMsg();
                             }));
         } else {
-            settingView.showBackUpFailMsg();
+            settingView.showNotLoginMsg();
         }
     }
 
     void downloadAllBackupFilesFromFirebase() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
 
             settingView.showDialog();
 
@@ -126,6 +125,8 @@ class SettingPresenter {
                         settingView.dismissDialog();
                         settingView.showLoadFailMsg();
                     }));
+        } else {
+            settingView.showNotLoginMsg();
         }
     }
 

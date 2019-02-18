@@ -4,7 +4,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -14,22 +13,17 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.ObservableInt;
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
-import teamh.boostcamp.myapplication.data.model.Diary;
 
 public class FirebaseRepositoryImpl implements FirebaseRepository {
 
