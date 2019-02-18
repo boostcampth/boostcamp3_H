@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ItemHashTagBinding;
+import teamh.boostcamp.myapplication.view.diarylist.listener.OnHashTagItemClickListener;
 
 public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.TagHolder> {
 

@@ -6,6 +6,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
@@ -18,7 +19,7 @@ public interface DiaryRepository {
     Single<List<Diary>> loadDiaryList(@NonNull final Date startAfter,
                                       final int pageSize);
     @NonNull
-    Completable insertDiary(@NonNull final DiaryEntity diaryEntity);
+    Completable insertDiary(@NonNull final DiaryEntity ...diaryEntities);
 
     @NonNull
     Single<Emotion> requestEmotionAnalyze(@NonNull final EmotionAnalyzeRequest request);
@@ -31,4 +32,16 @@ public interface DiaryRepository {
 
     @NonNull
     Observable<Diary> loadAll();
+
+    @NonNull
+    Maybe<List<DiaryEntity>> loadNotBackupDiaryList(@NonNull List<String> diaryIdList);
+
+    @NonNull
+    Completable deleteAllDiaries();
+
+    @NonNull
+    Single<List<DiaryEntity>> loadAllDiaryEntityList();
+
+    @NonNull
+    Completable updateDiaryEntities(@NonNull DiaryEntity ...diaryEntities);
 }

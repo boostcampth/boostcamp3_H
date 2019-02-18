@@ -17,5 +17,7 @@ public interface RecordPlayer {
 
     boolean isPlaying();
 
+    void releasePlayer();
+
     void setOnCompletionListener(@NonNull MediaPlayer.OnCompletionListener onCompletionListener);
 }

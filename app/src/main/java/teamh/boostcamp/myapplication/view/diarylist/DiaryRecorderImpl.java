@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
+import teamh.boostcamp.myapplication.view.diarylist.listener.MediaRecorderTimeOutListener;
 
 /*
  * MediaRecord 작업에만 관심이 있는 클래스 분리
@@ -16,7 +17,7 @@ import androidx.annotation.NonNull;
 class DiaryRecorderImpl implements DiaryRecorder {
 
     // 저장 경로 생성용
-    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
     // 최대 녹음 시간
     private static final int MAX_DURATION = 1000 * 60;
 
@@ -85,7 +86,7 @@ class DiaryRecorderImpl implements DiaryRecorder {
     }
 
     private String generateFilePath() {
-        return String.format("%s/%s.acc",
+        return String.format("%s/diary/%s.acc",
                 Environment.getExternalStorageDirectory().getAbsolutePath(),
                 DATE_FORMAT.format(new Date()));
     }

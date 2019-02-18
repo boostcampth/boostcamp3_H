@@ -54,7 +54,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                     super.onCreate(db);
 
                                     // FIXME 더미 데이터 추가
-                                    final String filePath = "/storage/emulated/0/2019-02-08.acc";
+                                    /*final String filePath = "/storage/emulated/0/2019-02-08.acc";
                                     final File file = new File("/storage/emulated/0/2019-02-08.acc");
 
                                     if (!file.exists()) {
@@ -71,7 +71,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                     final long TODAY = new Date().getTime();
                                     final long DAY = 86400000L;
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
                                     for (int i = 10; i <= 20; ++i) {
                                         samples.add(new DiaryEntity(
@@ -85,24 +85,13 @@ public abstract class AppDatabase extends RoomDatabase {
                                     }
 
                                     DiaryEntity[] temp = new DiaryEntity[samples.size()];
-
-                                    /*Completable.fromAction(() -> {
-                                        INSTANCE.diaryDao().truncate();
-                                    }).subscribeOn(Schedulers.io())
-                                            .subscribe(() -> {
-                                                Log.d("test", "Test");
-                                            }, throwable -> {
-                                                Log.d("test","error");
-                                            });*/
-
                                     Completable.fromAction(() -> INSTANCE.diaryDao().insert(samples.toArray(temp)))
                                             .subscribeOn(Schedulers.io())
                                             .subscribe(() -> {
                                                 Log.d("test", "Test");
                                             }, throwable -> {
                                                 throwable.printStackTrace();
-                                            });
-
+                                            });*/
                                 }
                             })
                             .build();

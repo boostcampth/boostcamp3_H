@@ -38,12 +38,13 @@ class DiaryListPresenter {
     private RecordPlayer recordPlayer;
     @NonNull
     private SharedPreferenceManager sharedPreferenceManager;
+    @NonNull
     private KakaoLinkHelper kakaoLinkHelper;
 
     @Nullable
     private Emotion selectedEmotion;
     private boolean isLoading;
-    private boolean isRecording;
+    private boolean isRecording = false;
     private int lastPlayedPosition;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
@@ -59,7 +60,7 @@ class DiaryListPresenter {
         this.sharedPreferenceManager = sharedPreferenceManager;
 
         this.compositeDisposable = new CompositeDisposable();
-        this.selectedEmotion = null;
+        this.selectedEmotion = Emotion.fromValue(3);
 
         this.isLoading = false;
         this.isRecording = false;
@@ -138,8 +139,6 @@ class DiaryListPresenter {
                         diaryListView.insertDiaryList(DiaryMapper.toDiary(diaryEntity));
                         diaryListView.setIsSaving(false);
                     }, Throwable::printStackTrace));
-        } else {
-            // TODO : 기능 구현
         }
     }
 
@@ -168,16 +167,14 @@ class DiaryListPresenter {
         this.selectedEmotion = emotion;
     }
 
-    void setIsRecording(final boolean isRecording) {
-        this.isRecording = isRecording;
-    }
-
     void startRecording() {
         diaryRecorder.startRecord();
+        this.isRecording = true;
     }
 
     void finishRecording() {
         diaryRecorder.finishRecord();
+        this.isRecording = false;
     }
 
     private void setLastItemSavedTime(@NonNull Date savedTime) {
@@ -189,6 +186,7 @@ class DiaryListPresenter {
             diaryListView.onPlayFileChanged(lastPlayedPosition, true);
             lastPlayedPosition = NOTHING_PLAYED;
         });
+
     }
 
     void onViewCreated() {
@@ -197,17 +195,24 @@ class DiaryListPresenter {
         if (sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
             diaryListView.setRecordCardVisibilityGone();
         }
+
+        compositeDisposable.add(DiaryRxEventBus.get()
+                .filter(o -> o.toString().equals("download"))
+                .subscribe(o -> diaryListView.setIsBackup(true),
+                        throwable -> ((Throwable) throwable).printStackTrace()));
     }
 
     void onViewDestroyed() {
         compositeDisposable.clear();
         if (isRecording) {
             diaryRecorder.finishRecord();
+            isRecording = false;
         }
         diaryRecorder.releaseRecorder();
+        recordPlayer.releasePlayer();
     }
 
-    void sendDiaryToKakao(Diary diary){
+    void sendDiaryToKakao(Diary diary) {
         kakaoLinkHelper.sendDiary(diary);
     }
 }

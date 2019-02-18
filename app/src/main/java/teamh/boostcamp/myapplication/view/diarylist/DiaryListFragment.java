@@ -35,12 +35,13 @@ import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
 import teamh.boostcamp.myapplication.view.diarylist.kakaoLink.KakaoLinkHelperImpl;
 import teamh.boostcamp.myapplication.view.diarylist.popup.analyzeResult.AnalyzedEmotionShowingDialog;
+import teamh.boostcamp.myapplication.view.diarylist.popup.record.OnRecordDialogDismissListener;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.RecordingDiaryDialog;
 import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
-public class DiaryListFragment extends Fragment implements DiaryListView {
+public class DiaryListFragment extends Fragment implements DiaryListView, OnRecordDialogDismissListener {
 
-    private static final int LOAD_ITEM_NUM = 3;
+    private static final int LOAD_ITEM_NUM = 5;
     public final ObservableBoolean isSaving = new ObservableBoolean(false);
 
     private Context context;
@@ -50,8 +51,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private DiaryListAdapter diaryListAdapter;
     private HashTagListAdapter hashTagListAdapter;
 
-    private boolean isRecording = false;
-    private RecordingDiaryDialog recordingDiaryDialog;
+    private boolean isDownloaded = false;
 
     public DiaryListFragment() { /*Empty*/}
 
@@ -67,8 +67,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         presenter.onViewDestroyed();
     }
 
@@ -79,21 +79,27 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        compositeDisposable = new CompositeDisposable();
+    public void onResume() {
+        super.onResume();
+        if (isDownloaded) {
+            diaryListAdapter.clear();
+            presenter.loadDiaryList(LOAD_ITEM_NUM);
+            isDownloaded = false;
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false);
-        binding.setFragment(DiaryListFragment.this);
-        initPresenter();
-        initAdapter();
-        initView();
-        initDialog();
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false);
+            binding.setFragment(DiaryListFragment.this);
+            initPresenter();
+            initAdapter();
+            initView();
+            compositeDisposable = new CompositeDisposable();
+        }
 
         presenter.loadDiaryList(LOAD_ITEM_NUM);
 
@@ -103,6 +109,11 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     @Override
     public void addDiaryList(@NonNull List<Diary> diaryList) {
         diaryListAdapter.addDiaryItems(diaryList);
+    }
+
+    @Override
+    public void setIsBackup(boolean isBackup) {
+        this.isDownloaded = isBackup;
     }
 
     @Override
@@ -192,7 +203,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         binding.rvItemRecordTags.setAdapter(hashTagListAdapter);
         binding.rvItemRecordTags.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
 
-        recordingDiaryDialog = RecordingDiaryDialog.newInstance();
 
         binding.buttonRecordItemRecord.setOnClickListener(v ->
                 compositeDisposable.add(TedRx2Permission.with(context)
@@ -203,18 +213,12 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
                         .subscribe(tedPermissionResult -> {
                             if (tedPermissionResult.isGranted()) {
                                 KeyPadUtil.closeKeyPad(context, binding.etItemRecordInput);
-                                if (isRecording) {
-                                    finishRecord();
-                                } else {
-                                    presenter.startRecording();
-                                    if (getFragmentManager() != null) {
-                                        recordingDiaryDialog.show(getFragmentManager(), getTag());
-                                    }
-                                    isRecording = true;
-                                }
-                                presenter.setIsRecording(isRecording);
+                                presenter.startRecording();
+                                final RecordingDiaryDialog recordingDiaryDialog = RecordingDiaryDialog.newInstance();
+                                recordingDiaryDialog.setDismissListener(this);
+                                recordingDiaryDialog.show(getFragmentManager(), getTag());
                             } else {
-                                showToastMessage(R.string.item_record_permission_denied);
+                                showToastMessage(R.string.permission_denied);
                             }
                         }, Throwable::printStackTrace))
         );
@@ -223,39 +227,58 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
                 presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context))
         );
 
-        binding.tvRecordItemPgood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.GOOD));
-        binding.tvRecordItemGood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.VERY_GOOD));
-        binding.tvRecordItemNormal.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.NEUTRAL));
-        binding.tvRecordItemBad.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.BAD));
-        binding.tvRecordItemMad.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.VERY_BAD));
+        binding.tvRecordItemGood.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(4)));
+        binding.tvRecordItemPgood.setOnClickListener(v ->  setSelectedEmoji(Emotion.fromValue(3)));
+        binding.tvRecordItemNormal.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(2)));
+        binding.tvRecordItemBad.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(1)));
+        binding.tvRecordItemMad.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(0)));
+    }
+
+    void setSelectedEmoji(Emotion e) {
+        binding.tvRecordItemMad.setTextColor(getResources().getColor(R.color.emoji_color));
+        binding.tvRecordItemBad.setTextColor(getResources().getColor(R.color.emoji_color));
+        binding.tvRecordItemNormal.setTextColor(getResources().getColor(R.color.emoji_color));
+        binding.tvRecordItemPgood.setTextColor(getResources().getColor(R.color.emoji_color));
+        binding.tvRecordItemGood.setTextColor(getResources().getColor(R.color.emoji_color));
+        switch (e) {
+            case VERY_BAD:
+                binding.tvRecordItemMad.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+            case BAD:
+                binding.tvRecordItemBad.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+            case NEUTRAL:
+                binding.tvRecordItemNormal.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+            case GOOD:
+                binding.tvRecordItemPgood.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+            case VERY_GOOD:
+                binding.tvRecordItemGood.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+        }
+        presenter.setSelectedEmotion(e);
     }
 
     private void initAdapter() {
-        diaryListAdapter = new DiaryListAdapter(context);
+        diaryListAdapter = new DiaryListAdapter();
         diaryListAdapter.setOnRecordItemClickListener(pos ->
                 presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)), pos)
         );
 
         diaryListAdapter.setOnKakaoLinkClickListener(pos ->
-            presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))
+                presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))
         );
 
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
     }
 
-    private void initDialog() {
-        recordingDiaryDialog = RecordingDiaryDialog.newInstance();
-        recordingDiaryDialog.setOnDismissListener(dialogInterface -> {
-            if (isRecording) {
-                finishRecord();
-            }
-        });
-    }
-
-    private void finishRecord() {
-        isRecording = false;
-        presenter.setIsRecording(isRecording);
+    @Override
+    public void onDismiss(boolean isTimeOut) {
+        if (isTimeOut) {
+            showToastMessage(R.string.item_record_time_out);
+        }
         presenter.finishRecording();
     }
 }
