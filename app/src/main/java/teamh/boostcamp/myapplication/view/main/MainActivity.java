@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private RecallFragment recallFragment;
     private DiaryListFragment diaryListFragment;
     private StatisticsFragment statisticsFragment;
-    private LockManager lockManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -74,10 +73,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         presenter = new MainPresenter(this);
 
-        // 아래 초기화 하지 않으면 에러 발생
-        lockManager = LockManager.getInstance();
-        //lockManager.enableLock(getApplication());
-
         recallFragment = RecallFragment.newInstance();
         diaryListFragment = DiaryListFragment.newInstance();
         statisticsFragment = StatisticsFragment.newInstance();
@@ -94,7 +89,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else if (getData.getStringExtra("tag").equals("2")) {
-                Log.v("lmc99292", "그냥 띄우셈");
             }
 
         }
