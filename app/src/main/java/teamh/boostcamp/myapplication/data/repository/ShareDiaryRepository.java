@@ -7,6 +7,6 @@ import teamh.boostcamp.myapplication.data.model.ShareDiary;
 public interface ShareDiaryRepository {
 
     @NonNull
-    Single<ShareDiary> loadShareDiary(int id);
+    Single<ShareDiary> loadShareDiary(String id);
 
 }
