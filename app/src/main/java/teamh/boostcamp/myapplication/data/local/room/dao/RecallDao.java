@@ -27,5 +27,5 @@ public interface RecallDao {
     void deleteRecall(@NonNull int index);
 
     @Query("DELETE FROM recalls")
-    Completable deleteAll();
+    void deleteAll();
 }

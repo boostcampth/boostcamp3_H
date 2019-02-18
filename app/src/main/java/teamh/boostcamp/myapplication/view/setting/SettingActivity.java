@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.view.setting;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,10 +22,15 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import teamh.boostcamp.myapplication.R;
+import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
@@ -32,10 +38,10 @@ import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
-import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
 import teamh.boostcamp.myapplication.view.password.LockManager;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
+import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
 public class SettingActivity extends AppCompatActivity implements SettingView {
 
@@ -71,10 +77,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     private void initPresenter() {
-        presenter = new SettingPresenter(RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
+        presenter = new SettingPresenter(this, RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
-                        DeepAffectApiClient.getInstance()));
+                        DeepAffectApiClient.getInstance()),
+                        SharedPreferenceManager.getInstance(getApplicationContext()));
     }
 
     private void initBinding() {
@@ -174,10 +181,27 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 showToastMessage(R.string.logout_success);
                 break;
             case R.id.rl_setting_initialization:
-                showToastMessage(R.string.logout_success);
+                initInitialization();
                 break;
         }
+    }
 
+    private void initInitialization() {
+        AlertDialog.Builder alertDialogBuilder =  new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
+        alertDialogBuilder.setTitle("초기화")
+                .setMessage("정말로 초기화 하시겠습니까. 모든 추억들이 사라집니다.")
+                .setPositiveButton("초기화", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        WorkRequest initializationWorkRequest = new OneTimeWorkRequest.Builder(InitializationWorker.class).build();
+                        WorkManager.getInstance().enqueue(initializationWorkRequest);
+                    }
+                }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
     }
 
     private void signIn() {
@@ -215,7 +239,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         FirebaseUser user = auth.getCurrentUser();
                         updateUI(user);
                     } else {
-
                         updateUI(null);
                     }
                 });
@@ -240,6 +263,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private void showToast(String message) {
         Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showInitializationMessage() {
+        showToastMessage(R.string.setting_initialization_success);
     }
 
     private void showToastMessage(@StringRes final int stringId) {
