@@ -62,12 +62,9 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
         }
 
         if (lastPlayedIndex == position) {
-            holder.itemRecordDiaryBinding.lawItemDiaryPercent.playAnimation();
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setImageDrawable(
                     ContextCompat.getDrawable(holder.itemRecordDiaryBinding.getRoot().getContext(), R.drawable.ic_pause_circle_filled_black_24dp));
         } else {
-            holder.itemRecordDiaryBinding.lawItemDiaryPercent.cancelAnimation();
-            holder.itemRecordDiaryBinding.lawItemDiaryPercent.setProgress(0);
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setImageDrawable(
                     ContextCompat.getDrawable(holder.itemRecordDiaryBinding.getRoot().getContext(), R.drawable.ic_play_circle_filled_black_24dp));
         }

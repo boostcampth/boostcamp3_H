@@ -1,12 +1,18 @@
 package teamh.boostcamp.myapplication.view.setting;
 
+import android.os.Environment;
+import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.io.File;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
@@ -21,16 +27,18 @@ class SettingPresenter {
     private SettingView settingView;
     private DiaryRepository diaryRepository;
     private CompositeDisposable compositeDisposable;
-
+    private RecallRepository recallRepository;
     private FirebaseRepository firebaseRepository;
 
     SettingPresenter(@NonNull SettingView view,
                      @NonNull DiaryRepository diaryRepository,
-                     @NonNull FirebaseRepository firebaseRepository) {
+                     @NonNull FirebaseRepository firebaseRepository,
+                     @NonNull RecallRepository recallRepository) {
         this.settingView = view;
         this.diaryRepository = diaryRepository;
         this.firebaseRepository = firebaseRepository;
         this.compositeDisposable = new CompositeDisposable();
+        this.recallRepository = recallRepository;
     }
 
     void onDestroy() {
@@ -94,6 +102,21 @@ class SettingPresenter {
         } else {
             settingView.showNotLoginMsg();
         }
+    }
+
+    void deleteAllDiareFile(){
+        File diary = new File(Environment.getExternalStorageDirectory()+"");
+    }
+
+    void deleteAllDiary(){
+        diaryRepository.deleteAllDiaries().subscribe();
+    }
+
+    void deleteAllRecall(){
+        compositeDisposable.add(recallRepository
+                .deleteAll()
+                .subscribe()
+        );
     }
 
 }

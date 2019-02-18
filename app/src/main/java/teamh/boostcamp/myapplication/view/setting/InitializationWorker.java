@@ -41,7 +41,6 @@ public class InitializationWorker extends Worker {
                             return diary;
                         })
                         .flatMapCompletable(diary -> diaryRepository.deleteDiary(diary.getId()))
-                        .observeOn(AndroidSchedulers.mainThread())
                 .subscribe()
         );
 

@@ -30,7 +30,6 @@ public class DataInsertWorker extends Worker {
                 0,
                 new Date(),
                 Emotion.fromValue(generateRandomNumber(5))))
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe();
 
         return Result.success();

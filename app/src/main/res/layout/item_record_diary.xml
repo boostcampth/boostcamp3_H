@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -58,7 +59,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="60dp"
                     android:background="@drawable/bg_round_main"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -68,75 +69,52 @@
                     android:id="@+id/tv_item_diary_emotion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/layout_margin"
-                    android:layout_marginTop="@dimen/layout_margin"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginTop="18dp"
                     android:gravity="center"
                     android:minWidth="@dimen/diary_emoji_min"
                     android:minHeight="@dimen/diary_emoji_min"
                     android:textColor="@color/emoji_color"
-                    android:textSize="45dp"
+                    android:textSize="60dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/tv_item_diary_tags"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="22dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="5dp"
                     android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="20dp"
                     android:textColor="@color/hashtag"
                     android:textSize="18dp"
                     android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_item_diary_emotion" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/layout_margin"
-                    android:layout_marginTop="@dimen/layout_margin"
-                    android:layout_marginEnd="@dimen/layout_margin"
-                    android:layout_marginBottom="@dimen/layout_margin"
-                    android:background="@drawable/bg_round_gray"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="37dp"
+                    android:layout_marginEnd="30dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_white_bg"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/tv_item_diary_tags">
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:id="@+id/iv_item_diary_play"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_margin="@dimen/layout_margin"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/ic_play_circle_filled_black_24dp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <LinearLayout
-                        android:id="@+id/ll_lottie_wrap"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        app:layout_constraintBottom_toBottomOf="@id/iv_item_diary_play"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/iv_item_diary_play"
-                        app:layout_constraintTop_toTopOf="@id/iv_item_diary_play">
-
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/law_item_diary_percent"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:maxHeight="40dp"
-                            app:lottie_fileName="play_record_wave.json"
-                            app:lottie_loop="true"
-                            app:lottie_scale="0.5" />
-
-                    </LinearLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <ImageView
+                    android:id="@+id/iv_item_diary_play"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="37dp"
+                    android:layout_marginEnd="30dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_play_circle_filled_black_24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

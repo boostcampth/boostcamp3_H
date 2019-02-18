@@ -34,6 +34,7 @@ import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
+import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
@@ -74,7 +75,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
                         DeepAffectApiClient.getInstance()),
-                FirebaseRepositoryImpl.getInstance());
+                FirebaseRepositoryImpl.getInstance(),
+                RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())));
     }
 
     private void initBinding() {
@@ -191,8 +193,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 .setPositiveButton("초기화", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        WorkRequest initializationWorkRequest = new OneTimeWorkRequest.Builder(InitializationWorker.class).build();
-                        WorkManager.getInstance().enqueue(initializationWorkRequest);
+                        presenter.deleteAllRecall();
+                        presenter.deleteAllDiary();
                     }
                 }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
