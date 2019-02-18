@@ -38,9 +38,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private RecallFragment recallFragment;
     private DiaryListFragment diaryListFragment;
     private StatisticsFragment statisticsFragment;
-    private AppInitializer application;
     private LockManager lockManager;
-    private LockHelper lockHelper;
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -70,12 +68,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
 
-        application = new AppInitializer();
         presenter = new MainPresenter(this);
 
         // 아래 초기화 하지 않으면 에러 발생
         lockManager = LockManager.getInstance();
-        lockHelper = lockManager.getLockHelper(getApplicationContext());
         //lockManager.enableLock(getApplication());
 
         // bindingUtil 설정
@@ -87,24 +83,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         statisticsFragment = StatisticsFragment.newInstance();
 
         initBottomNavigation();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        if (application.getAppInitializer(this.getApplicationContext()).getApplicationStatus()
-                == AppInitializer.ApplicationStatus.RETURNED_TO_FOREGROUND) {
-            if (lockHelper.isPasswordSet()) {
-                Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
-                intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } else {
-                Log.v(TAG, getApplicationContext().getResources().getString(R.string.password_not_set_text));
-            }
-
-        }
     }
 
     @Override
@@ -131,6 +109,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     public void startSetting(View view) {
         Intent intent = new Intent(this, SettingActivity.class);
         startActivity(intent);
-        overridePendingTransition(R.anim.anim_slide_in_bottom, R.anim.anim_stop);
+        overridePendingTransition(R.anim.anim_right_from_left, R.anim.anim_left_to_right);
     }
 }

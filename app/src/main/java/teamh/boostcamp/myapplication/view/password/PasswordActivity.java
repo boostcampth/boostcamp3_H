@@ -2,6 +2,7 @@ package teamh.boostcamp.myapplication.view.password;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -54,6 +55,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
 
             // 이제 SettingActivity에서 넘어온 타입을 확인할 수 있음.
             type = extras.getInt(LockHelper.EXTRA_TYPE, -1);
+            Log.v("Test4433", String.valueOf(type));
         }
     }
 
@@ -213,6 +215,17 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
 
             // back에 빠졌다 돌아올 경우.
             case LockHelper.UNLOCK_PASSWORD:
+                if (passwordPresenter.checkPassword(lockPassword)) {
+                    setResult(RESULT_OK);
+                    finish();
+                    overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+                } else {
+                    showPasswordErrorMessage();
+                }
+                break;
+            // Splash에서 들어온 경우
+            case LockHelper.SPLASH_PASSWORD:
+                Log.v("Test4433", String.valueOf(type));
                 if (passwordPresenter.checkPassword(lockPassword)) {
                     setResult(RESULT_OK);
                     finish();

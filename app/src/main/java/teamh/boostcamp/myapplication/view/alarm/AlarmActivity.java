@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.view.alarm;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -18,6 +19,10 @@ import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
+import teamh.boostcamp.myapplication.view.AppInitializer;
+import teamh.boostcamp.myapplication.view.password.LockHelper;
+import teamh.boostcamp.myapplication.view.password.LockManager;
+import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 
 public class AlarmActivity extends AppCompatActivity implements AlarmView {
 
@@ -108,18 +113,11 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        checkState(sharedPreferenceManager.getPreferencePushTime());
-    }
-
-    @Override
     public void checkState(String time) {
         if (time != null) {
             setActivate(true);
             binding.switchAlarm.setChecked(true);
-            //binding.tvAlarmText.setText("매일 " + time + " 에 알람이 울립니다.");
-            binding.tvAlarmText.setText(String.format(getString(R.string.alarm_description_text),time));
+            binding.tvAlarmText.setText(String.format(getString(R.string.alarm_description_text), time));
             setNumberPickerValues(time);
         } else {
             setActivate(false);
@@ -229,9 +227,9 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
         calendar.set(Calendar.SECOND, 0);
         presenter.setAlarm(calendar);
         showAlarmSuccessMessage();
-        binding.tvAlarmText.setText(String.format(getString(R.string.alarm_description_text),simpleDateFormat.format(calendar.getTime())));
-        //binding.tvAlarmText.setText("매일 " + simpleDateFormat.format(calendar.getTime()) + " 에 알람이 울립니다.");
+        binding.tvAlarmText.setText(String.format(getString(R.string.alarm_description_text), simpleDateFormat.format(calendar.getTime())));
     }
+
 
     @Override
     protected void onDestroy() {
