@@ -15,18 +15,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordSelectBinding;
 
 public class PasswordSelectActivity extends AppCompatActivity {
 
     private static final String TAG = PasswordSelectActivity.class.getSimpleName();
-
     private ActivityPasswordSelectBinding binding;
     private LockManager lockManager;
     private Toolbar toolbar;
     private ActionBar actionBar;
     private LockHelper lockHelper;
+    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,10 @@ public class PasswordSelectActivity extends AppCompatActivity {
         toolbar = binding.toolbarPasswordSelect;
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true); // back 버튼 표시
-        actionBar.setDisplayShowTitleEnabled(false); // 툴바 타이틀 Not Showing
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true); // back 버튼 표시
+            actionBar.setDisplayShowTitleEnabled(false); // 툴바 타이틀 Not Showing
+        }
     }
 
     private void initBinding() {
@@ -117,10 +120,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
                 Intent change_password_intent = new Intent(this, PasswordActivity.class);
 
                 change_password_intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.CHANGE_PASSWORD);
-                change_password_intent.putExtra(LockHelper.EXTRA_MESSAGE,
-                        getApplicationContext()
-                                .getResources()
-                                .getString(R.string.password_before_input_text));
+                change_password_intent.putExtra(LockHelper.EXTRA_MESSAGE, LockHelper.EXTRA_MESSAGE);
                 startActivityForResult(change_password_intent, LockHelper.CHANGE_PASSWORD);
                 break;
         }
@@ -156,5 +156,6 @@ public class PasswordSelectActivity extends AppCompatActivity {
         lockManager = null;
         binding = null;
         lockHelper = null;
+        //compositeDisposable.clear();
     }
 }
