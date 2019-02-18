@@ -66,9 +66,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // bindingUtil 설정
+        binding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
+        binding.setActivity(this);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
 
         application = new AppInitializer();
         presenter = new MainPresenter(this);
@@ -77,10 +79,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         lockManager = LockManager.getInstance();
         lockHelper = lockManager.getLockHelper(getApplicationContext());
         //lockManager.enableLock(getApplication());
-
-        // bindingUtil 설정
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        binding.setActivity(this);
 
         recallFragment = RecallFragment.newInstance();
         diaryListFragment = DiaryListFragment.newInstance();
@@ -103,7 +101,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             } else {
                 Log.v(TAG, getApplicationContext().getResources().getString(R.string.password_not_set_text));
             }
-
         }
     }
 

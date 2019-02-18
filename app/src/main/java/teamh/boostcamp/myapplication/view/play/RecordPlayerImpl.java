@@ -101,4 +101,17 @@ public class RecordPlayerImpl implements RecordPlayer {
     public void setOnCompletionListener(@NonNull MediaPlayer.OnCompletionListener onCompletionListener) {
         mediaPlayer.setOnCompletionListener(onCompletionListener);
     }
+
+    @Override
+    public void releasePlayer() {
+        if(playState) {
+            mediaPlayer.stop();
+        }
+        playState = false;
+        if(mediaPlayer != null) {
+            mediaPlayer.release();
+        }
+        INSTANCE = null;
+        mediaPlayer = null;
+    }
 }

@@ -2,11 +2,13 @@ package teamh.boostcamp.myapplication.data.local.room.entity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 
@@ -18,39 +20,43 @@ public class DiaryEntity {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
-    private final String id;
+    private String id;
 
     // 저장한 날
     @ColumnInfo(name = "recordDate")
     @NonNull
-    private final Date recordDate;
+    private Date recordDate;
 
     // 저장된 파일 경로
     @ColumnInfo(name = "recordFilePath")
     @NonNull
-    private final String recordFilePath;
+    private String recordFilePath;
 
     // 설정한 태그들
     @ColumnInfo(name = "tags")
     @Nullable
-    private final List<String> tags;
+    private List<String> tags;
 
     // 선택한 감정 번호
     @ColumnInfo(name = "selectedEmotion")
     @NonNull
-    private final Emotion selectedEmotion;
+    private Emotion selectedEmotion;
 
     // API 를 통해 분석된 감정
     @ColumnInfo(name = "analyzedEmotion")
     @NonNull
-    private final Emotion analyzedEmotion;
+    private Emotion analyzedEmotion;
 
-    public DiaryEntity(@NonNull String id,
-                       @NonNull Date recordDate,
-                       @NonNull String recordFilePath,
-                       @Nullable List<String> tags,
-                       @NonNull Emotion selectedEmotion,
-                       @NonNull Emotion analyzedEmotion) {
+    @Ignore
+    public DiaryEntity() {
+    }
+
+    public DiaryEntity(@NonNull final String id,
+                       @NonNull final Date recordDate,
+                       @NonNull final String recordFilePath,
+                       @Nullable final List<String> tags,
+                       @NonNull final Emotion selectedEmotion,
+                       @NonNull final Emotion analyzedEmotion) {
         this.id = id;
         this.recordDate = recordDate;
         this.recordFilePath = recordFilePath;
@@ -88,4 +94,40 @@ public class DiaryEntity {
         return analyzedEmotion;
     }
 
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public void setRecordDate(@NonNull Date recordDate) {
+        this.recordDate = recordDate;
+    }
+
+    public void setRecordFilePath(@NonNull String recordFilePath) {
+        this.recordFilePath = recordFilePath;
+    }
+
+    public void setTags(@Nullable List<String> tags) {
+        this.tags = tags;
+    }
+
+    public void setSelectedEmotion(@NonNull Emotion selectedEmotion) {
+        this.selectedEmotion = selectedEmotion;
+    }
+
+    public void setAnalyzedEmotion(@NonNull Emotion analyzedEmotion) {
+        this.analyzedEmotion = analyzedEmotion;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DiaryEntity that = (DiaryEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

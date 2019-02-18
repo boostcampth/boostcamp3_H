@@ -50,6 +50,7 @@
         <item name="android:textSize">35dp</item>
         <item name="android:layout_weight">0.2</item>
         <item name="android:layout_width">0dp</item>
+        <item name="android:textColor">@color/emoji_color</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
     </style>
@@ -162,11 +163,16 @@
         <item name="android:background">@color/white</item>
     </style>
   
+
     <style name="CustomNumberPickerTheme">
         <item name="android:textSize">20dp</item>
         <item name="android:colorControlActivated">@color/main_dark</item>
         <item name="android:colorControlNormal">@color/main_dark</item>
         <item name="android:textColorPrimary">@color/black</item>
+    </style>
+
+    <style name="password_subtitle_style">
+
     </style>
 
 </resources>

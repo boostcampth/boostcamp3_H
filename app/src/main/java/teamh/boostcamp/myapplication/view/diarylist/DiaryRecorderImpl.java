@@ -2,6 +2,7 @@ package teamh.boostcamp.myapplication.view.diarylist;
 
 import android.media.MediaRecorder;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

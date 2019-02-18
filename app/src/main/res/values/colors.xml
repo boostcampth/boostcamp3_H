@@ -40,4 +40,6 @@
     <color name="main_dark">#FF9090</color>
     <color name="main_text">#160D0D</color>
 
+    <!---->
+    <color name="emoji_color">#FFFFFF</color>
 </resources>

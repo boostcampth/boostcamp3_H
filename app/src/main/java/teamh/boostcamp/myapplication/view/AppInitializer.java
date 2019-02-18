@@ -48,7 +48,6 @@ public class AppInitializer extends Application {
         Stetho.initializeWithDefaults(this);
 
         initWorker();
-
     }
 
     private void initWorker(){

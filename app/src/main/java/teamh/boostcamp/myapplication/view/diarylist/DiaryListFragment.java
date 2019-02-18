@@ -35,12 +35,13 @@ import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
 import teamh.boostcamp.myapplication.view.diarylist.kakaoLink.KakaoLinkHelperImpl;
 import teamh.boostcamp.myapplication.view.diarylist.popup.analyzeResult.AnalyzedEmotionShowingDialog;
+import teamh.boostcamp.myapplication.view.diarylist.popup.record.OnRecordDialogDismissListener;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.RecordingDiaryDialog;
 import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
-public class DiaryListFragment extends Fragment implements DiaryListView {
+public class DiaryListFragment extends Fragment implements DiaryListView, OnRecordDialogDismissListener {
 
-    private static final int LOAD_ITEM_NUM = 3;
+    private static final int LOAD_ITEM_NUM = 5;
     public final ObservableBoolean isSaving = new ObservableBoolean(false);
 
     private Context context;
@@ -49,9 +50,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     private CompositeDisposable compositeDisposable;
     private DiaryListAdapter diaryListAdapter;
     private HashTagListAdapter hashTagListAdapter;
-
-    private boolean isRecording = false;
-    private RecordingDiaryDialog recordingDiaryDialog;
 
     public DiaryListFragment() { /*Empty*/}
 
@@ -67,8 +65,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         presenter.onViewDestroyed();
     }
 
@@ -93,7 +91,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         initPresenter();
         initAdapter();
         initView();
-        initDialog();
 
         presenter.loadDiaryList(LOAD_ITEM_NUM);
 
@@ -192,7 +189,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         binding.rvItemRecordTags.setAdapter(hashTagListAdapter);
         binding.rvItemRecordTags.setLayoutManager(new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false));
 
-        recordingDiaryDialog = RecordingDiaryDialog.newInstance();
 
         binding.buttonRecordItemRecord.setOnClickListener(v ->
                 compositeDisposable.add(TedRx2Permission.with(context)
@@ -203,18 +199,12 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
                         .subscribe(tedPermissionResult -> {
                             if (tedPermissionResult.isGranted()) {
                                 KeyPadUtil.closeKeyPad(context, binding.etItemRecordInput);
-                                if (isRecording) {
-                                    finishRecord();
-                                } else {
-                                    presenter.startRecording();
-                                    if (getFragmentManager() != null) {
-                                        recordingDiaryDialog.show(getFragmentManager(), getTag());
-                                    }
-                                    isRecording = true;
-                                }
-                                presenter.setIsRecording(isRecording);
+                                presenter.startRecording();
+                                final RecordingDiaryDialog recordingDiaryDialog = RecordingDiaryDialog.newInstance();
+                                recordingDiaryDialog.setDismissListener(this);
+                                recordingDiaryDialog.show(getFragmentManager(), getTag());
                             } else {
-                                showToastMessage(R.string.item_record_permission_denied);
+                                showToastMessage(R.string.permission_denied);
                             }
                         }, Throwable::printStackTrace))
         );
@@ -237,25 +227,18 @@ public class DiaryListFragment extends Fragment implements DiaryListView {
         );
 
         diaryListAdapter.setOnKakaoLinkClickListener(pos ->
-            presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))
+                presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))
         );
 
         hashTagListAdapter = new HashTagListAdapter(context);
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
     }
 
-    private void initDialog() {
-        recordingDiaryDialog = RecordingDiaryDialog.newInstance();
-        recordingDiaryDialog.setOnDismissListener(dialogInterface -> {
-            if (isRecording) {
-                finishRecord();
-            }
-        });
-    }
-
-    private void finishRecord() {
-        isRecording = false;
-        presenter.setIsRecording(isRecording);
+    @Override
+    public void onDismiss(boolean isTimeOut) {
+        if (isTimeOut) {
+            showToastMessage(R.string.item_record_time_out);
+        }
         presenter.finishRecording();
     }
 }

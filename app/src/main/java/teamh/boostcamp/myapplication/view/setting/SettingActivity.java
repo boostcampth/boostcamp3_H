@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.view.setting;
 
+import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +21,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
@@ -29,12 +32,14 @@ import androidx.databinding.DataBindingUtil;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
+import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
@@ -49,7 +54,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private ActivitySettingBinding binding;
     private ActionBar actionBar;
     private Toolbar toolbar;
-    private TextView textView;
     private static final int SIGN_IN_CODE = 4899;
     private AppInitializer appInitializer;
     private LockManager lockManager;
@@ -59,6 +63,9 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
 
+    private ProgressDialog progressDialog;
+
+    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,14 +81,19 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initFirebaseAuth();
         initLock();
         initPresenter();
+        progressDialog = new ProgressDialog(this);
     }
 
     private void initPresenter() {
-        presenter = new SettingPresenter(this, RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
+        presenter = new SettingPresenter(this,
+                RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
                         DeepAffectApiClient.getInstance()),
-                        SharedPreferenceManager.getInstance(getApplicationContext()));
+                FirebaseRepositoryImpl.getInstance(),
+                SharedPreferenceManager.getInstance(getApplicationContext()));
+
+        compositeDisposable = new CompositeDisposable();
     }
 
     private void initBinding() {
@@ -91,8 +103,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private void initActionBar() {
         toolbar = findViewById(R.id.toolbar_setting);
-        textView = toolbar.findViewById(R.id.setting_text);
-
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -139,7 +149,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
 
-
     private void initLock() {
         appInitializer = new AppInitializer();
         lockManager = LockManager.getInstance();
@@ -161,7 +170,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     private void showToast(@StringRes final int id) {
-        Toast.makeText(getApplicationContext(), getString(id), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(id), Toast.LENGTH_SHORT).show();
     }
 
     public void onButtonClick(View view) {
@@ -177,8 +186,36 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 showToastMessage(R.string.login_success);
                 break;
             case R.id.rl_setting_logout:
-                auth.signOut();
+                //auth.signOut();
+                FirebaseAuth.getInstance().signOut();
                 showToastMessage(R.string.logout_success);
+            case R.id.rl_setting_backup:
+                TedRx2Permission.with(this)
+                        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .setRationaleMessage(R.string.setting_permission_load_rational_msg)
+                        .setRationaleTitle(R.string.setting_permission_load_title)
+                        .request()
+                        .subscribe(tedPermissionResult -> {
+                            if(tedPermissionResult.isGranted()) {
+                                progressDialog.setMessage(getString(R.string.do_backup));
+                                presenter.backupLocalDataToFirebaseRepository();
+                            }
+                        }, Throwable::printStackTrace);
+                break;
+            case R.id.rl_setting_restore:
+                TedRx2Permission.with(this)
+                        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        .setRationaleMessage(R.string.setting_permission_load_rational_msg)
+                        .setRationaleTitle(R.string.setting_permission_load_title)
+                        .request()
+                        .subscribe(tedPermissionResult -> {
+                           if(tedPermissionResult.isGranted()) {
+                               progressDialog.setMessage(getString(R.string.do_load));
+                               presenter.downloadAllBackupFilesFromFirebase();
+                           } else {
+                               showToast(R.string.permission_denied);
+                           }
+                        }, Throwable::printStackTrace);
                 break;
             case R.id.rl_setting_initialization:
                 initInitialization();
@@ -187,7 +224,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     private void initInitialization() {
-        AlertDialog.Builder alertDialogBuilder =  new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
         alertDialogBuilder.setTitle("초기화")
                 .setMessage("정말로 초기화 하시겠습니까. 모든 추억들이 사라집니다.")
                 .setPositiveButton("초기화", new DialogInterface.OnClickListener() {
@@ -261,8 +298,17 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         this.overridePendingTransition(R.anim.anim_left_to_right, R.anim.anim_right_to_left);
     }
 
-    private void showToast(String message) {
-        Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showBackUpSuccessMsg() {
+        showToast(R.string.backup_success);
     }
 
     @Override
@@ -270,10 +316,45 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         showToastMessage(R.string.setting_initialization_success);
     }
 
+    public void showBackUpFailMsg() {
+        progressDialog.dismiss();
+        showToast(R.string.backup_fail);
+    }
+
+    @Override
+    public void showLoadSuccessMsg() {
+        showToast(R.string.load_success);
+    }
+
+    @Override
+    public void showLoadFailMsg() {
+        showToast(R.string.load_fail);
+    }
+
+    @Override
+    public void showNotLoginMsg() {
+        showToast(R.string.not_login);
+    }
+
+    @Override
+    public void dismissDialog() {
+        if(progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void showDialog() {
+        if(!progressDialog.isShowing()) {
+            progressDialog.show();
+        }
+    }
+
+    private void showToast(String message) {
+        Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
+
     private void showToastMessage(@StringRes final int stringId) {
         Toast.makeText(this, getString(stringId), Toast.LENGTH_SHORT).show();
     }
-
-
-
 }

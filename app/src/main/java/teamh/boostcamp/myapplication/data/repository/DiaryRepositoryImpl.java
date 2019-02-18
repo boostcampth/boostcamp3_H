@@ -1,11 +1,11 @@
 package teamh.boostcamp.myapplication.data.repository;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
@@ -56,8 +56,8 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Completable insertDiary(@NonNull final DiaryEntity diaryEntity) {
-        return Completable.fromAction(() -> diaryDao.insert(diaryEntity))
+    public Completable insertDiary(@NonNull final DiaryEntity... diaryEntities) {
+        return Completable.fromAction(() -> diaryDao.insert(diaryEntities))
                 .subscribeOn(Schedulers.io());
     }
 
@@ -78,7 +78,8 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Completable deleteDiary(String id) {
+
+    public Completable deleteDiary(@NonNull String id) {
         return Completable.fromAction(() -> diaryDao.delete(id))
                 .subscribeOn(Schedulers.io());
     }
@@ -88,6 +89,34 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     public Observable<Diary> loadAll() {
         return diaryDao.loadAll()
                 .flatMapIterable(diaryList -> diaryList)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Maybe<List<DiaryEntity>> loadNotBackupDiaryList(@NonNull List<String> diaryIdList) {
+        return diaryDao.loadNotBackupDiaryList(diaryIdList)
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable deleteAllDiaries() {
+        return Completable.fromAction(() -> diaryDao.deleteAllDiaries())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Single<List<DiaryEntity>> loadAllDiaryEntityList() {
+        return diaryDao.loadAllDiaryEntities()
+                .subscribeOn(Schedulers.io());
+    }
+
+    @NonNull
+    @Override
+    public Completable updateDiaryEntities(@NonNull DiaryEntity... diaryEntities) {
+        return Completable.fromAction(diaryDao::updateDiaries)
                 .subscribeOn(Schedulers.io());
     }
 }
