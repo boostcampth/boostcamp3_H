@@ -152,22 +152,33 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
             final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
             final String key = FirebaseAuth.getInstance().getUid();
-            final int size = diaryEntityList.size();
             final List<String> downloadUrlList = new ArrayList<>();
 
-            for (int i = 0; i < size; ++i) {
-                final Uri uri = Uri.fromFile(new File(diaryEntityList.get(i).getRecordFilePath()));
-                final StorageReference storageRef = firebaseStorage.getReference().child((key + "/" + diaryEntityList.get(i).getId()));
-                final int currentPos = i;
+            Iterator<DiaryEntity> iterator = diaryEntityList.iterator();
+
+            while (iterator.hasNext()) {
+
+                final DiaryEntity currentDiaryEntity = iterator.next();
+
+                File file = new File(currentDiaryEntity.getRecordFilePath());
+
+                if (!file.exists()) {
+                    iterator.remove();
+                    continue;
+                }
+
+                final Uri uri = Uri.fromFile(file);
+
+                final StorageReference storageRef = firebaseStorage.getReference().child((key + "/" + currentDiaryEntity.getId()));
 
                 storageRef.putFile(uri)
                         .continueWithTask(task -> task.isSuccessful() ? storageRef.getDownloadUrl() : null)
                         .addOnSuccessListener(downloadUri -> {
                             if (downloadUri != null) {
                                 downloadUrlList.add(downloadUri.toString());
-                                diaryEntityList.get(currentPos).setRecordFilePath(downloadUri.toString());
+                                currentDiaryEntity.setRecordFilePath(downloadUri.toString());
                             } else {
-                                diaryEntityList.remove(currentPos);
+                                diaryEntityList.remove(currentDiaryEntity);
                             }
                             if (downloadUrlList.size() == diaryEntityList.size()) {
                                 emitter.onSuccess(diaryEntityList);
@@ -187,7 +198,7 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
     public Single<List<DiaryEntity>> downloadRecordFile(@NonNull List<DiaryEntity> diaryEntityList) {
         return Single.create(emitter -> {
 
-            if(diaryEntityList.size() ==0) {
+            if (diaryEntityList.size() == 0) {
                 emitter.onSuccess(diaryEntityList);
             }
 
