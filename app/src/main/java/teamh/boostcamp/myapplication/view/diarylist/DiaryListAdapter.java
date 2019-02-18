@@ -1,6 +1,5 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -23,13 +22,11 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     private static final int NOTHING_PLAYED = -1;
 
     private List<Diary> diaryList;
-    private Context context;
     private OnRecordItemClickListener onRecordItemClickListener;
     private OnKakaoLinkClickListener onKakaoLinkClickListener;
     private int lastPlayedIndex = NOTHING_PLAYED;
 
-    DiaryListAdapter(@NonNull Context context) {
-        this.context = context;
+    DiaryListAdapter() {
         this.diaryList = new ArrayList<>();
     }
 
@@ -45,7 +42,7 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
     @Override
     public DiaryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         final ItemRecordDiaryBinding itemRecordDiaryBinding = DataBindingUtil.inflate(
-                LayoutInflater.from(context),
+                LayoutInflater.from(parent.getContext()),
                 R.layout.item_record_diary,
                 parent,
                 false
@@ -67,12 +64,12 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
         if (lastPlayedIndex == position) {
             holder.itemRecordDiaryBinding.lawItemDiaryPercent.playAnimation();
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setImageDrawable(
-                    ContextCompat.getDrawable(context, R.drawable.ic_pause_circle_filled_black_24dp));
+                    ContextCompat.getDrawable(holder.itemRecordDiaryBinding.getRoot().getContext(), R.drawable.ic_pause_circle_filled_black_24dp));
         } else {
             holder.itemRecordDiaryBinding.lawItemDiaryPercent.cancelAnimation();
             holder.itemRecordDiaryBinding.lawItemDiaryPercent.setProgress(0);
             holder.itemRecordDiaryBinding.ivItemDiaryPlay.setImageDrawable(
-                    ContextCompat.getDrawable(context, R.drawable.ic_play_circle_filled_black_24dp));
+                    ContextCompat.getDrawable(holder.itemRecordDiaryBinding.getRoot().getContext(), R.drawable.ic_play_circle_filled_black_24dp));
         }
 
         holder.itemRecordDiaryBinding.tvItemDiaryEmotion.setText(diary.getSelectedEmotion().getEmoji());

@@ -227,8 +227,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                 presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context))
         );
 
-        binding.tvRecordItemPgood.setOnClickListener(v ->  setSelectedEmoji(Emotion.fromValue(4)));
-        binding.tvRecordItemGood.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(3)));
+        binding.tvRecordItemGood.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(4)));
+        binding.tvRecordItemPgood.setOnClickListener(v ->  setSelectedEmoji(Emotion.fromValue(3)));
         binding.tvRecordItemNormal.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(2)));
         binding.tvRecordItemBad.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(1)));
         binding.tvRecordItemMad.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(0)));
@@ -261,7 +261,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     }
 
     private void initAdapter() {
-        diaryListAdapter = new DiaryListAdapter(context);
+        diaryListAdapter = new DiaryListAdapter();
         diaryListAdapter.setOnRecordItemClickListener(pos ->
                 presenter.playDiaryRecord(Arrays.asList(diaryListAdapter.getDiary(pos)), pos)
         );
