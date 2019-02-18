@@ -160,6 +160,7 @@
         <item name="colorAccent">@color/main_dark</item>
         <item name="android:textColorPrimary">@color/main_text</item>
         <item name="android:background">@color/white</item>
+    </style>
   
     <style name="CustomNumberPickerTheme">
         <item name="android:textSize">20dp</item>
