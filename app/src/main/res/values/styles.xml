@@ -156,5 +156,11 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="CustomNumberPickerTheme">
+        <item name="android:textSize">20dp</item>
+        <item name="android:colorControlActivated">@color/main_dark</item>
+        <item name="android:colorControlNormal">@color/main_dark</item>
+        <item name="android:textColorPrimary">@color/black</item>
+    </style>
 
 </resources>

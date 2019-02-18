@@ -117,9 +117,10 @@
     <string name="alarm_explain">시간을 설정해주세요.</string>
     <string name="alarm_button_click_text">버튼을 눌러 알람을 설정해주세요.</string>
     <string name="alarm_time_select_text">시간 선택</string>
-    <string name="alarm_set_text">알람을 설정하였습니다.</string>
+    <string name="alarm_set_text">알람 설정이 완료되었습니다.</string>
     <string name="alarm_error_text">오류</string>
     <string name="alarm_modify_text">시간을 수정해주세요.</string>
+    <string name="alarm_description_text">매일 %s 에 알람이 울립니다.</string>
 
     <!--login-->
     <string name="login_success">Login</string>

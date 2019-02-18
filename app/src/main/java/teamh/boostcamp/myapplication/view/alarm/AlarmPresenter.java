@@ -5,7 +5,6 @@ import java.util.Calendar;
 import androidx.annotation.NonNull;
 
 public class AlarmPresenter {
-
     private AlarmView view;
     private AlarmHelper alarmHelper;
 
@@ -26,6 +25,6 @@ public class AlarmPresenter {
 
     void loadTimeText(Calendar calendar) {
         String userSettingTime = alarmHelper.loadCalendar(calendar);
-        view.updateTimeText(userSettingTime);
+        //view.updateTimeText(userSettingTime);
     }
 }

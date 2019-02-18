@@ -10,9 +10,9 @@
         android:height="@dimen/switch_track_button_height"/>
 
     <solid
-        android:color="@color/all_purple"/>
+        android:color="@color/main_dark"/>
 
     <stroke
-        android:color="@color/all_purple"/>
+        android:color="@color/main_dark"/>
 
 </shape>

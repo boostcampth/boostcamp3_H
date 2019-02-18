@@ -8,23 +8,17 @@
         <variable
             name="activity"
             type="teamh.boostcamp.myapplication.view.alarm.AlarmActivity" />
-
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
         tools:context=".view.alarm.AlarmActivity">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/abl_alarm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:theme="@style/AppTheme.AppBarOverlay">
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar_alarm"
@@ -46,111 +40,109 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-
-        <RelativeLayout
-            android:id="@+id/rl_alarm_switch"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:background="@color/white"
-            android:elevation="@dimen/card_elevation"
-            app:layout_constraintTop_toBottomOf="@+id/abl_alarm">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <LinearLayout
-                android:layout_centerVertical="true"
-                android:layout_width="300dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/layout_margin"
-                android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/rl_alarm"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="56dp">
 
-                <TextView
-                    style="@style/subtitle_style"
+                <Switch
+                    android:id="@+id/switch_alarm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/setting_alarm" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:thumb="@drawable/switch_thumb"
+                    android:track="@drawable/switch_track_selector"
+                    />
 
                 <TextView
-                    style="@style/explain_style_gray"
-                    android:layout_width="300dp"
-                    android:layout_height="wrap_content"
-                    android:text="@string/password_explain_text" />
-
-
-
-            </LinearLayout>
-
-            <Switch
-                android:id="@+id/switch_alarm"
-                android:layout_centerVertical="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="@dimen/layout_margin"
-                android:thumb="@drawable/switch_thumb"
-                android:track="@drawable/switch_track_selector" />
-
-        </RelativeLayout>
-
-
-        <LinearLayout
-            android:id="@+id/ll_alarm_time_layout"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/white"
-            android:elevation="@dimen/card_elevation"
-            android:visibility="visible"
-            android:orientation="vertical"
-            android:onClick="@{v-> activity.onShowDialogButton(v.getId())}"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center_vertical"
-            app:layout_constraintTop_toBottomOf="@+id/rl_alarm_switch">
-
-            <TextView
-                android:id="@+id/tv_alarm_time_set_text"
-                style="@style/explain_style_black"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/layout_margin"
-                android:text="@string/alarm_explain" />
-
-            <LinearLayout
-                android:layout_marginTop="@dimen/layout_margin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/tv_alarm_time_text"
-                    style="@style/explain_style_black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/layout_margin"
-                    android:text="@string/alarm_explain" />
-
-                <ImageView
-                    android:layout_marginLeft="@dimen/layout_margin"
-                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="32dp"
+                    android:id="@+id/tv_alarm_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_alarm_more_black"/>
-            </LinearLayout>
+                    android:layout_marginTop="16dp"
+                    android:gravity="center"
+                    style="@style/explain_style_black"
+                    android:text="@string/alarm_explain"/>
+            </RelativeLayout>
 
 
-          <!--  <Button
-                android:id="@+id/btn_alarm_select"
+            <NumberPicker
+                android:id="@+id/np_alarm_hour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:onClick="@{v -> activity.onClickAlarmButtons(v.getId())}"
-                android:text="@string/alarm_time_select_text"
-                app:layout_constraintEnd_toEndOf="parent" />-->
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:descendantFocusability="blocksDescendants"
+                android:theme="@style/CustomNumberPickerTheme"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_alarm_marker"
+                app:layout_constraintEnd_toStartOf="@+id/tv_alarm_marker"
+                app:layout_constraintHorizontal_bias="0.7"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_alarm_marker"
+                app:layout_constraintVertical_bias="0.503" />
 
+            <TextView
+                android:id="@+id/tv_alarm_marker"
+                android:layout_width="10dp"
+                android:layout_height="29dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:text=":"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rl_alarm"
+                app:layout_constraintVertical_bias="0.141" />
 
-        </LinearLayout>
+            <NumberPicker
+                android:id="@+id/np_alarm_minute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:descendantFocusability="blocksDescendants"
+                android:theme="@style/CustomNumberPickerTheme"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_alarm_marker"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintStart_toEndOf="@+id/tv_alarm_marker"
+                app:layout_constraintTop_toTopOf="@+id/tv_alarm_marker"
+                app:layout_constraintVertical_bias="0.503" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <Button
+                android:id="@+id/button_alarm_set"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="32dp"
+                android:layout_marginTop="44dp"
+                android:background="@drawable/button_background_alarm"
+                android:onClick="@{v->activity.onAlarmButtonClick(v.getId())}"
+                android:text="시간 설정"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/np_alarm_minute" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
