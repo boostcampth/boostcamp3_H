@@ -1,16 +1,16 @@
 package teamh.boostcamp.myapplication.view.alarm;
 
-
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,26 +21,48 @@ import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
 
 public class AlarmActivity extends AppCompatActivity implements AlarmView {
 
+    private static final String TIME_PICKER_TAG = "Time Picker";
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm", Locale.KOREA);
     private SharedPreferenceManager sharedPreferenceManager;
-    private static final String TIME_PICKER_TAG = "Time Picker";
     private ActivityAlarmBinding binding;
     private AlarmPresenter presenter;
-    @Nullable
-    private String time;
+    @NonNull
+    private List<String> hourList;
+    @NonNull
+    private List<String> minuteList;
+    @NonNull
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_alarm);
+
         init();
+        generateTimeValues();
     }
 
     private void init() {
+        calendar = Calendar.getInstance();
         sharedPreferenceManager = SharedPreferenceManager.getInstance(getApplicationContext());
         initBinding();
         initActionBar();
         initPresenter();
         initViews();
+    }
+
+    // 배열 생성
+    private void generateTimeValues() {
+        hourList = new ArrayList<>();
+        minuteList = new ArrayList<>();
+
+        for (int i = 0; i < 24; i++) {
+            hourList.add(String.format("%02d", i));
+        }
+
+        for (int i = 0; i < 12; i++) {
+            minuteList.add(String.format("%02d", (i * 5)));
+        }
     }
 
     private void initBinding() {
@@ -58,17 +80,14 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
         }
     }
 
-    private void initPresenter() {
-        presenter = new AlarmPresenter(AlarmActivity.this, new AlarmHelperImpl(getApplicationContext()));
-    }
-
     private void initViews() {
         binding.switchAlarm.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
-                setVisibility(true);
+                setActivate(true);
             } else {
+                setActivate(false);
+
                 presenter.cancelAlarm();
-                setVisibility(false);
             }
         });
     }
@@ -84,82 +103,138 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //calendar = null;
-        presenter = null;
-        sharedPreferenceManager = null;
+    private void initPresenter() {
+        presenter = new AlarmPresenter(AlarmActivity.this, new AlarmHelperImpl(getApplicationContext()));
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        checkState();
+        checkState(sharedPreferenceManager.getPreferencePushTime());
     }
 
     @Override
-    public void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void updateTimeText(String timeText) {
-
-    }
-
-    @Override
-    public void checkState() {
-        time = sharedPreferenceManager.getPreferencePushTime(null);
-        //Log.v("check 21023 : ",time);
+    public void checkState(String time) {
         if (time != null) {
-            setVisibility(true);
-            binding.tvAlarmTimeText.setText(time);
+            setActivate(true);
             binding.switchAlarm.setChecked(true);
+            //binding.tvAlarmText.setText("매일 " + time + " 에 알람이 울립니다.");
+            binding.tvAlarmText.setText(String.format(getString(R.string.alarm_description_text),time));
+            setNumberPickerValues(time);
         } else {
-            setVisibility(false);
+            setActivate(false);
+            binding.switchAlarm.setChecked(false);
+            binding.tvAlarmText.setText(getString(R.string.alarm_explain));
+            setNumberPickerValues(null);
         }
     }
 
-    @Override
-    public void setVisibility(boolean isChecked) {
-        if (isChecked) {
-            if (sharedPreferenceManager.getPreferencePushTime() != null) {
-                binding.tvAlarmTimeText.setText(time);
-            } else {
-                binding.tvAlarmTimeText.setText(simpleDateFormat.format(Calendar.getInstance().getTime()));
+    private void setNumberPickerValues(String time) {
+
+        int hourIndex = 0;
+        int minuteIndex = 0;
+        if (time != null) {
+            String[] times = time.split(":");
+
+            for (int i = 0; i < hourList.size(); i++) {
+                if (times[0].equals(hourList.get(i))) {
+                    hourIndex = i;
+                }
             }
-            binding.llAlarmTimeLayout.setVisibility(View.VISIBLE);
+
+            for (int i = 0; i < minuteList.size(); i++) {
+                if (times[1].equals(minuteList.get(i))) {
+                    minuteIndex = i;
+                }
+            }
+        }
+
+        String[] hourValues = new String[hourList.size()];
+        hourValues = hourList.toArray(hourValues);
+
+        String[] minuteValues = new String[minuteList.size()];
+        minuteValues = minuteList.toArray(minuteValues);
+
+        binding.npAlarmHour.setDisplayedValues(hourValues);
+        binding.npAlarmHour.setMinValue(0);
+        binding.npAlarmHour.setMaxValue(hourValues.length - 1);
+        binding.npAlarmHour.setValue(Integer.parseInt(hourValues[hourIndex]));
+
+        binding.npAlarmMinute.setDisplayedValues(minuteValues);
+        binding.npAlarmMinute.setMinValue(0);
+        binding.npAlarmMinute.setMaxValue(minuteValues.length - 1);
+        binding.npAlarmMinute.setValue(minuteIndex);
+    }
+
+
+    @Override
+    public void setActivate(boolean isActivated) {
+        if (isActivated) {
+            binding.npAlarmHour.setEnabled(true);
+            binding.npAlarmMinute.setEnabled(true);
+            binding.buttonAlarmSet.setEnabled(true);
+            binding.buttonAlarmSet.setEnabled(true);
         } else {
-            binding.llAlarmTimeLayout.setVisibility(View.GONE);
+            binding.npAlarmHour.setEnabled(false);
+            binding.npAlarmMinute.setEnabled(false);
+            binding.buttonAlarmSet.setEnabled(false);
+            binding.buttonAlarmSet.setEnabled(false);
         }
     }
 
     @Override
     public void updateCancelTimeText(boolean isCanceled) {
         if (isCanceled) {
-            binding.tvAlarmTimeText.setText(getApplicationContext().getResources().getString(R.string.alarm_explain));
+            binding.tvAlarmText.setText(getApplicationContext().getResources().getString(R.string.alarm_explain));
         } else {
-            binding.tvAlarmTimeText.setText(getApplicationContext().getResources().getString(R.string.alarm_error_text));
+            binding.tvAlarmText.setText(getApplicationContext().getResources().getString(R.string.alarm_error_text));
         }
     }
 
-    // presenter로 알람 설정 위임.
     @Override
     public void updateCalendar(Calendar calendar) {
         if (calendar != null) {
             String time = simpleDateFormat.format(calendar.getTime());
-            binding.tvAlarmTimeText.setText(time);
+            binding.tvAlarmText.setText(time);
             presenter.setAlarm(calendar);
         }
     }
 
-    public void onShowDialogButton(int id) {
+    @Override
+    public void showAlarmSuccessMessage() {
+        showToast(R.string.alarm_set_text);
+    }
+
+    @Override
+    public void showToast(int stringId) {
+        Toast.makeText(getApplicationContext(), getString(stringId), Toast.LENGTH_SHORT).show();
+    }
+
+    public void onAlarmButtonClick(int id) {
         switch (id) {
-            case R.id.ll_alarm_time_layout:
-                CustomTimePicker customTimePicker = CustomTimePicker.newInstance(this);
-                customTimePicker.show(getSupportFragmentManager(), TIME_PICKER_TAG);
+            case R.id.button_alarm_set:
+                createData();
                 break;
         }
+    }
+
+    private void createData() {
+        int hourIndex = binding.npAlarmHour.getValue();
+        String hour = hourList.get(hourIndex);
+        int minuteIndex = binding.npAlarmMinute.getValue();
+        String minute = minuteList.get(minuteIndex);
+
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
+        calendar.set(Calendar.SECOND, 0);
+        presenter.setAlarm(calendar);
+        showAlarmSuccessMessage();
+        binding.tvAlarmText.setText(String.format(getString(R.string.alarm_description_text),simpleDateFormat.format(calendar.getTime())));
+        //binding.tvAlarmText.setText("매일 " + simpleDateFormat.format(calendar.getTime()) + " 에 알람이 울립니다.");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
