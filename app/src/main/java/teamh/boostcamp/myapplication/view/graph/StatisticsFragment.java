@@ -148,6 +148,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
             if (hashTagItems.get(i).getCount() > 3) {
                 tagTextView.setTextColor(context.getResources().getColor(R.color.graphColor));
+                tagTextView.setTextSize(hashTagItems.get(i).getCount() * 10f);
             }
 
             tagTextView.setText(hashTagItems.get(i).getTagName());

@@ -66,6 +66,14 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         init();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(FirebaseAuth.getInstance().getCurrentUser() !=null){
+            binding.rlSettingLoginText.setText(R.string.logout_success);
+        }
+    }
+
     private void init() {
         initBinding();
         initActionBar();
@@ -148,17 +156,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 startActivity(new Intent(SettingActivity.this, PasswordSelectActivity.class));
                 break;
             case R.id.rl_setting_login:
-                if(!signFlag){
-                    signIn();
-                }else {
-                    signOut();
-                }
-                showToastMessage(R.string.login_success);
+                loginAndLogout(binding.rlSettingLoginText.getText().toString());
                 break;
-            case R.id.rl_setting_logout:
-                //auth.signOut();
-                FirebaseAuth.getInstance().signOut();
-                showToastMessage(R.string.logout_success);
             case R.id.rl_setting_backup:
                 TedRx2Permission.with(this)
                         .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -193,6 +192,19 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         }
     }
 
+    private void loginAndLogout(String name){
+        switch (name){
+            case "로그인":
+                Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+                startActivityForResult(signInIntent, SIGN_IN_CODE);
+                break;
+            case "로그아웃":
+                FirebaseAuth.getInstance().signOut();
+                updateUI(null);
+                break;
+        }
+    }
+
     private void initInitialization() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
         alertDialogBuilder.setTitle("초기화")
@@ -211,19 +223,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         }).create().show();
     }
 
-    private void signIn() {
-        signFlag = true;
-        binding.rlSettingLoginText.setText(R.string.logout_success);
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, SIGN_IN_CODE);
-    }
-
-    private void signOut() {
-        signFlag = false;
-        binding.rlSettingLoginText.setText(R.string.login_success);
-        auth.signOut();
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -238,7 +237,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
             firebaseAuthWithGoogle(account);
         } catch (ApiException e) {
             e.printStackTrace();
@@ -262,9 +260,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private void updateUI(Object object) {
         if (object != null) {
+            binding.rlSettingLoginText.setText(R.string.logout_success);
             showLoginMessage();
         } else {
-            showToast("Fail");
+            binding.rlSettingLoginText.setText(R.string.login_success);
+            showNotLoginMsg();
         }
     }
 
