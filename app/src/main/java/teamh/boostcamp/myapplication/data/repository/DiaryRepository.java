@@ -11,6 +11,7 @@ import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
+import teamh.boostcamp.myapplication.data.model.ShareDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 
 public interface DiaryRepository {
@@ -44,4 +45,7 @@ public interface DiaryRepository {
 
     @NonNull
     Completable updateDiaryEntities(@NonNull DiaryEntity ...diaryEntities);
+
+    @NonNull
+    Single<ShareDiary> loadShareDiary(@NonNull String id);
 }

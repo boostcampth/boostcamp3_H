@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.view.diarylist.kakaoLink;
+package teamh.boostcamp.myapplication.utils;
 
 import teamh.boostcamp.myapplication.data.model.ShareDiary;
 
