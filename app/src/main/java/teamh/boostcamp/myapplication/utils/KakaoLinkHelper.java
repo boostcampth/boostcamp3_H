@@ -1,7 +1,7 @@
 package teamh.boostcamp.myapplication.view.diarylist.kakaoLink;
 
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.ShareDiary;
 
 public interface KakaoLinkHelper {
-    void sendDiary(Diary diary);
+    void sendDiary(ShareDiary shareDiary);
 }

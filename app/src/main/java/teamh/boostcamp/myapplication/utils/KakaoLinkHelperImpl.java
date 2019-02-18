@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.model.Diary;
+import teamh.boostcamp.myapplication.data.model.ShareDiary;
 
 public class KakaoLinkHelperImpl implements KakaoLinkHelper {
 
@@ -29,14 +29,17 @@ public class KakaoLinkHelperImpl implements KakaoLinkHelper {
     }
 
     @Override
-    public void sendDiary(Diary diary) {
+    public void sendDiary(ShareDiary shareDiary) {
 
         FeedTemplate params = FeedTemplate
                 .newBuilder(ContentObject.newBuilder("오늘 하루의 목소리",
                         IMAGE_URL,
-                        LinkObject.newBuilder().setWebUrl("https://developers.kakao.com")
+                        LinkObject.newBuilder().setWebUrl(shareDiary.getDownloadUrl())
                                 .setMobileWebUrl("https://developers.kakao.com").build())
-                        .setDescrption(String.format(context.getString(R.string.kakao_description), diary.getSelectedEmotion().getEmoji()))
+                        .setDescrption(String.format(context.getString(R.string.kakao_description),
+                                shareDiary.getRecordDate(),
+                                shareDiary.getSelectedEmotion().getEmoji(),
+                                shareDiary.getAnalyzedEmotion().getEmoji()))
                         .build())
                 .build();
 
