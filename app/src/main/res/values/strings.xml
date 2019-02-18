@@ -120,6 +120,7 @@
     <string name="alarm_set_text">알람 설정이 완료되었습니다.</string>
     <string name="alarm_error_text">오류</string>
     <string name="alarm_modify_text">시간을 수정해주세요.</string>
+    <string name="alarm_description_text">매일 %s 에 알람이 울립니다.</string>
 
     <!--login-->
     <string name="login_success">Login</string>
@@ -129,6 +130,5 @@
 
     <!--kakao-->
     <string name="kakao_description">내가선택한 오늘의 기분은 %s입니다.</string>
-    <string name="title_activity_alarm">AlarmActivity</string>
 
 </resources>

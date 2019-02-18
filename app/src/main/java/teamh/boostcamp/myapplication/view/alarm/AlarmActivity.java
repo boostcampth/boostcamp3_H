@@ -83,9 +83,9 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
     private void initViews() {
         binding.switchAlarm.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (isChecked) {
-                isActivate(true);
+                setActivate(true);
             } else {
-                isActivate(false);
+                setActivate(false);
 
                 presenter.cancelAlarm();
             }
@@ -116,12 +116,13 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
     @Override
     public void checkState(String time) {
         if (time != null) {
-            isActivate(true);
+            setActivate(true);
             binding.switchAlarm.setChecked(true);
-            binding.tvAlarmText.setText("매일 " + time + " 에 알람이 울립니다.");
+            //binding.tvAlarmText.setText("매일 " + time + " 에 알람이 울립니다.");
+            binding.tvAlarmText.setText(String.format(getString(R.string.alarm_description_text),time));
             setNumberPickerValues(time);
         } else {
-            isActivate(false);
+            setActivate(false);
             binding.switchAlarm.setChecked(false);
             binding.tvAlarmText.setText(getString(R.string.alarm_explain));
             setNumberPickerValues(null);
@@ -167,7 +168,7 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
 
 
     @Override
-    public void isActivate(boolean isActivated) {
+    public void setActivate(boolean isActivated) {
         if (isActivated) {
             binding.npAlarmHour.setEnabled(true);
             binding.npAlarmMinute.setEnabled(true);
@@ -228,7 +229,8 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
         calendar.set(Calendar.SECOND, 0);
         presenter.setAlarm(calendar);
         showAlarmSuccessMessage();
-        binding.tvAlarmText.setText("매일 " + simpleDateFormat.format(calendar.getTime()) + " 에 알람이 울립니다.");
+        binding.tvAlarmText.setText(String.format(getString(R.string.alarm_description_text),simpleDateFormat.format(calendar.getTime())));
+        //binding.tvAlarmText.setText("매일 " + simpleDateFormat.format(calendar.getTime()) + " 에 알람이 울립니다.");
     }
 
     @Override

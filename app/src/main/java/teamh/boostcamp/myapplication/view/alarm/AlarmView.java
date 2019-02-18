@@ -8,7 +8,7 @@ public interface AlarmView {
 
     void checkState(String time);
 
-    void isActivate(boolean isChecked);
+    void setActivate(boolean isChecked);
 
     void updateCancelTimeText(boolean isCanceled);
 
