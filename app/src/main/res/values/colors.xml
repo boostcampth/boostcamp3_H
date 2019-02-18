@@ -41,5 +41,6 @@
     <color name="main_text">#160D0D</color>
 
     <!---->
-    <color name="emoji_color">#FFFFFF</color>
+    <color name="selected_emoji_color">#000000</color>
+    <color name="emoji_color">#555555AA</color>
 </resources>

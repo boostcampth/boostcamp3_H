@@ -51,6 +51,8 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     private DiaryListAdapter diaryListAdapter;
     private HashTagListAdapter hashTagListAdapter;
 
+    private boolean isDownloaded = false;
+
     public DiaryListFragment() { /*Empty*/}
 
     @NonNull
@@ -77,20 +79,27 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        compositeDisposable = new CompositeDisposable();
+    public void onResume() {
+        super.onResume();
+        if (isDownloaded) {
+            diaryListAdapter.clear();
+            presenter.loadDiaryList(LOAD_ITEM_NUM);
+            isDownloaded = false;
+        }
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false);
-        binding.setFragment(DiaryListFragment.this);
-        initPresenter();
-        initAdapter();
-        initView();
+        if (binding == null) {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false);
+            binding.setFragment(DiaryListFragment.this);
+            initPresenter();
+            initAdapter();
+            initView();
+            compositeDisposable = new CompositeDisposable();
+        }
 
         presenter.loadDiaryList(LOAD_ITEM_NUM);
 
@@ -100,6 +109,11 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void addDiaryList(@NonNull List<Diary> diaryList) {
         diaryListAdapter.addDiaryItems(diaryList);
+    }
+
+    @Override
+    public void setIsBackup(boolean isBackup) {
+        this.isDownloaded = isBackup;
     }
 
     @Override
@@ -213,11 +227,37 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                 presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(context))
         );
 
-        binding.tvRecordItemPgood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.GOOD));
-        binding.tvRecordItemGood.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.VERY_GOOD));
-        binding.tvRecordItemNormal.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.NEUTRAL));
-        binding.tvRecordItemBad.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.BAD));
-        binding.tvRecordItemMad.setOnClickListener(v -> presenter.setSelectedEmotion(Emotion.VERY_BAD));
+        binding.tvRecordItemPgood.setOnClickListener(v ->  setSelectedEmoji(Emotion.fromValue(4)));
+        binding.tvRecordItemGood.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(3)));
+        binding.tvRecordItemNormal.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(2)));
+        binding.tvRecordItemBad.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(1)));
+        binding.tvRecordItemMad.setOnClickListener(v -> setSelectedEmoji(Emotion.fromValue(0)));
+    }
+
+    void setSelectedEmoji(Emotion e) {
+        binding.tvRecordItemMad.setTextColor(getResources().getColor(R.color.emoji_color));
+        binding.tvRecordItemBad.setTextColor(getResources().getColor(R.color.emoji_color));
+        binding.tvRecordItemNormal.setTextColor(getResources().getColor(R.color.emoji_color));
+        binding.tvRecordItemPgood.setTextColor(getResources().getColor(R.color.emoji_color));
+        binding.tvRecordItemGood.setTextColor(getResources().getColor(R.color.emoji_color));
+        switch (e) {
+            case VERY_BAD:
+                binding.tvRecordItemMad.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+            case BAD:
+                binding.tvRecordItemBad.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+            case NEUTRAL:
+                binding.tvRecordItemNormal.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+            case GOOD:
+                binding.tvRecordItemPgood.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+            case VERY_GOOD:
+                binding.tvRecordItemGood.setTextColor(getResources().getColor(R.color.selected_emoji_color));
+                break;
+        }
+        presenter.setSelectedEmotion(e);
     }
 
     private void initAdapter() {

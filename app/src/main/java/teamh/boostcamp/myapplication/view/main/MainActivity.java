@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         binding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
         binding.setActivity(this);
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         application = new AppInitializer();
         presenter = new MainPresenter(this);
 

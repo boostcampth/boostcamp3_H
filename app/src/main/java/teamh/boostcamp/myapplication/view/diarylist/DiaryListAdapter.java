@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.databinding.ItemRecordDiaryBinding;
+import teamh.boostcamp.myapplication.view.diarylist.listener.OnKakaoLinkClickListener;
+import teamh.boostcamp.myapplication.view.diarylist.listener.OnRecordItemClickListener;
 
 
 public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.DiaryHolder> {
@@ -103,7 +105,18 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
 
     void insertDiaryItem(@NonNull Diary diary) {
         diaryList.add(0, diary);
-        notifyItemInserted(0);
+        notifyDataSetChanged();
+    }
+
+    void setDiaryList(@NonNull List<Diary> diaryList) {
+        diaryList.clear();
+        diaryList.addAll(diaryList);
+        notifyDataSetChanged();
+    }
+
+    void clear() {
+        diaryList.clear();
+        notifyDataSetChanged();
     }
 
     Diary getDiary(final int pos) {

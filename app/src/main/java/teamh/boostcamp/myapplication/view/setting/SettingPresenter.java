@@ -16,6 +16,7 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.RecallRepository;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepository;
+import teamh.boostcamp.myapplication.view.diarylist.DiaryRxEventBus;
 
 class SettingPresenter {
 
@@ -120,6 +121,7 @@ class SettingPresenter {
                             diaryRepository.insertDiary(diaryEntityList.toArray(new DiaryEntity[diaryEntityList.size()])))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
+                        DiaryRxEventBus.sendEvent("download");
                         settingView.dismissDialog();
                         settingView.showLoadSuccessMsg();
                     }, throwable -> {
