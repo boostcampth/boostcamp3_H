@@ -17,15 +17,13 @@ import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordSelectBinding;
-import teamh.boostcamp.myapplication.view.AppInitializer;
 
 public class PasswordSelectActivity extends AppCompatActivity {
 
-    private static final String TAG = PasswordSelectActivity.class.getClass().getSimpleName();
+    private static final String TAG = PasswordSelectActivity.class.getSimpleName();
 
     private ActivityPasswordSelectBinding binding;
     private LockManager lockManager;
-    private AppInitializer application;
     private Toolbar toolbar;
     private ActionBar actionBar;
     private LockHelper lockHelper;
@@ -37,7 +35,6 @@ public class PasswordSelectActivity extends AppCompatActivity {
     }
 
     private void init() {
-        application = new AppInitializer();
         lockManager = LockManager.getInstance();
         lockHelper = lockManager.getLockHelper(getApplicationContext());
         initBinding();
@@ -97,16 +94,6 @@ public class PasswordSelectActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (application.getAppInitializer(this.getApplicationContext()).getApplicationStatus()
-                == AppInitializer.ApplicationStatus.RETURNED_TO_FOREGROUND) {
-            if (lockHelper.isPasswordSet()) {
-                Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
-                intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                Log.v(TAG, getApplicationContext().getResources().getString(R.string.password_not_set_text));
-            }
-        }
         isSavePassword();
     }
 
@@ -168,7 +155,6 @@ public class PasswordSelectActivity extends AppCompatActivity {
         actionBar = null;
         lockManager = null;
         binding = null;
-        application = null;
         lockHelper = null;
     }
 }

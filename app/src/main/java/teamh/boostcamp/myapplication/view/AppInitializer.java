@@ -3,8 +3,10 @@ package teamh.boostcamp.myapplication.view;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.SparseArray;
 
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
@@ -13,11 +15,20 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
+import teamh.boostcamp.myapplication.view.password.LockHelper;
+import teamh.boostcamp.myapplication.view.password.LockHelperImpl;
+import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 
 public class AppInitializer extends Application {
 
     private static final String TAG = "AppInitializer";
+    private LockHelper lockHelper;
+    private CompositeDisposable disposable = new CompositeDisposable();
+
     public enum ApplicationStatus {
         BACKGROUND,
         RETURNED_TO_FOREGROUND,
@@ -39,6 +50,7 @@ public class AppInitializer extends Application {
     public void onCreate() {
         super.onCreate();
 
+        lockHelper = new LockHelperImpl(getApplicationContext());
         registerActivityLifecycleCallbacks(new ApplicationActivityLifecycleCallbacks());
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
@@ -50,15 +62,14 @@ public class AppInitializer extends Application {
         initWorker();
     }
 
-    private void initWorker(){
+    private void initWorker() {
         SharedPreferenceManager sharedPreferenceManager = SharedPreferenceManager.getInstance(getApplicationContext());
-        if(!sharedPreferenceManager.getWorkerState()){
+        if (!sharedPreferenceManager.getWorkerState()) {
             PeriodicWorkRequest weekWorkRequest = new PeriodicWorkRequest.Builder(DataInsertWorker.class, 7, TimeUnit.DAYS).build();
             WorkManager.getInstance().enqueue(weekWorkRequest);
             sharedPreferenceManager.setWorkerState(true);
         }
     }
-
 
     public class ApplicationActivityLifecycleCallbacks implements ActivityLifecycleCallbacks {
 
@@ -76,17 +87,24 @@ public class AppInitializer extends Application {
         public void onActivityStarted(Activity activity) {
 
             if (++runningActivityCount == 1) {
-                Log.v("10476 onStarted", String.valueOf(runningActivityCount) + " " +activity.getClass().getSimpleName()+"\n");
+                Log.v("10476 onStarted", String.valueOf(runningActivityCount) + " " + activity.getClass().getSimpleName() + "\n");
                 applicationStatus = ApplicationStatus.RETURNED_TO_FOREGROUND;
             } else if (runningActivityCount > 1) {
-                Log.v("10477 onStarted", String.valueOf(runningActivityCount) + " "+activity.getClass().getSimpleName()+"\n");
+                Log.v("10477 onStarted", String.valueOf(runningActivityCount) + " " + activity.getClass().getSimpleName() + "\n");
                 applicationStatus = ApplicationStatus.FOREGROUND;
             }
         }
 
         @Override
         public void onActivityResumed(Activity activity) {
-
+            if (applicationStatus == ApplicationStatus.RETURNED_TO_FOREGROUND) {
+                if (lockHelper.isPasswordSet()) {
+                    Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
+                    intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            }
         }
 
         @Override
@@ -98,7 +116,7 @@ public class AppInitializer extends Application {
         @Override
         public void onActivityStopped(Activity activity) {
             if (--runningActivityCount == 0) {
-                Log.v("10478 onStopped", String.valueOf(runningActivityCount) + " " +activity.getClass().getSimpleName()+"\n");
+                Log.v("10478 onStopped", String.valueOf(runningActivityCount) + " " + activity.getClass().getSimpleName() + "\n");
                 applicationStatus = ApplicationStatus.BACKGROUND;
             }
 

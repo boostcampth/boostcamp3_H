@@ -124,10 +124,10 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         }
 
 
-        LineDataSet selectedDataSet = new LineDataSet(selectedEmotionList, "선택");
+        LineDataSet selectedDataSet = new LineDataSet(selectedEmotionList, "선택한 감정들");
         setLineData(selectedDataSet, EmotionType.selectedEmotion);
 
-        LineDataSet analyzedDataSet = new LineDataSet(analyzedEmotionList, "분석");
+        LineDataSet analyzedDataSet = new LineDataSet(analyzedEmotionList, "분석한 감정들");
         setLineData(analyzedDataSet, EmotionType.analyzedEmotion);
 
         final LineData lineData = new LineData(dataSets);

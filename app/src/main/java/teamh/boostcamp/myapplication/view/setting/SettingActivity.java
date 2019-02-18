@@ -5,10 +5,8 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -41,25 +39,19 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
-import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
-import teamh.boostcamp.myapplication.view.password.LockHelper;
 import teamh.boostcamp.myapplication.view.password.LockManager;
-import teamh.boostcamp.myapplication.view.password.PasswordActivity;
+
 import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
 public class SettingActivity extends AppCompatActivity implements SettingView {
 
-    private static final String TAG = SettingActivity.class.getClass().getSimpleName();
+    private static final int SIGN_IN_CODE = 4899;
     private ActivitySettingBinding binding;
     private ActionBar actionBar;
     private Toolbar toolbar;
-    private static final int SIGN_IN_CODE = 4899;
-    private AppInitializer appInitializer;
-    private LockManager lockManager;
-    private LockHelper lockHelper;
     private SettingPresenter presenter;
-
+    private boolean signFlag = false;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
 
@@ -71,7 +63,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-
         init();
     }
 
@@ -79,7 +70,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initBinding();
         initActionBar();
         initFirebaseAuth();
-        initLock();
         initPresenter();
         progressDialog = new ProgressDialog(this);
     }
@@ -121,23 +111,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (appInitializer.getAppInitializer(getApplicationContext()).getApplicationStatus()
-                == AppInitializer.ApplicationStatus.RETURNED_TO_FOREGROUND) {
-            if (lockHelper.isPasswordSet()) {
-                // 저장된 비밀번호가 존재하는지 확인.
-                Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
-                intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } else {
-                Log.v(TAG, getApplicationContext().getResources().getString(R.string.password_not_set_text));
-            }
-        }
-    }
-
     private void initFirebaseAuth() {
         auth = FirebaseAuth.getInstance();
 
@@ -148,13 +121,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
-
-    private void initLock() {
-        appInitializer = new AppInitializer();
-        lockManager = LockManager.getInstance();
-        lockHelper = lockManager.getLockHelper(getApplicationContext());
-    }
-
 
     @Override
     protected void onDestroy() {
@@ -182,7 +148,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 startActivity(new Intent(SettingActivity.this, PasswordSelectActivity.class));
                 break;
             case R.id.rl_setting_login:
-                signIn();
+                if(!signFlag){
+                    signIn();
+                }else {
+                    signOut();
+                }
                 showToastMessage(R.string.login_success);
                 break;
             case R.id.rl_setting_logout:
@@ -242,8 +212,16 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     private void signIn() {
+        signFlag = true;
+        binding.rlSettingLoginText.setText(R.string.logout_success);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, SIGN_IN_CODE);
+    }
+
+    private void signOut() {
+        signFlag = false;
+        binding.rlSettingLoginText.setText(R.string.login_success);
+        auth.signOut();
     }
 
     @Override
