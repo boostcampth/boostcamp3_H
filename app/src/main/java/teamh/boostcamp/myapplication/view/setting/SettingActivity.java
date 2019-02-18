@@ -26,6 +26,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
+import androidx.work.WorkRequest;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
@@ -177,27 +180,27 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 showToastMessage(R.string.logout_success);
                 break;
             case R.id.rl_setting_initialization:
-                AlertDialog.Builder alertDialogBuilder =  new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-                alertDialogBuilder.setTitle("초기화");
-                alertDialogBuilder.setMessage("정말로 초기화 하시겠습니까. 모든 추억들이 사라집니다.");
-                alertDialogBuilder.setPositiveButton("초기화", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        presenter.deleteDiary();
-                        presenter.deleteRecall();
-                    }
-                });
-                alertDialogBuilder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                initInitialization();
                 break;
         }
+    }
 
+    private void initInitialization() {
+        AlertDialog.Builder alertDialogBuilder =  new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
+        alertDialogBuilder.setTitle("초기화")
+                .setMessage("정말로 초기화 하시겠습니까. 모든 추억들이 사라집니다.")
+                .setPositiveButton("초기화", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        WorkRequest initializationWorkRequest = new OneTimeWorkRequest.Builder(InitializationWorker.class).build();
+                        WorkManager.getInstance().enqueue(initializationWorkRequest);
+                    }
+                }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        }).create().show();
     }
 
     private void signIn() {
@@ -235,7 +238,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         FirebaseUser user = auth.getCurrentUser();
                         updateUI(user);
                     } else {
-
                         updateUI(null);
                     }
                 });
