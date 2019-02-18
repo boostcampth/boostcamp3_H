@@ -47,5 +47,5 @@ public interface DiaryRepository {
     Completable updateDiaryEntities(@NonNull DiaryEntity ...diaryEntities);
 
     @NonNull
-    Single<ShareDiary> loadShareDiary(@NonNull String id);
+    Single<DiaryEntity> loadShareDiary(@NonNull String id);
 }

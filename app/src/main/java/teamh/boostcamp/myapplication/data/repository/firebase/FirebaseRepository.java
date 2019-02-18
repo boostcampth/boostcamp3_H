@@ -26,4 +26,7 @@ public interface FirebaseRepository {
 
     @NonNull
     Single<List<DiaryEntity>> downloadRecordFile(@NonNull List<DiaryEntity> diaryEntityList);
+
+    @NonNull
+    Single<DiaryEntity> loadDiaryById(String id);
 }

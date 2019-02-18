@@ -142,6 +142,6 @@
     <string name="title_activity_password_select">PasswordSelectActivity</string>
 
     <!--kakao-->
-    <string name="kakao_description">%s의 기분은 %s입니다. 목소리를 분석한 결과는 %s입니다. 지금당장 하루듣기앱을 통해 목소리로 일기를 녹음하고 감정을 분석해보세요.</string>
+    <string name="kakao_description">%s의 기분은 %s입니다. 목소리를 분석한 결과는 %s입니다.</string>
 
 </resources>

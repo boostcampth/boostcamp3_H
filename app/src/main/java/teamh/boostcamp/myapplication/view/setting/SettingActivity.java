@@ -30,13 +30,10 @@ import androidx.databinding.DataBindingUtil;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
-import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
-import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
-import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
@@ -57,8 +54,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private ProgressDialog progressDialog;
 
-    private CompositeDisposable compositeDisposable;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,14 +71,10 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private void initPresenter() {
         presenter = new SettingPresenter(this,
-                RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
                         DeepAffectApiClient.getInstance()),
-                FirebaseRepositoryImpl.getInstance(),
-                SharedPreferenceManager.getInstance(getApplicationContext()));
-
-        compositeDisposable = new CompositeDisposable();
+                FirebaseRepositoryImpl.getInstance());
     }
 
     private void initBinding() {
@@ -166,7 +157,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         .setRationaleTitle(R.string.setting_permission_load_title)
                         .request()
                         .subscribe(tedPermissionResult -> {
-                            if(tedPermissionResult.isGranted()) {
+                            if (tedPermissionResult.isGranted()) {
                                 progressDialog.setMessage(getString(R.string.do_backup));
                                 presenter.backupLocalDataToFirebaseRepository();
                             }
@@ -179,12 +170,12 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         .setRationaleTitle(R.string.setting_permission_load_title)
                         .request()
                         .subscribe(tedPermissionResult -> {
-                           if(tedPermissionResult.isGranted()) {
-                               progressDialog.setMessage(getString(R.string.do_load));
-                               presenter.downloadAllBackupFilesFromFirebase();
-                           } else {
-                               showToast(R.string.permission_denied);
-                           }
+                            if (tedPermissionResult.isGranted()) {
+                                progressDialog.setMessage(getString(R.string.do_load));
+                                presenter.downloadAllBackupFilesFromFirebase();
+                            } else {
+                                showToast(R.string.permission_denied);
+                            }
                         }, Throwable::printStackTrace);
                 break;
             case R.id.rl_setting_initialization:
@@ -279,7 +270,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     protected void onPause() {
         super.onPause();
-        if(progressDialog.isShowing()) {
+        if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }
@@ -316,14 +307,14 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     @Override
     public void dismissDialog() {
-        if(progressDialog.isShowing()) {
+        if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }
 
     @Override
     public void showDialog() {
-        if(!progressDialog.isShowing()) {
+        if (!progressDialog.isShowing()) {
             progressDialog.show();
         }
     }

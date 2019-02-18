@@ -123,14 +123,9 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-    public Single<ShareDiary> loadShareDiary(String id) {
+    public Single<DiaryEntity> loadShareDiary(String id) {
 
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy년 MM월 dd일");
         return diaryDao.selectDiaryById(id)
-                .map(diaryEntity -> new ShareDiary(simpleDateFormat.format(diaryEntity.getRecordDate()),
-                        diaryEntity.getSelectedEmotion(),
-                        diaryEntity.getAnalyzedEmotion(),
-                        "url"))
                 .subscribeOn(Schedulers.io());
     }
 }

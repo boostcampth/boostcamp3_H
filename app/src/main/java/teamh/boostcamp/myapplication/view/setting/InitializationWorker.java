@@ -42,7 +42,7 @@ public class InitializationWorker extends Worker {
                         })
                         .flatMapCompletable(diary -> diaryRepository.deleteDiary(diary.getId()))
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe()
+                .subscribe()
         );
 
         compositeDisposable.add(
