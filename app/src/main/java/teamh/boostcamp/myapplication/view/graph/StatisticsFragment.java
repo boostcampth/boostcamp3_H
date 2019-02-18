@@ -146,9 +146,9 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
             final View tagView = inflater.inflate(R.layout.layout_graph_hash_tag, null, false);
             final TextView tagTextView = tagView.findViewById(R.id.tv_hash_tag);
 
+            tagTextView.setTextSize(hashTagItems.get(i).getCount() * 10f);
             if (hashTagItems.get(i).getCount() > 3) {
                 tagTextView.setTextColor(context.getResources().getColor(R.color.graphColor));
-                tagTextView.setTextSize(hashTagItems.get(i).getCount() * 10f);
             }
 
             tagTextView.setText(hashTagItems.get(i).getTagName());
