@@ -1,7 +1,5 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
-import android.util.Log;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,7 +60,7 @@ class DiaryListPresenter {
         this.sharedPreferenceManager = sharedPreferenceManager;
 
         this.compositeDisposable = new CompositeDisposable();
-        this.selectedEmotion = null;
+        this.selectedEmotion = Emotion.fromValue(3);
 
         this.isLoading = false;
         this.isRecording = false;
@@ -141,8 +139,6 @@ class DiaryListPresenter {
                         diaryListView.insertDiaryList(DiaryMapper.toDiary(diaryEntity));
                         diaryListView.setIsSaving(false);
                     }, Throwable::printStackTrace));
-        } else {
-            // TODO : 기능 구현
         }
     }
 
@@ -199,6 +195,11 @@ class DiaryListPresenter {
         if (sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
             diaryListView.setRecordCardVisibilityGone();
         }
+
+        compositeDisposable.add(DiaryRxEventBus.get()
+                .filter(o -> o.toString().equals("download"))
+                .subscribe(o -> diaryListView.setIsBackup(true),
+                        throwable -> ((Throwable) throwable).printStackTrace()));
     }
 
     void onViewDestroyed() {

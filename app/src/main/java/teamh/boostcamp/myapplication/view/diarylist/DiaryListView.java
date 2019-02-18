@@ -20,6 +20,8 @@ public interface DiaryListView {
 
     void showEmotionNotSelected();
 
+    void setIsBackup(boolean isBackup);
+
     void showRecordFileNotFound();
 
     void setIsSaving(boolean isSaving);

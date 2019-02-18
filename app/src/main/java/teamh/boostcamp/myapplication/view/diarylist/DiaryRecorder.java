@@ -1,6 +1,7 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
 import androidx.annotation.NonNull;
+import teamh.boostcamp.myapplication.view.diarylist.listener.MediaRecorderTimeOutListener;
 
 public interface DiaryRecorder {
 
