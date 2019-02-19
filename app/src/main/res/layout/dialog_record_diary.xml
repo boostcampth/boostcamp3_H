@@ -5,31 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/law_item_dialog_background"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:lottie_loop="true"
-        app:lottie_scale="0.6"
-        android:visibility="gone"
-        app:lottie_fileName="record_background.json"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <ImageView
-        android:id="@+id/iv_item_dialog_mic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_mic_black_not_record_32dp"
-        app:layout_constraintStart_toStartOf="@id/law_item_dialog_background"
-        app:layout_constraintTop_toTopOf="@id/law_item_dialog_background"
-        app:layout_constraintEnd_toEndOf="@id/law_item_dialog_background"
-        app:layout_constraintBottom_toBottomOf="@id/law_item_dialog_background"/>
-
-
     <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/pb_item_dialog_progress"
         android:layout_width="250dp"
