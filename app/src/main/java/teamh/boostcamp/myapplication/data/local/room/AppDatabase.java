@@ -52,7 +52,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                 public void onOpen(@NonNull SupportSQLiteDatabase db) {
                                     super.onOpen(db);
                                     // FIXME 더미 데이터 추가
-/*                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
                                     final String filePath = File.separator + "storage" + File.separator
                                     + "emulated" + File.separator + "0" + File.separator + "diary" + File.separator +
                                             simpleDateFormat.format(new Date()) + ".aac";
@@ -92,7 +92,7 @@ public abstract class AppDatabase extends RoomDatabase {
                                                 Log.d("test", "Test");
                                             }, throwable -> {
                                                 throwable.printStackTrace();
-                                            });*/
+                                            });
                                 }
                             })
                             .build();
