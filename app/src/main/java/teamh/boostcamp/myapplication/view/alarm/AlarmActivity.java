@@ -1,6 +1,5 @@
 package teamh.boostcamp.myapplication.view.alarm;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -20,10 +19,6 @@ import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.databinding.ActivityAlarmBinding;
-import teamh.boostcamp.myapplication.view.AppInitializer;
-import teamh.boostcamp.myapplication.view.password.LockHelper;
-import teamh.boostcamp.myapplication.view.password.LockManager;
-import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 
 public class AlarmActivity extends AppCompatActivity implements AlarmView {
 

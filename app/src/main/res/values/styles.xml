@@ -175,4 +175,8 @@
 
     </style>
 
+    <style name="PopUpDialogTheme" parent="Theme.AppCompat.Dialog">
+        <item name="android:textColorPrimary">@color/main_dark</item>
+    </style>
+
 </resources>

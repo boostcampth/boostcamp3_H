@@ -73,9 +73,9 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
                     android:src="@drawable/ic_setting_right" />
 
             </RelativeLayout>
@@ -101,17 +101,17 @@
                     style="@style/explain_style_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/title_margin_left"
+                    android:layout_marginStart="@dimen/title_margin_left"
                     android:text="@string/setting_password" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
                     android:src="@drawable/ic_setting_right" />
             </RelativeLayout>
 
@@ -139,17 +139,17 @@
                     style="@style/explain_style_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/title_margin_left"
+                    android:layout_marginStart="@dimen/title_margin_left"
                     android:text="@string/setting_login" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
                     android:src="@drawable/ic_setting_right" />
 
             </RelativeLayout>
@@ -186,17 +186,17 @@
                     style="@style/explain_style_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/title_margin_left"
+                    android:layout_marginStart="@dimen/title_margin_left"
                     android:text="@string/setting_backup" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
                     android:src="@drawable/ic_setting_right" />
 
             </RelativeLayout>
@@ -225,17 +225,17 @@
                     style="@style/explain_style_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/title_margin_left"
+                    android:layout_marginStart="@dimen/title_margin_left"
                     android:text="@string/setting_restore" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
                     android:src="@drawable/ic_setting_right" />
 
             </RelativeLayout>
@@ -271,22 +271,20 @@
                     style="@style/explain_style_black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/title_margin_left"
+                    android:layout_marginStart="@dimen/title_margin_left"
                     android:text="@string/setting_initialization" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/layout_margin"
+                    android:layout_marginEnd="@dimen/layout_margin"
                     android:src="@drawable/ic_setting_right" />
 
             </RelativeLayout>
-
-
         </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

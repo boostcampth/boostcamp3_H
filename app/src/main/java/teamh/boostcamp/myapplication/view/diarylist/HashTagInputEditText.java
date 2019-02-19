@@ -41,10 +41,10 @@ public class HashTagInputEditText extends AppCompatEditText implements TextWatch
     @Override
     public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
         if (adapter != null && count != 0 && !TextUtils.isEmpty(charSequence)) {
-            if (charSequence.charAt(start) == '#') {
+            if (getText() != null && charSequence.charAt(start) == '#' ) {
                 setText(getText().toString().substring(0, start));
                 setSelection(start);
-            } else if (Character.isSpaceChar(charSequence.charAt(start))) {
+            } else if (getText() != null && Character.isSpaceChar(charSequence.charAt(start))) {
                 adapter.addItem("#" + getText().toString().trim());
                 setText("");
             }

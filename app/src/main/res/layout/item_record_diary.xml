@@ -74,8 +74,8 @@
                     android:gravity="center"
                     android:minWidth="@dimen/diary_emoji_min"
                     android:minHeight="@dimen/diary_emoji_min"
-                    android:textColor="@color/emoji_color"
                     android:textSize="60dp"
+                    android:textColor="@color/selected_emoji_color"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

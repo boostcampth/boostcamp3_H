@@ -14,7 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
+import teamh.boostcamp.myapplication.data.model.Event;
+import teamh.boostcamp.myapplication.utils.EventBus;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
 import teamh.boostcamp.myapplication.view.password.LockHelperImpl;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
@@ -31,7 +35,6 @@ public class AppInitializer extends Application {
     }
 
     private ApplicationStatus applicationStatus = ApplicationStatus.FOREGROUND;
-
 
     public AppInitializer getAppInitializer(Context context) {
         return (AppInitializer) context.getApplicationContext();

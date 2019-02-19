@@ -5,13 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
-import androidx.annotation.IntDef;
-
-/*
- * Created By JongSeong */
 public class NetworkStateUtil {
 
     private static final String TAG = "NetworkStateUtil";

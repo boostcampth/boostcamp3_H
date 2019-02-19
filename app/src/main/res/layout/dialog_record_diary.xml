@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         app:lottie_loop="true"
         app:lottie_scale="0.6"
+        android:visibility="gone"
         app:lottie_fileName="record_background.json"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -27,5 +28,39 @@
         app:layout_constraintTop_toTopOf="@id/law_item_dialog_background"
         app:layout_constraintEnd_toEndOf="@id/law_item_dialog_background"
         app:layout_constraintBottom_toBottomOf="@id/law_item_dialog_background"/>
+
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/pb_item_dialog_progress"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:progressDrawable="@drawable/circular_progress_bar"
+        android:background="@drawable/circular_progress_bar_background"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:max="60"
+        android:progress="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_item_dialog_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/max_time"
+        android:textSize="24dp"
+        app:layout_constraintStart_toStartOf="@id/pb_item_dialog_progress"
+        app:layout_constraintEnd_toEndOf="@id/pb_item_dialog_progress"
+        app:layout_constraintTop_toTopOf="@id/pb_item_dialog_progress"
+        app:layout_constraintBottom_toBottomOf="@id/pb_item_dialog_progress"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_out_message"
+        app:layout_constraintStart_toStartOf="@id/pb_item_dialog_progress"
+        app:layout_constraintEnd_toEndOf="@id/pb_item_dialog_progress"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_dialog_timer"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

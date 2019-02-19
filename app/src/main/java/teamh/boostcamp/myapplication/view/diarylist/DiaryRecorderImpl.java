@@ -3,13 +3,14 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import android.media.MediaRecorder;
 import android.os.Environment;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
-import teamh.boostcamp.myapplication.view.diarylist.listener.MediaRecorderTimeOutListener;
+import androidx.annotation.Nullable;
 
 /*
  * MediaRecord 작업에만 관심이 있는 클래스 분리
@@ -22,9 +23,10 @@ class DiaryRecorderImpl implements DiaryRecorder {
     private static final int MAX_DURATION = 1000 * 60;
 
     private MediaRecorder mediaRecorder;
-    private String filePath;
+    @Nullable
+    private String filePath = null;
 
-    private MediaRecorderTimeOutListener mediaRecorderTimeOutListener;
+    //private MediaRecorderTimeOutListener mediaRecorderTimeOutListener;
 
     DiaryRecorderImpl() {
         mediaRecorder = new MediaRecorder();
@@ -42,6 +44,10 @@ class DiaryRecorderImpl implements DiaryRecorder {
         mediaRecorder.stop();
     }
 
+    @Override
+    public void clearFilePath() {
+        filePath = null;
+    }
 
     @Override
     public void releaseRecorder() {
@@ -51,7 +57,7 @@ class DiaryRecorderImpl implements DiaryRecorder {
         }
     }
 
-    @NonNull
+    @Nullable
     @Override
     public String getFilePath() {
         return filePath;
@@ -77,17 +83,19 @@ class DiaryRecorderImpl implements DiaryRecorder {
         }
     }
 
-    @Override
+/*    @Override
     public void setMediaRecorderTimeOutListener(@NonNull MediaRecorderTimeOutListener mediaRecorderTimeOutListener) {
         this.mediaRecorderTimeOutListener = mediaRecorderTimeOutListener;
         this.mediaRecorder.setOnInfoListener((mediaRecorder1, i, i1) ->
                 this.mediaRecorderTimeOutListener.onTimeOut()
         );
-    }
+    }*/
 
     private String generateFilePath() {
-        return String.format("%s/diary/%s.acc",
-                Environment.getExternalStorageDirectory().getAbsolutePath(),
-                DATE_FORMAT.format(new Date()));
+        return Environment.getExternalStorageDirectory().getAbsoluteFile() +
+                File.separator +
+                "diary" +
+                File.separator +
+                DATE_FORMAT.format(new Date());
     }
 }

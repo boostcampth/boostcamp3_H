@@ -223,6 +223,7 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
                 recordFile.createNewFile();
 
                 recordRef.getFile(recordFile).addOnSuccessListener(taskSnapshot -> {
+                    Log.d("Test", numOfDownloadFile.get() + "");
                     // 저장이 완료되었으면 저장 count 추가해주기
                     numOfDownloadFile.set(numOfDownloadFile.get() - 1);
                     if (numOfDownloadFile.get() == 0) {
