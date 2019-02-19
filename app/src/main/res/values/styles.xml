@@ -1,4 +1,4 @@
-<resources xmlns:app="http://schemas.android.com/apk/res-auto">
+<resources>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -61,36 +61,10 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextButtonNormal">
-        <item name="android:textColor">@color/all_purple</item>
-        <item name="android:textSize">@dimen/all_body_16dp</item>
-        <item name="android:textStyle">normal</item>
-    </style>
-
-    <style name="CustomTimePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:colorAccent">@color/all_purple</item>
-        <item name="android:colorPrimary">@color/all_purple</item>
-        <item name="android:colorPrimaryDark">@color/all_purple</item>
-        <item name="android:numbersTextColor">@color/black</item>
-        <item name="colorControlActivated">@color/all_purple</item>
-    </style>
-
-    <style name="AlarmTimePickerDialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/white</item>
-        <item name="colorControlActivated">#558b2f</item>
-        <item name="colorPrimary">@color/white</item>
-
-
-    </style>
-
     <style name="AlarmTextStyle">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/all_body_16dp</item>
         <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="RippleDefaultStyle">
-
     </style>
 
     <style name="PasswordInputTheme">
@@ -162,8 +136,8 @@
         <item name="android:textColorPrimary">@color/main_text</item>
         <item name="android:background">@color/white</item>
     </style>
-  
 
+    <!--Alarm Custom Number Picker-->
     <style name="CustomNumberPickerTheme">
         <item name="android:textSize">20dp</item>
         <item name="android:colorControlActivated">@color/main_dark</item>
@@ -171,12 +145,15 @@
         <item name="android:textColorPrimary">@color/black</item>
     </style>
 
-    <style name="password_subtitle_style">
-
-    </style>
-
     <style name="PopUpDialogTheme" parent="Theme.AppCompat.Dialog">
         <item name="android:textColorPrimary">@color/main_dark</item>
+    </style>
+
+    <style name="Statistics_text_style">
+        <item name="android:textSize">@dimen/all_body_16dp</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">@color/black</item>
+
     </style>
 
 </resources>

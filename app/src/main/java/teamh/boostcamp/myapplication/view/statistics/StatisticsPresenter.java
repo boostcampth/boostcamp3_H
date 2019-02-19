@@ -42,14 +42,13 @@ public class StatisticsPresenter {
                     // TODO 에러 처리
                     StatisticsView.checkLoadStatisticsDataFailMessage();
                 }));
-        //compositeDisposable.clear();
     }
 
     void loadTagList() {
         compositeDisposable.add(statisticsRepository.loadRecentCountedTagList(new Date())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(countedTags -> {
-                    // TODO : 뷰에 처리
+                    // TODO : 뷰에 전달
                     StatisticsView.updateTagListData(countedTags);
                     StatisticsView.checkLoadTagListSuccessMessage();
                 }, throwable -> {

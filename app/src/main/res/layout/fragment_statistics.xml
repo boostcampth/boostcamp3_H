@@ -39,13 +39,14 @@
                 android:id="@+id/cv_graph"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/layout_margin"
+                android:layout_marginTop="@dimen/layout_margin"
+                android:layout_marginEnd="@dimen/layout_margin"
                 android:elevation="@dimen/card_elevation"
                 app:cardCornerRadius="@dimen/card_view_radius"
-                android:layout_marginStart="@dimen/layout_margin"
-                android:layout_marginEnd="@dimen/layout_margin"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_graph"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/tv_graph">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -55,8 +56,9 @@
                         android:id="@+id/rl_graph_type"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
+                        android:layout_marginTop="@dimen/layout_gutter"
+                        android:baselineAligned="false"
                         android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/layout_margin"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent">
@@ -74,13 +76,11 @@
                                 android:src="@drawable/selected_color_drawable" />
 
                             <TextView
+                                style="@style/Statistics_text_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:text="선택한 감정"
-                                android:textColor="#000000"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
+                                android:text="@string/statistics_selected_emotion" />
 
                         </LinearLayout>
 
@@ -97,13 +97,11 @@
                                 android:src="@drawable/analyzed_color_drawable" />
 
                             <TextView
+                                style="@style/Statistics_text_style"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="8dp"
-                                android:text="분석한 감정"
-                                android:textColor="#000000"
-                                android:textSize="16dp"
-                                android:textStyle="bold" />
+                                android:text="@string/statistics_analyzed_emotion" />
 
                         </LinearLayout>
                     </LinearLayout>
@@ -112,12 +110,13 @@
                         android:id="@+id/lc_emotion_graph"
                         android:layout_width="0dp"
                         android:layout_height="300dp"
-                        android:layout_marginTop="@dimen/layout_margin"
-                        android:layout_marginBottom="@dimen/layout_margin"
-                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginBottom="32dp"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/rl_graph_type"
-                        app:layout_constraintBottom_toBottomOf="parent"/>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/rl_graph_type" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -140,7 +139,7 @@
             <androidx.cardview.widget.CardView
                 android:id="@+id/cv_hash_tag"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/title_margin_left"
                 android:layout_marginTop="@dimen/layout_gutter"
@@ -153,17 +152,28 @@
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_hash_tag_title">
 
-                <teamh.boostcamp.myapplication.view.statistics.HashTagCustomLayout
-                    android:id="@+id/hash_tag_custom_layout"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/layout_margin"
-                    android:layout_marginTop="@dimen/layout_gutter"
-                    android:layout_marginEnd="@dimen/layout_margin"
-                    android:layout_marginRight="@dimen/layout_margin"
-                    android:layout_marginBottom="@dimen/layout_margin"
-                    android:gravity="center" />
+                    android:layout_height="match_parent">
+
+                    <teamh.boostcamp.myapplication.view.statistics.HashTagCustomLayout
+                        android:id="@+id/hash_tag_custom_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginStart="@dimen/layout_margin"
+                        android:layout_marginTop="@dimen/layout_gutter"
+                        android:layout_marginEnd="@dimen/layout_margin"
+                        android:layout_marginBottom="@dimen/layout_margin"
+                        android:gravity="center" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
