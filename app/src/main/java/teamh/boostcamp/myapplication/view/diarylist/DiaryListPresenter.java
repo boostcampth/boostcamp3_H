@@ -138,7 +138,7 @@ class DiaryListPresenter {
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(diaryEntity -> {
                         setLastItemSavedTime(saveTime);
-                        diaryListView.setRecordCardVisibilityGone();
+                        //diaryListView.setRecordCardVisibilityGone();
                         diaryListView.showAnalyzedEmotion(diaryEntity.getAnalyzedEmotion());
                         diaryListView.insertDiaryList(DiaryMapper.toDiary(diaryEntity));
                         diaryListView.setIsSaving(false);
@@ -196,9 +196,9 @@ class DiaryListPresenter {
     void onViewCreated() {
         String today = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date());
 
-        if (sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
+        /*if (sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
             diaryListView.setRecordCardVisibilityGone();
-        }
+        }*/
 
         compositeDisposable.add(DiaryRxEventBus.get()
                 .filter(o -> o.toString().equals("download"))

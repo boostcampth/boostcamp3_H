@@ -2,12 +2,12 @@ package teamh.boostcamp.myapplication.view.password;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import teamh.boostcamp.myapplication.R;
@@ -18,6 +18,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     private ActivityPasswordBinding binding;
     private PasswordPresenter passwordPresenter;
     private int type = -1;
+    @Nullable
     private String oldPassword = null;
 
     @Override
@@ -48,41 +49,39 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
             // 밑에 message가 존재하면 변경 버튼을 눌렀다는 의미야..
             String message = extras.getString(LockHelper.EXTRA_MESSAGE);
             if (message != null) {
-                binding.tvMessage.setText(message);
+                binding.tvMessage.setText(getApplicationContext()
+                        .getResources()
+                        .getString(R.string.password_before_input_text));
             } else {
                 binding.tvMessage.setText(getString(R.string.password_please_input_text));
             }
 
-            // 이제 SettingActivity에서 넘어온 타입을 확인할 수 있음.
+            // SettingActivity에서 넘어온 타입을 확인할 수 있음.
             type = extras.getInt(LockHelper.EXTRA_TYPE, -1);
-            Log.v("Test4433", String.valueOf(type));
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
     }
 
     // back 키 눌렀을 때
     @Override
     public void onBackPressed() {
         if (type == LockHelper.UNLOCK_PASSWORD) {
-            // back to home screen
-            Intent intent = new Intent();
+            final Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             this.startActivity(intent);
-            finish();
-            overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+            activityFinish();
         } else {
-            finish();
-            overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+            activityFinish();
         }
     }
 
-    public void onNumberButtonClick(int id) {
+    // activity 사라질 때.
+    private void activityFinish() {
+        finish();
+        overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+    }
+
+    public void onNumberButtonClick(final int id) {
         String currentPassword = "";
         switch (id) {
             case R.id.button_password_one:
@@ -116,11 +115,10 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                 currentPassword = binding.buttonPasswordZero.getText().toString();
                 break;
         }
-
         checkPassword(currentPassword);
     }
 
-    public void onDeleteNumberButton(int id) {
+    public void onDeleteNumberButton(final int id) {
         switch (id) {
             case R.id.button_password_clear:
                 clearPassword();
@@ -177,8 +175,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                 if (passwordPresenter.checkPassword(lockPassword)) { // 비밀번호 일치시
                     setResult(RESULT_OK);
                     passwordPresenter.savePassword(null);
-                    finish();
-                    overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+                    activityFinish();
                 } else {
                     showPasswordErrorMessage();
                 }
@@ -193,8 +190,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                     if (lockPassword.equals(oldPassword)) { // 비밀번호 저장하기 위함.
                         setResult(RESULT_OK);
                         passwordPresenter.savePassword(lockPassword);
-                        finish();
-                        overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+                        activityFinish();
                     } else {
                         oldPassword = null;
                         binding.tvMessage.setText(getString(R.string.password_please_input_text));
@@ -217,19 +213,16 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
             case LockHelper.UNLOCK_PASSWORD:
                 if (passwordPresenter.checkPassword(lockPassword)) {
                     setResult(RESULT_OK);
-                    finish();
-                    overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+                    activityFinish();
                 } else {
                     showPasswordErrorMessage();
                 }
                 break;
             // Splash에서 들어온 경우
             case LockHelper.SPLASH_PASSWORD:
-                Log.v("Test4433", String.valueOf(type));
                 if (passwordPresenter.checkPassword(lockPassword)) {
                     setResult(RESULT_OK);
-                    finish();
-                    overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
+                    activityFinish();
                 } else {
                     showPasswordErrorMessage();
                 }

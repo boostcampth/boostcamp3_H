@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityMainBinding;
-import teamh.boostcamp.myapplication.view.AppInitializer;
 import teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import teamh.boostcamp.myapplication.view.graph.StatisticsFragment;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private RecallFragment recallFragment;
     private DiaryListFragment diaryListFragment;
     private StatisticsFragment statisticsFragment;
-    private LockManager lockManager;
 
     private BottomNavigationView.OnNavigationItemSelectedListener onNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -64,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getData();
         // bindingUtil 설정
         binding = DataBindingUtil.setContentView(MainActivity.this, R.layout.activity_main);
         binding.setActivity(this);
@@ -72,15 +72,25 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         presenter = new MainPresenter(this);
 
-        // 아래 초기화 하지 않으면 에러 발생
-        lockManager = LockManager.getInstance();
-        //lockManager.enableLock(getApplication());
-
         recallFragment = RecallFragment.newInstance();
         diaryListFragment = DiaryListFragment.newInstance();
         statisticsFragment = StatisticsFragment.newInstance();
 
         initBottomNavigation();
+    }
+
+    private void getData() {
+        Intent getData = getIntent();
+        if (getData != null) {
+            if (getData.getStringExtra("tag").equals("1")) {
+                Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
+                intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
+                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else if (getData.getStringExtra("tag").equals("2")) {
+            }
+
+        }
     }
 
     @Override

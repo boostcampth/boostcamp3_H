@@ -136,8 +136,8 @@
     <string name="alarm_description_text">매일 %s 에 알람이 울립니다.</string>
 
     <!--login-->
-    <string name="login_success">Login</string>
-    <string name="logout_success">Logout</string>
+    <string name="login_success">로그인</string>
+    <string name="logout_success">로그아웃</string>
     <string name="title_activity_setting">SettingActivity</string>
     <string name="title_activity_password_select">PasswordSelectActivity</string>
 
