@@ -2,7 +2,6 @@ package teamh.boostcamp.myapplication.view;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,10 +30,6 @@ public class AppInitializer extends Application {
     }
 
     private ApplicationStatus applicationStatus = ApplicationStatus.FOREGROUND;
-
-    public AppInitializer getAppInitializer(Context context) {
-        return (AppInitializer) context.getApplicationContext();
-    }
 
     public boolean isReturnedForeground() {
         return applicationStatus.ordinal() == ApplicationStatus.RETURNED_TO_FOREGROUND.ordinal();
@@ -79,7 +74,6 @@ public class AppInitializer extends Application {
          * */
         @Override
         public void onActivityStarted(Activity activity) {
-
             if (++runningActivityCount == 1) {
                 applicationStatus = ApplicationStatus.RETURNED_TO_FOREGROUND;
             } else if (runningActivityCount > 1) {
@@ -89,11 +83,10 @@ public class AppInitializer extends Application {
 
         @Override
         public void onActivityResumed(Activity activity) {
-
             if (activity instanceof PasswordActivity) {
                 Log.v(TAG, String.valueOf(((PasswordActivity) activity).getType()));
             } else if (activity instanceof SplashActivity) {
-                //Log.v(TAG, String.valueOf(((PasswordActivity) activity).getType()));
+
             } else if (isReturnedForeground()) {
                 if (lockHelper.isPasswordSet()) {
                     startPasswordActivity(LockHelper.UNLOCK_PASSWORD);
@@ -110,7 +103,6 @@ public class AppInitializer extends Application {
 
         @Override
         public void onActivityPaused(Activity activity) {
-
 
         }
 
