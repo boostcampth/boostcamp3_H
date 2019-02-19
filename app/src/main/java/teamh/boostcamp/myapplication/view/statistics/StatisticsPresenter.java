@@ -13,16 +13,16 @@ public class StatisticsPresenter {
     private StatisticsRepository statisticsRepository;
 
     @NonNull
-    private StatisticsView statisticsView;
+    private StatisticsView StatisticsView;
 
     @NonNull
     private CompositeDisposable compositeDisposable;
 
     // 생성자를 통한 주입.
-    StatisticsPresenter(@NonNull StatisticsView statisticsView,
+    StatisticsPresenter(@NonNull StatisticsView StatisticsView,
                         @NonNull StatisticsRepository statisticsRepository) {
         this.statisticsRepository = statisticsRepository;
-        this.statisticsView = statisticsView;
+        this.StatisticsView = StatisticsView;
         this.compositeDisposable = new CompositeDisposable();
     }
 
@@ -36,11 +36,11 @@ public class StatisticsPresenter {
         compositeDisposable.add(statisticsRepository.loadRecentEmotionHistoryList(new Date())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(emotionHistoryList -> {
-                    statisticsView.updateStatisticsData(emotionHistoryList);
-                    statisticsView.checkLoadStatisticsDataSuccessMessage();
+                    StatisticsView.updateStatisticsData(emotionHistoryList);
+                    StatisticsView.checkLoadStatisticsDataSuccessMessage();
                 }, throwable -> {
                     // TODO 에러 처리
-                    statisticsView.checkLoadStatisticsDataFailMessage();
+                    StatisticsView.checkLoadStatisticsDataFailMessage();
                 }));
         //compositeDisposable.clear();
     }
@@ -50,11 +50,11 @@ public class StatisticsPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(countedTags -> {
                     // TODO : 뷰에 처리
-                    statisticsView.updateTagListData(countedTags);
-                    statisticsView.checkLoadTagListSuccessMessage();
+                    StatisticsView.updateTagListData(countedTags);
+                    StatisticsView.checkLoadTagListSuccessMessage();
                 }, throwable -> {
                     // TODO : 에러 처리
-                    statisticsView.checkLoadTagListFailMessage();
+                    StatisticsView.checkLoadTagListFailMessage();
                 }));
     }
 
