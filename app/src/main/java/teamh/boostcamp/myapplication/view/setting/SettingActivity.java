@@ -1,10 +1,10 @@
 package teamh.boostcamp.myapplication.view.setting;
 
 import android.Manifest;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -48,11 +48,13 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private ActionBar actionBar;
     private Toolbar toolbar;
     private SettingPresenter presenter;
+<<<<<<< HEAD
+=======
+
+>>>>>>> issue-219/예외처리 추가 및 crashlytics 추가
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
     private CompositeDisposable compositeDisposable;
-
-    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +76,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initActionBar();
         initFirebaseAuth();
         initPresenter();
+<<<<<<< HEAD
         progressDialog = new ProgressDialog(this);
         compositeDisposable = new CompositeDisposable();
+=======
+>>>>>>> issue-219/예외처리 추가 및 crashlytics 추가
     }
 
     private void initPresenter() {
@@ -96,8 +101,10 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         toolbar = findViewById(R.id.toolbar_setting);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDisplayShowTitleEnabled(false);
+        if(actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(false);
+        }
     }
 
     @Override
@@ -126,6 +133,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("Test", "Test");
         presenter.onDestroy();
         toolbar = null;
         actionBar = null;
@@ -134,6 +142,15 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     public void showLoginMessage() {
         showToast(R.string.login_success);
+    }
+
+    @Override
+    public void showBackUpStartMsg() {
+        showToast(R.string.backup_start);
+    }
+
+    public void showLoadStartMsg() {
+        showToast(R.string.download_start);
     }
 
     private void showToast(@StringRes final int id) {
@@ -159,7 +176,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         .request()
                         .subscribe(tedPermissionResult -> {
                             if (tedPermissionResult.isGranted()) {
-                                progressDialog.setMessage(getString(R.string.do_backup));
                                 presenter.backupLocalDataToFirebaseRepository();
                             }
                         }, Throwable::printStackTrace);
@@ -172,7 +188,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         .request()
                         .subscribe(tedPermissionResult -> {
                             if (tedPermissionResult.isGranted()) {
-                                progressDialog.setMessage(getString(R.string.do_load));
                                 presenter.downloadAllBackupFilesFromFirebase();
                             } else {
                                 showToast(R.string.permission_denied);
@@ -264,44 +279,20 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     @Override
+    public void startWorker(OneTimeWorkRequest request) {
+        WorkManager.getInstance().enqueue(request);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
         // 시작 -> 처리될 애니메이션
         this.overridePendingTransition(R.anim.anim_left_to_right, R.anim.anim_right_to_left);
     }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
-    @Override
-    public void showBackUpSuccessMsg() {
-        showToast(R.string.backup_success);
-    }
-
     @Override
     public void showInitializationMessage() {
         showToastMessage(R.string.setting_initialization_success);
-    }
-
-    public void showBackUpFailMsg() {
-        progressDialog.dismiss();
-        showToast(R.string.backup_fail);
-    }
-
-    @Override
-    public void showLoadSuccessMsg() {
-        showToast(R.string.load_success);
-    }
-
-    @Override
-    public void showLoadFailMsg() {
-        showToast(R.string.load_fail);
     }
 
     @Override
@@ -309,24 +300,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         showToast(R.string.not_login);
     }
 
-    @Override
-    public void dismissDialog() {
-        if (progressDialog.isShowing()) {
-            progressDialog.dismiss();
-        }
-    }
-
-    @Override
-    public void showDialog() {
-        if (!progressDialog.isShowing()) {
-            progressDialog.show();
-        }
-    }
-
-    private void showToast(String message) {
-        Toast.makeText(SettingActivity.this, message, Toast.LENGTH_SHORT).show();
-    }
-
+    @SuppressWarnings("SameParameterValue")
     private void showToastMessage(@StringRes final int stringId) {
         Toast.makeText(this, getString(stringId), Toast.LENGTH_SHORT).show();
     }

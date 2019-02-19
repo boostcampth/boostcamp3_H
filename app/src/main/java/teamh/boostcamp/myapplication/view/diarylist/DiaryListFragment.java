@@ -3,6 +3,7 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +24,19 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.schedulers.Schedulers;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
+import teamh.boostcamp.myapplication.data.model.Event;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
+import teamh.boostcamp.myapplication.utils.EventBus;
 import teamh.boostcamp.myapplication.utils.KakaoLinkHelperImpl;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
@@ -66,7 +71,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if(getFragmentManager() != null) {
+        if (getFragmentManager() != null) {
             this.fragmentManager = getFragmentManager();
         }
     }
@@ -74,13 +79,17 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Log.d("Test", "DiaryListFragment onDestroy");
         presenter.onViewDestroyed();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        compositeDisposable.clear();
+    public void onPause() {
+        super.onPause();
+        if (recordingDiaryDialog.isViewPopUp()) {
+            recordingDiaryDialog.dismiss();
+        }
+        presenter.onViewPaused();
     }
 
     @Override
@@ -106,6 +115,22 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
             initDialog();
             compositeDisposable = new CompositeDisposable();
         }
+
+        compositeDisposable.add(EventBus.get().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    switch (event) {
+                        case BACK_UP_COMPLETE:
+                            diaryListAdapter.clear();
+                            break;
+                        case DOWNLOAD_COMPLETE:
+                            diaryListAdapter.clear();
+                            presenter.loadDiaryList(LOAD_ITEM_NUM);
+                            break;
+                        default:
+                            break;
+                    }
+                }));
 
         presenter.loadDiaryList(LOAD_ITEM_NUM);
 
@@ -188,7 +213,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     }
 
     private void initPresenter() {
-        if(getContext() != null) {
+        if (getContext() != null) {
             presenter = new DiaryListPresenter(this,
                     DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                             getContext().getApplicationContext()).diaryDao(),
@@ -202,7 +227,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
 
     private void initView() {
         presenter.onViewCreated();
-        if(binding.recyclerViewMainList.getItemAnimator() != null) {
+        if (binding.recyclerViewMainList.getItemAnimator() != null) {
             binding.recyclerViewMainList.getItemAnimator().setChangeDuration(0);
         }
         binding.recyclerViewMainList.setNestedScrollingEnabled(false);
@@ -220,23 +245,24 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
         binding.rvItemRecordTags.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
 
 
-        binding.buttonRecordItemRecord.setOnClickListener(v ->{
-            if(getContext() != null) {
-                compositeDisposable.add(TedRx2Permission.with(getContext())
-                        .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
-                        .setRationaleTitle(getContext().getString(R.string.item_record_permission_title))
-                        .setRationaleMessage(getContext().getString(R.string.item_record_permission_msg))
-                        .request()
-                        .subscribe(tedPermissionResult -> {
-                            if (tedPermissionResult.isGranted()) {
-                                KeyPadUtil.closeKeyPad(getContext(), binding.etItemRecordInput);
-                                presenter.startRecording();
-                                recordingDiaryDialog.show(fragmentManager, getTag());
-                            } else {
-                                showToastMessage(R.string.permission_denied);
-                            }
-                        }, Throwable::printStackTrace));}
-            }
+        binding.buttonRecordItemRecord.setOnClickListener(v -> {
+                    if (getContext() != null) {
+                        compositeDisposable.add(TedRx2Permission.with(getContext())
+                                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
+                                .setRationaleTitle(getContext().getString(R.string.item_record_permission_title))
+                                .setRationaleMessage(getContext().getString(R.string.item_record_permission_msg))
+                                .request()
+                                .subscribe(tedPermissionResult -> {
+                                    if (tedPermissionResult.isGranted()) {
+                                        KeyPadUtil.closeKeyPad(getContext(), binding.etItemRecordInput);
+                                        presenter.startRecording();
+                                        recordingDiaryDialog.show(fragmentManager, getTag());
+                                    } else {
+                                        showToastMessage(R.string.permission_denied);
+                                    }
+                                }, Throwable::printStackTrace));
+                    }
+                }
         );
 
         binding.buttonItemRecordDone.setOnClickListener(v ->
@@ -244,7 +270,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
         );
 
         binding.tvRecordItemGood.setOnClickListener(v -> setSelectedEmotion(Emotion.fromValue(4)));
-        binding.tvRecordItemPgood.setOnClickListener(v ->  setSelectedEmotion(Emotion.fromValue(3)));
+        binding.tvRecordItemPgood.setOnClickListener(v -> setSelectedEmotion(Emotion.fromValue(3)));
         binding.tvRecordItemNormal.setOnClickListener(v -> setSelectedEmotion(Emotion.fromValue(2)));
         binding.tvRecordItemBad.setOnClickListener(v -> setSelectedEmotion(Emotion.fromValue(1)));
         binding.tvRecordItemMad.setOnClickListener(v -> setSelectedEmotion(Emotion.fromValue(0)));
@@ -279,7 +305,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter();
         diaryListAdapter.setOnRecordItemClickListener(pos ->
-            presenter.playDiaryRecord(Collections.singletonList(diaryListAdapter.getDiary(pos)), pos));
+                presenter.playDiaryRecord(Collections.singletonList(diaryListAdapter.getDiary(pos)), pos));
 
         diaryListAdapter.setOnKakaoLinkClickListener(pos ->
                 presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))

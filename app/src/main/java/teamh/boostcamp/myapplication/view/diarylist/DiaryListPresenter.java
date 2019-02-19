@@ -11,12 +11,15 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
+import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
@@ -45,11 +48,11 @@ class DiaryListPresenter {
     private SharedPreferenceManager sharedPreferenceManager;
     @NonNull
     private KakaoLinkHelper kakaoLinkHelper;
-
     @Nullable
     private Emotion selectedEmotion;
     private boolean isLoading;
     private boolean isRecording;
+
     private int lastPlayedPosition;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
@@ -65,7 +68,7 @@ class DiaryListPresenter {
         this.sharedPreferenceManager = sharedPreferenceManager;
 
         this.compositeDisposable = new CompositeDisposable();
-        this.selectedEmotion = Emotion.fromValue(3);
+        this.selectedEmotion = null;
 
         this.isLoading = false;
         this.isRecording = false;
@@ -111,12 +114,12 @@ class DiaryListPresenter {
             return;
         }
 
-        final File file = new File(diaryRecorder.getFilePath());
-
-        if (!file.exists()) {
-            diaryListView.showRecordFileNotFound();
+        if(diaryRecorder.getFilePath() == null) {
+            diaryListView.showRecordNotFinished();
             return;
         }
+
+        final File file = new File(diaryRecorder.getFilePath());
 
         diaryListView.setIsSaving(true);
 
@@ -239,6 +242,13 @@ class DiaryListPresenter {
                 .filter(event -> event.equals(Event.BACK_UP_COMPLETE))
                 .subscribe(event -> diaryListView.setIsBackup(true),
                         Throwable::printStackTrace));
+    }
+
+    void onViewPaused() {
+        if(lastPlayedPosition != NOTHING_PLAYED) {
+            recordPlayer.stopList();
+            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
+        }
     }
 
     void onViewDestroyed() {

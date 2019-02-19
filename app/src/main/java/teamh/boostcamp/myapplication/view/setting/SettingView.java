@@ -1,17 +1,14 @@
 package teamh.boostcamp.myapplication.view.setting;
 
+import androidx.work.OneTimeWorkRequest;
+
 public interface SettingView {
     void showInitializationMessage();
     void showLoginMessage();
 
-
-    void showBackUpSuccessMsg();
-    void showBackUpFailMsg();
-    void showLoadSuccessMsg();
-    void showLoadFailMsg();
-
+    void showBackUpStartMsg();
+    void showLoadStartMsg();
     void showNotLoginMsg();
 
-    void dismissDialog();
-    void showDialog();
+    void startWorker(OneTimeWorkRequest request);
 }

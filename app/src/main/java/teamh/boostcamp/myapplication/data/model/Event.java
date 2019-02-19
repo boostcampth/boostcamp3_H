@@ -6,7 +6,8 @@ public enum Event {
 
     WRONG_EVENT(-1),
     BACK_UP_COMPLETE(0),
-    CLEAR_COMPLETE(1);
+    CLEAR_COMPLETE(1),
+    DOWNLOAD_COMPLETE(2);
 
     private final int event;
 

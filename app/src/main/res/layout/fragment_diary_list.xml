@@ -172,6 +172,7 @@
                         android:layout_height="30dp"
                         android:layout_marginRight="@dimen/layout_margin"
                         android:layout_marginBottom="@dimen/layout_margin"
+                        android:layout_marginTop="@dimen/layout_margin"
                         android:clickable="@{!fragment.isSaving}"
                         android:visibility="@{fragment.isSaving ? View.VISIBLE : View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"

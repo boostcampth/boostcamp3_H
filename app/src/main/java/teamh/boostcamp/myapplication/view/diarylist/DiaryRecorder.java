@@ -1,6 +1,7 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import teamh.boostcamp.myapplication.view.diarylist.listener.MediaRecorderTimeOutListener;
 
 public interface DiaryRecorder {
@@ -15,7 +16,7 @@ public interface DiaryRecorder {
     void releaseRecorder();
 
     /* 파일 경로 반환*/
-    @NonNull
+    @Nullable
     String getFilePath();
 
     /* 녹음 준비 */

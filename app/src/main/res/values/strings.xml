@@ -10,7 +10,7 @@
         - 내부저장소 쓰기 권한
     </string>
     <string name="permission_denied">권한 허용이 필요합니다 !</string>
-    <string name="item_record_hash_tag_hint">Tag 를 입력해주세요</string>
+    <string name="item_record_hash_tag_hint">엔터를 누르면 태그가 입력됩니다 !</string>
     <string name="deep_affects_base_url">https://proxy.api.deepaffects.com/audio/generic/api/v2/</string>
     <string name="item_record_no_voice_file">일기를 먼저 녹음해주세요 !</string>
     <string name="item_record_emotion_not_selected">오늘의 기분을 선택해주세요 !</string>
@@ -26,11 +26,14 @@
     <string name="setting_permission_load_rational_msg">복원시 아래 권한이 필요합니다 !\n
     - 내부저장소 쓰기 권한</string>
 
+    <string name="max_time">60초</string>
+    <string name="time_out_message">후에 녹음이 종료됩니다</string>
 
     <string name="analyze_ignore">인터넷 연결이 되어있지 않아서 감정 분석 기능이 수행되지 않습니다 !</string>
     <string name="popup_dialog_title">분석된 감정 결과입니다</string>
+    <string name="popup_dialog_record_finish">녹음 종료</string>
     <string name="popup_dialog_ok">확인</string>
-    <string name="recording">녹음중</string>
+    <string name="recording">일기 녹음</string>
     <string name="do_backup">백업중입니다 !</string>
     <string name="do_load">내려받기중입니다 !</string>
 
@@ -39,6 +42,8 @@
     <string name="backup_fail">백업 실패</string>
     <string name="load_success">불러오기 완료</string>
     <string name="load_fail">불러오기 실패</string>
+    <string name="backup_start">백업 시작</string>
+    <string name="download_start">백업 시작</string>
 
     <string-array name="month">
         <item>January</item>

@@ -4,11 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import com.airbnb.lottie.LottieAnimationView;
-
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -25,6 +25,7 @@ public class RecordingDiaryDialog extends DialogFragment {
     private Disposable timerDisposable;
     private OnRecordDialogDismissListener dismissListener;
     private boolean isTimeOut = false;
+    private boolean isViewPopUp = false;
 
     public static RecordingDiaryDialog newInstance() {
         return new RecordingDiaryDialog();
@@ -34,31 +35,41 @@ public class RecordingDiaryDialog extends DialogFragment {
     @Override
     @SuppressWarnings("cast")
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.PopUpDialogTheme);
+
+        isViewPopUp = true;
 
         if(getActivity() != null) {
             final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_record_diary, null);
 
-            final LottieAnimationView lottieAnimationView = view.findViewById(R.id.law_item_dialog_background);
-            lottieAnimationView.playAnimation();
+            final ProgressBar progressBar = view.findViewById(R.id.pb_item_dialog_progress);
+            final TextView timerTextView = view.findViewById(R.id.tv_item_dialog_timer);
 
             timerDisposable = Observable.interval(1, TimeUnit.SECONDS)
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .take(LIMIT_TIME)
+                    .take(LIMIT_TIME + 1)
                     .doOnComplete(() -> {
                         isTimeOut = true;
                         this.dismiss();
                     })
-                    .subscribe(aLong -> Log.d("Test", aLong.toString()), Throwable::printStackTrace);
+                    .subscribe(aLong -> {
+                        progressBar.setProgress(aLong.intValue());
+                        timerTextView.setText(String.format(Locale.getDefault(),"%d초",LIMIT_TIME - aLong.intValue()));
+                    }, Throwable::printStackTrace);
 
             setCancelable(false);
             builder.setTitle(R.string.recording);
             builder.setView(view);
-            builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, i) -> dismiss());
+            builder.setPositiveButton(R.string.popup_dialog_record_finish, (dialogInterface, i) -> dismiss());
         }
 
-        return builder.create();
+        Dialog dialog = builder.create();
+        if(dialog.getWindow() != null) {
+            dialog.getWindow().getAttributes().windowAnimations = R.style.AnalyzedEmotionShowingDialogAnimation;
+        }
+
+        return dialog;
     }
 
     public void setDismissListener(OnRecordDialogDismissListener dismissListener) {
@@ -71,6 +82,11 @@ public class RecordingDiaryDialog extends DialogFragment {
             timerDisposable.dispose();
             timerDisposable = null;
         }
+        isViewPopUp = false;
         dismissListener.onDismiss(isTimeOut);
+    }
+
+    public boolean isViewPopUp() {
+        return isViewPopUp;
     }
 }
