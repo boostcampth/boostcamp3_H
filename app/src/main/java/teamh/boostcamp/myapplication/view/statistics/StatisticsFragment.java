@@ -1,16 +1,18 @@
-package teamh.boostcamp.myapplication.view.graph;
+package teamh.boostcamp.myapplication.view.statistics;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -124,10 +126,10 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         }
 
 
-        LineDataSet selectedDataSet = new LineDataSet(selectedEmotionList, "선택한 감정들");
+        LineDataSet selectedDataSet = new LineDataSet(selectedEmotionList, "선택한 감정");
         setLineData(selectedDataSet, EmotionType.selectedEmotion);
 
-        LineDataSet analyzedDataSet = new LineDataSet(analyzedEmotionList, "분석한 감정들");
+        LineDataSet analyzedDataSet = new LineDataSet(analyzedEmotionList, "분석한 감정");
         setLineData(analyzedDataSet, EmotionType.analyzedEmotion);
 
         final LineData lineData = new LineData(dataSets);
@@ -146,9 +148,10 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
             final View tagView = inflater.inflate(R.layout.layout_graph_hash_tag, null, false);
             final TextView tagTextView = tagView.findViewById(R.id.tv_hash_tag);
 
-            tagTextView.setTextSize(hashTagItems.get(i).getCount() * 10f);
+            tagTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, hashTagItems.get(i).getCount() * 10);
+            Log.v("tag count : ", hashTagItems.get(i).getTagName() + ", " + "갯수 : " + hashTagItems.get(i).getCount());
             if (hashTagItems.get(i).getCount() > 3) {
-                tagTextView.setTextColor(context.getResources().getColor(R.color.graphColor));
+                tagTextView.setTextColor(context.getResources().getColor(R.color.main_dark));
             }
 
             tagTextView.setText(hashTagItems.get(i).getTagName());
@@ -200,19 +203,21 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
 
     private void setLineData(LineDataSet lineDataSet, EmotionType emotionType) {
+        lineDataSet.setDrawCircleHole(true);
+        lineDataSet.setDrawCircles(true);
         lineDataSet.setLineWidth(2); // 곡률
         lineDataSet.setCircleRadius(5); // 원 색상 지정
 
         switch (emotionType) {
             case selectedEmotion:
-                lineDataSet.setCircleColor(context.getResources().getColor(R.color.graphColor));
-                lineDataSet.setCircleHoleColor(context.getResources().getColor(R.color.graphColor));
-                lineDataSet.setColor(context.getResources().getColor(R.color.graphColor));
+                lineDataSet.setCircleColor(context.getResources().getColor(R.color.main_dark));
+                lineDataSet.setCircleHoleColor(context.getResources().getColor(R.color.white));
+                lineDataSet.setColor(context.getResources().getColor(R.color.main_dark));
                 break;
             case analyzedEmotion:
-                lineDataSet.setCircleColor(context.getResources().getColor(R.color.graph_analyzed_color));
-                lineDataSet.setCircleHoleColor(context.getResources().getColor(R.color.graph_analyzed_color));
-                lineDataSet.setColor(context.getResources().getColor(R.color.graph_analyzed_color));
+                lineDataSet.setCircleColor(context.getResources().getColor(R.color.black));
+                lineDataSet.setCircleHoleColor(context.getResources().getColor(R.color.black));
+                lineDataSet.setColor(context.getResources().getColor(R.color.black));
                 break;
         }
 
@@ -232,12 +237,13 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         yLeftAxis = binding.lcEmotionGraph.getAxisLeft();
         yRightAxis = binding.lcEmotionGraph.getAxisRight();
         // X축 설정
-        xAxis.setYOffset(15f);
+        xAxis.setYOffset(20f);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setLabelCount(dates.length, true);
         xAxis.setTextColor(R.color.black);
         xAxis.setValueFormatter(new GraphAxisValueFormatter(dates));
-        xAxis.enableGridDashedLine(14, 24, 0);
+        //xAxis.enableGridDashedLine(14, 24, 0);
+        xAxis.setDrawGridLines(false);
 
         // y축 왼쪽 설정
         yLeftAxis.setTextColor(R.color.black);
@@ -253,6 +259,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         // 증가 간격
         yLeftAxis.setGranularity(1.0f);
         yLeftAxis.setSpaceMax(500f);
+        yLeftAxis.setDrawGridLines(true);
+        yLeftAxis.setTextColor(getResources().getColor(R.color.selected_emoji_color));
 
         // y축 오른쪽 설정
         yRightAxis.setDrawLabels(false);
@@ -260,11 +268,23 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         yRightAxis.setDrawGridLines(false);
 
 
+        Legend legend = binding.lcEmotionGraph.getLegend();
+        binding.lcEmotionGraph.setScaleEnabled(false);
         binding.lcEmotionGraph.setDescription(null);
         binding.lcEmotionGraph.setBackgroundColor(Color.TRANSPARENT);
         binding.lcEmotionGraph.setDoubleTapToZoomEnabled(false);
         binding.lcEmotionGraph.setDrawGridBackground(false);
-        binding.lcEmotionGraph.animateY(2000, Easing.EaseInCubic);
+        legend.setYOffset(10f);
+        legend.setPosition(Legend.LegendPosition.BELOW_CHART_LEFT);
+        legend.setTextSize(10);
+        legend.setForm(Legend.LegendForm.CIRCLE);
+        legend.setFormSize(10f);
+        legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        //legend.setXEntrySpace(50f);
+        legend.setYEntrySpace(100f);
+        legend.setWordWrapEnabled(true);
+        //binding.lcEmotionGraph.getLegend().setEnabled(false); // label hide
+        binding.lcEmotionGraph.animateY(1000, Easing.EaseInCubic);
         binding.lcEmotionGraph.invalidate();
     }
 }

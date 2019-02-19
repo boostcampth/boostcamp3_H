@@ -12,12 +12,9 @@ import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 public class LockHelperImpl extends LockHelper {
 
     @NonNull
-    private Context context;
-    @NonNull
     private SharedPreferenceManager sharedPreferenceManager;
 
     public LockHelperImpl(@NonNull Context context) {
-        this.context = context;
         this.sharedPreferenceManager = SharedPreferenceManager.getInstance(context.getApplicationContext());
     }
 
