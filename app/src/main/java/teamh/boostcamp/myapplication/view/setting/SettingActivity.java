@@ -33,11 +33,12 @@ import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.model.Event;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
-import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
+import teamh.boostcamp.myapplication.utils.EventBus;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
 import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
@@ -48,10 +49,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private ActionBar actionBar;
     private Toolbar toolbar;
     private SettingPresenter presenter;
-<<<<<<< HEAD
-=======
-
->>>>>>> issue-219/예외처리 추가 및 crashlytics 추가
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
     private CompositeDisposable compositeDisposable;
@@ -76,11 +73,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initActionBar();
         initFirebaseAuth();
         initPresenter();
-<<<<<<< HEAD
-        progressDialog = new ProgressDialog(this);
+
         compositeDisposable = new CompositeDisposable();
-=======
->>>>>>> issue-219/예외처리 추가 및 crashlytics 추가
     }
 
     private void initPresenter() {
@@ -88,7 +82,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
                         DeepAffectApiClient.getInstance()),
-                FirebaseRepositoryImpl.getInstance(),
                 RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())));
     }
 
@@ -223,7 +216,9 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(DeleteDiaryFileWorker.class).build();
                         WorkManager.getInstance().enqueue(oneTimeWorkRequest);
                         SharedPreferenceManager.getInstance(getApplicationContext()).removeLastDiarySaveTime();
-                        compositeDisposable.add(presenter.initialize().subscribe());
+                        compositeDisposable.add(presenter.initialize().subscribe(() -> {
+                            EventBus.sendEvent(Event.CLEAR_COMPLETE);
+                        }, Throwable::printStackTrace));
                     }
                 }).setNegativeButton(getString(R.string.dialog_initialization_cancel), new DialogInterface.OnClickListener() {
             @Override

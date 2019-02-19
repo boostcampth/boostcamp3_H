@@ -120,7 +120,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(event -> {
                     switch (event) {
-                        case BACK_UP_COMPLETE:
+                        case CLEAR_COMPLETE:
                             diaryListAdapter.clear();
                             break;
                         case DOWNLOAD_COMPLETE:
