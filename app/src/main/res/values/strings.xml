@@ -76,6 +76,7 @@
     <string name="play">PLAY</string>
     <string name="playing_state_stop_message">일기재생을 정지합니다.</string>
     <string name="playing_state_play_message">일기를 재생합니다.</string>
+    <string name="no_playlist_message">재생목록이 없습니다.</string>
 
     <!--Graph Days-->
     <string-array name="graph_days">

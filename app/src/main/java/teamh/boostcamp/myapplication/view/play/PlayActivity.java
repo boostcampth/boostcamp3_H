@@ -32,9 +32,15 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null){
+            recall = (Recall) savedInstanceState.getSerializable(EXTRA);
+        }else{
+            recall = (Recall) getIntent().getSerializableExtra(EXTRA);
+        }
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_play);
         binding.setActivity(this);
-        recall = (Recall) getIntent().getSerializableExtra(EXTRA);
 
         initPresenter();
         initViews();
@@ -43,12 +49,13 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.stopMemory();
+        presenter.stopPlaying();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        presenter.onViewDestroyed();
         presenter = null;
     }
 
@@ -68,7 +75,6 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
         DiaryTitleListAdapter adapter = new DiaryTitleListAdapter(this);
         binding.rvDiaryList.setAdapter(adapter);
         adapter.addItems(recall.getDiaryList());
-
     }
 
     private void initPresenter() {
@@ -86,7 +92,7 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
     }
 
     public void onPlayButtonClicked(View view) {
-        presenter.playMemory();
+        presenter.playRecalls();
     }
 
     @Override
@@ -96,6 +102,11 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
         } else {
             showToastMessage(R.string.playing_state_stop_message);
         }
+    }
+
+    @Override
+    public void showListSizeError() {
+        showToastMessage(R.string.no_playlist_message);
     }
 
     @NonNull

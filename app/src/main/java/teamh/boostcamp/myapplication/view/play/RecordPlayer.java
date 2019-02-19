@@ -11,7 +11,9 @@ public interface RecordPlayer {
 
     void setList(List<Diary> list);
 
-    void playList();
+    int getListSize();
+
+    void play();
 
     void stopList();
 

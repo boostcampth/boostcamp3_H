@@ -9,19 +9,28 @@ class PlayPresenter {
         this.view = view;
     }
 
-    void playMemory() {
+    void playRecalls() {
+        if(recordPlayer.getListSize()==0){
+            view.showListSizeError();
+            return;
+        }
         if (!recordPlayer.isPlaying()) {
-            recordPlayer.playList();
+            recordPlayer.play();
             view.showPlayingState(recordPlayer.isPlaying());
         } else {
-            stopMemory();
+            stopPlaying();
         }
     }
 
-    void stopMemory() {
+    void stopPlaying() {
         if (recordPlayer.isPlaying()) {
             recordPlayer.stopList();
             view.showPlayingState(recordPlayer.isPlaying());
         }
+    }
+
+    void onViewDestroyed() {
+        recordPlayer.releasePlayer();
+        view = null;
     }
 }

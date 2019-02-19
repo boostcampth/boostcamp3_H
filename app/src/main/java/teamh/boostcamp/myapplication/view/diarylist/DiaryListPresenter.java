@@ -155,7 +155,7 @@ class DiaryListPresenter {
                 lastPlayedPosition = NOTHING_PLAYED;
             } else {
                 recordPlayer.setList(diaries);
-                recordPlayer.playList();
+                recordPlayer.play();
                 lastPlayedPosition = currentPlayPosition;
                 diaryListView.onPlayFileChanged(lastPlayedPosition, false);
             }
@@ -163,7 +163,7 @@ class DiaryListPresenter {
             lastPlayedPosition = currentPlayPosition;
             diaryListView.onPlayFileChanged(lastPlayedPosition, false);
             recordPlayer.setList(diaries);
-            recordPlayer.playList();
+            recordPlayer.play();
         }
     }
 
