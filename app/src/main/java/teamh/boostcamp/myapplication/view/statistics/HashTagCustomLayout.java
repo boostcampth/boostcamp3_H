@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.view.graph;
+package teamh.boostcamp.myapplication.view.statistics;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -99,7 +99,7 @@ public class HashTagCustomLayout extends ViewGroup {
             maxWidth += Math.max(maxWidth, child.getMeasuredWidth());
             mLeftWidth += child.getMeasuredWidth();
             if ((mLeftWidth / deviceWidth) > rowCount) {
-                maxHeight += child.getMeasuredHeight() + 50;
+                maxHeight += child.getMeasuredHeight() + 100;
                 rowCount++;
             } else {
                 maxHeight = Math.max(maxHeight, child.getMeasuredHeight());

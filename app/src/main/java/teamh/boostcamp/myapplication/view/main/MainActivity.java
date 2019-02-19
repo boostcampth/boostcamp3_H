@@ -16,7 +16,7 @@ import androidx.fragment.app.FragmentTransaction;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityMainBinding;
 import teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment;
-import teamh.boostcamp.myapplication.view.graph.StatisticsFragment;
+import teamh.boostcamp.myapplication.view.statistics.StatisticsFragment;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 import teamh.boostcamp.myapplication.view.recall.RecallFragment;

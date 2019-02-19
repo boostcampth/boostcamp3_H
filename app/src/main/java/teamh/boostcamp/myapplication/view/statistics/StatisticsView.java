@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.view.graph;
+package teamh.boostcamp.myapplication.view.statistics;
 
 import android.util.Pair;
 

@@ -25,13 +25,13 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         init();
-        existSaveData();
         overridePendingTransition(R.anim.anim_slide_bottom_to_top, R.anim.anim_stop);
     }
 
     void init() {
         initPresenter();
         initBinding();
+        existSaveData();
     }
 
     void initPresenter() {
@@ -170,7 +170,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
 
         switch (type) {
 
-            // 비밀번호를 해제하려고 들어온 경우
+            // 비밀번호 해제
             case LockHelper.DISABLE_PASSWORD:
                 if (passwordPresenter.checkPassword(lockPassword)) { // 비밀번호 일치시
                     setResult(RESULT_OK);
@@ -181,7 +181,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                 }
                 break;
 
-            // 비밀번호를 설정하려고 들어온 경우
+            // 비밀번호 설정
             case LockHelper.ENABLE_PASSWORD:
                 if (oldPassword == null) {
                     binding.tvMessage.setText(getString(R.string.password_check_retry_text));
@@ -199,7 +199,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                 }
                 break;
 
-            // 비밀번호를 변경하려고 들어온 경우
+            // 비밀번호 변경
             case LockHelper.CHANGE_PASSWORD:
                 if (passwordPresenter.checkPassword(lockPassword)) {
                     binding.tvMessage.setText(getString(R.string.password_please_input_text));
@@ -209,7 +209,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                 }
                 break;
 
-            // back에 빠졌다 돌아올 경우.
+            // back -> fore
             case LockHelper.UNLOCK_PASSWORD:
                 if (passwordPresenter.checkPassword(lockPassword)) {
                     setResult(RESULT_OK);
@@ -218,7 +218,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                     showPasswordErrorMessage();
                 }
                 break;
-            // Splash에서 들어온 경우
+            // splash -> activity
             case LockHelper.SPLASH_PASSWORD:
                 if (passwordPresenter.checkPassword(lockPassword)) {
                     setResult(RESULT_OK);
@@ -264,15 +264,6 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        passwordPresenter.onDestroyView();
-        binding = null;
-        oldPassword = null;
-        passwordPresenter = null;
-    }
-
-    @Override
     public void showToast(int id) {
         Toast.makeText(getApplicationContext(), getString(id), Toast.LENGTH_SHORT).show();
     }
@@ -299,4 +290,12 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
         runOnUiThread(thread);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        passwordPresenter.onDestroyView();
+        binding = null;
+        oldPassword = null;
+        passwordPresenter = null;
+    }
 }

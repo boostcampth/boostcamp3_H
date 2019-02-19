@@ -36,11 +36,12 @@
 
             <ImageView
                 android:id="@+id/iv_main_setting"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/layout_margin"
+                android:padding="12dp"
                 android:onClick="@{v -> activity.startSetting(v)}"
                 android:src="@drawable/ic_settings_black_24dp" />
 
