@@ -29,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
@@ -47,9 +48,9 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private ActionBar actionBar;
     private Toolbar toolbar;
     private SettingPresenter presenter;
-    private boolean signFlag = false;
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth auth;
+    private CompositeDisposable compositeDisposable;
 
     private ProgressDialog progressDialog;
 
@@ -74,6 +75,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         initFirebaseAuth();
         initPresenter();
         progressDialog = new ProgressDialog(this);
+        compositeDisposable = new CompositeDisposable();
     }
 
     private void initPresenter() {
@@ -198,18 +200,17 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private void initInitialization() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
-        alertDialogBuilder.setTitle("초기화")
-                .setMessage("정말로 초기화 하시겠습니까. 모든 추억들이 사라집니다.")
-                .setPositiveButton("초기화", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setTitle(getString(R.string.setting_initialization))
+                .setMessage(getString(R.string.dialog_initialization_message))
+                .setPositiveButton(getString(R.string.setting_initialization), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(DeleteDiaryFileWorker.class).build();
                         WorkManager.getInstance().enqueue(oneTimeWorkRequest);
-                        presenter.deleteAllRecall();
-                        presenter.deleteAllDiary();
                         SharedPreferenceManager.getInstance(getApplicationContext()).removeLastDiarySaveTime();
+                        compositeDisposable.add(presenter.initialize().subscribe());
                     }
-                }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.dialog_initialization_cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

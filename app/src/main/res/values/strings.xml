@@ -106,8 +106,12 @@
     <string name="setting_logout">로그아웃</string>
     <string name="setting_backup">백업하기</string>
     <string name="setting_restore">내려받기</string>
+
+    <!-- Initialization -->
     <string name="setting_initialization">초기화</string>
     <string name="setting_initialization_success">초기화에 성공하였습니다.</string>
+    <string name="dialog_initialization_message">정말로 초기화 하시겠습니까? 모든 추억들이 사라집니다.</string>
+    <string name="dialog_initialization_cancel">취소</string>
 
     <!--Toolbar title-->
     <string name="main_toolbar_diary_title">일기</string>
