@@ -38,7 +38,7 @@ public class RecordPlayerImpl implements RecordPlayer {
 
     @Override
     public void setList(List<Diary> playList) {
-        if(playState) {
+        if (playState) {
             stopList();
         }
 
@@ -46,7 +46,12 @@ public class RecordPlayerImpl implements RecordPlayer {
     }
 
     @Override
-    public void playList() {
+    public int getListSize() {
+        return playList.size();
+    }
+
+    @Override
+    public void play() {
         if (!playState) {
             try {
                 playState = true;
@@ -104,11 +109,11 @@ public class RecordPlayerImpl implements RecordPlayer {
 
     @Override
     public void releasePlayer() {
-        if(playState) {
+        if (playState) {
             mediaPlayer.stop();
         }
         playState = false;
-        if(mediaPlayer != null) {
+        if (mediaPlayer != null) {
             mediaPlayer.release();
         }
         INSTANCE = null;

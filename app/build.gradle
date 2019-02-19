@@ -9,6 +9,10 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.analyzeRecordEmotionByCallback.runner.AndroidJUnitRunner"
+
+        resValue "string", "kakao_api_key", kakao_api_key
+        resValue "string", "kakao_scheme", kakao_scheme
+        resValue "string", "kakaolink_host", kakaolink_host
     }
     buildTypes {
         release {
