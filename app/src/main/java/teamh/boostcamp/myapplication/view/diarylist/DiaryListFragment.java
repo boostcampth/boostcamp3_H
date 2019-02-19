@@ -3,7 +3,6 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -42,7 +40,6 @@ import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
 import teamh.boostcamp.myapplication.view.diarylist.popup.analyzeResult.AnalyzedEmotionShowingDialog;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.OnRecordDialogDismissListener;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.RecordingDiaryDialog;
-import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
 public class DiaryListFragment extends Fragment implements DiaryListView, OnRecordDialogDismissListener {
 
@@ -76,18 +73,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("Test", "DiaryListFragment onDestroy");
-        presenter.onViewDestroyed();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         if (recordingDiaryDialog.isViewPopUp()) {
@@ -99,8 +84,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void onResume() {
         super.onResume();
-        initPresenter();
-        clearView();
         if (isDownloaded) {
             presenter.loadDiaryList(LOAD_ITEM_NUM);
             isDownloaded = false;
@@ -225,7 +208,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                             getContext().getApplicationContext()).diaryDao(),
                             DeepAffectApiClient.getInstance()),
                     new DiaryRecorderImpl(),
-                    RecordPlayerImpl.getINSTANCE(),
+                    new DiaryPlayerImpl(),
                     SharedPreferenceManager.getInstance(getContext().getApplicationContext()),
                     new KakaoLinkHelperImpl(getContext().getApplicationContext()));
         }
@@ -314,7 +297,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter();
         diaryListAdapter.setOnRecordItemClickListener(pos ->
-                presenter.playDiaryRecord(Collections.singletonList(diaryListAdapter.getDiary(pos)), pos));
+                presenter.playDiaryRecord(diaryListAdapter.getDiary(pos).getRecordFilePath(), pos));
 
         diaryListAdapter.setOnKakaoLinkClickListener(pos ->
                 presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))

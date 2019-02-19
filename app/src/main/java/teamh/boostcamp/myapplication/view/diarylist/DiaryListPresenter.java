@@ -23,7 +23,6 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
 import teamh.boostcamp.myapplication.utils.EventBus;
 import teamh.boostcamp.myapplication.utils.KakaoLinkHelper;
-import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 class DiaryListPresenter {
 
@@ -40,7 +39,7 @@ class DiaryListPresenter {
     @NonNull
     private Date lastItemLoadedTime;
     @NonNull
-    private RecordPlayer recordPlayer;
+    private DiaryPlayer recordPlayer;
     @NonNull
     private SharedPreferenceManager sharedPreferenceManager;
     @NonNull
@@ -56,7 +55,7 @@ class DiaryListPresenter {
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
                        @NonNull DiaryRepository diaryRepository,
                        @NonNull DiaryRecorder diaryRecorder,
-                       @NonNull RecordPlayer recordPlayer,
+                       @NonNull DiaryPlayer recordPlayer,
                        @NonNull SharedPreferenceManager sharedPreferenceManager,
                        @NonNull KakaoLinkHelper kakaoLinkHelper) {
         this.diaryListView = diaryListView;
@@ -73,7 +72,11 @@ class DiaryListPresenter {
         this.lastPlayedPosition = NOTHING_PLAYED;
         this.lastItemLoadedTime = new Date();
         this.kakaoLinkHelper = kakaoLinkHelper;
-        initMediaListener();
+
+        this.recordPlayer.setCompletionListener(mediaPlayer -> {
+            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
+            lastPlayedPosition = NOTHING_PLAYED;
+        });
     }
 
     @SuppressWarnings("SameParameterValue")
@@ -169,24 +172,22 @@ class DiaryListPresenter {
         }
     }
 
-    void playDiaryRecord(@NonNull List<Diary> diaries, final int currentPlayPosition) {
+    void playDiaryRecord(@NonNull String filePath, final int currentPlayPosition) {
         // 재생중
         if (lastPlayedPosition != NOTHING_PLAYED) {
-            recordPlayer.stopList();
+            recordPlayer.stop();
             diaryListView.onPlayFileChanged(lastPlayedPosition, true);
             if (lastPlayedPosition == currentPlayPosition) {
                 lastPlayedPosition = NOTHING_PLAYED;
             } else {
-                recordPlayer.setList(diaries);
-                recordPlayer.play();
+                recordPlayer.play(filePath);
                 lastPlayedPosition = currentPlayPosition;
                 diaryListView.onPlayFileChanged(lastPlayedPosition, false);
             }
         } else {
             lastPlayedPosition = currentPlayPosition;
             diaryListView.onPlayFileChanged(lastPlayedPosition, false);
-            recordPlayer.setList(diaries);
-            recordPlayer.play();
+            recordPlayer.play(filePath);
         }
     }
 
@@ -221,12 +222,6 @@ class DiaryListPresenter {
         sharedPreferenceManager.setLastDiarySaveTime(savedTime);
     }
 
-    private void initMediaListener() {
-        recordPlayer.setOnCompletionListener(mediaPlayer -> {
-            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
-            lastPlayedPosition = NOTHING_PLAYED;
-        });
-    }
 
     void onViewCreated() {
         //String today = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date());
@@ -243,7 +238,7 @@ class DiaryListPresenter {
 
     void onViewPaused() {
         if(lastPlayedPosition != NOTHING_PLAYED) {
-            recordPlayer.stopList();
+            recordPlayer.stop();
             diaryListView.onPlayFileChanged(lastPlayedPosition, true);
         }
     }
