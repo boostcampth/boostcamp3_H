@@ -98,24 +98,8 @@ public class DiaryEntity {
         this.id = id;
     }
 
-    public void setRecordDate(@NonNull Date recordDate) {
-        this.recordDate = recordDate;
-    }
-
     public void setRecordFilePath(@NonNull String recordFilePath) {
         this.recordFilePath = recordFilePath;
-    }
-
-    public void setTags(@Nullable List<String> tags) {
-        this.tags = tags;
-    }
-
-    public void setSelectedEmotion(@NonNull Emotion selectedEmotion) {
-        this.selectedEmotion = selectedEmotion;
-    }
-
-    public void setAnalyzedEmotion(@NonNull Emotion analyzedEmotion) {
-        this.analyzedEmotion = analyzedEmotion;
     }
 
     @Override

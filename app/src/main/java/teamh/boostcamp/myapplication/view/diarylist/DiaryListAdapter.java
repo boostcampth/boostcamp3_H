@@ -102,12 +102,6 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
         notifyDataSetChanged();
     }
 
-    void setDiaryList(@NonNull List<Diary> diaryList) {
-        diaryList.clear();
-        diaryList.addAll(diaryList);
-        notifyDataSetChanged();
-    }
-
     void clear() {
         diaryList.clear();
         notifyDataSetChanged();

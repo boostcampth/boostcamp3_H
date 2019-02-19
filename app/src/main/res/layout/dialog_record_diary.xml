@@ -28,4 +28,6 @@
         app:layout_constraintEnd_toEndOf="@id/law_item_dialog_background"
         app:layout_constraintBottom_toBottomOf="@id/law_item_dialog_background"/>
 
+    
+
 </androidx.constraintlayout.widget.ConstraintLayout>

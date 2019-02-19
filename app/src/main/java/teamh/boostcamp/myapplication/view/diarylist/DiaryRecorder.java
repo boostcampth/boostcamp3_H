@@ -20,7 +20,7 @@ public interface DiaryRecorder {
 
     /* 녹음 준비 */
     void prepareRecord();
-
-    /* TimeOutListener 설정*/
-    void setMediaRecorderTimeOutListener(MediaRecorderTimeOutListener mediaRecorderTimeOutListener);
+/*
+    *//* TimeOutListener 설정*//*
+    void setMediaRecorderTimeOutListener(MediaRecorderTimeOutListener mediaRecorderTimeOutListener);*/
 }

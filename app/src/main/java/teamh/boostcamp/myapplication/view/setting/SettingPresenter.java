@@ -1,7 +1,6 @@
 package teamh.boostcamp.myapplication.view.setting;
 
 import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 
 import androidx.annotation.NonNull;
@@ -14,7 +13,8 @@ import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.RecallRepository;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepository;
-import teamh.boostcamp.myapplication.view.diarylist.DiaryRxEventBus;
+import teamh.boostcamp.myapplication.data.model.Event;
+import teamh.boostcamp.myapplication.utils.EventBus;
 
 class SettingPresenter {
 
@@ -88,7 +88,7 @@ class SettingPresenter {
                             diaryRepository.insertDiary(diaryEntityList.toArray(new DiaryEntity[diaryEntityList.size()])))
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                        DiaryRxEventBus.sendEvent("download");
+                        EventBus.sendEvent(Event.BACK_UP_COMPLETE);
                         settingView.dismissDialog();
                         settingView.showLoadSuccessMsg();
                     }, throwable -> {

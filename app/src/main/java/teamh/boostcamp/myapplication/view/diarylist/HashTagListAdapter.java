@@ -64,9 +64,8 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
     }
 
 
-    public void removeItem(String hashTag) {
+    void removeItem(String hashTag) {
         Iterator<String> it = itemList.iterator();
-        int pos = 0;
         while (it.hasNext()) {
             String temp = it.next();
             if (temp.equals(hashTag)) {
@@ -74,10 +73,9 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
                 notifyDataSetChanged();
                 return;
             }
-            pos++;
         }
     }
-
+/*
     void clearItems() {
         if (itemList == null) {
             itemList = new ArrayList<>();
@@ -85,8 +83,9 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
             itemList.clear();
             notifyDataSetChanged();
         }
-    }
+    }*/
 
+    @SuppressWarnings("WhileLoopReplaceableByForEach")
     void addItem(@NonNull String item) {
         if (item.equals("#")) {
             return;

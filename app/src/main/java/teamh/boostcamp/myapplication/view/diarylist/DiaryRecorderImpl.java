@@ -9,7 +9,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import androidx.annotation.NonNull;
-import teamh.boostcamp.myapplication.view.diarylist.listener.MediaRecorderTimeOutListener;
 
 /*
  * MediaRecord 작업에만 관심이 있는 클래스 분리
@@ -24,7 +23,7 @@ class DiaryRecorderImpl implements DiaryRecorder {
     private MediaRecorder mediaRecorder;
     private String filePath;
 
-    private MediaRecorderTimeOutListener mediaRecorderTimeOutListener;
+    //private MediaRecorderTimeOutListener mediaRecorderTimeOutListener;
 
     DiaryRecorderImpl() {
         mediaRecorder = new MediaRecorder();
@@ -77,13 +76,13 @@ class DiaryRecorderImpl implements DiaryRecorder {
         }
     }
 
-    @Override
+/*    @Override
     public void setMediaRecorderTimeOutListener(@NonNull MediaRecorderTimeOutListener mediaRecorderTimeOutListener) {
         this.mediaRecorderTimeOutListener = mediaRecorderTimeOutListener;
         this.mediaRecorder.setOnInfoListener((mediaRecorder1, i, i1) ->
                 this.mediaRecorderTimeOutListener.onTimeOut()
         );
-    }
+    }*/
 
     private String generateFilePath() {
         return String.format("%s/diary/%s.acc",

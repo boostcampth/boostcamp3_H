@@ -1,9 +1,5 @@
 package teamh.boostcamp.myapplication.data.model;
 
-import java.util.Date;
-
-import javax.annotation.Nonnull;
-
 import androidx.annotation.NonNull;
 
 public class ShareDiary {

@@ -59,7 +59,7 @@ public class DeepAffectApiClient {
     @NonNull
     public Single<List<EmotionAnalysisResponse>> analyzeVoiceEmotion(@NonNull EmotionAnalyzeRequest request) {
         return retrofit.create(EmotionAnalysisAPI.class)
-                .analyzeRecordEmotion(BuildConfig.apikey, request.getRequest())
+                .analyzeRecordEmotion(BuildConfig.deep_affects_apikey, request.getRequest())
                 .subscribeOn(Schedulers.io());
     }
 }

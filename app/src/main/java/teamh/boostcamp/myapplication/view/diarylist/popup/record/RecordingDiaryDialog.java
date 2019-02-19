@@ -21,7 +21,7 @@ import teamh.boostcamp.myapplication.R;
 
 public class RecordingDiaryDialog extends DialogFragment {
 
-    private static final int LIMIT_TIME = 10;
+    private static final int LIMIT_TIME = 60;
     private Disposable timerDisposable;
     private OnRecordDialogDismissListener dismissListener;
     private boolean isTimeOut = false;
@@ -32,27 +32,31 @@ public class RecordingDiaryDialog extends DialogFragment {
 
     @NonNull
     @Override
+    @SuppressWarnings("cast")
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_record_diary, null);
+        if(getActivity() != null) {
+            final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_record_diary, null);
 
-        final LottieAnimationView lottieAnimationView = view.findViewById(R.id.law_item_dialog_background);
-        lottieAnimationView.playAnimation();
+            final LottieAnimationView lottieAnimationView = view.findViewById(R.id.law_item_dialog_background);
+            lottieAnimationView.playAnimation();
 
-        timerDisposable = Observable.interval(1, TimeUnit.SECONDS)
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .take(LIMIT_TIME)
-                .doOnComplete(() -> {
-                    isTimeOut = true;
-                    this.dismiss();
-                })
-                .subscribe(aLong -> Log.d("Test", aLong.toString()), Throwable::printStackTrace);
+            timerDisposable = Observable.interval(1, TimeUnit.SECONDS)
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .take(LIMIT_TIME)
+                    .doOnComplete(() -> {
+                        isTimeOut = true;
+                        this.dismiss();
+                    })
+                    .subscribe(aLong -> Log.d("Test", aLong.toString()), Throwable::printStackTrace);
 
-        builder.setTitle(R.string.recording);
-        builder.setView(view);
-        builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, i) -> dismiss());
+            setCancelable(false);
+            builder.setTitle(R.string.recording);
+            builder.setView(view);
+            builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, i) -> dismiss());
+        }
 
         return builder.create();
     }

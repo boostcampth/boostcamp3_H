@@ -27,6 +27,7 @@
     - 내부저장소 쓰기 권한</string>
 
 
+    <string name="analyze_ignore">인터넷 연결이 되어있지 않아서 감정 분석 기능이 수행되지 않습니다 !</string>
     <string name="popup_dialog_title">분석된 감정 결과입니다</string>
     <string name="popup_dialog_ok">확인</string>
     <string name="recording">녹음중</string>

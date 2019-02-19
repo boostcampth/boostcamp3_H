@@ -41,22 +41,25 @@ public class AnalyzedEmotionShowingDialog extends DialogFragment{
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_analyzed_emotion_showing,null);
+        if(getActivity() != null){
+            View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_analyzed_emotion_showing,null);
 
-        TextView emotionView = view.findViewById(R.id.tv_emotion_dialog_analyzed);
-        emotionView.setText(analyzedEmotion.getEmoji());
+            TextView emotionView = view.findViewById(R.id.tv_emotion_dialog_analyzed);
+            emotionView.setText(analyzedEmotion.getEmoji());
 
-        TextView commentView = view.findViewById(R.id.tv_emotion_dialog_comment);
-        commentView.setText(analyzedEmotion.getComment());
+            TextView commentView = view.findViewById(R.id.tv_emotion_dialog_comment);
+            commentView.setText(analyzedEmotion.getComment());
 
-        builder.setView(view);
-        builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, which) -> {
-            dismiss();
-        });
+            builder.setView(view);
+            builder.setPositiveButton(R.string.popup_dialog_ok, (dialogInterface, which) -> {
+                dismiss();
+            });
+        }
 
         Dialog dialog = builder.create();
-        dialog.getWindow().getAttributes().windowAnimations = R.style.AnalyzedEmotionShowingDialogAnimation;
-
+        if(dialog.getWindow() != null) {
+            dialog.getWindow().getAttributes().windowAnimations = R.style.AnalyzedEmotionShowingDialogAnimation;
+        }
         return dialog;
     }
 }

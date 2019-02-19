@@ -1,6 +1,7 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
+import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -18,10 +19,10 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
-import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepository;
-import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
 import teamh.boostcamp.myapplication.utils.KakaoLinkHelper;
+import teamh.boostcamp.myapplication.data.model.Event;
+import teamh.boostcamp.myapplication.utils.EventBus;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 class DiaryListPresenter {
@@ -48,7 +49,7 @@ class DiaryListPresenter {
     @Nullable
     private Emotion selectedEmotion;
     private boolean isLoading;
-    private boolean isRecording = false;
+    private boolean isRecording;
     private int lastPlayedPosition;
 
     DiaryListPresenter(@NonNull DiaryListView diaryListView,
@@ -75,6 +76,7 @@ class DiaryListPresenter {
         initMediaListener();
     }
 
+    @SuppressWarnings("SameParameterValue")
     void loadDiaryList(final int pageSize) {
         // FIXME : 저장 후 로딩하고 있는 경우 예외 처리 필수
         if (!isLoading) {
@@ -111,20 +113,19 @@ class DiaryListPresenter {
 
         final File file = new File(diaryRecorder.getFilePath());
 
-        if (file != null && !file.exists()) {
+        if (!file.exists()) {
             diaryListView.showRecordFileNotFound();
             return;
         }
 
         diaryListView.setIsSaving(true);
 
-        // FIXME : DiaryEntity 매개변수 수정하기, 네트워크가 없는 상황에서 나중에 분석할 데이터 지정
+        final Date saveTime = new Date();
+        final String newItemId = new SimpleDateFormat("yyyyMMdd", Locale.KOREA).format(saveTime);
+
         if (isNetworkAvailable) {
 
             final EmotionAnalyzeRequest request = new EmotionAnalyzeRequest(file.getAbsolutePath());
-
-            final Date saveTime = new Date();
-            final String newItemId = new SimpleDateFormat("yyyyMMdd", Locale.KOREA).format(saveTime);
 
             compositeDisposable.add(diaryRepository.requestEmotionAnalyze(request).
                     map(emotion -> new DiaryEntity(newItemId,
@@ -134,6 +135,27 @@ class DiaryListPresenter {
                             selectedEmotion,
                             emotion))
                     .flatMapCompletable(diaryRepository::insertDiary)
+                    .andThen(diaryRepository.loadRecentInsertedDiary())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(diaryEntity -> {
+                        setLastItemSavedTime(saveTime);
+                        //diaryListView.setRecordCardVisibilityGone();
+                        diaryListView.showAnalyzedEmotion(diaryEntity.getAnalyzedEmotion());
+                        diaryListView.insertDiaryList(DiaryMapper.toDiary(diaryEntity));
+                        diaryListView.setIsSaving(false);
+                    }, Throwable::printStackTrace));
+        } else {
+
+            diaryListView.showAnalyzeIgnore();
+
+            DiaryEntity newDiaryEntity = new DiaryEntity(newItemId,
+                    saveTime,
+                    file.getAbsolutePath(),
+                    tags,
+                    selectedEmotion,
+                    Emotion.fromValue(2));
+
+            compositeDisposable.add(diaryRepository.insertDiary(newDiaryEntity)
                     .andThen(diaryRepository.loadRecentInsertedDiary())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(diaryEntity -> {
@@ -172,13 +194,26 @@ class DiaryListPresenter {
     }
 
     void startRecording() {
-        diaryRecorder.startRecord();
-        this.isRecording = true;
+
+        File dir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + File.separator + "diary");
+
+        if (!dir.exists()) {
+            if (!dir.mkdir()) {
+                Log.d("Test", "파일 경로 작성 실패");
+            }
+        }
+
+        if (!isRecording) {
+            diaryRecorder.startRecord();
+            this.isRecording = true;
+        }
     }
 
     void finishRecording() {
-        diaryRecorder.finishRecord();
-        this.isRecording = false;
+        if (isRecording) {
+            diaryRecorder.finishRecord();
+            this.isRecording = false;
+        }
     }
 
     private void setLastItemSavedTime(@NonNull Date savedTime) {
@@ -194,16 +229,16 @@ class DiaryListPresenter {
     }
 
     void onViewCreated() {
-        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date());
+        //String today = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(new Date());
 
         /*if (sharedPreferenceManager.getLastDiarySaveTime().equals(today)) {
             diaryListView.setRecordCardVisibilityGone();
         }*/
 
-        compositeDisposable.add(DiaryRxEventBus.get()
-                .filter(o -> o.toString().equals("download"))
-                .subscribe(o -> diaryListView.setIsBackup(true),
-                        throwable -> ((Throwable) throwable).printStackTrace()));
+        compositeDisposable.add(EventBus.get()
+                .filter(event -> event.equals(Event.BACK_UP_COMPLETE))
+                .subscribe(event -> diaryListView.setIsBackup(true),
+                        Throwable::printStackTrace));
     }
 
     void onViewDestroyed() {
@@ -223,6 +258,6 @@ class DiaryListPresenter {
                         .loadShareDiary(diary.getId())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(diaryEntity -> kakaoLinkHelper.sendDiary(diaryEntity))
-                );
+        );
     }
 }
