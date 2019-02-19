@@ -7,7 +7,6 @@ import java.util.concurrent.CountDownLatch;
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Event;

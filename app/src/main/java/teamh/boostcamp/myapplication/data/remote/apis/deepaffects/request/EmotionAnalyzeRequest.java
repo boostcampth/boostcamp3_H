@@ -1,7 +1,6 @@
 package teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request;
 
 import android.util.Base64;
-import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;

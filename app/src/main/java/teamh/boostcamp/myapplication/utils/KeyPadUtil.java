@@ -4,8 +4,6 @@ import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import androidx.appcompat.widget.AppCompatEditText;
-
 /*
  * KeyPad Util : SoftKeyPad 숨기기 기능 */
 public class KeyPadUtil {

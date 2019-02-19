@@ -2,13 +2,10 @@ package teamh.boostcamp.myapplication.view.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,7 +18,6 @@ import teamh.boostcamp.myapplication.databinding.ActivityMainBinding;
 import teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import teamh.boostcamp.myapplication.view.graph.StatisticsFragment;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
-import teamh.boostcamp.myapplication.view.password.LockManager;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 import teamh.boostcamp.myapplication.view.recall.RecallFragment;
 import teamh.boostcamp.myapplication.view.setting.SettingActivity;

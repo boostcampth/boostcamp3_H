@@ -35,12 +35,16 @@ public abstract class AppDatabase extends RoomDatabase {
                             .fallbackToDestructiveMigration()
                             .addCallback(new Callback() {
                                 @Override
-                                public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                                    super.onCreate(db);
-
+                                public void onOpen(@NonNull SupportSQLiteDatabase db) {
+                                    super.onOpen(db);
                                     // FIXME 더미 데이터 추가
-                                    /*final String filePath = "/storage/emulated/0/2019-02-08.acc";
-                                    final File file = new File("/storage/emulated/0/2019-02-08.acc");
+/*
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+                                    final String filePath = File.separator + "storage" + File.separator
+                                    + "emulated" + File.separator + "0" + File.separator + "diary" +
+                                            simpleDateFormat.format(new Date()) + "aac";
+
+                                    final File file = new File(filePath);
 
                                     if (!file.exists()) {
                                         try {
@@ -56,12 +60,11 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                     final long TODAY = new Date().getTime();
                                     final long DAY = 86400000L;
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
-                                    for (int i = 10; i <= 20; ++i) {
+                                    for (int i = 2; i <= 10; ++i) {
                                         samples.add(new DiaryEntity(
                                                 simpleDateFormat.format(TODAY - DAY * (i + 2)),
-                                                new Date(TODAY - DAY * i),
+                                                new Date(TODAY - DAY * (i+2)),
                                                 filePath,
                                                 Arrays.asList(String.format("#%2d번", i)),
                                                 Emotion.fromValue(Math.abs(random.nextInt() % 5)),

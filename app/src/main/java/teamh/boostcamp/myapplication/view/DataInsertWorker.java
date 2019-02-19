@@ -1,15 +1,12 @@
 package teamh.boostcamp.myapplication.view;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.local.room.entity.RecallEntity;
 import teamh.boostcamp.myapplication.data.model.Emotion;

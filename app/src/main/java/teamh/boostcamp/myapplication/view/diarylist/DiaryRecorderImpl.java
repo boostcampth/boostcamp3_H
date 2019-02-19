@@ -9,7 +9,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 /*
@@ -96,6 +95,6 @@ class DiaryRecorderImpl implements DiaryRecorder {
                 File.separator +
                 "diary" +
                 File.separator +
-                DATE_FORMAT.format(new Date());
+                DATE_FORMAT.format(new Date()) + ".aac";
     }
 }
