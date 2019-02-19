@@ -51,7 +51,9 @@
             android:name=".view.password.PasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".view.play.PlayActivity" />
+        <activity android:name=".view.play.PlayActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"  />
         <activity
             android:name=".view.main.MainActivity"
             android:screenOrientation="portrait"

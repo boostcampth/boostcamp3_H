@@ -22,4 +22,6 @@ public interface RecordPlayer {
     void releasePlayer();
 
     void setOnCompletionListener(@NonNull MediaPlayer.OnCompletionListener onCompletionListener);
+
+    void setOnChangeStateListener(@NonNull RecordPlayerImpl.OnStateChangeListener onStateChangeListener);
 }

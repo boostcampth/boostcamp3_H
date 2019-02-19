@@ -105,6 +105,15 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
     }
 
     @Override
+    public void setButtonText(boolean playState) {
+        if(playState){
+            binding.btnPlay.setText("STOP");
+        }else{
+            binding.btnPlay.setText("PLAY");
+        }
+    }
+
+    @Override
     public void showListSizeError() {
         showToastMessage(R.string.no_playlist_message);
     }
