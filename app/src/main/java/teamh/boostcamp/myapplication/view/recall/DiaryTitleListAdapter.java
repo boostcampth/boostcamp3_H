@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.databinding.ItemDiarytitleLlistBinding;
 
-public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAdapter.ViewHolder>{
+public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAdapter.ViewHolder> {
     private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
     private Context context;
     private List<Diary> diaryList;
@@ -45,13 +45,13 @@ public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAd
         return diaryList.size();
     }
 
-    public void addItems(List<Diary> diaryList){
+    public void addItems(List<Diary> diaryList) {
         this.diaryList.clear();
         this.diaryList.addAll(diaryList);
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder {
         ItemDiarytitleLlistBinding binding;
 
         ViewHolder(@NonNull ItemDiarytitleLlistBinding binding) {

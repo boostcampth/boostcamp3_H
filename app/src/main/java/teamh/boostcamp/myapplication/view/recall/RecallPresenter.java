@@ -57,6 +57,12 @@ public class RecallPresenter {
         );
     }
 
+    void onViewDestroyed() {
+        compositeDisposable.clear();
+        recallRepository = null;
+        view = null;
+    }
+
     private int generateRandomNumber(int limit) {
         return (int) (Math.random() * limit);
     }

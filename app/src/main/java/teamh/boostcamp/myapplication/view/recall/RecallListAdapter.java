@@ -13,6 +13,7 @@ import java.util.Locale;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.databinding.ItemRecallListBinding;
 
@@ -74,7 +75,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         notifyItemInserted(0);
     }
 
-    void deleteItem(int position){
+    void deleteItem(int position) {
         this.itemList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(0, itemList.size());
@@ -105,17 +106,16 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     private String emotionToString(int emotion) {
         switch (emotion) {
             case 0:
-                return "불행했던 날들";
+                return context.getString(R.string.emotion_0_to_title);
             case 1:
-                return "슬픈 날들";
+                return context.getString(R.string.emotion_1_to_title);
             case 2:
-                return "그저그런날들";
+                return context.getString(R.string.emotion_2_to_title);
             case 3:
-                return "즐거웠던 날들";
+                return context.getString(R.string.emotion_3_to_title);
             case 4:
-                return "행복했던 날들";
             default:
-                return "행복들";
+                return context.getString(R.string.emotion_4_to_title);
         }
     }
 

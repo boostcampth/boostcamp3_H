@@ -65,7 +65,12 @@
     <string name="happy">😍</string>
 
     <!-- Recall Fragment-->
-    <string name="Memories">Memories</string>
+    <string name="delete_recall_message">추억을 삭제하였습니다.</string>
+    <string name="emotion_0_to_title">불행했던 날들</string>
+    <string name="emotion_1_to_title">슬픈 날들</string>
+    <string name="emotion_2_to_title">그저그런 날들</string>
+    <string name="emotion_3_to_title">즐거웠던 날들</string>
+    <string name="emotion_4_to_title">행복했던 날들</string>
 
     <!-- Play activity -->
     <string name="play">PLAY</string>
@@ -102,7 +107,6 @@
     <string name="setting_restore">내려받기</string>
     <string name="setting_initialization">초기화</string>
     <string name="setting_initialization_success">초기화에 성공하였습니다.</string>
-
 
     <!--Toolbar title-->
     <string name="main_toolbar_diary_title">일기</string>

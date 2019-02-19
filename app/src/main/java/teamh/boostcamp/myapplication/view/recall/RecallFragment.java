@@ -25,7 +25,7 @@ public class RecallFragment extends Fragment implements RecallView {
 
     @NonNull
     private static final String EXTRA = "recall";
-    private RecallPresenter recallPresenter;
+    private RecallPresenter presenter;
     private FragmentRecallBinding binding;
     private RecallListAdapter recallListAdapter;
 
@@ -44,9 +44,15 @@ public class RecallFragment extends Fragment implements RecallView {
         binding.setView(this);
         initPresenter();
         initViews();
-        recallPresenter.loadRecallList();
+        presenter.loadRecallList();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        presenter.onViewDestroyed();
     }
 
     @Override
@@ -67,12 +73,12 @@ public class RecallFragment extends Fragment implements RecallView {
 
     @Override
     public void onGenerateNewRecallButtonClicked(View view) {
-        recallPresenter.generateRecall();
+        presenter.generateRecall();
     }
 
     @Override
     public void showDeleteSuccessResult() {
-        Toast.makeText(getContext(), "추억을 삭제하였습니다.", Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), getString(R.string.delete_recall_message), Toast.LENGTH_LONG).show();
     }
 
     private void initViews() {
@@ -98,13 +104,13 @@ public class RecallFragment extends Fragment implements RecallView {
 
             @Override
             public void onDeleteButtonClicked(int position, int id) {
-                recallPresenter.deleteRecall(position, id);
+                presenter.deleteRecall(position, id);
             }
         });
     }
 
     private void initPresenter() {
-        recallPresenter = new RecallPresenter(this,
+        presenter = new RecallPresenter(this,
                 RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getContext())));
     }
 }
