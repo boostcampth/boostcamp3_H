@@ -10,6 +10,7 @@ import android.util.Log;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,7 @@ public class AlarmHelperImpl implements AlarmHelper {
     private Context context;
     private AlarmManager alarmManager;
     private SharedPreferenceManager sharedPreferenceManager;
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm",Locale.KOREA);
 
     AlarmHelperImpl(@NonNull Context context) {
         this.context = context;

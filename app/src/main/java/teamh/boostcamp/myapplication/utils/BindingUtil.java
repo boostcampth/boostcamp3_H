@@ -4,10 +4,8 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import androidx.databinding.BindingAdapter;
-import teamh.boostcamp.myapplication.data.model.Emotion;
 
 public class BindingUtil {
 
