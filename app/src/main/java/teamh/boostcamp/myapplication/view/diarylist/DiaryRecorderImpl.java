@@ -42,9 +42,12 @@ class DiaryRecorderImpl implements DiaryRecorder {
     @Override
     public void finishRecord() {
         mediaRecorder.stop();
-        filePath = null;
     }
 
+    @Override
+    public void clearFilePath() {
+        filePath = null;
+    }
 
     @Override
     public void releaseRecorder() {

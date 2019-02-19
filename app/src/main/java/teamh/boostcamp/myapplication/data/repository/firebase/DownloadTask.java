@@ -13,13 +13,22 @@ import io.reactivex.disposables.Disposable;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Event;
+import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.utils.EventBus;
 
 public class DownloadTask extends Worker {
+
+    private DiaryRepository diaryRepository;
+    private FirebaseRepository firebaseRepository;
+
     public DownloadTask(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
+        diaryRepository = DiaryRepositoryImpl.getInstance(
+                AppDatabase.getInstance(getApplicationContext()).diaryDao(),
+                DeepAffectApiClient.getInstance());
+        firebaseRepository = FirebaseRepositoryImpl.getInstance();
     }
 
     @NonNull
@@ -28,12 +37,6 @@ public class DownloadTask extends Worker {
 
         final Result[] result = new Result[]{Result.success()};
         CountDownLatch countDownLatch = new CountDownLatch(1);
-
-        DiaryRepository diaryRepository = DiaryRepositoryImpl.getInstance(
-                AppDatabase.getInstance(getApplicationContext()).diaryDao(),
-                null);
-
-        FirebaseRepository firebaseRepository = FirebaseRepositoryImpl.getInstance();
 
         Disposable disposable = Single.zip(firebaseRepository.loadAllDiaryList(), diaryRepository.loadAllDiaryEntityList(),
                 (remoteEntityList, localEntityList) -> {
@@ -62,6 +65,8 @@ public class DownloadTask extends Worker {
             e.printStackTrace();
         }
 
+        diaryRepository = null;
+        firebaseRepository = null;
         disposable.dispose();
 
         return result[0];

@@ -11,21 +11,18 @@ import java.util.Locale;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import io.reactivex.Completable;
-import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
-import teamh.boostcamp.myapplication.data.model.Recall;
+import teamh.boostcamp.myapplication.data.model.Event;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
-import teamh.boostcamp.myapplication.utils.KakaoLinkHelper;
-import teamh.boostcamp.myapplication.data.model.Event;
 import teamh.boostcamp.myapplication.utils.EventBus;
+import teamh.boostcamp.myapplication.utils.KakaoLinkHelper;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 class DiaryListPresenter {
@@ -50,6 +47,7 @@ class DiaryListPresenter {
     private KakaoLinkHelper kakaoLinkHelper;
     @Nullable
     private Emotion selectedEmotion;
+
     private boolean isLoading;
     private boolean isRecording;
 
@@ -143,6 +141,7 @@ class DiaryListPresenter {
                     .subscribe(diaryEntity -> {
                         setLastItemSavedTime(saveTime);
                         //diaryListView.setRecordCardVisibilityGone();
+                        diaryRecorder.clearFilePath();
                         diaryListView.showAnalyzedEmotion(diaryEntity.getAnalyzedEmotion());
                         diaryListView.insertDiaryList(DiaryMapper.toDiary(diaryEntity));
                         diaryListView.setIsSaving(false);

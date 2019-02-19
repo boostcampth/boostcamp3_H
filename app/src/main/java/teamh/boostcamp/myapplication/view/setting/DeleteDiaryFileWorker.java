@@ -29,8 +29,9 @@ public class DeleteDiaryFileWorker extends Worker {
             if (diaryDirectory.isDirectory() && diaryDirectory.listFiles().length == 0) {
                 diaryDirectory.delete();
             }
+            return Result.success();
+        } else {
+            return Result.failure();
         }
-
-        return Result.success();
     }
 }
