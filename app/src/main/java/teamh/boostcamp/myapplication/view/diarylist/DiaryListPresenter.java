@@ -73,7 +73,6 @@ class DiaryListPresenter {
         this.lastPlayedPosition = NOTHING_PLAYED;
         this.lastItemLoadedTime = new Date();
         this.kakaoLinkHelper = kakaoLinkHelper;
-
         initMediaListener();
     }
 
@@ -227,7 +226,6 @@ class DiaryListPresenter {
             diaryListView.onPlayFileChanged(lastPlayedPosition, true);
             lastPlayedPosition = NOTHING_PLAYED;
         });
-
     }
 
     void onViewCreated() {
@@ -251,7 +249,6 @@ class DiaryListPresenter {
     }
 
     void onViewDestroyed() {
-        compositeDisposable.clear();
         if (isRecording) {
             diaryRecorder.finishRecord();
             isRecording = false;
