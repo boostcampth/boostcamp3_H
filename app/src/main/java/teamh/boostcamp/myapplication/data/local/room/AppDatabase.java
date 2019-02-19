@@ -37,9 +37,13 @@ public abstract class AppDatabase extends RoomDatabase {
                                 @Override
                                 public void onOpen(@NonNull SupportSQLiteDatabase db) {
                                     super.onOpen(db);
-/*
                                     // FIXME 더미 데이터 추가
-                                    final String filePath = "/storage/emulated/0/diary/20190219.aac";
+/*
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+                                    final String filePath = File.separator + "storage" + File.separator
+                                    + "emulated" + File.separator + "0" + File.separator + "diary" +
+                                            simpleDateFormat.format(new Date()) + "aac";
+
                                     final File file = new File(filePath);
 
                                     if (!file.exists()) {
@@ -56,7 +60,6 @@ public abstract class AppDatabase extends RoomDatabase {
 
                                     final long TODAY = new Date().getTime();
                                     final long DAY = 86400000L;
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
 
                                     for (int i = 2; i <= 10; ++i) {
                                         samples.add(new DiaryEntity(
