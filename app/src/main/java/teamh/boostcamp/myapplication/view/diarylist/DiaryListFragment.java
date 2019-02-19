@@ -76,18 +76,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d("Test", "DiaryListFragment onDestroy");
-        presenter.onViewDestroyed();
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         if (recordingDiaryDialog.isViewPopUp()) {
@@ -99,8 +87,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void onResume() {
         super.onResume();
-        initPresenter();
-        clearView();
         if (isDownloaded) {
             presenter.loadDiaryList(LOAD_ITEM_NUM);
             isDownloaded = false;
@@ -225,7 +211,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                             getContext().getApplicationContext()).diaryDao(),
                             DeepAffectApiClient.getInstance()),
                     new DiaryRecorderImpl(),
-                    RecordPlayerImpl.getINSTANCE(),
+                    new DiaryPlayer(),
                     SharedPreferenceManager.getInstance(getContext().getApplicationContext()),
                     new KakaoLinkHelperImpl(getContext().getApplicationContext()));
         }
@@ -314,7 +300,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     private void initAdapter() {
         diaryListAdapter = new DiaryListAdapter();
         diaryListAdapter.setOnRecordItemClickListener(pos ->
-                presenter.playDiaryRecord(Collections.singletonList(diaryListAdapter.getDiary(pos)), pos));
+                presenter.playDiaryRecord(diaryListAdapter.getDiary(pos).getRecordFilePath(), pos));
 
         diaryListAdapter.setOnKakaoLinkClickListener(pos ->
                 presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))
