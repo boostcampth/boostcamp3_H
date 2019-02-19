@@ -309,7 +309,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
 
     private void clearView() {
         hashTagListAdapter.clear();
-        diaryListAdapter.clear();
         binding.etItemRecordInput.setText("");
         setSelectedEmotion(null);
     }

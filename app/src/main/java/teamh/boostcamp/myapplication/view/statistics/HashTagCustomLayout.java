@@ -99,7 +99,7 @@ public class HashTagCustomLayout extends ViewGroup {
             maxWidth += Math.max(maxWidth, child.getMeasuredWidth());
             mLeftWidth += child.getMeasuredWidth();
             if ((mLeftWidth / deviceWidth) > rowCount) {
-                maxHeight += child.getMeasuredHeight() + 100;
+                maxHeight += child.getMeasuredHeight() + 150;
                 rowCount++;
             } else {
                 maxHeight = Math.max(maxHeight, child.getMeasuredHeight());
