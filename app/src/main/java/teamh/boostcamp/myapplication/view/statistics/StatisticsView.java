@@ -10,7 +10,7 @@ import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 
 public interface StatisticsView {
 
-    void updateStatisticsData(@NonNull List<Pair<EmotionHistory,EmotionHistory>> emotionHistoryList);
+    void updateStatisticsData(@NonNull List<Pair<EmotionHistory, EmotionHistory>> emotionHistoryList);
 
     void checkLoadStatisticsDataSuccessMessage();
 
