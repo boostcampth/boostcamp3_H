@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.data.repository;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
+import teamh.boostcamp.myapplication.data.model.ShareDiary;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.mapper.AnalyzedEmotionMapper;
@@ -116,7 +118,14 @@ public class DiaryRepositoryImpl implements DiaryRepository {
     @NonNull
     @Override
     public Completable updateDiaryEntities(@NonNull DiaryEntity... diaryEntities) {
-        return Completable.fromAction(diaryDao::updateDiaries)
+        return Completable.fromAction(diaryDao::updateDiaries);
+    }
+
+    @NonNull
+    @Override
+    public Single<DiaryEntity> loadShareDiary(String id) {
+
+        return diaryDao.selectDiaryById(id)
                 .subscribeOn(Schedulers.io());
     }
 }

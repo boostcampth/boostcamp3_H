@@ -40,7 +40,6 @@ public class RecallFragment extends Fragment implements RecallView {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_recall, container, false);
         binding.setView(this);
         initPresenter();
@@ -48,7 +47,6 @@ public class RecallFragment extends Fragment implements RecallView {
         recallPresenter.loadRecallList();
 
         return binding.getRoot();
-
     }
 
     @Override
@@ -59,6 +57,7 @@ public class RecallFragment extends Fragment implements RecallView {
     @Override
     public void addRecall(@NonNull Recall recall) {
         recallListAdapter.addItem(recall);
+        binding.rvCard.scrollToPosition(0);
     }
 
     @Override
@@ -81,7 +80,6 @@ public class RecallFragment extends Fragment implements RecallView {
     }
 
     private void initRecyclerView() {
-        binding.rvCard.setNestedScrollingEnabled(false);
         binding.rvCard.setHasFixedSize(true);
         binding.rvCard.setVerticalScrollbarPosition(0);
         recallListAdapter = new RecallListAdapter(getContext());

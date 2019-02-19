@@ -29,8 +29,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-import androidx.work.WorkRequest;
-import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
@@ -40,8 +38,6 @@ import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.ActivitySettingBinding;
 import teamh.boostcamp.myapplication.view.alarm.AlarmActivity;
-import teamh.boostcamp.myapplication.view.password.LockManager;
-
 import teamh.boostcamp.myapplication.view.password.PasswordSelectActivity;
 
 public class SettingActivity extends AppCompatActivity implements SettingView {
@@ -56,8 +52,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     private FirebaseAuth auth;
 
     private ProgressDialog progressDialog;
-
-    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,14 +78,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     private void initPresenter() {
         presenter = new SettingPresenter(this,
-                RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())),
                 DiaryRepositoryImpl.getInstance(AppDatabase.getInstance(
                         getApplicationContext()).diaryDao(),
                         DeepAffectApiClient.getInstance()),
                 FirebaseRepositoryImpl.getInstance(),
-                SharedPreferenceManager.getInstance(getApplicationContext()));
-
-        compositeDisposable = new CompositeDisposable();
+                RecallRepositoryImpl.getInstance(AppDatabase.getInstance(getApplicationContext())));
     }
 
     private void initBinding() {
@@ -165,7 +156,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         .setRationaleTitle(R.string.setting_permission_load_title)
                         .request()
                         .subscribe(tedPermissionResult -> {
-                            if(tedPermissionResult.isGranted()) {
+                            if (tedPermissionResult.isGranted()) {
                                 progressDialog.setMessage(getString(R.string.do_backup));
                                 presenter.backupLocalDataToFirebaseRepository();
                             }
@@ -178,12 +169,12 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                         .setRationaleTitle(R.string.setting_permission_load_title)
                         .request()
                         .subscribe(tedPermissionResult -> {
-                           if(tedPermissionResult.isGranted()) {
-                               progressDialog.setMessage(getString(R.string.do_load));
-                               presenter.downloadAllBackupFilesFromFirebase();
-                           } else {
-                               showToast(R.string.permission_denied);
-                           }
+                            if (tedPermissionResult.isGranted()) {
+                                progressDialog.setMessage(getString(R.string.do_load));
+                                presenter.downloadAllBackupFilesFromFirebase();
+                            } else {
+                                showToast(R.string.permission_denied);
+                            }
                         }, Throwable::printStackTrace);
                 break;
             case R.id.rl_setting_initialization:
@@ -212,8 +203,11 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
                 .setPositiveButton("초기화", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        WorkRequest initializationWorkRequest = new OneTimeWorkRequest.Builder(InitializationWorker.class).build();
-                        WorkManager.getInstance().enqueue(initializationWorkRequest);
+                        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(DeleteDiaryFileWorker.class).build();
+                        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+                        presenter.deleteAllRecall();
+                        presenter.deleteAllDiary();
+                        SharedPreferenceManager.getInstance(getApplicationContext()).removeLastDiarySaveTime();
                     }
                 }).setNegativeButton("취소", new DialogInterface.OnClickListener() {
             @Override
@@ -279,7 +273,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     protected void onPause() {
         super.onPause();
-        if(progressDialog.isShowing()) {
+        if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }
@@ -316,14 +310,14 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
 
     @Override
     public void dismissDialog() {
-        if(progressDialog.isShowing()) {
+        if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
     }
 
     @Override
     public void showDialog() {
-        if(!progressDialog.isShowing()) {
+        if (!progressDialog.isShowing()) {
             progressDialog.show();
         }
     }

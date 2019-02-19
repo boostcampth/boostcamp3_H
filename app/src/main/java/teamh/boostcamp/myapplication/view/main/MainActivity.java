@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         binding.setActivity(this);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //application = new AppInitializer();
 
         presenter = new MainPresenter(this);
 

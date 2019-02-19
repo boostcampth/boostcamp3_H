@@ -1,5 +1,7 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,8 +18,10 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.request.EmotionAnalyzeRequest;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
+import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepository;
+import teamh.boostcamp.myapplication.data.repository.firebase.FirebaseRepositoryImpl;
 import teamh.boostcamp.myapplication.data.repository.mapper.DiaryMapper;
-import teamh.boostcamp.myapplication.view.diarylist.kakaoLink.KakaoLinkHelper;
+import teamh.boostcamp.myapplication.utils.KakaoLinkHelper;
 import teamh.boostcamp.myapplication.view.play.RecordPlayer;
 
 class DiaryListPresenter {
@@ -213,6 +217,12 @@ class DiaryListPresenter {
     }
 
     void sendDiaryToKakao(Diary diary) {
-        kakaoLinkHelper.sendDiary(diary);
+
+        compositeDisposable.add(
+                diaryRepository
+                        .loadShareDiary(diary.getId())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(diaryEntity -> kakaoLinkHelper.sendDiary(diaryEntity))
+                );
     }
 }

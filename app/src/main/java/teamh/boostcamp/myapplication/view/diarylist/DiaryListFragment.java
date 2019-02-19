@@ -33,7 +33,7 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
-import teamh.boostcamp.myapplication.view.diarylist.kakaoLink.KakaoLinkHelperImpl;
+import teamh.boostcamp.myapplication.utils.KakaoLinkHelperImpl;
 import teamh.boostcamp.myapplication.view.diarylist.popup.analyzeResult.AnalyzedEmotionShowingDialog;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.OnRecordDialogDismissListener;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.RecordingDiaryDialog;

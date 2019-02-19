@@ -235,4 +235,48 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
             }
         });
     }
+
+    @NonNull
+    @Override
+    public Single<DiaryEntity> loadDiaryById(String id) {
+
+        return Single.create(emitter -> {
+            final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
+
+            final String key = FirebaseAuth.getInstance().getUid();
+
+            firebaseDatabase.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Iterator<DataSnapshot> iterator= dataSnapshot.getChildren().iterator();
+                    while(iterator.hasNext()){
+                        DataSnapshot it = iterator.next();
+                        it.getRef().orderByChild("id").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                DiaryEntity first=null;
+                                Iterator<DataSnapshot> date = dataSnapshot.getChildren().iterator();
+                                if(date.hasNext()){
+                                    first = date.next().getValue(DiaryEntity.class);
+                                }
+                                //DiaryEntity diaryEntity = dataSnapshot.getValue(DiaryEntity.class);
+                                emitter.onSuccess(first);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) { }
+                        });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    if(!emitter.isDisposed()) {
+                        emitter.onError(new FirebaseException("find_id"));
+                    }
+                }
+            });
+
+        });
+    }
 }
