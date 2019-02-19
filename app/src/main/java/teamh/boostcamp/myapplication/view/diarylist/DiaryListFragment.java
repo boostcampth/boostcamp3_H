@@ -76,6 +76,11 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d("Test", "DiaryListFragment onDestroy");
@@ -94,8 +99,9 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void onResume() {
         super.onResume();
+        initPresenter();
+        clearView();
         if (isDownloaded) {
-            diaryListAdapter.clear();
             presenter.loadDiaryList(LOAD_ITEM_NUM);
             isDownloaded = false;
         }
@@ -186,6 +192,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
 
     @Override
     public void insertDiaryList(@NonNull Diary diary) {
+        clearView();
         diaryListAdapter.insertDiaryItem(diary);
     }
 
@@ -281,6 +288,9 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
         binding.tvRecordItemNormal.setTextColor(getResources().getColor(R.color.emoji_color));
         binding.tvRecordItemPgood.setTextColor(getResources().getColor(R.color.emoji_color));
         binding.tvRecordItemGood.setTextColor(getResources().getColor(R.color.emoji_color));
+        if(e == null) {
+            return;
+        }
         switch (e) {
             case VERY_BAD:
                 binding.tvRecordItemMad.setTextColor(getResources().getColor(R.color.selected_emoji_color));
@@ -312,6 +322,13 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
 
         hashTagListAdapter = new HashTagListAdapter(getContext());
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
+    }
+
+    private void clearView() {
+        hashTagListAdapter.clear();
+        diaryListAdapter.clear();
+        binding.etItemRecordInput.setText("");
+        setSelectedEmotion(null);
     }
 
     private void initDialog() {

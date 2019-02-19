@@ -64,6 +64,11 @@ public class HashTagListAdapter extends RecyclerView.Adapter<HashTagListAdapter.
     }
 
 
+    void clear() {
+        itemList.clear();
+        notifyDataSetChanged();
+    }
+
     void removeItem(String hashTag) {
         Iterator<String> it = itemList.iterator();
         while (it.hasNext()) {
