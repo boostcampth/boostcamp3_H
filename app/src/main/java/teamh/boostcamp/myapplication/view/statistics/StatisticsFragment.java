@@ -34,7 +34,6 @@ import teamh.boostcamp.myapplication.data.model.CountedTag;
 import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 import teamh.boostcamp.myapplication.data.repository.StatisticsRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentStatisticsBinding;
-import teamh.boostcamp.myapplication.view.diarylist.DiaryRxEventBus;
 
 public class StatisticsFragment extends Fragment implements StatisticsView {
 
