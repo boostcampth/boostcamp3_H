@@ -3,7 +3,6 @@ package teamh.boostcamp.myapplication.view.diarylist;
 import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
-import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -42,7 +40,6 @@ import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
 import teamh.boostcamp.myapplication.view.diarylist.popup.analyzeResult.AnalyzedEmotionShowingDialog;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.OnRecordDialogDismissListener;
 import teamh.boostcamp.myapplication.view.diarylist.popup.record.RecordingDiaryDialog;
-import teamh.boostcamp.myapplication.view.play.RecordPlayerImpl;
 
 public class DiaryListFragment extends Fragment implements DiaryListView, OnRecordDialogDismissListener {
 
@@ -211,7 +208,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                             getContext().getApplicationContext()).diaryDao(),
                             DeepAffectApiClient.getInstance()),
                     new DiaryRecorderImpl(),
-                    new DiaryPlayer(),
+                    new DiaryPlayerImpl(),
                     SharedPreferenceManager.getInstance(getContext().getApplicationContext()),
                     new KakaoLinkHelperImpl(getContext().getApplicationContext()));
         }
