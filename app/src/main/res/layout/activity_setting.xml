@@ -54,7 +54,7 @@
                 android:id="@+id/setting_alarm_to_alarm"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@color/white"
+                android:background="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/setting_elevation"
                 android:onClick="@{v-> activity.onButtonClick(v)}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -81,7 +81,7 @@
             </RelativeLayout>
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="0.1dp"
                 android:background="#707070"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,7 @@
                 android:id="@+id/rl_setting_password"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@color/white"
+                android:background="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/setting_elevation"
                 android:onClick="@{v-> activity.onButtonClick(v)}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -116,7 +116,7 @@
             </RelativeLayout>
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="0.1dp"
                 android:background="#707070"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -127,7 +127,7 @@
                 android:id="@+id/rl_setting_login"
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
-                android:background="@color/white"
+                android:background="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/setting_elevation"
                 android:onClick="@{v-> activity.onButtonClick(v)}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -155,27 +155,19 @@
             </RelativeLayout>
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="0.1dp"
                 android:background="#707070"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rl_setting_password" />
 
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0.1dp"
-                android:background="#707070"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rl_setting_password" />
 
             <RelativeLayout
                 android:id="@+id/rl_setting_backup"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
-                android:background="@android:color/white"
+                android:background="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/setting_elevation"
                 android:onClick="@{v-> activity.onButtonClick(v)}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -202,7 +194,7 @@
             </RelativeLayout>
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="0.1dp"
                 android:background="#707070"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -214,7 +206,7 @@
                 android:id="@+id/rl_setting_restore"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
-                android:background="@android:color/white"
+                android:background="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/setting_elevation"
                 android:onClick="@{v-> activity.onButtonClick(v)}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -241,26 +233,19 @@
             </RelativeLayout>
 
             <View
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="0.1dp"
                 android:background="#707070"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/rl_setting_password" />
 
-            <View
-                android:layout_width="0dp"
-                android:layout_height="0.1dp"
-                android:background="#707070"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rl_setting_password" />
 
             <RelativeLayout
                 android:id="@+id/rl_setting_initialization"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
-                android:background="@android:color/white"
+                android:background="?android:attr/selectableItemBackground"
                 android:elevation="@dimen/setting_elevation"
                 android:onClick="@{v-> activity.onButtonClick(v)}"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -285,6 +270,13 @@
                     android:src="@drawable/ic_setting_right" />
 
             </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="#707070"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
