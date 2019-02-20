@@ -91,7 +91,6 @@
 
     <!--Graph Emojis-->
     <string-array name="graph_emojis">
-        <item>  </item>
         <item>😡</item>
         <item>😞</item>
         <item>😐</item>
