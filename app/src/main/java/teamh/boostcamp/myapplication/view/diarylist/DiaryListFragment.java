@@ -55,7 +55,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     private HashTagListAdapter hashTagListAdapter;
 
     private boolean isDownloaded = false;
-    private RecordingDiaryDialog recordingDiaryDialog;
 
     private FragmentManager fragmentManager;
 
@@ -77,16 +76,18 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void onPause() {
         super.onPause();
-        if (recordingDiaryDialog.isViewPopUp()) {
-            recordingDiaryDialog.dismiss();
-        }
         presenter.onViewPaused();
+        if(fragmentManager.findFragmentByTag("recordDialog") != null) {
+            onDismiss(false);
+            fragmentManager.beginTransaction().remove(fragmentManager.findFragmentByTag("recordDialog")).commit();
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (isDownloaded) {
+            diaryListAdapter.clear();
             presenter.loadDiaryList(LOAD_ITEM_NUM);
             isDownloaded = false;
         }
@@ -102,7 +103,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
             initPresenter();
             initAdapter();
             initView();
-            initDialog();
             compositeDisposable = new CompositeDisposable();
         }
 
@@ -196,6 +196,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void setIsSaving(boolean isSaving) {
         this.isSaving.set(isSaving);
+        if(isSaving) clearView();
     }
 
 
@@ -248,7 +249,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                                         putDiaryListFragmentEvent(LogEvent.RECORD_DIARY_BUTTON_CLICK);
                                         KeyPadUtil.closeKeyPad(getContext(), binding.etItemRecordInput);
                                         presenter.startRecording();
-                                        recordingDiaryDialog.show(fragmentManager, getTag());
+                                        showRecordingDialog();
                                     } else {
                                         showToastMessage(R.string.permission_denied);
                                     }
@@ -315,12 +316,9 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     private void clearView() {
         hashTagListAdapter.clear();
         binding.etItemRecordInput.setText("");
+        binding.tvTitle.setText(getString(R.string.record_title_default));
+        binding.tvTitle.setTextColor(getResources().getColor(R.color.gray));
         setSelectedEmotion(null);
-    }
-
-    private void initDialog() {
-        recordingDiaryDialog = RecordingDiaryDialog.newInstance();
-        recordingDiaryDialog.setDismissListener(this);
     }
 
     private void putDiaryListFragmentEvent(@NonNull LogEvent logEvent) {
@@ -329,11 +327,19 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
         }
     }
 
+    private void showRecordingDialog() {
+        RecordingDiaryDialog diaryDialog = RecordingDiaryDialog.newInstance();
+        diaryDialog.setDismissListener(this);
+        diaryDialog.show(fragmentManager, "recordDialog");
+    }
+
     @Override
     public void onDismiss(boolean isTimeOut) {
         if (isTimeOut) {
             showToastMessage(R.string.item_record_time_out);
         }
+        binding.tvTitle.setText(getString(R.string.record_done));
+        binding.tvTitle.setTextColor(getResources().getColor(R.color.main_dark));
         presenter.finishRecording();
     }
 }

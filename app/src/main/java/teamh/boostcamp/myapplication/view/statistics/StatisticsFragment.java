@@ -28,12 +28,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
 import teamh.boostcamp.myapplication.data.model.EmotionHistory;
+import teamh.boostcamp.myapplication.data.model.Event;
 import teamh.boostcamp.myapplication.data.repository.StatisticsRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentStatisticsBinding;
+import teamh.boostcamp.myapplication.utils.EventBus;
 
 public class StatisticsFragment extends Fragment implements StatisticsView {
 
@@ -43,6 +48,8 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
     private FragmentStatisticsBinding binding;
     private String[] emojis;
     private StatisticsPresenter statisticsPresenter;
+
+    private CompositeDisposable compositeDisposable;
 
     public StatisticsFragment() {
 
@@ -56,6 +63,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         this.context = context;
+        compositeDisposable = new CompositeDisposable();
     }
 
     @Override
@@ -72,6 +80,17 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_statistics, container, false);
         initPresenter();
         initData();
+
+
+        compositeDisposable.add(EventBus.get().filter(event -> event.equals(Event.CLEAR_COMPLETE))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(event -> {
+                    // 데이터 초기화
+                    updateStatisticsData(new ArrayList<>());
+                    updateTagListData(new ArrayList<>());
+                }, Throwable::printStackTrace));
+
+
         return binding.getRoot();
     }
 
@@ -186,6 +205,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
     @Override
     public void updateTagListData(@NonNull List<CountedTag> countedTagList) {
+        binding.hashTagCustomLayout.removeAllViews();
         final List<CountedTag> hashTagItems = countedTagList;
 
         LayoutInflater inflater = getLayoutInflater();

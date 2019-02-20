@@ -25,7 +25,6 @@ public class RecordingDiaryDialog extends DialogFragment {
     private Disposable timerDisposable;
     private OnRecordDialogDismissListener dismissListener;
     private boolean isTimeOut = false;
-    private boolean isViewPopUp = false;
 
     public static RecordingDiaryDialog newInstance() {
         return new RecordingDiaryDialog();
@@ -36,8 +35,6 @@ public class RecordingDiaryDialog extends DialogFragment {
     @SuppressWarnings("cast")
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.PopUpDialogTheme);
-
-        isViewPopUp = true;
 
         if(getActivity() != null) {
             final View view = getActivity().getLayoutInflater().inflate(R.layout.dialog_record_diary, null);
@@ -82,11 +79,6 @@ public class RecordingDiaryDialog extends DialogFragment {
             timerDisposable.dispose();
             timerDisposable = null;
         }
-        isViewPopUp = false;
         dismissListener.onDismiss(isTimeOut);
-    }
-
-    public boolean isViewPopUp() {
-        return isViewPopUp;
     }
 }

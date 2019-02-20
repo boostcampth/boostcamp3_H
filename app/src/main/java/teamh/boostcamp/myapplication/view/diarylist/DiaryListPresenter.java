@@ -241,6 +241,8 @@ class DiaryListPresenter {
             recordPlayer.stop();
             diaryListView.onPlayFileChanged(lastPlayedPosition, true);
         }
+        compositeDisposable.clear();
+        diaryListView.setIsSaving(false);
     }
 
     void onViewDestroyed() {

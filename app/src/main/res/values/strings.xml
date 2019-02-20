@@ -27,7 +27,8 @@
     - 내부저장소 쓰기 권한</string>
 
     <string name="max_time">60초</string>
-    <string name="time_out_message">후에 녹음이 종료됩니다</string>
+    <string name="time_out_message_up">일기 녹음이</string>
+    <string name="time_out_message_down">후에 종료됩니다</string>
 
     <string name="analyze_ignore">인터넷 연결이 되어있지 않아서 감정 분석 기능이 수행되지 않습니다 !</string>
     <string name="popup_dialog_title">분석된 감정 결과입니다</string>
@@ -44,6 +45,8 @@
     <string name="load_fail">불러오기 실패</string>
     <string name="backup_start">백업 시작</string>
     <string name="download_start">백업 시작</string>
+    <string name="record_done">녹음이 완료되었습니다! 감정을 분석해보세요 </string>
+    <string name="record_title_default">오늘 하루를 목소리로 기록하세요</string>
 
     <string-array name="month">
         <item>January</item>

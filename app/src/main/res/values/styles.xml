@@ -121,7 +121,6 @@
 
     <style name="AnalyzedEmotionShowingDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/anim_emotion_dialog_up</item>
-        <item name="android:windowExitAnimation">@anim/anim_emotion_dialog_down</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
