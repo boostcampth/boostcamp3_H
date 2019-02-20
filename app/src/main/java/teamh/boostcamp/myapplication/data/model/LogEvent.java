@@ -5,7 +5,9 @@ import androidx.annotation.NonNull;
 public enum LogEvent {
 
     RECORD_DIARY_BUTTON_CLICK("buttonClick", "recordDiary", "recordButtonClick", "buttonClick"),
-    DONE_BUTTON_CLICK("buttonClick", "recordDone", "recordDoneButtonClick", "save record");
+    DONE_BUTTON_CLICK("buttonClick", "recordDone", "recordDoneButtonClick", "save record"),
+    SHARE_BUTTON_CLICK("buttonClick", "shareDiary", "shareDiaryButtonClick", "shareDiary"),
+    PLAY_RECALL_BUTTON_CLICK("buttonClick", "playRecall", "playRecallButtonClick", "playRecall");
 
     private final String eventName;
     private final String itemId;

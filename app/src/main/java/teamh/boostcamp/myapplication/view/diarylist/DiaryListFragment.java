@@ -304,9 +304,10 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
         diaryListAdapter.setOnRecordItemClickListener(pos ->
                 presenter.playDiaryRecord(diaryListAdapter.getDiary(pos).getRecordFilePath(), pos));
 
-        diaryListAdapter.setOnKakaoLinkClickListener(pos ->
-                presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos))
-        );
+        diaryListAdapter.setOnKakaoLinkClickListener(pos ->{
+                presenter.sendDiaryToKakao(diaryListAdapter.getDiary(pos));
+                FirebaseEventLogger.getInstance(getContext()).addLogEvent(LogEvent.PLAY_RECALL_BUTTON_CLICK);
+        });
 
         hashTagListAdapter = new HashTagListAdapter(getContext());
         hashTagListAdapter.setItemClickListener(pos -> hashTagListAdapter.removeItem(pos));
