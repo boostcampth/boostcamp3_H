@@ -146,6 +146,7 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
                 return "행복들";
             default:
                 return "행복들";
+
         }
     }
 
