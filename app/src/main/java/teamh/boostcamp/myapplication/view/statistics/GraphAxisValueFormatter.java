@@ -20,13 +20,13 @@ public class GraphAxisValueFormatter implements IAxisValueFormatter {
     @Override
     public String getFormattedValue(float value, AxisBase axis) {
 
-        Log.v("Test",String.valueOf(value));
+        //Log.v("index = %s",String.valueOf(value));
 
         try {
-            int index = (int) value;
+            int index = Math.round(value);
             return values[index];
         }catch (Exception e){
-            return "";
+            return values[0];
         }
     }
 

@@ -2,6 +2,7 @@ package teamh.boostcamp.myapplication.view.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -15,12 +16,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityMainBinding;
-import teamh.boostcamp.myapplication.view.statistics.StatisticsFragment;
 import teamh.boostcamp.myapplication.view.diarylist.DiaryListFragment;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
 import teamh.boostcamp.myapplication.view.password.PasswordActivity;
 import teamh.boostcamp.myapplication.view.recall.RecallFragment;
 import teamh.boostcamp.myapplication.view.setting.SettingActivity;
+import teamh.boostcamp.myapplication.view.statistics.StatisticsFragment;
 
 
 public class MainActivity extends AppCompatActivity implements MainActivityView {
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         recallFragment = RecallFragment.newInstance();
         diaryListFragment = DiaryListFragment.newInstance();
-        statisticsFragment = statisticsFragment.newInstance();
+        statisticsFragment = StatisticsFragment.newInstance();
 
         initBottomNavigation();
     }
@@ -79,11 +80,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
             if (getData.getStringExtra("tag").equals("1")) {
                 Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
                 intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else if (getData.getStringExtra("tag").equals("2")) {
+                Log.v(TAG, getData.toString());
             }
-
         }
     }
 
