@@ -5,6 +5,8 @@ import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -119,6 +121,10 @@ class DiaryListPresenter {
             return;
         }
 
+        final List<String> newTags = new ArrayList<>();
+        for (String tag : tags) {
+            newTags.add(tag);
+        }
         final File file = new File(diaryRecorder.getFilePath());
 
         diaryListView.setIsSaving(true);
@@ -134,7 +140,7 @@ class DiaryListPresenter {
                     map(emotion -> new DiaryEntity(newItemId,
                             saveTime,
                             file.getAbsolutePath(),
-                            tags,
+                            newTags,
                             selectedEmotion,
                             emotion))
                     .flatMapCompletable(diaryRepository::insertDiary)
