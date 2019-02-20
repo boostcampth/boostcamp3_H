@@ -196,6 +196,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     @Override
     public void setIsSaving(boolean isSaving) {
         this.isSaving.set(isSaving);
+        if(isSaving) clearView();
     }
 
 
