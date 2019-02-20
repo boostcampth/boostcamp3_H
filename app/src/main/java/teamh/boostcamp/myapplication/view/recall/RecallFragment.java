@@ -16,9 +16,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
+import teamh.boostcamp.myapplication.data.model.LogEvent;
 import teamh.boostcamp.myapplication.data.model.Recall;
 import teamh.boostcamp.myapplication.data.repository.RecallRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentRecallBinding;
+import teamh.boostcamp.myapplication.utils.FirebaseEventLogger;
 import teamh.boostcamp.myapplication.view.play.PlayActivity;
 
 public class RecallFragment extends Fragment implements RecallView {
@@ -94,6 +96,7 @@ public class RecallFragment extends Fragment implements RecallView {
         recallListAdapter.setButtonClickListener(new RecallListAdapter.ButtonClickListener() {
             @Override
             public void onPlayButtonClicked(Recall recall) {
+                FirebaseEventLogger.getInstance(getContext()).addLogEvent(LogEvent.PLAY_RECALL_BUTTON_CLICK);
                 Intent intent = new Intent(getContext(), PlayActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(EXTRA, recall);
