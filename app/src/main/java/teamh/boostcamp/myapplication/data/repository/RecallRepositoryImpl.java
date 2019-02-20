@@ -35,6 +35,8 @@ public class RecallRepositoryImpl implements RecallRepository {
         return INSTANCE;
     }
 
+    @NonNull
+    @Override
     public Single<List<Recall>> loadRecallList() {
 
         return appDatabase.recallDao().loadRecallEntities()
@@ -79,22 +81,6 @@ public class RecallRepositoryImpl implements RecallRepository {
                 .subscribeOn(Schedulers.io());
     }
 
-//    @Nonnull
-//    @Override
-//    public Maybe<Recall> insertRecall() {
-//        Emotion emotion = Emotion.fromValue(generateRandomNumber(5));
-//        Date currentDate = new Date();
-//        Date endDate = generateEndDate(currentDate);
-//        Date startDate = generateStartDate(endDate);
-//
-//
-//        return appDatabase.diaryDao().selectDiaryListByEmotionAndDate1(emotion, startDate, endDate, 5)
-//                .map(diaryList -> {
-//
-//                    return new Recall()
-//                })
-//    }
-
     @NonNull
     private Date generateStartDate(@NonNull Date endDate) {
         return new Date(endDate.getTime()
@@ -108,9 +94,5 @@ public class RecallRepositoryImpl implements RecallRepository {
                 - (createDate.getTime() % TimeUnit.DAYS.toMillis(1))
                 - TimeUnit.HOURS.toMillis(9)
                 - 1000);
-    }
-
-    private int generateRandomNumber(int limit) {
-        return (int) (Math.random() * limit);
     }
 }

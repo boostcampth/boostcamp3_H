@@ -28,9 +28,6 @@ public interface DiaryRepository {
     Single<DiaryEntity> loadRecentInsertedDiary();
 
     @NonNull
-    Completable deleteDiary(@NonNull String id);
-
-    @NonNull
     Observable<Diary> loadAll();
 
     @NonNull
