@@ -17,6 +17,14 @@ public class RecordPlayerImpl implements RecordPlayer {
     private List<Diary> playList;
     private boolean playState = false;
     private int count = 0;
+    private OnStateChangeListener onStateChangeListener;
+
+    interface OnStateChangeListener {
+        void onStop();
+
+        void onPlay();
+    }
+
 
     public static RecordPlayerImpl getINSTANCE() {
         if (INSTANCE == null) {
@@ -62,6 +70,9 @@ public class RecordPlayerImpl implements RecordPlayer {
                 Log.d(TAG, "playList: IOException" + Arrays.toString(e.getStackTrace()));
             }
             mediaPlayer.start();
+            if (onStateChangeListener != null) {
+                onStateChangeListener.onPlay();
+            }
         } else {
             stopList();
         }
@@ -73,6 +84,9 @@ public class RecordPlayerImpl implements RecordPlayer {
             count = 0;
             mediaPlayer.stop();
             playState = false;
+            if (onStateChangeListener != null) {
+                onStateChangeListener.onStop();
+            }
         }
     }
 
@@ -105,6 +119,11 @@ public class RecordPlayerImpl implements RecordPlayer {
     @Override
     public void setOnCompletionListener(@NonNull MediaPlayer.OnCompletionListener onCompletionListener) {
         mediaPlayer.setOnCompletionListener(onCompletionListener);
+    }
+
+    @Override
+    public void setOnChangeStateListener(OnStateChangeListener onStateChangeListener) {
+        this.onStateChangeListener = onStateChangeListener;
     }
 
     @Override

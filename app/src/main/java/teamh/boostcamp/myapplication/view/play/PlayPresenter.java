@@ -6,6 +6,19 @@ class PlayPresenter {
 
     PlayPresenter(RecordPlayer recordPlayer, PlayView view) {
         this.recordPlayer = recordPlayer;
+        recordPlayer.setOnChangeStateListener(new RecordPlayerImpl.OnStateChangeListener() {
+            @Override
+            public void onStop() {
+                view.setButtonText(false);
+                view.showPlayingState(false);
+            }
+
+            @Override
+            public void onPlay() {
+                view.setButtonText(true);
+                view.showPlayingState(true);
+            }
+        });
         this.view = view;
     }
 
@@ -16,7 +29,6 @@ class PlayPresenter {
         }
         if (!recordPlayer.isPlaying()) {
             recordPlayer.play();
-            view.showPlayingState(recordPlayer.isPlaying());
         } else {
             stopPlaying();
         }
@@ -25,7 +37,6 @@ class PlayPresenter {
     void stopPlaying() {
         if (recordPlayer.isPlaying()) {
             recordPlayer.stopList();
-            view.showPlayingState(recordPlayer.isPlaying());
         }
     }
 

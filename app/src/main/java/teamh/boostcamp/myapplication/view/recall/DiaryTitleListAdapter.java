@@ -15,7 +15,7 @@ import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.databinding.ItemDiarytitleLlistBinding;
 
 public class DiaryTitleListAdapter extends RecyclerView.Adapter<DiaryTitleListAdapter.ViewHolder> {
-    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
+    private static final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA);
     private Context context;
     private List<Diary> diaryList;
 
