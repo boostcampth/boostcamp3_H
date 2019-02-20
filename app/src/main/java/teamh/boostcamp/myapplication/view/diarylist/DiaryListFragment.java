@@ -30,10 +30,12 @@ import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.data.model.Emotion;
+import teamh.boostcamp.myapplication.data.model.LogEvent;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.databinding.FragmentDiaryListBinding;
 import teamh.boostcamp.myapplication.utils.EventBus;
+import teamh.boostcamp.myapplication.utils.FirebaseEventLogger;
 import teamh.boostcamp.myapplication.utils.KakaoLinkHelperImpl;
 import teamh.boostcamp.myapplication.utils.KeyPadUtil;
 import teamh.boostcamp.myapplication.utils.NetworkStateUtil;
@@ -236,13 +238,14 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
 
         binding.buttonRecordItemRecord.setOnClickListener(v -> {
                     if (getContext() != null) {
-                        compositeDisposable.add(TedRx2Permission.with(getContext())
+                        compositeDisposable.add(TedRx2Permission.with(getContext().getApplicationContext())
                                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO)
                                 .setRationaleTitle(getContext().getString(R.string.item_record_permission_title))
                                 .setRationaleMessage(getContext().getString(R.string.item_record_permission_msg))
                                 .request()
                                 .subscribe(tedPermissionResult -> {
                                     if (tedPermissionResult.isGranted()) {
+                                        putDiaryListFragmentEvent(LogEvent.RECORD_DIARY_BUTTON_CLICK);
                                         KeyPadUtil.closeKeyPad(getContext(), binding.etItemRecordInput);
                                         presenter.startRecording();
                                         recordingDiaryDialog.show(fragmentManager, getTag());
@@ -254,8 +257,10 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                 }
         );
 
-        binding.buttonItemRecordDone.setOnClickListener(v ->
-                presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(getContext()))
+        binding.buttonItemRecordDone.setOnClickListener(v -> {
+                    putDiaryListFragmentEvent(LogEvent.DONE_BUTTON_CLICK);
+                    presenter.saveDiary(hashTagListAdapter.getTags(), NetworkStateUtil.isNetworkConnected(getContext()));
+                }
         );
 
         binding.tvRecordItemGood.setOnClickListener(v -> setSelectedEmotion(Emotion.fromValue(4)));
@@ -271,7 +276,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
         binding.tvRecordItemNormal.setTextColor(getResources().getColor(R.color.emoji_color));
         binding.tvRecordItemPgood.setTextColor(getResources().getColor(R.color.emoji_color));
         binding.tvRecordItemGood.setTextColor(getResources().getColor(R.color.emoji_color));
-        if(e == null) {
+        if (e == null) {
             return;
         }
         switch (e) {
@@ -309,7 +314,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
 
     private void clearView() {
         hashTagListAdapter.clear();
-        diaryListAdapter.clear();
         binding.etItemRecordInput.setText("");
         setSelectedEmotion(null);
     }
@@ -317,6 +321,12 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
     private void initDialog() {
         recordingDiaryDialog = RecordingDiaryDialog.newInstance();
         recordingDiaryDialog.setDismissListener(this);
+    }
+
+    private void putDiaryListFragmentEvent(@NonNull LogEvent logEvent) {
+        if (getContext() != null) {
+            FirebaseEventLogger.getInstance(getContext()).addLogEvent(logEvent);
+        }
     }
 
     @Override
