@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/max_time"
-        android:textSize="24dp"
+        android:textSize="28dp"
         app:layout_constraintStart_toStartOf="@id/pb_item_dialog_progress"
         app:layout_constraintEnd_toEndOf="@id/pb_item_dialog_progress"
         app:layout_constraintTop_toTopOf="@id/pb_item_dialog_progress"
@@ -33,7 +33,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/time_out_message"
+        android:text="@string/time_out_message_up"
+        app:layout_constraintStart_toStartOf="@id/pb_item_dialog_progress"
+        app:layout_constraintEnd_toEndOf="@id/pb_item_dialog_progress"
+        app:layout_constraintBottom_toTopOf="@id/tv_item_dialog_timer"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/time_out_message_down"
         app:layout_constraintStart_toStartOf="@id/pb_item_dialog_progress"
         app:layout_constraintEnd_toEndOf="@id/pb_item_dialog_progress"
         app:layout_constraintTop_toBottomOf="@id/tv_item_dialog_timer"/>
