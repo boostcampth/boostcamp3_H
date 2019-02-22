@@ -1,4 +1,4 @@
-package teamh.boostcamp.myapplication.data.repository.firebase;
+package teamh.boostcamp.myapplication.data.repository.backup;
 
 import android.net.Uri;
 import android.os.Environment;
