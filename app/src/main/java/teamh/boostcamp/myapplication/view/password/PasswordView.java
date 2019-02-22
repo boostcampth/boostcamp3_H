@@ -8,4 +8,6 @@ public interface PasswordView {
 
     void showPasswordErrorMessage();
 
+    void clearView();
+
 }

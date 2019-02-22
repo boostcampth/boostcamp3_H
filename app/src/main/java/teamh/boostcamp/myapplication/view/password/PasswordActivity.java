@@ -11,8 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
 
@@ -21,6 +21,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     private ActivityPasswordBinding binding;
     private PasswordPresenter passwordPresenter;
     private int type = -1;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Nullable
     private String oldPassword = null;
 
@@ -71,7 +72,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
             final Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
-            this.startActivity(intent);
+            startActivity(intent);
             activityFinish();
         } else {
             activityFinish();
@@ -282,32 +283,34 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
 
     public void ErrorAnimation() {
         /*rxJava로 변경해보기.*/
-        Completable.fromAction(() -> {
+
+        compositeDisposable.add(Completable.fromAction(() -> {
             Animation animation = AnimationUtils.loadAnimation(
-                    PasswordActivity.this, R.anim.anim_shake_password_not_match);
+                    getApplicationContext(), R.anim.anim_shake_password_not_match);
+
             binding.llPassword.startAnimation(animation);
         }).subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    clearPassword();
-                }, Throwable::printStackTrace);
 
-        /*Thread thread = new Thread() {
-            public void run() {
-                Animation animation = AnimationUtils.loadAnimation(
-                        PasswordActivity.this, R.anim.anim_shake_password_not_match);
-                binding.llPassword.startAnimation(animation);
-                clearPassword();
-            }
-        };
-        runOnUiThread(thread);*/
+                        }
+                        , throwable -> {
+                        }));
     }
+
+    ;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         passwordPresenter.onDestroyView();
+        clearView();
+    }
+
+    @Override
+    public void clearView() {
         binding = null;
         oldPassword = null;
         passwordPresenter = null;
+        compositeDisposable.dispose();
     }
 }

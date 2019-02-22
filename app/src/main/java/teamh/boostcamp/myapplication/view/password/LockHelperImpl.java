@@ -11,12 +11,25 @@ import teamh.boostcamp.myapplication.data.local.SharedPreferenceManager;
  * */
 public class LockHelperImpl extends LockHelper {
 
-    @NonNull
+    private static LockHelperImpl INSTANCE;
     private SharedPreferenceManager sharedPreferenceManager;
 
-    public LockHelperImpl(@NonNull Context context) {
+
+    private LockHelperImpl(@NonNull Context context){
         this.sharedPreferenceManager = SharedPreferenceManager.getInstance(context.getApplicationContext());
     }
+
+    public static LockHelperImpl getInstance(@NonNull Context context){
+        if(INSTANCE == null){
+            synchronized (LockHelperImpl.class){
+                if(INSTANCE == null){
+                    INSTANCE = new LockHelperImpl(context);
+                }
+            }
+        }
+        return INSTANCE;
+    }
+
 
     @Override
     public void savePassword(@NonNull String password) {
@@ -32,5 +45,11 @@ public class LockHelperImpl extends LockHelper {
     public boolean isPasswordSet() {
         return sharedPreferenceManager.isPasswordSaved();
     }
+
+    @Override
+    public void freeSharedPreferenceManager() {
+        sharedPreferenceManager = null;
+    }
+
 
 }
