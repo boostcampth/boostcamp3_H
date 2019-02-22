@@ -16,6 +16,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.jobs.MoveViewJob;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,12 +28,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.CountedTag;
+import teamh.boostcamp.myapplication.data.model.Emotion;
 import teamh.boostcamp.myapplication.data.model.EmotionHistory;
 import teamh.boostcamp.myapplication.data.model.Event;
 import teamh.boostcamp.myapplication.data.repository.StatisticsRepositoryImpl;
@@ -41,13 +42,12 @@ import teamh.boostcamp.myapplication.utils.EventBus;
 
 public class StatisticsFragment extends Fragment implements StatisticsView {
 
-    private static final String TAG = StatisticsFragment.class.getSimpleName();
+    private static String TAG = StatisticsFragment.class.getSimpleName();
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd(E)", Locale.KOREA);
     private Context context;
     private FragmentStatisticsBinding binding;
     private String[] emojis;
     private StatisticsPresenter statisticsPresenter;
-
     private CompositeDisposable compositeDisposable;
 
     public StatisticsFragment() {
@@ -61,16 +61,22 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context = context;
+        this.context = context.getApplicationContext();
         compositeDisposable = new CompositeDisposable();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        statisticsPresenter.viewDestroyed();
+    public void onDestroy() {
+        super.onDestroy();
         context = null;
+        emojis = null;
+        TAG = null;
+        compositeDisposable.dispose();
+        // 싱글톤 객체로 화면이 꺼져도 참조를 풀지 않아서 명시적으로 참조 해제를 해줘야 한다.
+        MoveViewJob.getInstance(null, 0, 0, null, null);
+        statisticsPresenter.viewDestroyed();
     }
+
 
     @Nullable
     @Override
@@ -79,8 +85,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_statistics, container, false);
 
         initPresenter();
-        initData();
-
+        setEmojiData();
 
         compositeDisposable.add(EventBus.get().filter(event -> event.equals(Event.CLEAR_COMPLETE))
                 .observeOn(AndroidSchedulers.mainThread())
@@ -101,8 +106,11 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         binding.setPresenter(statisticsPresenter);
     }
 
-    private void initData() {
-        emojis = context.getResources().getStringArray(R.array.graph_emojis);
+    private void setEmojiData() {
+        emojis = new String[5];
+        for (int i = 0; i < 5; i++) {
+            emojis[i] = Emotion.fromValue(i).getEmoji();
+        }
     }
 
     @Override
@@ -145,9 +153,16 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         analyzedDataSetBar.setColor(getResources().getColor(R.color.main));
         analyzedDataSetBar.setHighlightEnabled(false);
 
+        setBarData(dates, selectedDataSetBar, analyzedDataSetBar);
+
+    }
+
+    private void setBarData(String[] dates, BarDataSet selectedDataSetBar, BarDataSet analyzedDataSetBar) {
+        String[] dateArray = dates;
+        BarDataSet selectedData = selectedDataSetBar;
+        BarDataSet analyzedData = analyzedDataSetBar;
         final XAxis xAxis;
         final YAxis yLeftAxis, yRightAxis;
-        //float groupSpace = 0.2f;
         float groupSpace = 0.06f;
         float barSpace = 0.02f; // x2 dataset
         float barWidth = 0.45f; // x2 dataset
@@ -159,9 +174,9 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
         // x축 설정
         xAxis.setAxisMinimum(0f);
-        xAxis.setAxisMaximum(dates.length);
+        xAxis.setAxisMaximum(dateArray.length);
         xAxis.setCenterAxisLabels(true);
-        xAxis.setLabelCount(dates.length);
+        xAxis.setLabelCount(dateArray.length);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(dates));
         xAxis.setDrawGridLines(false);
@@ -187,20 +202,19 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         legend.setEnabled(false);
 
         // BarData 세팅
-        BarData barData = new BarData(selectedDataSetBar, analyzedDataSetBar);
+        BarData barData = new BarData(selectedData, analyzedData);
         barData.setBarWidth(barWidth); // set the width of each bar
         barData.setDrawValues(false);
         binding.lcEmotionGraph.setVisibleXRangeMaximum(5);
         binding.lcEmotionGraph.setScaleEnabled(false);
         binding.lcEmotionGraph.setHorizontalScrollBarEnabled(false);
         binding.lcEmotionGraph.setPinchZoom(false);
-        binding.lcEmotionGraph.moveViewToX(0);
+        //binding.lcEmotionGraph.moveViewToX(0);
         binding.lcEmotionGraph.setDescription(null);
         binding.lcEmotionGraph.setData(barData);
         binding.lcEmotionGraph.groupBars(0, groupSpace, barSpace);
         binding.lcEmotionGraph.animateY(1000);
         binding.lcEmotionGraph.invalidate(); // refresh
-
 
     }
 

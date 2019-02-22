@@ -22,4 +22,6 @@ public abstract class LockHelper {
     public abstract boolean checkPassword(@NonNull String password);
 
     public abstract boolean isPasswordSet();
+
+    public abstract void freeSharedPreferenceManager();
 }

@@ -23,11 +23,9 @@ public class PasswordSelectActivity extends AppCompatActivity {
 
     private static final String TAG = PasswordSelectActivity.class.getSimpleName();
     private ActivityPasswordSelectBinding binding;
-    private LockManager lockManager;
     private Toolbar toolbar;
     private ActionBar actionBar;
     private LockHelper lockHelper;
-    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +34,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
     }
 
     private void init() {
-        lockManager = LockManager.getInstance();
-        lockHelper = lockManager.getLockHelper(getApplicationContext());
+        lockHelper = LockHelperImpl.getInstance(getApplicationContext());
         initBinding();
         initSwitch();
         initActionBar();
@@ -109,8 +106,8 @@ public class PasswordSelectActivity extends AppCompatActivity {
         } else {
             // 설정되어 있지 않음.
             binding.switchPasswordSelect.setChecked(false);
-            binding.tvPasswordChangeButton.setTextColor(getApplicationContext().getResources().getColor(R.color.password_text_gray));
             binding.tvPasswordChangeButton.setEnabled(false); // 변경 버튼 비활성화
+            binding.tvPasswordChangeButton.setTextColor(getApplicationContext().getResources().getColor(R.color.password_text_gray));
         }
     }
 
@@ -153,9 +150,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
         super.onDestroy();
         toolbar = null;
         actionBar = null;
-        lockManager = null;
         binding = null;
         lockHelper = null;
-        //compositeDisposable.clear();
     }
 }

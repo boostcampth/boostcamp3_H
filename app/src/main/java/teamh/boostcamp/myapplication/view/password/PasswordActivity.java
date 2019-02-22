@@ -1,18 +1,22 @@
 package teamh.boostcamp.myapplication.view.password;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import java.lang.reflect.Field;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
 
@@ -21,6 +25,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     private ActivityPasswordBinding binding;
     private PasswordPresenter passwordPresenter;
     private int type = -1;
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Nullable
     private String oldPassword = null;
 
@@ -71,7 +76,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
             final Intent intent = new Intent();
             intent.setAction(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
-            this.startActivity(intent);
+            startActivity(intent);
             activityFinish();
         } else {
             activityFinish();
@@ -282,32 +287,45 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
 
     public void ErrorAnimation() {
         /*rxJava로 변경해보기.*/
-        Completable.fromAction(() -> {
+
+        compositeDisposable.add(Completable.fromAction(() -> {
             Animation animation = AnimationUtils.loadAnimation(
-                    PasswordActivity.this, R.anim.anim_shake_password_not_match);
+                    getApplicationContext(), R.anim.anim_shake_password_not_match);
             binding.llPassword.startAnimation(animation);
         }).subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
                     clearPassword();
-                }, Throwable::printStackTrace);
-
-        /*Thread thread = new Thread() {
-            public void run() {
-                Animation animation = AnimationUtils.loadAnimation(
-                        PasswordActivity.this, R.anim.anim_shake_password_not_match);
-                binding.llPassword.startAnimation(animation);
-                clearPassword();
-            }
-        };
-        runOnUiThread(thread);*/
+                }, throwable -> {
+                    throwable.printStackTrace();
+                }));
     }
+
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         passwordPresenter.onDestroyView();
+        clearView();
+    }
+
+    @Override
+    public void clearView() {
         binding = null;
         oldPassword = null;
         passwordPresenter = null;
+        compositeDisposable.dispose();
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.MANUFACTURER.equals("samsung")) {
+                Log.v("98980","98980");
+                Object systemService = getSystemService(Class.forName("com.samsung.android.content.clipboard.SemClipboardManager"));
+                Field mContext = systemService.getClass().getDeclaredField("mContext");
+                mContext.setAccessible(true);
+                mContext.set(systemService, null);
+            }
+        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+            Log.v("98980","98980");
+            //ignored
+            // }
+        }
     }
 }

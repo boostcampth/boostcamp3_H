@@ -3,12 +3,14 @@ package teamh.boostcamp.myapplication.view;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 
+import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
 import androidx.work.PeriodicWorkRequest;
@@ -39,7 +41,8 @@ public class AppInitializer extends Application {
     public void onCreate() {
         super.onCreate();
 
-        lockHelper = new LockHelperImpl(getApplicationContext());
+        lockHelper = LockHelperImpl.getInstance(getApplicationContext());
+        //new LockHelperImpl(getApplicationContext());
         registerActivityLifecycleCallbacks(new ApplicationActivityLifecycleCallbacks());
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
@@ -69,9 +72,6 @@ public class AppInitializer extends Application {
 
         }
 
-        /*FIXME
-         *
-         * */
         @Override
         public void onActivityStarted(Activity activity) {
             if (++runningActivityCount == 1) {
@@ -92,13 +92,6 @@ public class AppInitializer extends Application {
                     startPasswordActivity(LockHelper.UNLOCK_PASSWORD);
                 }
             }
-        }
-
-        private void startPasswordActivity(int type) {
-            Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
-            intent.putExtra(LockHelper.EXTRA_TYPE, type);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
         }
 
         @Override
@@ -122,5 +115,13 @@ public class AppInitializer extends Application {
         public void onActivityDestroyed(Activity activity) {
 
         }
+
+        private void startPasswordActivity(int type) {
+            Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
+            intent.putExtra(LockHelper.EXTRA_TYPE, type);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
     }
 }

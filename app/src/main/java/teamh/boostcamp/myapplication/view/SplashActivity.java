@@ -15,7 +15,7 @@ import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivitySplashBinding;
 import teamh.boostcamp.myapplication.view.main.MainActivity;
 import teamh.boostcamp.myapplication.view.password.LockHelper;
-import teamh.boostcamp.myapplication.view.password.LockManager;
+import teamh.boostcamp.myapplication.view.password.LockHelperImpl;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -26,7 +26,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        lockHelper = LockManager.getInstance().getLockHelper(getApplicationContext());
+        lockHelper = LockHelperImpl.getInstance(getApplicationContext());
         initBinding();
         initView();
     }
@@ -67,5 +67,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onDestroy();
         disposable.clear();
         binding = null;
+        lockHelper = null;
     }
 }
