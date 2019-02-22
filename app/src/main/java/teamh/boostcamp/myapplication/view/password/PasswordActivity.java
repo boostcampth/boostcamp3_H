@@ -291,17 +291,15 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
         compositeDisposable.add(Completable.fromAction(() -> {
             Animation animation = AnimationUtils.loadAnimation(
                     getApplicationContext(), R.anim.anim_shake_password_not_match);
-
             binding.llPassword.startAnimation(animation);
         }).subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-
-                        }
-                        , throwable -> {
-                        }));
+                    clearPassword();
+                }, throwable -> {
+                    throwable.printStackTrace();
+                }));
     }
-
-    ;
+    
 
     @Override
     protected void onDestroy() {
