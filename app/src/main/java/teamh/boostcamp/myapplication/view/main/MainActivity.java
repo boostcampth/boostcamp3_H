@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         super.onDestroy();
         recallFragment = null;
         diaryListFragment = null;
+        statisticsFragment = null;
     }
 
     private void initBottomNavigation() {
