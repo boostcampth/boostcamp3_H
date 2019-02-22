@@ -6,14 +6,10 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
-import java.util.concurrent.CountDownLatch;
-
 import androidx.annotation.NonNull;
 import androidx.work.RxWorker;
-import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import io.reactivex.Single;
-import io.reactivex.disposables.Disposable;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Event;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
