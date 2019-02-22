@@ -89,15 +89,6 @@
     <string name="playing_state_play_message">일기를 재생합니다.</string>
     <string name="no_playlist_message">재생목록이 없습니다.</string>
 
-    <!--Graph Emojis-->
-    <string-array name="graph_emojis">
-        <item>😡</item>
-        <item>😞</item>
-        <item>😐</item>
-        <item>😊</item>
-        <item>😍</item>
-    </string-array>
-
     <!--Setting-->
     <string name="setting_title">설정</string>
     <string name="setting_alarm">알람</string>
@@ -133,6 +124,8 @@
     <string name="password_retry_input_text">다시 입력해주세요.</string>
     <string name="password_please_input_text">비밀번호를 입력해주세요.</string>
     <string name="password_check_retry_text">확인을 위해 한번 더 입력해주세요.</string>
+    <string name="password_delete_text">Delete</string>
+    <string name="password_clear_text">Clear</string>
 
     <!--Alarm-->
     <string name="alarm_title">알람</string>

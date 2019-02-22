@@ -32,6 +32,7 @@ public class StatisticsPresenter {
          * 그리고 view에 갱신
          * 화면이 꺼지는 상황을 대비하기 위해서 CompositeDisposable이 필요하다.
          * Detach, Destroy 상황에서 구독을 해제해줘야 한다.
+         * 비동기 처리를 통해 받아온 데이터를 어떤 스레드에서 처리할지?! - 메인 스레드
          * */
         compositeDisposable.add(statisticsRepository.loadRecentEmotionHistoryList(new Date())
                 .observeOn(AndroidSchedulers.mainThread())

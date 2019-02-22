@@ -9,13 +9,11 @@ public class PasswordPresenter {
 
     @NonNull
     private PasswordView passwordView;
-    private LockManager lockManager;
     private LockHelper lockHelper;
 
     PasswordPresenter(@NonNull PasswordView passwordView, @NonNull Context context) {
         this.passwordView = passwordView;
-        this.lockManager = LockManager.getInstance();
-        this.lockHelper = lockManager.getLockHelper(context);
+        this.lockHelper = LockHelperImpl.getInstance(context.getApplicationContext());
     }
 
     boolean checkPassword(String password) {
@@ -28,7 +26,6 @@ public class PasswordPresenter {
 
     void onDestroyView() {
         passwordView = null;
-        lockManager = null;
         lockHelper = null;
     }
 }

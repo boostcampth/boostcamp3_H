@@ -78,14 +78,6 @@ public class DiaryRepositoryImpl implements DiaryRepository {
 
     @NonNull
     @Override
-
-    public Completable deleteDiary(@NonNull String id) {
-        return Completable.fromAction(() -> diaryDao.delete(id))
-                .subscribeOn(Schedulers.io());
-    }
-
-    @NonNull
-    @Override
     public Observable<Diary> loadAll() {
         return diaryDao.loadAll()
                 .flatMapIterable(diaryList -> diaryList)

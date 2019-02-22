@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.data.model.Diary;
 import teamh.boostcamp.myapplication.databinding.ItemRecordDiaryBinding;
+import teamh.boostcamp.myapplication.utils.FirebaseEventLogger;
 import teamh.boostcamp.myapplication.view.diarylist.listener.OnKakaoLinkClickListener;
 import teamh.boostcamp.myapplication.view.diarylist.listener.OnRecordItemClickListener;
 
