@@ -113,17 +113,7 @@ public class AppInitializer extends Application {
 
         @Override
         public void onActivityDestroyed(Activity activity) {
-            try {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.MANUFACTURER.equals("samsung")) {
-                    Object systemService = getSystemService(Class.forName("com.samsung.android.content.clipboard.SemClipboardManager"));
-                    Field mContext = systemService.getClass().getDeclaredField("mContext");
-                    mContext.setAccessible(true);
-                    mContext.set(systemService, null);
-                }
-            } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-                //ignored
-                // }
-            }
+
         }
 
         private void startPasswordActivity(int type) {
