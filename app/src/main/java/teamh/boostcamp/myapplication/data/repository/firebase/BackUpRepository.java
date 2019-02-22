@@ -7,7 +7,7 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
-public interface FirebaseRepository {
+public interface BackUpRepository {
 
     @NonNull
     Single<List<String>> loadAllDiaryId();

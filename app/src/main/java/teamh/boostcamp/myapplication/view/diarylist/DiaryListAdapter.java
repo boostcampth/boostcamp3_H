@@ -82,7 +82,11 @@ public class DiaryListAdapter extends RecyclerView.Adapter<DiaryListAdapter.Diar
         return diaryList.size();
     }
 
-    void addDiaryItems(@NonNull List<Diary> diaries) {
+    void addDiaryItems(@NonNull List<Diary> diaries, final boolean clear) {
+        if(clear) {
+            diaryList.clear();
+            notifyDataSetChanged();
+        }
         int from = diaryList.size();
         diaryList.addAll(diaries);
         notifyItemMoved(from, diaryList.size());

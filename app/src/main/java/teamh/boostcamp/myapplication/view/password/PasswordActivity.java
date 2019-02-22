@@ -10,6 +10,9 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import teamh.boostcamp.myapplication.R;
 import teamh.boostcamp.myapplication.databinding.ActivityPasswordBinding;
 
@@ -279,7 +282,16 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
 
     public void ErrorAnimation() {
         /*rxJava로 변경해보기.*/
-        Thread thread = new Thread() {
+        Completable.fromAction(() -> {
+            Animation animation = AnimationUtils.loadAnimation(
+                    PasswordActivity.this, R.anim.anim_shake_password_not_match);
+            binding.llPassword.startAnimation(animation);
+        }).subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    clearPassword();
+                }, Throwable::printStackTrace);
+
+        /*Thread thread = new Thread() {
             public void run() {
                 Animation animation = AnimationUtils.loadAnimation(
                         PasswordActivity.this, R.anim.anim_shake_password_not_match);
@@ -287,7 +299,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                 clearPassword();
             }
         };
-        runOnUiThread(thread);
+        runOnUiThread(thread);*/
     }
 
     @Override

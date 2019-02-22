@@ -23,21 +23,45 @@ import androidx.annotation.NonNull;
 import androidx.databinding.ObservableInt;
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
-public class FirebaseRepositoryImpl implements FirebaseRepository {
+public class BackUpRepositoryImpl implements BackUpRepository {
 
-    private static volatile FirebaseRepository INSTANCE;
+    private static volatile BackUpRepository INSTANCE;
 
-    private FirebaseRepositoryImpl() {
+    @NonNull
+    private final FirebaseDatabase firebaseDatabase;
+    @NonNull
+    private final FirebaseStorage firebaseStorage;
+    @NonNull
+    private final FirebaseAuth firebaseAuth;
+    @NonNull
+    private final DiaryDao diaryDao;
+
+
+    private BackUpRepositoryImpl(@NonNull FirebaseDatabase firebaseDatabase,
+                                 @NonNull FirebaseStorage firebaseStorage,
+                                 @NonNull FirebaseAuth firebaseAuth,
+                                 @NonNull DiaryDao diaryDao) {
+        this.firebaseDatabase = firebaseDatabase;
+        this.firebaseStorage = firebaseStorage;
+        this.firebaseAuth = firebaseAuth;
+        this.diaryDao = diaryDao;
     }
 
     @NonNull
-    public static FirebaseRepository getInstance() {
+    public static BackUpRepository getInstance(@NonNull FirebaseDatabase firebaseDatabase,
+                                               @NonNull FirebaseStorage firebaseStorage,
+                                               @NonNull FirebaseAuth firebaseAuth,
+                                               @NonNull DiaryDao diaryDao) {
         if (INSTANCE == null) {
-            synchronized (FirebaseRepositoryImpl.class) {
+            synchronized (BackUpRepositoryImpl.class) {
                 if (INSTANCE == null) {
-                    INSTANCE = new FirebaseRepositoryImpl();
+                    INSTANCE = new BackUpRepositoryImpl(firebaseDatabase,
+                            firebaseStorage,
+                            firebaseAuth,
+                            diaryDao);
                 }
             }
         }
@@ -48,33 +72,12 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
     @Override
     public Single<List<String>> loadAllDiaryId() {
 
-        return Single.create(emitter -> {
-            final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
-
-            final String key = FirebaseAuth.getInstance().getUid();
-
-            firebaseDatabase.child(key)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            List<String> ids = new ArrayList<>();
-                            Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                            while (iterator.hasNext()) {
-                                Iterator<DataSnapshot> backupList = iterator.next().getChildren().iterator();
-                                while (backupList.hasNext()) {
-                                    ids.add(backupList.next().getValue(DiaryEntity.class).getId());
-                                }
-                            }
-                            emitter.onSuccess(ids);
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            if (!emitter.isDisposed()) {
-                                emitter.onError(new FirebaseException("LoadAllDiaryListError"));
-                            }
-                        }
-                    });
+        return loadAllDiaryList().map(diaryEntityList -> {
+            List<String> idList = new ArrayList<>();
+            for(DiaryEntity diaryEntity : diaryEntityList) {
+                idList.add(diaryEntity.getId());
+            }
+            return idList;
         });
     }
 
@@ -84,11 +87,11 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
         return Single.create(emitter -> {
 
-            final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
+            final DatabaseReference dbRef = firebaseDatabase.getReference("user");
 
-            final String key = FirebaseAuth.getInstance().getUid();
+            final String key = firebaseAuth.getUid();
 
-            firebaseDatabase.child(key)
+            dbRef.child(key)
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -123,12 +126,12 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
                 emitter.onComplete();
             }
 
-            final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
+            final DatabaseReference dbRef = firebaseDatabase.getReference("user");
 
-            final String key = FirebaseAuth.getInstance().getUid();
-            final String newPushKey = FirebaseDatabase.getInstance().getReference().child(key).push().getKey();
+            final String key =firebaseAuth.getUid();
+            final String newPushKey = dbRef.child(key).push().getKey();
 
-            firebaseDatabase.child(key)
+            dbRef.child(key)
                     .child(newPushKey)
                     .setValue(diaryEntities)
                     .addOnCompleteListener(task -> {
@@ -150,8 +153,7 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
                 emitter.onSuccess(diaryEntityList);
             }
 
-            final FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-            final String key = FirebaseAuth.getInstance().getUid();
+            final String key = firebaseAuth.getUid();
             final List<String> downloadUrlList = new ArrayList<>();
 
             Iterator<DiaryEntity> iterator = diaryEntityList.iterator();
@@ -204,7 +206,6 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
             final ObservableInt numOfDownloadFile = new ObservableInt(diaryEntityList.size());
             final int size = diaryEntityList.size();
-            final FirebaseStorage storageRef = FirebaseStorage.getInstance();
 
             File dir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + File.separator + "diary");
             if (!dir.exists()) {
@@ -213,7 +214,7 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
 
             for (int i = 0; i < size; ++i) {
 
-                final StorageReference recordRef = storageRef.getReferenceFromUrl(diaryEntityList.get(i).getRecordFilePath());
+                final StorageReference recordRef = firebaseStorage.getReferenceFromUrl(diaryEntityList.get(i).getRecordFilePath());
 
                 diaryEntityList.get(i).setRecordFilePath(dir.getAbsolutePath() + File.separator + diaryEntityList.get(i).getId() + ".acc");
 
@@ -242,11 +243,11 @@ public class FirebaseRepositoryImpl implements FirebaseRepository {
     public Single<DiaryEntity> loadDiaryById(String id) {
 
         return Single.create(emitter -> {
-            final DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("user");
+            final DatabaseReference dbRef = firebaseDatabase.getReference("user");
 
-            final String key = FirebaseAuth.getInstance().getUid();
+            final String key = firebaseAuth.getUid();
 
-            firebaseDatabase.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            dbRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Iterator<DataSnapshot> iterator= dataSnapshot.getChildren().iterator();
