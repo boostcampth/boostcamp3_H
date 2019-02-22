@@ -82,7 +82,7 @@ class DiaryListPresenter {
     }
 
     @SuppressWarnings("SameParameterValue")
-    void loadDiaryList(final int pageSize) {
+    void loadDiaryList(final int pageSize, final boolean clear) {
         // FIXME : 저장 후 로딩하고 있는 경우 예외 처리 필수
         if (!isLoading) {
             isLoading = true;
@@ -95,7 +95,7 @@ class DiaryListPresenter {
                                     return;
                                 }
                                 lastItemLoadedTime = diaries.get(diaries.size() - 1).getRecordDate();
-                                diaryListView.addDiaryList(diaries);
+                                diaryListView.addDiaryList(diaries, clear);
                             }, throwable -> {
                                 isLoading = false;
                                 diaryListView.showLoadDiaryListFailMsg();
@@ -243,21 +243,18 @@ class DiaryListPresenter {
     }
 
     void onViewPaused() {
-        if(lastPlayedPosition != NOTHING_PLAYED) {
-            recordPlayer.stop();
-            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
-        }
-        compositeDisposable.clear();
-        diaryListView.setIsSaving(false);
-    }
-
-    void onViewDestroyed() {
         if (isRecording) {
             diaryRecorder.finishRecord();
             isRecording = false;
         }
-        diaryRecorder.releaseRecorder();
-        recordPlayer.releasePlayer();
+        if(lastPlayedPosition != NOTHING_PLAYED) {
+            recordPlayer.stop();
+            diaryListView.onPlayFileChanged(lastPlayedPosition, true);
+        }
+        lastItemLoadedTime = new Date();
+        isLoading = false;
+        compositeDisposable.clear();
+        diaryListView.setIsSaving(false);
     }
 
     void sendDiaryToKakao(Diary diary) {

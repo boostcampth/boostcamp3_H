@@ -81,16 +81,13 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
             onDismiss(false);
             fragmentManager.beginTransaction().remove(fragmentManager.findFragmentByTag("recordDialog")).commit();
         }
+        //compositeDisposable.clear();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (isDownloaded) {
-            diaryListAdapter.clear();
-            presenter.loadDiaryList(LOAD_ITEM_NUM);
-            isDownloaded = false;
-        }
+        presenter.loadDiaryList(LOAD_ITEM_NUM, true);
     }
 
     @Nullable
@@ -105,7 +102,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
             initView();
             compositeDisposable = new CompositeDisposable();
         }
-
         compositeDisposable.add(EventBus.get().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(event -> {
@@ -114,22 +110,19 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
                             diaryListAdapter.clear();
                             break;
                         case DOWNLOAD_COMPLETE:
-                            diaryListAdapter.clear();
-                            presenter.loadDiaryList(LOAD_ITEM_NUM);
+                            presenter.loadDiaryList(LOAD_ITEM_NUM, true);
                             break;
                         default:
                             break;
                     }
                 }));
 
-        presenter.loadDiaryList(LOAD_ITEM_NUM);
-
         return binding.getRoot();
     }
 
     @Override
-    public void addDiaryList(@NonNull List<Diary> diaryList) {
-        diaryListAdapter.addDiaryItems(diaryList);
+    public void addDiaryList(@NonNull List<Diary> diaryList, final boolean clear) {
+        diaryListAdapter.addDiaryItems(diaryList, clear);
     }
 
     @Override
@@ -163,16 +156,6 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
         if (getFragmentManager() != null) {
             dialog.show(getFragmentManager(), getTag());
         }
-    }
-
-    @Override
-    public void showRecordFileNotFound() {
-        showToastMessage(R.string.item_record_file_not_found);
-    }
-
-    @Override
-    public void showSaveDiaryFail() {
-        showToastMessage(R.string.item_record_save_fail);
     }
 
     @Override
@@ -228,7 +211,7 @@ public class DiaryListFragment extends Fragment implements DiaryListView, OnReco
         binding.nsvFragmentDiaryContainer.setOnScrollChangeListener(
                 (NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) -> {
                     if (v.getChildAt(0).getBottom() <= (v.getHeight() + v.getScrollY())) {
-                        presenter.loadDiaryList(LOAD_ITEM_NUM);
+                        presenter.loadDiaryList(LOAD_ITEM_NUM, false);
                     }
                 });
 

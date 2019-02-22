@@ -8,21 +8,17 @@ import teamh.boostcamp.myapplication.data.model.Emotion;
 
 public interface DiaryListView {
 
-    void addDiaryList(@NonNull List<Diary> diaryList);
+    void addDiaryList(@NonNull List<Diary> diaryList, final boolean clear);
 
     void insertDiaryList(@NonNull Diary diary);
 
     void showLoadDiaryListFailMsg();
-
-    void showSaveDiaryFail();
 
     void showRecordNotFinished();
 
     void showEmotionNotSelected();
 
     void setIsBackup(boolean isBackup);
-
-    void showRecordFileNotFound();
 
     void setIsSaving(boolean isSaving);
 

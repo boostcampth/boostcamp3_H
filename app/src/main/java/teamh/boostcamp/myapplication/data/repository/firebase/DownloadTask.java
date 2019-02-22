@@ -2,9 +2,14 @@ package teamh.boostcamp.myapplication.data.repository.firebase;
 
 import android.content.Context;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+
 import java.util.concurrent.CountDownLatch;
 
 import androidx.annotation.NonNull;
+import androidx.work.RxWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 import io.reactivex.Observable;
@@ -18,27 +23,32 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.utils.EventBus;
 
-public class DownloadTask extends Worker {
+public class DownloadTask extends RxWorker {
 
+    @NonNull
     private DiaryRepository diaryRepository;
-    private FirebaseRepository firebaseRepository;
+    @NonNull
+    private BackUpRepository backUpRepository;
+
+    private Result result;
 
     public DownloadTask(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         diaryRepository = DiaryRepositoryImpl.getInstance(
                 AppDatabase.getInstance(getApplicationContext()).diaryDao(),
                 DeepAffectApiClient.getInstance());
-        firebaseRepository = FirebaseRepositoryImpl.getInstance();
+        backUpRepository = BackUpRepositoryImpl.getInstance(FirebaseDatabase.getInstance(),
+                FirebaseStorage.getInstance(),
+                FirebaseAuth.getInstance(),
+                AppDatabase.getInstance(context).diaryDao());
     }
 
-    @NonNull
     @Override
-    public Result doWork() {
+    public Single<Result> createWork() {
 
-        final Result[] result = new Result[]{Result.success()};
-        CountDownLatch countDownLatch = new CountDownLatch(1);
+        result = Result.success();
 
-        Disposable disposable = Single.zip(firebaseRepository.loadAllDiaryList(), diaryRepository.loadAllDiaryEntityList(),
+        return Single.zip(backUpRepository.loadAllDiaryList(), diaryRepository.loadAllDiaryEntityList(),
                 (remoteEntityList, localEntityList) -> {
                     final int size = localEntityList.size();
                     for (int i = 0; i < size; ++i) {
@@ -47,28 +57,13 @@ public class DownloadTask extends Worker {
                     return remoteEntityList;
                 }).flatMapObservable(Observable::fromIterable)
                 .toList()
-                .flatMap(firebaseRepository::downloadRecordFile)
+                .flatMap(backUpRepository::downloadRecordFile)
                 .flatMapCompletable(diaryEntityList ->
                         diaryRepository.insertDiary(diaryEntityList.toArray(new DiaryEntity[diaryEntityList.size()])))
-                .subscribe(() -> {
-                    countDownLatch.countDown();
-                    EventBus.sendEvent(Event.DOWNLOAD_COMPLETE);
-                }, throwable -> {
+                .doOnError(throwable -> {
                     throwable.printStackTrace();
-                    result[0] = Result.failure();
-                    countDownLatch.countDown();
-                });
-
-        try {
-            countDownLatch.await();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        diaryRepository = null;
-        firebaseRepository = null;
-        disposable.dispose();
-
-        return result[0];
+                    result = Result.failure();
+                }).toSingle(() -> result);
     }
+
 }
