@@ -299,7 +299,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
                     throwable.printStackTrace();
                 }));
     }
-    
+
 
     @Override
     protected void onDestroy() {

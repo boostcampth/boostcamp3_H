@@ -9,8 +9,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.RecallRepository;
-import teamh.boostcamp.myapplication.data.repository.firebase.DownloadTask;
-import teamh.boostcamp.myapplication.data.repository.firebase.UploadTask;
+import teamh.boostcamp.myapplication.data.repository.backup.DownloadTask;
+import teamh.boostcamp.myapplication.data.repository.backup.UploadTask;
 
 class SettingPresenter {
 
