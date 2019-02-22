@@ -61,7 +61,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context = context;
+        this.context = context.getApplicationContext();
         compositeDisposable = new CompositeDisposable();
     }
 
@@ -153,9 +153,16 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         analyzedDataSetBar.setColor(getResources().getColor(R.color.main));
         analyzedDataSetBar.setHighlightEnabled(false);
 
+        setBarData(dates, selectedDataSetBar, analyzedDataSetBar);
+
+    }
+
+    private void setBarData(String[] dates, BarDataSet selectedDataSetBar, BarDataSet analyzedDataSetBar) {
+        String[] dateArray = dates;
+        BarDataSet selectedData = selectedDataSetBar;
+        BarDataSet analyzedData = analyzedDataSetBar;
         final XAxis xAxis;
         final YAxis yLeftAxis, yRightAxis;
-        //float groupSpace = 0.2f;
         float groupSpace = 0.06f;
         float barSpace = 0.02f; // x2 dataset
         float barWidth = 0.45f; // x2 dataset
@@ -167,9 +174,9 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
         // x축 설정
         xAxis.setAxisMinimum(0f);
-        xAxis.setAxisMaximum(dates.length);
+        xAxis.setAxisMaximum(dateArray.length);
         xAxis.setCenterAxisLabels(true);
-        xAxis.setLabelCount(dates.length);
+        xAxis.setLabelCount(dateArray.length);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(dates));
         xAxis.setDrawGridLines(false);
@@ -195,20 +202,19 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         legend.setEnabled(false);
 
         // BarData 세팅
-        BarData barData = new BarData(selectedDataSetBar, analyzedDataSetBar);
+        BarData barData = new BarData(selectedData, analyzedData);
         barData.setBarWidth(barWidth); // set the width of each bar
         barData.setDrawValues(false);
         binding.lcEmotionGraph.setVisibleXRangeMaximum(5);
         binding.lcEmotionGraph.setScaleEnabled(false);
         binding.lcEmotionGraph.setHorizontalScrollBarEnabled(false);
         binding.lcEmotionGraph.setPinchZoom(false);
-        binding.lcEmotionGraph.moveViewToX(0);
+        //binding.lcEmotionGraph.moveViewToX(0);
         binding.lcEmotionGraph.setDescription(null);
         binding.lcEmotionGraph.setData(barData);
         binding.lcEmotionGraph.groupBars(0, groupSpace, barSpace);
         binding.lcEmotionGraph.animateY(1000);
         binding.lcEmotionGraph.invalidate(); // refresh
-
 
     }
 

@@ -93,6 +93,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         recallFragment = null;
         diaryListFragment = null;
         statisticsFragment = null;
+        fragmentManager.isDestroyed();
+        for(int i = 0; i <fragmentManager.getBackStackEntryCount(); ++i) {
+            fragmentManager.popBackStack();
+        }
     }
 
     private void initBottomNavigation() {

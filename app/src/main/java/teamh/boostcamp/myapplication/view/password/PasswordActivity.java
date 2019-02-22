@@ -1,11 +1,15 @@
 package teamh.boostcamp.myapplication.view.password;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
+
+import java.lang.reflect.Field;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -308,5 +312,18 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
         oldPassword = null;
         passwordPresenter = null;
         compositeDisposable.dispose();
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.MANUFACTURER.equals("samsung")) {
+                Log.v("98980","98980");
+                Object systemService = getSystemService(Class.forName("com.samsung.android.content.clipboard.SemClipboardManager"));
+                Field mContext = systemService.getClass().getDeclaredField("mContext");
+                mContext.setAccessible(true);
+                mContext.set(systemService, null);
+            }
+        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+            Log.v("98980","98980");
+            //ignored
+            // }
+        }
     }
 }
