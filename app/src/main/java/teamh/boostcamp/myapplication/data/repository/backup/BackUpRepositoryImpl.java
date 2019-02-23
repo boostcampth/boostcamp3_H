@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -11,8 +13,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,9 +24,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.databinding.ObservableInt;
 import io.reactivex.Completable;
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposables;
 import teamh.boostcamp.myapplication.data.local.room.dao.DiaryDao;
 import teamh.boostcamp.myapplication.data.local.room.entity.DiaryEntity;
 
@@ -39,6 +44,7 @@ public class BackUpRepositoryImpl implements BackUpRepository {
     @NonNull
     private final DiaryDao diaryDao;
 
+    private static final String DOWNLOAD_PATH = Environment.getExternalStorageDirectory().getAbsoluteFile() + File.separator + "diary";
 
     private BackUpRepositoryImpl(@NonNull FirebaseDatabase firebaseDatabase,
                                  @NonNull FirebaseStorage firebaseStorage,
@@ -74,7 +80,7 @@ public class BackUpRepositoryImpl implements BackUpRepository {
 
         return loadAllDiaryList().map(diaryEntityList -> {
             List<String> idList = new ArrayList<>();
-            for(DiaryEntity diaryEntity : diaryEntityList) {
+            for (DiaryEntity diaryEntity : diaryEntityList) {
                 idList.add(diaryEntity.getId());
             }
             return idList;
@@ -83,57 +89,58 @@ public class BackUpRepositoryImpl implements BackUpRepository {
 
     @NonNull
     @Override
+    @SuppressWarnings("all")
     public Single<List<DiaryEntity>> loadAllDiaryList() {
-
         return Single.create(emitter -> {
 
             final DatabaseReference dbRef = firebaseDatabase.getReference("user");
-
             final String key = firebaseAuth.getUid();
 
-            dbRef.child(key)
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            List<DiaryEntity> diaryEntityList = new ArrayList<>();
-                            Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
-                            while (iterator.hasNext()) {
-                                Iterator<DataSnapshot> loadList = iterator.next().getChildren().iterator();
-                                while (loadList.hasNext()) {
-                                    diaryEntityList.add(loadList.next().getValue(DiaryEntity.class));
-                                }
-                            }
-                            emitter.onSuccess(diaryEntityList);
-                        }
+            dbRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            if (!emitter.isDisposed()) {
-                                emitter.onError(new FirebaseException("LoadAllDiaryListError"));
-                            }
-                        }
-                    });
+                    List<DiaryEntity> diaryEntityList = new ArrayList<>();
+                    Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                    while (iterator.hasNext()) {
+                        diaryEntityList.add(iterator.next().getValue(DiaryEntity.class));
+                    }
+                    emitter.onSuccess(diaryEntityList);
+                    /*
+                    List<DiaryEntity> idList = Observable.fromIterable(dataSnapshot.getChildren())
+                            .flatMap(diaryListSnapShot -> Observable.fromIterable(diaryListSnapShot.getChildren()))
+                            .filter(diarySnapShot -> diarySnapShot != null)
+                            .map(diaryData -> diaryData.getValue(DiaryEntity.class))
+                            .toList()
+                            .doOnError(emitter::onError)
+                            .blockingGet();
+
+                    emitter.onSuccess(idList);*/
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    if (!emitter.isDisposed()) {
+                        emitter.onError(new FirebaseException("LoadAllDiaryListError"));
+                    }
+                }
+            });
         });
     }
 
     @NonNull
     @Override
-    public Completable insertDiaries(@NonNull List<DiaryEntity> diaryEntities) {
+    public Completable insertDiary(@NonNull DiaryEntity diaryEntity) {
 
         return Completable.create(emitter -> {
 
-            if (diaryEntities.size() == 0) {
-                emitter.onComplete();
-            }
-
             final DatabaseReference dbRef = firebaseDatabase.getReference("user");
 
-            final String key =firebaseAuth.getUid();
+            final String key = firebaseAuth.getUid();
             final String newPushKey = dbRef.child(key).push().getKey();
 
-            dbRef.child(key)
-                    .child(newPushKey)
-                    .setValue(diaryEntities)
+            dbRef.child(key).child(newPushKey)
+                    .setValue(diaryEntity)
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             emitter.onComplete();
@@ -146,95 +153,66 @@ public class BackUpRepositoryImpl implements BackUpRepository {
 
     @NonNull
     @Override
-    public Single<List<DiaryEntity>> uploadRecordFile(@NonNull List<DiaryEntity> diaryEntityList) {
-        return Single.create(emitter -> {
-
-            if (diaryEntityList.size() == 0) {
-                emitter.onSuccess(diaryEntityList);
-            }
+    public Observable<DiaryEntity> uploadSingleRecordFile(@NonNull DiaryEntity diaryEntity) {
+        return Observable.create(emitter -> {
 
             final String key = firebaseAuth.getUid();
-            final List<String> downloadUrlList = new ArrayList<>();
 
-            Iterator<DiaryEntity> iterator = diaryEntityList.iterator();
+            final Uri uri = Uri.fromFile(new File(diaryEntity.getRecordFilePath()));
+            final StorageReference storeRef = firebaseStorage.getReference()
+                    .child(key + "/" + diaryEntity.getId());
 
-            while (iterator.hasNext()) {
+            final OnSuccessListener<UploadTask.TaskSnapshot> onSuccessListener = taskSnapshot -> {
+                diaryEntity.setRecordFilePath(taskSnapshot.getStorage().getDownloadUrl().toString());
+                emitter.onNext(diaryEntity);
+            };
+            final OnFailureListener onFailureListener = emitter::onError;
 
-                final DiaryEntity currentDiaryEntity = iterator.next();
+            final UploadTask uploadTask = storeRef.putFile(uri);
 
-                File file = new File(currentDiaryEntity.getRecordFilePath());
+            uploadTask.addOnSuccessListener(onSuccessListener);
+            uploadTask.addOnFailureListener(onFailureListener);
 
-                if (!file.exists()) {
-                    iterator.remove();
-                    continue;
-                }
-
-                final Uri uri = Uri.fromFile(file);
-
-                final StorageReference storageRef = firebaseStorage.getReference().child((key + "/" + currentDiaryEntity.getId()));
-
-                storageRef.putFile(uri)
-                        .continueWithTask(task -> task.isSuccessful() ? storageRef.getDownloadUrl() : null)
-                        .addOnSuccessListener(downloadUri -> {
-                            if (downloadUri != null) {
-                                downloadUrlList.add(downloadUri.toString());
-                                currentDiaryEntity.setRecordFilePath(downloadUri.toString());
-                            } else {
-                                diaryEntityList.remove(currentDiaryEntity);
-                            }
-                            if (downloadUrlList.size() == diaryEntityList.size()) {
-                                emitter.onSuccess(diaryEntityList);
-                            }
-                        })
-                        .addOnFailureListener(e -> {
-                            if (!emitter.isDisposed()) {
-                                emitter.onError(e);
-                            }
-                        });
-            }
+            emitter.setDisposable(Disposables.fromAction(() -> {
+                uploadTask.addOnSuccessListener(onSuccessListener);
+                uploadTask.removeOnFailureListener(onFailureListener);
+            }));
         });
     }
 
     @NonNull
     @Override
-    public Single<List<DiaryEntity>> downloadRecordFile(@NonNull List<DiaryEntity> diaryEntityList) {
-        return Single.create(emitter -> {
+    public Observable<DiaryEntity> downloadSingleRecordFile(@NonNull DiaryEntity diaryEntity) {
+        return Observable.create(emitter -> {
 
-            if (diaryEntityList.size() == 0) {
-                emitter.onSuccess(diaryEntityList);
-            }
+            final OnSuccessListener<FileDownloadTask.TaskSnapshot> onSuccessListener = taskSnapshot -> {
+                Log.d("Test", "DownloadSuccess" + diaryEntity.getId());
+                emitter.onNext(diaryEntity);
+            };
+            final OnFailureListener onFailureListener = e -> {
+                Log.d("Test", "DownloadFail" + diaryEntity.getId());
+                e.printStackTrace();
+                emitter.onComplete();
+            };
 
-            final ObservableInt numOfDownloadFile = new ObservableInt(diaryEntityList.size());
-            final int size = diaryEntityList.size();
+            final StorageReference recordRef = firebaseStorage.getReference()
+                    .child(firebaseAuth.getUid())
+                    .child(diaryEntity.getId());
 
-            File dir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + File.separator + "diary");
-            if (!dir.exists()) {
-                dir.mkdirs();
-            }
+            diaryEntity.setRecordFilePath(DOWNLOAD_PATH + File.separator + diaryEntity.getId() + ".acc");
 
-            for (int i = 0; i < size; ++i) {
+            final File recordFile = new File(diaryEntity.getRecordFilePath());
+            recordFile.getParentFile().mkdirs();
+            recordFile.createNewFile();
 
-                final StorageReference recordRef = firebaseStorage.getReferenceFromUrl(diaryEntityList.get(i).getRecordFilePath());
+            FileDownloadTask downloadTask = recordRef.getFile(recordFile);
+            downloadTask.addOnSuccessListener(onSuccessListener);
+            downloadTask.addOnFailureListener(onFailureListener);
 
-                diaryEntityList.get(i).setRecordFilePath(dir.getAbsolutePath() + File.separator + diaryEntityList.get(i).getId() + ".acc");
-
-                final File recordFile = new File(diaryEntityList.get(i).getRecordFilePath());
-
-                recordFile.getParentFile().mkdirs();
-                recordFile.createNewFile();
-
-                recordRef.getFile(recordFile).addOnSuccessListener(taskSnapshot -> {
-                    Log.d("Test", numOfDownloadFile.get() + "");
-                    // 저장이 완료되었으면 저장 count 추가해주기
-                    numOfDownloadFile.set(numOfDownloadFile.get() - 1);
-                    if (numOfDownloadFile.get() == 0) {
-                        emitter.onSuccess(diaryEntityList);
-                    }
-                }).addOnFailureListener(e -> {
-                    Log.d("Test", "Error");
-                    e.printStackTrace();
-                });
-            }
+            emitter.setDisposable(Disposables.fromAction(() -> {
+                downloadTask.removeOnSuccessListener(onSuccessListener);
+                downloadTask.removeOnFailureListener(onFailureListener);
+            }));
         });
     }
 
@@ -250,15 +228,15 @@ public class BackUpRepositoryImpl implements BackUpRepository {
             dbRef.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    Iterator<DataSnapshot> iterator= dataSnapshot.getChildren().iterator();
-                    while(iterator.hasNext()){
+                    Iterator<DataSnapshot> iterator = dataSnapshot.getChildren().iterator();
+                    while (iterator.hasNext()) {
                         DataSnapshot it = iterator.next();
                         it.getRef().orderByChild("id").equalTo(id).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                DiaryEntity first=null;
+                                DiaryEntity first = null;
                                 Iterator<DataSnapshot> date = dataSnapshot.getChildren().iterator();
-                                if(date.hasNext()){
+                                if (date.hasNext()) {
                                     first = date.next().getValue(DiaryEntity.class);
                                 }
                                 //DiaryEntity diaryEntity = dataSnapshot.getValue(DiaryEntity.class);
@@ -266,14 +244,15 @@ public class BackUpRepositoryImpl implements BackUpRepository {
                             }
 
                             @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) { }
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+                            }
                         });
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    if(!emitter.isDisposed()) {
+                    if (!emitter.isDisposed()) {
                         emitter.onError(new FirebaseException("find_id"));
                     }
                 }

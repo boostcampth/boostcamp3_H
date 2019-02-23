@@ -6,10 +6,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.concurrent.CountDownLatch;
+
 import androidx.annotation.NonNull;
-import androidx.work.RxWorker;
+import androidx.work.Worker;
 import androidx.work.WorkerParameters;
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposables;
 import teamh.boostcamp.myapplication.data.local.room.AppDatabase;
 import teamh.boostcamp.myapplication.data.model.Event;
 import teamh.boostcamp.myapplication.data.remote.apis.deepaffects.DeepAffectApiClient;
@@ -17,7 +22,7 @@ import teamh.boostcamp.myapplication.data.repository.DiaryRepository;
 import teamh.boostcamp.myapplication.data.repository.DiaryRepositoryImpl;
 import teamh.boostcamp.myapplication.utils.EventBus;
 
-public class UploadTask extends RxWorker {
+public class UploadTask extends Worker {
 
     @NonNull
     private DiaryRepository diaryRepository;
@@ -38,17 +43,40 @@ public class UploadTask extends RxWorker {
         result = Result.success();
     }
 
+    @NonNull
     @Override
-    public Single<Result> createWork() {
+    public Result doWork() {
 
-        return backUpRepository.loadAllDiaryId()
+        CountDownLatch countDownLatch = new CountDownLatch(1);
+
+        Disposable disposable = backUpRepository.loadAllDiaryId()
                 .flatMapMaybe(diaryRepository::loadNotBackupDiaryList)
-                .flatMapSingle(backUpRepository::uploadRecordFile)
-                .flatMapCompletable(backUpRepository::insertDiaries)
+                .flatMapObservable(Observable::fromIterable)
+                .flatMap(backUpRepository::uploadSingleRecordFile)
+                .flatMapCompletable(backUpRepository::insertDiary)
                 .doOnComplete(() -> EventBus.sendEvent(Event.BACK_UP_COMPLETE))
                 .doOnError(throwable -> {
                     throwable.printStackTrace();
                     result = Result.failure();
-                }).toSingle(() -> result);
+                }).subscribe(countDownLatch::countDown,
+                        throwable -> {
+                            throwable.printStackTrace();
+                            countDownLatch.countDown();
+                        });
+        try {
+            countDownLatch.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (!disposable.isDisposed()) {
+            disposable.dispose();
+        }
+        return result;
+    }
+
+    @Override
+    public void onStopped() {
+        super.onStopped();
     }
 }

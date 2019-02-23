@@ -51,8 +51,12 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
         adapter.addItems(itemList.get(position).getDiaryList());
         holder.binding.rvDiary.setAdapter(adapter);
 
-        holder.binding.ivDelete.setOnClickListener(v -> buttonClickListener.onDeleteButtonClicked(position, itemList.get(position).getIndex()));
-        holder.binding.ivPlay.setOnClickListener(v -> buttonClickListener.onPlayButtonClicked(itemList.get(position)));
+        holder.binding.ivDelete.setOnClickListener(v -> {
+            buttonClickListener.onDeleteButtonClicked(position, itemList.get(position).getIndex());
+        });
+        holder.binding.ivPlay.setOnClickListener(v -> {
+            buttonClickListener.onPlayButtonClicked(itemList.get(position));
+        });
     }
 
     @Override
