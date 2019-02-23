@@ -153,10 +153,8 @@ public class AlarmActivity extends AppCompatActivity implements AlarmView {
 
         String[] hourValues = new String[hourList.size()];
         hourValues = hourList.toArray(hourValues);
-        Log.v("15855 Test",String.valueOf(hourValues.length));
         String[] minuteValues = new String[minuteList.size()];
         minuteValues = minuteList.toArray(minuteValues);
-        Log.v("15855 Test",String.valueOf(minuteValues.length));
 
         binding.npAlarmHour.setDisplayedValues(hourValues);
         binding.npAlarmHour.setMinValue(0);

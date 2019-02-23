@@ -126,6 +126,7 @@
     <string name="password_check_retry_text">확인을 위해 한번 더 입력해주세요.</string>
     <string name="password_delete_text">Delete</string>
     <string name="password_clear_text">Clear</string>
+    <string name="password_lock_change_success_text">비밀번호 변경이 완료되었습니다.</string>
 
     <!--Alarm-->
     <string name="alarm_title">알람</string>

@@ -77,11 +77,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private void getData() {
         Intent getData = getIntent();
         if (getData != null) {
-            if (getData.getStringExtra("tag").equals("1")) {
+            if (getData.getStringExtra("tag").equals("Show Password")) {
                 Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
                 intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
                 startActivity(intent);
-            } else if (getData.getStringExtra("tag").equals("2")) {
+            } else if (getData.getStringExtra("tag").equals("Not Show Password")) {
                 Log.v(TAG, getData.toString());
             }
         }

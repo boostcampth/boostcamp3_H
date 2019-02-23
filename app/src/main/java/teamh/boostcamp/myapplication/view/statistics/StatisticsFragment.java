@@ -142,7 +142,6 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
             // Bar
             selectedEmotionListBar.add(new BarEntry(i, selectedEmotion));
             analyzedEmotionListBar.add(new BarEntry(i, analyzedEmotion));
-            Log.v("Test Tag", dates[i]);
         }
 
         BarDataSet selectedDataSetBar = new BarDataSet(selectedEmotionListBar, null);
@@ -158,9 +157,6 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
     }
 
     private void setBarData(String[] dates, BarDataSet selectedDataSetBar, BarDataSet analyzedDataSetBar) {
-        String[] dateArray = dates;
-        BarDataSet selectedData = selectedDataSetBar;
-        BarDataSet analyzedData = analyzedDataSetBar;
         final XAxis xAxis;
         final YAxis yLeftAxis, yRightAxis;
         float groupSpace = 0.06f;
@@ -174,9 +170,9 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
         // x축 설정
         xAxis.setAxisMinimum(0f);
-        xAxis.setAxisMaximum(dateArray.length);
+        xAxis.setAxisMaximum(dates.length);
         xAxis.setCenterAxisLabels(true);
-        xAxis.setLabelCount(dateArray.length);
+        xAxis.setLabelCount(dates.length);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(dates));
         xAxis.setDrawGridLines(false);
@@ -202,7 +198,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         legend.setEnabled(false);
 
         // BarData 세팅
-        BarData barData = new BarData(selectedData, analyzedData);
+        BarData barData = new BarData(selectedDataSetBar, analyzedDataSetBar);
         barData.setBarWidth(barWidth); // set the width of each bar
         barData.setDrawValues(false);
         binding.lcEmotionGraph.setVisibleXRangeMaximum(5);
@@ -228,10 +224,7 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
         for (int i = 0; i < hashTagItems.size(); i++) {
             final View tagView = inflater.inflate(R.layout.layout_graph_hash_tag, null, false);
             final TextView tagTextView = tagView.findViewById(R.id.tv_hash_tag);
-
-            //tagTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, hashTagItems.get(i).getCount() * 10);
             final int tagCount = hashTagItems.get(i).getCount();
-            Log.v(TAG, String.valueOf(tagCount));
 
 
             switch (tagCount) {

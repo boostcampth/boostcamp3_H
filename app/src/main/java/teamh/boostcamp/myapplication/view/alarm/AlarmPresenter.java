@@ -19,7 +19,6 @@ public class AlarmPresenter {
 
     void cancelAlarm() {
         boolean isCanceled = alarmHelper.cancelAlarm();
-        //String text = alarmHelper.cancelAlarm();
         view.updateCancelTimeText(isCanceled);
     }
 
