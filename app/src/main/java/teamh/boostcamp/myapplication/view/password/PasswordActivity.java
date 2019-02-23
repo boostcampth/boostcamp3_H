@@ -1,15 +1,11 @@
 package teamh.boostcamp.myapplication.view.password;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
-
-import java.lang.reflect.Field;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +24,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     @Nullable
     private String oldPassword = null;
+    private String empty = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +51,7 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     void existSaveData() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            // 밑에 message가 존재하면 변경 버튼을 눌렀다는 의미야..
+            // 밑에 message가 존재하면 변경 버튼을 눌렀다는 의미.
             String message = extras.getString(LockHelper.EXTRA_MESSAGE);
             if (message != null) {
                 binding.tvMessage.setText(getApplicationContext()
@@ -142,19 +139,19 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
             binding.etPasswordOne.setText(currentPassword);
 
             binding.etPasswordTwo.requestFocus();
-            binding.etPasswordTwo.setText("");
+            binding.etPasswordTwo.setText(empty);
 
         } else if (binding.etPasswordTwo.isFocused()) {
             binding.etPasswordTwo.setText(currentPassword);
 
             binding.etPasswordThree.requestFocus();
-            binding.etPasswordThree.setText("");
+            binding.etPasswordThree.setText(empty);
 
         } else if (binding.etPasswordThree.isFocused()) {
             binding.etPasswordThree.setText(currentPassword);
 
             binding.etPasswordFour.requestFocus();
-            binding.etPasswordFour.setText("");
+            binding.etPasswordFour.setText(empty);
 
         } else if (binding.etPasswordFour.isFocused()) {
             binding.etPasswordFour.setText(currentPassword);
@@ -242,10 +239,10 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     }
 
     private void clearPassword() {
-        binding.etPasswordOne.setText("");
-        binding.etPasswordTwo.setText("");
-        binding.etPasswordThree.setText("");
-        binding.etPasswordFour.setText("");
+        binding.etPasswordOne.setText(empty);
+        binding.etPasswordTwo.setText(empty);
+        binding.etPasswordThree.setText(empty);
+        binding.etPasswordFour.setText(empty);
         binding.etPasswordOne.requestFocus();
     }
 
@@ -253,17 +250,17 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
         if (binding.etPasswordTwo.isFocused()) {
 
             binding.etPasswordOne.requestFocus();
-            binding.etPasswordOne.setText("");
+            binding.etPasswordOne.setText(empty);
 
         } else if (binding.etPasswordThree.isFocused()) {
 
             binding.etPasswordTwo.requestFocus();
-            binding.etPasswordTwo.setText("");
+            binding.etPasswordTwo.setText(empty);
 
         } else if (binding.etPasswordFour.isFocused()) {
 
             binding.etPasswordThree.requestFocus();
-            binding.etPasswordThree.setText("");
+            binding.etPasswordThree.setText(empty);
         }
     }
 
@@ -280,24 +277,18 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
     public void showPasswordErrorMessage() {
         Toast toast = Toast.makeText(getApplicationContext(),
                 getString(R.string.password_retry_input_text), Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, 50);
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 50);
         toast.show();
         ErrorAnimation();
     }
 
     public void ErrorAnimation() {
-        /*rxJava로 변경해보기.*/
-
         compositeDisposable.add(Completable.fromAction(() -> {
             Animation animation = AnimationUtils.loadAnimation(
                     getApplicationContext(), R.anim.anim_shake_password_not_match);
             binding.llPassword.startAnimation(animation);
         }).subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-                    clearPassword();
-                }, throwable -> {
-                    throwable.printStackTrace();
-                }));
+                .subscribe(this::clearPassword, Throwable::printStackTrace));
     }
 
 
@@ -314,18 +305,5 @@ public class PasswordActivity extends AppCompatActivity implements PasswordView 
         oldPassword = null;
         passwordPresenter = null;
         compositeDisposable.dispose();
-        try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && Build.MANUFACTURER.equals("samsung")) {
-                Log.v("98980","98980");
-                Object systemService = getSystemService(Class.forName("com.samsung.android.content.clipboard.SemClipboardManager"));
-                Field mContext = systemService.getClass().getDeclaredField("mContext");
-                mContext.setAccessible(true);
-                mContext.set(systemService, null);
-            }
-        } catch (ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-            Log.v("98980","98980");
-            //ignored
-            // }
-        }
     }
 }

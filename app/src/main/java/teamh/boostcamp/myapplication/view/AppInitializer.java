@@ -40,9 +40,7 @@ public class AppInitializer extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
         lockHelper = LockHelperImpl.getInstance(getApplicationContext());
-        //new LockHelperImpl(getApplicationContext());
         registerActivityLifecycleCallbacks(new ApplicationActivityLifecycleCallbacks());
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
@@ -86,7 +84,7 @@ public class AppInitializer extends Application {
             if (activity instanceof PasswordActivity) {
                 Log.v(TAG, String.valueOf(((PasswordActivity) activity).getType()));
             } else if (activity instanceof SplashActivity) {
-
+                Log.v(TAG, "SplashActivity");
             } else if (isReturnedForeground()) {
                 if (lockHelper.isPasswordSet()) {
                     startPasswordActivity(LockHelper.UNLOCK_PASSWORD);
@@ -116,7 +114,7 @@ public class AppInitializer extends Application {
 
         }
 
-        private void startPasswordActivity(int type) {
+        private void startPasswordActivity(final int type) {
             Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
             intent.putExtra(LockHelper.EXTRA_TYPE, type);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -63,10 +63,8 @@ public class AlarmHelperImpl implements AlarmHelper {
         }
 
         // SharedPreferenceManager 저장하는 로직. String으로 저장.
-        String timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(calendar.getTime());
         String time = simpleDateFormat.format(calendar.getTime());
         sharedPreferenceManager.setPreferencePushTime(time);
-        Log.v("21023 dd?","dd?");
     }
 
     @NonNull
