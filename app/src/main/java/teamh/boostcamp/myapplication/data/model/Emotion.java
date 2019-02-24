@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 public enum Emotion {
 
-    VERY_BAD(0,"\uD83D\uDE21", "오늘은 많이 힘든 하루셨나요? 다른 멘트"),
+    VERY_BAD(0,"\uD83D\uDE21", "오늘은 많이 힘든 하루셨나요?"),
     BAD(1,"\uD83D\uDE1E", "오늘은 별로였나보네요.."),
     NEUTRAL(2,"\uD83D\uDE10", "평범한 날들 중 하루였군요"),
     GOOD(3,"\uD83D\uDE0A", "오늘은 좋은 일이 있었나보네요 !"),

@@ -2,7 +2,6 @@ package teamh.boostcamp.myapplication.view.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -82,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
                 intent.putExtra(LockHelper.EXTRA_TYPE, LockHelper.UNLOCK_PASSWORD);
                 startActivity(intent);
             } else if (getData.getStringExtra("tag").equals("Not Show Password")) {
-                Log.v(TAG, getData.toString());
+               /* Log.v(TAG, getData.toString());*/
             }
         }
     }

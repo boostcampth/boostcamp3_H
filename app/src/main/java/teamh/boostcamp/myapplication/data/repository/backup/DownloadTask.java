@@ -57,14 +57,8 @@ public class DownloadTask extends Worker {
                     }
                     return remoteEntityList;
                 }).flatMapObservable(Observable::fromIterable)
-                .flatMap(diaryEntity -> {
-                    Log.d("Test", "여기");
-                    return backUpRepository.downloadSingleRecordFile(diaryEntity);
-                })
-                .flatMapCompletable(diaryEntity -> {
-                    Log.d("Test", "dyrl");
-                    return diaryRepository.insertDiary(diaryEntity);
-                })
+                .flatMap(backUpRepository::downloadSingleRecordFile)
+                .flatMapCompletable(diaryRepository::insertDiary)
                 .doOnComplete(() -> EventBus.sendEvent(Event.DOWNLOAD_COMPLETE))
                 .doOnError(throwable -> {
                     throwable.printStackTrace();

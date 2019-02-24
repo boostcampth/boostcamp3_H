@@ -39,7 +39,7 @@ public class DiaryPlayerImpl implements DiaryPlayer {
     @Override
     public void setCompletionListener(@NonNull MediaPlayer.OnCompletionListener completionListener) {
         this.completionListener = completionListener;
-        mediaPlayer.setOnCompletionListener(completionListener);
+        mediaPlayer.setOnCompletionListener(this.completionListener);
     }
 
     @Override
@@ -58,6 +58,8 @@ public class DiaryPlayerImpl implements DiaryPlayer {
         if(mediaPlayer != null) {
             mediaPlayer.release();
         }
+        mediaPlayer.setOnCompletionListener(null);
+        completionListener = null;
         isPlaying = false;
         mediaPlayer = null;
     }

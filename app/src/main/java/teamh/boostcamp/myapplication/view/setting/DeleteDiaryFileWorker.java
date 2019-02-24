@@ -22,6 +22,9 @@ public class DeleteDiaryFileWorker extends Worker {
         File[] diaryFileList = diaryDirectory.listFiles();
 
         if (diaryDirectory.exists()) {
+            if(diaryFileList == null)
+                return Result.success();
+
             for (File diaryFile : diaryFileList) {
                 diaryFile.delete();
             }

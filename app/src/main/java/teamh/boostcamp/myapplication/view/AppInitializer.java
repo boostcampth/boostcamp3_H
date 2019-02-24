@@ -3,14 +3,10 @@ package teamh.boostcamp.myapplication.view;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.facebook.stetho.Stetho;
-import com.squareup.leakcanary.LeakCanary;
 
-import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
 import androidx.work.PeriodicWorkRequest;
@@ -42,10 +38,10 @@ public class AppInitializer extends Application {
         super.onCreate();
         lockHelper = LockHelperImpl.getInstance(getApplicationContext());
         registerActivityLifecycleCallbacks(new ApplicationActivityLifecycleCallbacks());
-        if (LeakCanary.isInAnalyzerProcess(this)) {
+        /*if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
-        LeakCanary.install(this);
+        LeakCanary.install(this);*/
 
         Stetho.initializeWithDefaults(this);
 
@@ -82,9 +78,9 @@ public class AppInitializer extends Application {
         @Override
         public void onActivityResumed(Activity activity) {
             if (activity instanceof PasswordActivity) {
-                Log.v(TAG, String.valueOf(((PasswordActivity) activity).getType()));
+                //Log.v(TAG, String.valueOf(((PasswordActivity) activity).getType()));
             } else if (activity instanceof SplashActivity) {
-                Log.v(TAG, "SplashActivity");
+                //Log.v(TAG, "SplashActivity");
             } else if (isReturnedForeground()) {
                 if (lockHelper.isPasswordSet()) {
                     startPasswordActivity(LockHelper.UNLOCK_PASSWORD);

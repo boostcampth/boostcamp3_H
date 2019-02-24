@@ -1,7 +1,6 @@
 package teamh.boostcamp.myapplication.view.alarm;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
