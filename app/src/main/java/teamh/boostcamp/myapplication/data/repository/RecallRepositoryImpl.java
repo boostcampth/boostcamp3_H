@@ -69,7 +69,7 @@ public class RecallRepositoryImpl implements RecallRepository {
                     final Date startDate = generateStartDate(endDate);
                     return appDatabase.diaryDao().selectDiaryListByEmotionAndDate(recallEntity.getEmotion(),
                             startDate, endDate, 5)
-                            .map(diaries -> new Recall(recallEntity.getId(), startDate, endDate, recallEntity.getEmotion(), diaries));
+                            .map(diaries -> new Recall(recallEntity1.getId(), startDate, endDate, recallEntity.getEmotion(), diaries));
                 })
                 .subscribeOn(Schedulers.io());
     }

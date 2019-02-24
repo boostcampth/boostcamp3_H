@@ -83,6 +83,11 @@
     <string name="emotion_3_to_title">즐거웠던 날들</string>
     <string name="emotion_4_to_title">행복했던 날들</string>
 
+    <string name="delete_recall_dialog_title">추억 삭제</string>
+    <string name="delete_recall_dialog_message">정말로 삭제하시겠습니까?</string>
+    <string name="delete_recall_dialog_button">삭제</string>
+    <string name="delete_recall_dialog_cancel">취소</string>
+
     <!-- Play activity -->
     <string name="play">PLAY</string>
     <string name="playing_state_stop_message">일기재생을 정지합니다.</string>
