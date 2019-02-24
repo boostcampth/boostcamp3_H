@@ -38,9 +38,9 @@ public class SplashActivity extends AppCompatActivity {
         disposable.add(Completable.timer(1000, TimeUnit.MILLISECONDS)
                 .subscribe(() -> {
                     if (lockHelper.isPasswordSet()) {
-                        startActivityWhere("1");
+                        startActivityWhere("Show Password");
                     } else {
-                        startActivityWhere("2");
+                        startActivityWhere("Not Show Password");
                     }
                 }));
     }

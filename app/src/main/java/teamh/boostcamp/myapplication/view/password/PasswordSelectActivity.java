@@ -26,6 +26,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private ActionBar actionBar;
     private LockHelper lockHelper;
+    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
     }
 
     private void init() {
+        compositeDisposable = new CompositeDisposable();
         lockHelper = LockHelperImpl.getInstance(getApplicationContext());
         initBinding();
         initSwitch();
@@ -66,9 +68,9 @@ public class PasswordSelectActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), PasswordActivity.class);
                     intent.putExtra(LockHelper.EXTRA_TYPE, type);
 
-                    Completable.timer(500, TimeUnit.MILLISECONDS,
+                    compositeDisposable.add(Completable.timer(500, TimeUnit.MILLISECONDS,
                             AndroidSchedulers.mainThread())
-                            .subscribe(() -> startActivityForResult(intent, type));
+                            .subscribe(() -> startActivityForResult(intent, type)));
 
                 }
             } else {
@@ -130,12 +132,14 @@ public class PasswordSelectActivity extends AppCompatActivity {
             case LockHelper.DISABLE_PASSWORD:
                 break;
             case LockHelper.ENABLE_PASSWORD:
+                Toast.makeText(getApplicationContext(),
+                        getString(R.string.password_lock_success_text),
+                        Toast.LENGTH_SHORT).show();
+                break;
             case LockHelper.CHANGE_PASSWORD:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(this,
-                            getApplicationContext()
-                                    .getResources()
-                                    .getString(R.string.password_lock_success_text),
+                    Toast.makeText(getApplicationContext(),
+                            getString(R.string.password_lock_change_success_text),
                             Toast.LENGTH_SHORT).show();
                 }
                 break;
@@ -152,5 +156,6 @@ public class PasswordSelectActivity extends AppCompatActivity {
         actionBar = null;
         binding = null;
         lockHelper = null;
+        compositeDisposable.dispose();
     }
 }
