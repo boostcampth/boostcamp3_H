@@ -15,12 +15,17 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.google.common.util.concurrent.ListenableFuture;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
@@ -28,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.databinding.DataBindingUtil;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 import io.reactivex.disposables.CompositeDisposable;
 import teamh.boostcamp.myapplication.R;
@@ -63,7 +69,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     protected void onResume() {
         super.onResume();
-        if(FirebaseAuth.getInstance().getCurrentUser() !=null){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             binding.rlSettingLoginText.setText(R.string.logout_success);
         }
     }
@@ -94,7 +100,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         toolbar = findViewById(R.id.toolbar_setting);
         setSupportActionBar(toolbar);
         actionBar = getSupportActionBar();
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setDisplayShowTitleEnabled(false);
         }
@@ -193,8 +199,8 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         }
     }
 
-    private void loginAndLogout(String name){
-        switch (name){
+    private void loginAndLogout(String name) {
+        switch (name) {
             case "로그인":
                 Intent signInIntent = mGoogleSignInClient.getSignInIntent();
                 startActivityForResult(signInIntent, SIGN_IN_CODE);
@@ -210,22 +216,15 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.MyAlertDialogStyle);
         alertDialogBuilder.setTitle(getString(R.string.setting_initialization))
                 .setMessage(getString(R.string.dialog_initialization_message))
-                .setPositiveButton(getString(R.string.setting_initialization), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(DeleteDiaryFileWorker.class).build();
-                        WorkManager.getInstance().enqueue(oneTimeWorkRequest);
-                        SharedPreferenceManager.getInstance(getApplicationContext()).removeLastDiarySaveTime();
-                        compositeDisposable.add(presenter.initialize().subscribe(() -> {
-                            EventBus.sendEvent(Event.CLEAR_COMPLETE);
-                        }, Throwable::printStackTrace));
-                    }
-                }).setNegativeButton(getString(R.string.dialog_initialization_cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).create().show();
+                .setPositiveButton(getString(R.string.setting_initialization), (dialogInterface, i) -> {
+                    OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(DeleteDiaryFileWorker.class).build();
+                    WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+                    SharedPreferenceManager.getInstance(getApplicationContext()).removeLastDiarySaveTime();
+                    compositeDisposable.add(presenter.initialize()
+                            .subscribe(() -> EventBus.sendEvent(Event.CLEAR_COMPLETE)
+                                    , Throwable::printStackTrace));
+                }).setNegativeButton(getString(R.string.dialog_initialization_cancel),
+                (dialogInterface, i) -> dialogInterface.dismiss()).create().show();
     }
 
     @Override
@@ -274,8 +273,32 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     }
 
     @Override
-    public void startWorker(OneTimeWorkRequest request) {
-        WorkManager.getInstance().enqueue(request);
+    public void startWorker(@NonNull OneTimeWorkRequest request,
+                            @NonNull String tag) {
+        if (!isSameWorkRunning(tag)) {
+            WorkManager.getInstance().enqueue(request);
+        }
+    }
+
+    boolean isSameWorkRunning(@NonNull String tag) {
+        ListenableFuture<List<WorkInfo>> workInfos = WorkManager.getInstance().getWorkInfosByTag(tag);
+
+        try {
+            List<WorkInfo> workList = workInfos.get();
+
+            for (WorkInfo info : workList) {
+                WorkInfo.State state = info.getState();
+                if (state == WorkInfo.State.RUNNING | state == WorkInfo.State.ENQUEUED) {
+                    return true;
+                }
+            }
+            return false;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
@@ -285,6 +308,7 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
         // 시작 -> 처리될 애니메이션
         this.overridePendingTransition(R.anim.anim_left_to_right, R.anim.anim_right_to_left);
     }
+
     @Override
     public void showInitializationMessage() {
         showToastMessage(R.string.setting_initialization_success);

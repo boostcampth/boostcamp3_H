@@ -15,6 +15,8 @@ import teamh.boostcamp.myapplication.data.repository.backup.UploadTask;
 class SettingPresenter {
 
     private static final String TAG = "SettingPresenter";
+    private static final String DOWNLOAD_TAG = "DOWNLOAD";
+    private static final String UPLOAD_TAG = "UPLOAD";
 
     private SettingView settingView;
     private DiaryRepository diaryRepository;
@@ -40,8 +42,12 @@ class SettingPresenter {
 
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
+            final OneTimeWorkRequest uploadTask = new OneTimeWorkRequest.Builder(UploadTask.class)
+                    .addTag(UPLOAD_TAG)
+                    .build();
+
             settingView.showBackUpStartMsg();
-            settingView.startWorker(new OneTimeWorkRequest.Builder(UploadTask.class).build());
+            settingView.startWorker(uploadTask, UPLOAD_TAG);
 
         } else {
             settingView.showNotLoginMsg();
@@ -51,8 +57,12 @@ class SettingPresenter {
     void downloadAllBackupFilesFromFirebase() {
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
 
+            final OneTimeWorkRequest downloadTask = new OneTimeWorkRequest.Builder(DownloadTask.class)
+                    .addTag(DOWNLOAD_TAG)
+                    .build();
+
             settingView.showLoadStartMsg();
-            settingView.startWorker(new OneTimeWorkRequest.Builder(DownloadTask.class).build());
+            settingView.startWorker(downloadTask, DOWNLOAD_TAG);
 
         } else {
             settingView.showNotLoginMsg();

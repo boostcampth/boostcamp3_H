@@ -1,5 +1,6 @@
 package teamh.boostcamp.myapplication.view.setting;
 
+import androidx.annotation.NonNull;
 import androidx.work.OneTimeWorkRequest;
 
 public interface SettingView {
@@ -10,5 +11,6 @@ public interface SettingView {
     void showLoadStartMsg();
     void showNotLoginMsg();
 
-    void startWorker(OneTimeWorkRequest request);
+    void startWorker(@NonNull OneTimeWorkRequest request,
+                     @NonNull String tag);
 }
