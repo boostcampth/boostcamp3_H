@@ -86,7 +86,6 @@ public class PlayActivity extends AppCompatActivity implements PlayView {
     }
 
     public void onCloseButtonClicked(View view) {
-        Log.d(TAG, "onCloseButtonClicked: ");
         finish();
         overridePendingTransition(R.anim.anim_stop, R.anim.anim_slide_out_bottom);
     }

@@ -1,7 +1,5 @@
 package teamh.boostcamp.myapplication.data.repository.mapper;
 
-import android.util.Log;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,13 +51,9 @@ public class AnalyzedEmotionMapper {
             } catch (NullPointerException e) {
                 e.printStackTrace();
             }
-
-            Log.e("Test", response.getEmotion());
         }
 
         float emotion = (float) totalScore / (float) totalTime;
-
-        Log.d("Test", emotion + " ");
 
         if (-1 <= emotion && emotion < -0.6) {
             result = 0;
@@ -70,8 +64,6 @@ public class AnalyzedEmotionMapper {
         } else if (0.6 <= emotion && emotion <= 1) {
             result = 4;
         }
-
-        Log.d("Test TotalScore : ", totalScore + " TotalTime : " + totalTime + " Emotion : " + result);
 
         return Emotion.fromValue(result);
     }

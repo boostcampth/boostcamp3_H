@@ -1,12 +1,10 @@
 package teamh.boostcamp.myapplication.view.diarylist;
 
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -204,12 +202,7 @@ class DiaryListPresenter {
     void startRecording() {
 
         File dir = new File(Environment.getExternalStorageDirectory().getAbsoluteFile() + File.separator + "diary");
-
-        if (!dir.exists()) {
-            if (!dir.mkdir()) {
-                Log.d("Test", "파일 경로 작성 실패");
-            }
-        }
+        dir.mkdir();
 
         if (!isRecording) {
             diaryRecorder.startRecord();

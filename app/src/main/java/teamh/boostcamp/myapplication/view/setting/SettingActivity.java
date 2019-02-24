@@ -1,10 +1,8 @@
 package teamh.boostcamp.myapplication.view.setting;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -132,7 +130,6 @@ public class SettingActivity extends AppCompatActivity implements SettingView {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("Test", "Test");
         presenter.onDestroy();
         toolbar = null;
         actionBar = null;

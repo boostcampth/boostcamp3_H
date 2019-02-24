@@ -2,7 +2,6 @@ package teamh.boostcamp.myapplication.view.statistics;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -248,21 +247,21 @@ public class StatisticsFragment extends Fragment implements StatisticsView {
 
     @Override
     public void checkLoadStatisticsDataSuccessMessage() {
-        Log.v(TAG, "Graph Data Load Success");
+        //Log.v(TAG, "Graph Data Load Success");
     }
 
     @Override
     public void checkLoadStatisticsDataFailMessage() {
-        Log.v(TAG, "Graph Data Load Fail");
+        /*Log.v(TAG, "Graph Data Load Fail");*/
     }
 
     @Override
     public void checkLoadTagListSuccessMessage() {
-        Log.v(TAG, "Tag Data Load Success");
+       /* Log.v(TAG, "Tag Data Load Success");*/
     }
 
     @Override
     public void checkLoadTagListFailMessage() {
-        Log.v(TAG, "Graph Data Load Fail");
+        /*Log.v(TAG, "Graph Data Load Fail");*/
     }
 }

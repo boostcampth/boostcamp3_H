@@ -2,7 +2,6 @@ package teamh.boostcamp.myapplication.view.password;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -61,7 +60,7 @@ public class PasswordSelectActivity extends AppCompatActivity {
         binding.switchPasswordSelect.setOnCheckedChangeListener((button, isChecked) -> {
             if (isChecked) {
                 if (lockHelper.isPasswordSet()) { // 체크된 상태 + 비밀번호가 설정된 사람이면 패스워드 띄우지 말아야 함.
-                    Log.v(TAG, String.valueOf(lockHelper.isPasswordSet()));
+                    /*Log.v(TAG, String.valueOf(lockHelper.isPasswordSet()));*/
                 } else { // 이 경우 스위치버튼 클릭 시 비밀번호 설정
                     int type = LockHelper.ENABLE_PASSWORD;
 

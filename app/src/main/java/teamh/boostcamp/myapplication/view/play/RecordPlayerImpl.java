@@ -1,10 +1,8 @@
 package teamh.boostcamp.myapplication.view.play;
 
 import android.media.MediaPlayer;
-import android.util.Log;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -67,7 +65,8 @@ public class RecordPlayerImpl implements RecordPlayer {
                 mediaPlayer.setDataSource(playList.get(0).getRecordFilePath());
                 mediaPlayer.prepare();
             } catch (IOException e) {
-                Log.d(TAG, "playList: IOException" + Arrays.toString(e.getStackTrace()));
+                e.printStackTrace();
+                //Log.d(TAG, "playList: IOException" + Arrays.toString(e.getStackTrace()));
             }
             mediaPlayer.start();
             if (onStateChangeListener != null) {
@@ -106,7 +105,8 @@ public class RecordPlayerImpl implements RecordPlayer {
                         mediaPlayer.setDataSource(playList.get(count).getRecordFilePath());
                         mediaPlayer.prepare();
                     } catch (IOException e) {
-                        Log.d(TAG, "playList: IOException" + Arrays.toString(e.getStackTrace()));
+                        e.printStackTrace();
+                        //Log.d(TAG, "playList: IOException" + Arrays.toString(e.getStackTrace()));
                     }
                     mediaPlayer.start();
                 } else {
