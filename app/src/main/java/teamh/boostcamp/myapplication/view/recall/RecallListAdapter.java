@@ -82,7 +82,7 @@ public class RecallListAdapter extends RecyclerView.Adapter<RecallListAdapter.Vi
     void deleteItem(int position) {
         this.itemList.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeChanged(1, itemList.size());
+        notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

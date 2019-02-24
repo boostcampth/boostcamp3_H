@@ -11,6 +11,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -107,7 +108,14 @@ public class RecallFragment extends Fragment implements RecallView {
 
             @Override
             public void onDeleteButtonClicked(int position, int id) {
-                presenter.deleteRecall(position, id);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext(), R.style.MyAlertDialogStyle);
+                alertDialogBuilder.setCancelable(false)
+                        .setTitle(getString(R.string.delete_recall_dialog_title))
+                        .setMessage(getString(R.string.delete_recall_dialog_message))
+                        .setPositiveButton(getString(R.string.delete_recall_dialog_button), (dialogInterface, i) -> {
+                            presenter.deleteRecall(position, id);
+                        }).setNegativeButton(getString(R.string.delete_recall_dialog_cancel),
+                        (dialogInterface, i) -> dialogInterface.dismiss()).create().show();
             }
         });
     }
